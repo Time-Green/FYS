@@ -2,7 +2,7 @@ class Tile {
   int tileX;
   int tileY;
   
-  int tileXWhole, tileYWhole; //tileX divided by the amount of tiles. 
+  int tileXWhole, tileYWhole; //zelfde als tileX en tileY, maar in plaats van pixels complete tiles
   
   boolean tileDestroy;
   boolean density = true;
@@ -10,10 +10,11 @@ class Tile {
   ArrayList<Atom> contents = new ArrayList<Atom>(); //alle Atom's die op die tile staan
   
   Tile(int x , int y){
-    tileX = x;
-    tileY = y;
-    tileXWhole = tileX * tilesHorizontal;
-    tileYWhole = tileY * tilesVertical;
+    tileX = x * tileWidth;
+    tileY = y * tileHeight;
+    
+    tileXWhole = x;
+    tileYWhole = y;
   }
   
   void process(){

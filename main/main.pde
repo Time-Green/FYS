@@ -1,7 +1,6 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
-
-HashMap<String, Tile> map = new HashMap<String, Tile>();
+ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d lijst met x, y en Tile. 
 
 Mob user;
 
@@ -32,5 +31,9 @@ void draw() {
   for (Atom atom : atomList) {
     atom.process();
   }
+}
 
+Tile getTile(int x, int y){ //geeft je de tile waar je op zit. 
+  ArrayList<Tile> subList = map.get(x / tileWidth);
+  return subList.get(y / tileHeight);
 }
