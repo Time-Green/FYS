@@ -1,7 +1,6 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 
-int s
 
 void setup(){
   fullScreen(P2D);
