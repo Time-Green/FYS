@@ -1,6 +1,6 @@
 void keyPressed(){
-  if(key ==  LEFT ){
-    player.move(-tileWidth,0); 
-  }
+  if(keyCode ==  LEFT ){
+    user.move(-tileWidth,0); 
+  } 
 
 }
