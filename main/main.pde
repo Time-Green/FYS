@@ -1,7 +1,7 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 
-Map world = new Map(); //we track all tiles
+HashMap<String, Tile> map = new HashMap<String, Tile>();
 
 Mob user;
 
