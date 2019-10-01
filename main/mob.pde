@@ -1,0 +1,3 @@
+class mob extends atom{
+  
+}
