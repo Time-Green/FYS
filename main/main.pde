@@ -1,6 +1,8 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 
+Mob user;
+
 int tilesHorizontal = 50;
 int tilesVertical = 50;
 int tileWidth = 50;
@@ -12,7 +14,11 @@ void setup(){
   fullScreen(P2D);
   background(255,255,255);
   tileList.add(new Tile(100, 100));
-  atomList.add(new Player());
+  
+  Mob player = new Player();
+  atomList.add(player);
+  user = player;
+  
   generateTiles();
 }
 
