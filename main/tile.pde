@@ -1,8 +1,7 @@
 class Tile {
-  int tileX = 200;
-  int tileY = 200;
-  int tileWidth = 50;
-  int tileHeight = 50;
+  int tileX;
+  int tileY;
+  boolean tileDestroy;
   
   Tile(int x , int y){
     tileX = x;
