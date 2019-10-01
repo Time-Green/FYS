@@ -1,7 +1,10 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 
-
+int tilesHorizontal = 50;
+int tilesVertical = 50;
+int tileWidth = 50;
+int tileHeight = 50;
 
 void setup(){
   fullScreen(P2D);
