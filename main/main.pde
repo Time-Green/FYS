@@ -33,5 +33,4 @@ void draw() {
     atom.process();
   }
 
-  checkKeys();
 }
