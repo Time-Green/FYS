@@ -6,6 +6,8 @@ int tilesVertical = 50;
 int tileWidth = 50;
 int tileHeight = 50;
 
+int safeZone = 10;
+
 void setup(){
   fullScreen(P2D);
   background(255,255,255);
