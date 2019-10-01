@@ -1,2 +1,2 @@
-class atom {
+class Atom {
 }

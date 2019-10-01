@@ -1,3 +1,3 @@
-class player extends mob{
+class Player extends Mob{
   
 }
