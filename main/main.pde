@@ -12,7 +12,6 @@ int safeZone = 10;
 
 void setup(){
   fullScreen(P2D);
-  background(255,255,255);
   tileList.add(new Tile(100, 100));
   
   Mob player = new Player();
@@ -23,10 +22,12 @@ void setup(){
 }
 
 void draw(){
+  background(255,255,255);
   for(Atom atom : atomList){
     atom.process();
   }
   for(Tile tile : tileList){
     tile.process();
   }
+  checkKeys();
 }
