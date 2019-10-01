@@ -1,9 +1,12 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
+ArrayList<
 
 void setup(){
   fullScreen(P2D);
   background(255,255,255);
+  
+  atomList.add(new Player());
 }
 
 void draw(){
