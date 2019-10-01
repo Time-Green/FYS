@@ -10,24 +10,26 @@ int tileHeight = 50;
 
 int safeZone = 10;
 
-void setup(){
+void setup() {
   fullScreen(P2D);
   tileList.add(new Tile(100, 100));
-  
+
   Mob player = new Player();
   atomList.add(player);
   user = player;
-  
+
   generateTiles();
 }
 
-void draw(){
-  background(255,255,255);
-  for(Atom atom : atomList){
-    atom.process();
-  }
-  for(Tile tile : tileList){
+void draw() {
+  background(255, 255, 255);
+  translate(-user.atomX+width*0.5-user.atomWidth/2, -user.atomY+height*0.5);
+  for (Tile tile : tileList) {
     tile.process();
   }
+  for (Atom atom : atomList) {
+    atom.process();
+  }
+
   checkKeys();
 }
