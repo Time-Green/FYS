@@ -1,6 +1,8 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 
+Map world = new Map(); //we track all tiles
+
 Mob user;
 
 int tilesHorizontal = 50;
