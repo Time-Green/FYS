@@ -1,2 +1,6 @@
 class Atom {
+  
+  void process(){
+    
+  }
 }

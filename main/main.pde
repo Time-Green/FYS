@@ -1,4 +1,5 @@
-arrayList<Atom>
+ArrayList<Atom> atomList = new ArrayList<Atom>();
+ArrayList<Tile> tileList = new ArrayList<Tile>();
 
 void setup(){
   fullScreen(P2D);
@@ -6,5 +7,10 @@ void setup(){
 }
 
 void draw(){
-  
+  for(Atom atom : atomList){
+    atom.process();
+  }
+  for(Tile tile : tileList){
+    tile.process();
+  }
 }
