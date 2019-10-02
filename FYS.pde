@@ -24,10 +24,12 @@ void setup() {
 
 void draw() {
   background(255, 255, 255);
-  translate(-user.atomX+width*0.5-user.atomWidth/2, -user.atomY+height*0.5);
+  translate(-user.position.x + width * 0.5 - user.size.x / 2, -user.position.y + height * 0.5);
+
   for (Tile tile : tileList) {
     tile.process();
   }
+  
   for (Atom atom : atomList) {
     atom.process();
   }
@@ -35,5 +37,6 @@ void draw() {
 
 Tile getTile(int x, int y){ //geeft je de tile waar je op zit. 
   ArrayList<Tile> subList = map.get(x / tileWidth);
+  
   return subList.get(y / tileHeight);
 }

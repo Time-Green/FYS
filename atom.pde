@@ -1,16 +1,17 @@
 class Atom {
-  int atomX = 100, atomY = 300;
-  int atomWidth = 40;
-  int atomHeight = 40;
+  PVector position = new PVector(100, 300);
+  PVector size = new PVector(40, 40);
 
   void process(){
     draw();
   }
+
   void draw(){
-    rect(atomX, atomY, atomWidth, atomHeight); 
+    rect(position.x, position.y, size.x, size.y); 
   }
+
   void move(int x, int y){ //amount of pixels we move
-    atomX += x;
-    atomY += y;
+    position.x += x;
+    position.y += y;
   }
 }

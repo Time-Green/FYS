@@ -1,17 +1,21 @@
 class Player extends Mob{
   void process(){
     super.process();
+
     if(keys[LEFT]){
-      user.atomX--;
+      user.position.x--;
     }
+
     if(keys[UP]){
-      user.atomY--;
+      user.position.y--;
     }
+
      if(keys[DOWN]){
-      user.atomY++;
+      user.position.y++;
     }
+
     if(keys[RIGHT]){
-      user.atomX++;
+      user.position.x++;
     }
   }
 }

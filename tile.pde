@@ -1,27 +1,26 @@
 class Tile {
-  int tileX;
-  int tileY;
-  
-  int tileXWhole, tileYWhole; //zelfde als tileX en tileY, maar in plaats van pixels complete tiles
-  
+  PVector position = new PVector();
+  PVector positionWhole = new PVector(); //zelfde als position, maar in plaats van pixels complete tiles
+
   boolean tileDestroy;
   boolean density = true;
   
   ArrayList<Atom> contents = new ArrayList<Atom>(); //alle Atom's die op die tile staan
   
   Tile(int x , int y){
-    tileX = x * tileWidth;
-    tileY = y * tileHeight;
+    position.x = x * tileWidth;
+    position.y = y * tileHeight;
     
-    tileXWhole = x;
-    tileYWhole = y;
+    positionWhole.x = x;
+    positionWhole.y = y;
   }
   
   void process(){
     draw();
   }
+
   void draw(){
-    rect(tileX,tileY,tileWidth,tileHeight);
+    rect(position.x, position.y, tileWidth, tileHeight);
   }
 }
 
@@ -31,6 +30,7 @@ class openTile extends Tile{
     super(x, y);
     density = false;
   }
+
   void draw(){
     return;
   }
