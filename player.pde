@@ -10,7 +10,7 @@ class Player extends Mob{
       user.position.y--;
     }
 
-     if(keys[DOWN]){
+    if(keys[DOWN]){
       user.position.y++;
     }
 
