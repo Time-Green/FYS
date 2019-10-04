@@ -1,11 +1,11 @@
 class Tile {
   PVector position = new PVector();
-  PVector positionWhole = new PVector(); //zelfde als position, maar in plaats van pixels complete tiles
+  PVector positionWhole = new PVector(); //same as position, but pixels instead of complete tiles
 
   boolean tileDestroy;
   boolean density = true;
   
-  ArrayList<Atom> contents = new ArrayList<Atom>(); //alle Atom's die op die tile staan
+  ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
   
   Tile(int x , int y){
     position.x = x * tileWidth;

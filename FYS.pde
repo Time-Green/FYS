@@ -1,6 +1,6 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
-ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d lijst met x, y en Tile. 
+ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile. 
 
 Mob user;
 
@@ -35,7 +35,7 @@ void draw() {
   }
 }
 
-Tile getTile(int x, int y){ //geeft je de tile waar je op zit. 
+Tile getTile(int x, int y){ //return tile you're currently on
   ArrayList<Tile> subList = map.get(x / tileWidth);
   
   return subList.get(y / tileHeight);

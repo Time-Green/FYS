@@ -2,14 +2,13 @@ void generateTiles(){
 
   for(int iY = 0; iY < tilesVertical; iY++){
 
-    ArrayList<Tile> subArray = new ArrayList<Tile>(); //maak een lijst voor tile's
-    map.add(subArray); //voeg de lege lijst voor tiles toe aan de grote lijst. we vullen hem een paar lijnen verder
-
+    ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
+    map.add(subArray); // add the empty tile-list to the bigger list. We'll fill it a few lines further
     for(int iX = 0; iX < tilesHorizontal; iX++){
 
       Tile tile;
 
-      if(iY > safeZone){ //tijdelijk voor een soort van open lucht gebied
+      if(iY > safeZone){ //temporary open air area
         tile = new Tile(iX, iY);
       }
       else{
