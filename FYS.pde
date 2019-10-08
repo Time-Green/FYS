@@ -1,6 +1,6 @@
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
-ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile. 
+ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile.
 
 Mob user;
 
@@ -11,8 +11,11 @@ int tileHeight = 50;
 
 int safeZone = 10;
 
+WallOfDeath lava;
+
 void setup() {
-  fullScreen(P2D);
+  size(600,600);
+  //fullScreen(P2D);
   tileList.add(new Tile(100, 100));
 
   Mob player = new Player();
@@ -20,13 +23,27 @@ void setup() {
   user = player;
 
   generateTiles();
-  setupWall();
+  lava = new WallOfDeath();
+  //setupWall();
+}
+
+void drawGame() {
+  lava.draw();
+}
+
+void updateGame() {
+  lava.update();
 }
 
 void draw() {
   background(255, 255, 255);
+
+
+  
   translate(-user.position.x + width * 0.5 - user.size.x / 2, -user.position.y + height * 0.5);
-  drawWall();
+  //drawWall();
+  drawGame();
+  updateGame();
 
   for (Tile tile : tileList) {
     tile.process();
