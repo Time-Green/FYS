@@ -23,15 +23,3 @@ class Tile {
     rect(position.x, position.y, tileWidth, tileHeight);
   }
 }
-
-class openTile extends Tile{
-  
-  openTile(int x, int y){
-    super(x, y);
-    density = false;
-  }
-
-  void draw(){
-    return;
-  }
-}
