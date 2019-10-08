@@ -4,13 +4,18 @@ class Atom {
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
   color atomColor = color(255, 0, 0);
-  float atomSpeed = 5f;
+  float atomSpeed = 2f;
+  float jumpForce = 20f;
+  boolean isGrounded = false;
 
   void handle(){
     prepareMovement();
 
+    isGrounded = false;
+
     if(checkCollision(velocity.x, velocity.y)){
       velocity.mult(0); //stop moving
+      isGrounded = true;
     }
 
     handleMovement();
@@ -35,6 +40,10 @@ class Atom {
   private void handleMovement(){
 		position.add(velocity);
 	}
+
+  boolean isGrounded(){
+    return isGrounded;
+  }
 
   void addForce(PVector forceToAdd){ //amount of pixels we move
     acceleration.add(forceToAdd);
