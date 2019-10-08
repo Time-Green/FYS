@@ -18,8 +18,6 @@ class WallOfDeath {
 
   void update() {
     wallY += moveSpeed;
-    if (rectRect()) println("Dead");
-    else println ("Alive");
   }
 
   boolean rectRect() {

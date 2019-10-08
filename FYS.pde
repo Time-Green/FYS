@@ -14,8 +14,7 @@ int safeZone = 10;
 WallOfDeath lava;
 
 void setup() {
-  size(600,600);
-  //fullScreen(P2D);
+  size(1280, 720, P2D);
   tileList.add(new Tile(100, 100));
 
   Mob player = new Player();
@@ -73,8 +72,6 @@ ArrayList<Tile> getSurroundingTiles(int x, int y){ //return an arrayList with th
   surrounding.add(getTile(x + tileWidth, y - tileHeight));
   surrounding.add(getTile(x - tileWidth, y + tileHeight));
   surrounding.add(getTile(x - tileWidth, y - tileHeight));  
-  
-  
-  
+
   return surrounding;
 }
