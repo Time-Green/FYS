@@ -37,9 +37,10 @@ void updateGame() {
 void draw() {
   background(255, 255, 255);
 
+  float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
+  float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
 
-  
-  translate(-user.position.x + width * 0.5 - user.size.x / 2, -user.position.y + height * 0.5);
+  translate(constrain(xScroll, -1270, 0), yScroll);
   //drawWall();
   drawGame();
   updateGame();
