@@ -51,5 +51,13 @@ ArrayList<Tile> getSurroundingTiles(int x, int y){ //return an arrayList with th
   surrounding.add(getTile(x, y + tileHeight));
   surrounding.add(getTile(x - tileWidth, y));
   surrounding.add(getTile(x, y - tileHeight));
+  
+  surrounding.add(getTile(x + tileWidth, y + tileHeight));
+  surrounding.add(getTile(x + tileWidth, y - tileHeight));
+  surrounding.add(getTile(x - tileWidth, y + tileHeight));
+  surrounding.add(getTile(x - tileWidth, y - tileHeight));  
+  
+  
+  
   return surrounding;
 }
