@@ -21,7 +21,6 @@ class Atom {
   
   boolean checkCollision(int addX, int addY){
     for(Tile tile : getSurroundingTiles(int(position.x + addX), int(position.y + addY))){
-      tile.tileColor = color(0, 0, 255);
       if(!tile.density){
         continue;
       }
