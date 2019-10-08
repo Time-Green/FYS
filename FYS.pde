@@ -63,15 +63,19 @@ Tile getTile(int x, int y){ //return tile you're currently on
 
 ArrayList<Tile> getSurroundingTiles(int x, int y){ //return an arrayList with the four surrounding tiles of the coordinates
   ArrayList<Tile> surrounding = new ArrayList<Tile>();
-  surrounding.add(getTile(x + tileWidth, y));
-  surrounding.add(getTile(x, y + tileHeight));
-  surrounding.add(getTile(x - tileWidth, y));
-  surrounding.add(getTile(x, y - tileHeight));
   
-  surrounding.add(getTile(x + tileWidth, y + tileHeight));
-  surrounding.add(getTile(x + tileWidth, y - tileHeight));
-  surrounding.add(getTile(x - tileWidth, y + tileHeight));
-  surrounding.add(getTile(x - tileWidth, y - tileHeight));  
+  int middleX = int(x + tileWidth * .5); //calculate from the middle, because it's the average of all our colliding corners
+  int middleY = int(y + tileHeight * .5);
+  
+  surrounding.add(getTile(middleX + tileWidth, middleY));
+  surrounding.add(getTile(middleX, middleY + tileHeight));
+  surrounding.add(getTile(middleX - tileWidth, middleY));
+  surrounding.add(getTile(middleX, middleY - tileHeight));
+  
+  surrounding.add(getTile(middleX + tileWidth, middleY + tileHeight));
+  surrounding.add(getTile(middleX + tileWidth, middleY - tileHeight));
+  surrounding.add(getTile(middleX - tileWidth, middleY + tileHeight));
+  surrounding.add(getTile(middleX - tileWidth, middleY - tileHeight));  
 
   return surrounding;
 }
