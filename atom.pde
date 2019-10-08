@@ -16,7 +16,7 @@ class Atom {
       velocity.y = 0; //stop moving
       isGrounded = true;
     }
-    println(isGrounded);
+    
     handleMovement();
   }
 
