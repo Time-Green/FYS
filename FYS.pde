@@ -29,11 +29,13 @@ void draw() {
   drawWall();
 
   for (Tile tile : tileList) {
-    tile.process();
+    tile.handle();
+    tile.draw();
   }
   
   for (Atom atom : atomList) {
-    atom.process();
+    atom.handle();
+    atom.draw();
   }
 }
 

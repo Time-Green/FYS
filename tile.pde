@@ -15,8 +15,8 @@ class Tile {
     positionWhole.y = y;
   }
   
-  void process(){
-    draw();
+  void handle(){
+    
   }
 
   void draw(){

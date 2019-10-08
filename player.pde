@@ -1,23 +1,22 @@
 class Player extends Mob{
-  
 
-  void process(){
-    super.process();
+  void handle(){
+    super.handle();
 
     if(keys[LEFT]){
-      user.move(-int(atomSpeed), 0);
+      user.addForce(new PVector(-atomSpeed, 0));
     }
 
     if(keys[UP]){
-      user.move(0, -int(atomSpeed));
+      user.addForce(new PVector(0, -atomSpeed));
     }
 
-    if(keys[DOWN]){
-      user.move(0, int(atomSpeed));
-    }
+    //if(keys[DOWN]){
+    //  user.addForce(new PVector(0, atomSpeed));
+    //}
 
     if(keys[RIGHT]){
-      user.move(int(atomSpeed), 0);
+      user.addForce(new PVector(atomSpeed, 0));
     }
   }
 }
