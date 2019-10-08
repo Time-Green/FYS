@@ -38,7 +38,16 @@ void draw() {
 }
 
 Tile getTile(int x, int y){ //return tile you're currently on
-  ArrayList<Tile> subList = map.get(x / tileWidth);
+  ArrayList<Tile> subList = map.get(constrain(y / tileHeight, 0, tilesVertical));
   
-  return subList.get(y / tileHeight);
+  return subList.get(constrain(x / tileWidth, 0, tilesHorizontal));
+}
+
+ArrayList<Tile> getSurroundingTiles(int x, int y){ //return an arrayList with the four surrounding tiles of the coordinates
+  ArrayList<Tile> surrounding = new ArrayList<Tile>();
+  surrounding.add(getTile(x + tileWidth, y));
+  surrounding.add(getTile(x, y + tileHeight));
+  surrounding.add(getTile(x - tileWidth, y));
+  surrounding.add(getTile(x, y - tileHeight));
+  return surrounding;
 }

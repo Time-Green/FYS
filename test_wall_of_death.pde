@@ -16,8 +16,6 @@ void setupWall() {
   sy = height/2;
   x1 = width/2; 
 
-
-  strokeWeight(5);  // make the line easier to see
 }
 
 
@@ -29,7 +27,6 @@ void drawWall() {
   boolean hit = lineRect(x1, rectY, x2, y2, sx, sy, sw, sh);
   if (hit) fill(255, 150, 0);
   else fill(0, 150, 255);
-  noStroke();
   rectMode(CENTER);
   rect(sx, sy, sw, sh);    
 
