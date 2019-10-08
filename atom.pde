@@ -2,6 +2,7 @@ class Atom {
   PVector position = new PVector(100, 300);
   PVector size = new PVector(40, 40);
   color atomColor = color(255, 0, 0);
+  float atomSpeed = 5f;
 
   void process(){
     draw();
@@ -16,11 +17,12 @@ class Atom {
     if(checkCollision(x, y)){
       position.x += x;
       position.y += y;
+      return;
     }
   }
   
   boolean checkCollision(int addX, int addY){
-    for(Tile tile : getSurroundingTiles(int(position.x + addX), int(position.y + addY))){
+    for(Tile tile : getSurroundingTiles(int(position.x), int(position.y))){
       if(!tile.density){
         continue;
       }
