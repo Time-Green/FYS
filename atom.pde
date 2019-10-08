@@ -7,14 +7,13 @@ class Atom {
   float atomSpeed = 5f;
 
   void handle(){
-    handleMovement();
+    prepareMovement();
 
     if(checkCollision(velocity.x, velocity.y)){
-      position.x -= velocity.x;
-      position.y -= velocity.y;
       velocity.mult(0); //stop moving
-      return;
     }
+
+    handleMovement();
   }
 
   void draw(){
@@ -22,8 +21,7 @@ class Atom {
     rect(position.x, position.y, size.x, size.y); 
   }
 
-  private void handleMovement()
-	{
+  private void prepareMovement() {
     //gravity
     acceleration.add(new PVector(0, 1));
 
@@ -32,7 +30,9 @@ class Atom {
 
 		//velocity.limit(15); //max speed
 		velocity.mult(0.95); //drag
+  }
 
+  private void handleMovement(){
 		position.add(velocity);
 	}
 
