@@ -5,19 +5,19 @@ class Player extends Mob{
     super.process();
 
     if(keys[LEFT]){
-      user.position.x -= playerSpeed;
+      user.move(-int(playerSpeed), 0);
     }
 
     if(keys[UP]){
-      user.position.y-= playerSpeed;
+      user.move(0, -int(playerSpeed));
     }
 
     if(keys[DOWN]){
-      user.position.y+=playerSpeed;
+      user.move(0, int(playerSpeed));
     }
 
     if(keys[RIGHT]){
-      user.position.x+=playerSpeed;
+      user.move(int(playerSpeed), 0);
     }
   }
 }
