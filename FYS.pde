@@ -11,8 +11,6 @@ int tileHeight = 50;
 
 int safeZone = 10;
 
-WallOfDeath lava;
-
 void setup() {
   size(1280, 720, P2D);
   tileList.add(new Tile(100, 100));
@@ -21,7 +19,7 @@ void setup() {
   atomList.add(player);
   user = player;
 
-  lava = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
+  WallOfDeath lava = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   atomList.add(lava);
 
   generateTiles();
@@ -36,12 +34,12 @@ void draw() {
   translate(constrain(xScroll, -1270, 0), yScroll);
 
   for (Tile tile : tileList) {
-    tile.handle();
+    tile.update();
     tile.draw();
   }
   
   for (Atom atom : atomList) {
-    atom.handle();
+    atom.update();
     atom.draw();
   }
 }

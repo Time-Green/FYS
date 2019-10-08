@@ -6,13 +6,16 @@ class Atom {
   color atomColor = color(255, 0, 0);
   float atomSpeed = 2f;
   float jumpForce = 20f;
+  float gravityForce = 1f;
+  float dragFactor = 0.95f;
   boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
+  boolean collisionEnabled = true;
 
-  void handle(){
+  void update(){
     prepareMovement();
     isGrounded = false;
     
-    if(checkCollision()){
+    if(collisionEnabled && checkCollision()){
       velocity.y = 0; //stop moving
       isGrounded = true;
     }
@@ -27,13 +30,13 @@ class Atom {
 
   private void prepareMovement() {
     //gravity
-    acceleration.add(new PVector(0, 1));
+    acceleration.add(new PVector(0, gravityForce));
 
 		velocity.add(acceleration);
     acceleration.mult(0);
 
 		//velocity.limit(15); //max speed
-		velocity.mult(0.95); //drag
+		velocity.mult(dragFactor); //drag
   }
 
   private void handleMovement(){
@@ -52,7 +55,7 @@ class Atom {
   
   boolean checkCollision(){
     for(Tile tile : getSurroundingTiles(int(position.x), int(position.y))){
-      if(!tile.density){
+      if(!tile.isSolid){
         continue;
       }
 

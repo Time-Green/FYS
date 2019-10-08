@@ -3,7 +3,7 @@ class Tile {
   PVector positionWhole = new PVector(); //same as position, but pixels instead of complete tiles
 
   boolean destroyed;
-  boolean density = true;
+  boolean isSolid = true;
 
   float hp = 1;
   
@@ -17,7 +17,7 @@ class Tile {
     positionWhole.y = y;
   }
   
-  void handle(){
+  void update(){
     
   }
 
@@ -37,6 +37,6 @@ class Tile {
 
   private void destroy() {
     destroyed = true;
-    density = false;
+    isSolid = false;
   }
 }

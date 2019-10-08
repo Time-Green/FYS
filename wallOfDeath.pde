@@ -7,12 +7,16 @@ class WallOfDeath extends Atom{
   color wallColor = #FF8C33;
 
   WallOfDeath(float wallWidth) {
+    gravityForce = 0f;
+    dragFactor = 1f;
+    collisionEnabled = false;
     size = new PVector(wallWidth, 200);
     position = new PVector(0, wallY);
+    velocity = new PVector(0, moveSpeed);
   }
 
   void update() {
-    position.y += moveSpeed;
+    super.update();
   }
 
   void draw() {

@@ -1,7 +1,7 @@
 class Player extends Mob{
 
-  void handle(){
-    super.handle();
+  void update(){
+    super.update();
 
     if(keys[UP] && isGrounded()){
       user.addForce(new PVector(0, -jumpForce));
