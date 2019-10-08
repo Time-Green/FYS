@@ -10,14 +10,13 @@ class Atom {
 
   void handle(){
     prepareMovement();
-
     isGrounded = false;
-
+    
     if(checkCollision()){
-      velocity.mult(0); //stop moving
+      velocity.y = 0; //stop moving
       isGrounded = true;
     }
-
+    println(isGrounded);
     handleMovement();
   }
 

@@ -7,7 +7,7 @@ class Player extends Mob{
       user.addForce(new PVector(-atomSpeed, 0));
     }
 
-    if(keys[UP] && super.isGrounded()){
+    if(keys[UP] && isGrounded()){
       user.addForce(new PVector(0, -jumpForce));
     }
 
