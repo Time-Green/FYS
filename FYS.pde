@@ -1,4 +1,4 @@
-ArrayList<Atom> atomList = new ArrayList<Atom>();
+2ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile. 
 

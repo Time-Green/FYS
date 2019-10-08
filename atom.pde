@@ -25,11 +25,9 @@ class Atom {
         continue;
       }
       if(CollisionHelper.rectRect(position.x + addX, position.y + addY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
-        println(1);
         return false;
       }
     }
-    println(3);
     return true;
   }
 }
