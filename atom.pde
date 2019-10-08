@@ -13,7 +13,7 @@ class Atom {
 
     isGrounded = false;
 
-    if(checkCollision(velocity.x, velocity.y)){
+    if(checkCollision()){
       velocity.mult(0); //stop moving
       isGrounded = true;
     }
@@ -49,13 +49,13 @@ class Atom {
     acceleration.add(forceToAdd);
   }
   
-  boolean checkCollision(float addX, float addY){
+  boolean checkCollision(){
     for(Tile tile : getSurroundingTiles(int(position.x), int(position.y))){
       if(!tile.density){
         continue;
       }
 
-      if(CollisionHelper.rectRect(position.x + addX, position.y + addY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
+      if(CollisionHelper.rectRect(position.x + velocity.x, position.y + velocity.y, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
         return true;
       }
     }
