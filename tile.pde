@@ -15,23 +15,11 @@ class Tile {
     positionWhole.y = y;
   }
   
-  void process(){
-    draw();
+  void handle(){
+    
   }
 
   void draw(){
     rect(position.x, position.y, tileWidth, tileHeight);
-  }
-}
-
-class openTile extends Tile{
-  
-  openTile(int x, int y){
-    super(x, y);
-    density = false;
-  }
-
-  void draw(){
-    return;
   }
 }
