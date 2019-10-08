@@ -10,7 +10,6 @@ class Atom {
     handleMovement();
 
     if(checkCollision(velocity.x, velocity.y)){
-      print("COLLISION!\n");
       position.x -= velocity.x;
       position.y -= velocity.y;
       velocity.mult(0); //stop moving
