@@ -6,7 +6,7 @@ class Atom {
   color atomColor = color(255, 0, 0);
   float atomSpeed = 2f;
   float jumpForce = 20f;
-  boolean isGrounded = false;
+  boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
 
   void handle(){
     prepareMovement();
@@ -38,6 +38,8 @@ class Atom {
 
   private void handleMovement(){
 		position.add(velocity);
+
+    position.x = constrain(position.x, 0, tilesHorizontal * tileWidth + 10);
 	}
 
   boolean isGrounded(){
@@ -54,10 +56,22 @@ class Atom {
         continue;
       }
 
+      collisionDebug(tile);
+
       if(CollisionHelper.rectRect(position.x + velocity.x, position.y + velocity.y, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
+        
+        if(isMiningDown){
+          tile.takeDamage(1);
+        }
+
         return true;
       }
     }
     return false;
+  }
+
+  private void collisionDebug(Tile tile) {
+    fill(255, 0, 0);
+    rect(tile.position.x, tile.position.y, tileWidth, tileHeight);
   }
 }

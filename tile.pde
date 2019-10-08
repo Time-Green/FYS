@@ -2,8 +2,10 @@ class Tile {
   PVector position = new PVector();
   PVector positionWhole = new PVector(); //same as position, but pixels instead of complete tiles
 
-  boolean tileDestroy;
+  boolean destroyed;
   boolean density = true;
+
+  float hp = 1;
   
   ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
   
@@ -20,6 +22,21 @@ class Tile {
   }
 
   void draw(){
-    rect(position.x, position.y, tileWidth, tileHeight);
+    if(!destroyed){
+      rect(position.x, position.y, tileWidth, tileHeight);
+    }
+  }
+
+  void takeDamage(float damageTaken){
+    hp -= damageTaken;
+
+    if(hp <= 0){
+      destroy();
+    }
+  }
+
+  private void destroy() {
+    destroyed = true;
+    density = false;
   }
 }

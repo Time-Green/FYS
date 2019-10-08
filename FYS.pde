@@ -17,21 +17,14 @@ void setup() {
   size(1280, 720, P2D);
   tileList.add(new Tile(100, 100));
 
-  Mob player = new Player();
+  Player player = new Player();
   atomList.add(player);
   user = player;
 
+  lava = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
+  atomList.add(lava);
+
   generateTiles();
-  lava = new WallOfDeath();
-  //setupWall();
-}
-
-void drawGame() {
-  lava.draw();
-}
-
-void updateGame() {
-  lava.update();
 }
 
 void draw() {
@@ -41,9 +34,6 @@ void draw() {
   float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
 
   translate(constrain(xScroll, -1270, 0), yScroll);
-  //drawWall();
-  drawGame();
-  updateGame();
 
   for (Tile tile : tileList) {
     tile.handle();
