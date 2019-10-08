@@ -12,7 +12,7 @@ void generateTiles(){
         tile = new Tile(iX, iY);
       }
       else{
-        tile = new openTile(iX, iY);
+        tile = new OpenTile(iX, iY);
       }
       
       subArray.add(tile); 
