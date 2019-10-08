@@ -10,7 +10,7 @@ float sw = 100;    // and size
 float sh = 100;
 
 
-void setup() {
+void setupWall() {
   size(1920, 1080);
   sx = width/2;    // Player
   sy = height/2;
@@ -21,7 +21,7 @@ void setup() {
 }
 
 
-void draw() {
+void drawWall() {
   background(255);
   rectY++;
   // check if line has hit the square

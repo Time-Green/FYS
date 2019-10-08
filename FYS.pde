@@ -20,11 +20,13 @@ void setup() {
   user = player;
 
   generateTiles();
+  setupWall();
 }
 
 void draw() {
   background(255, 255, 255);
   translate(-user.position.x + width * 0.5 - user.size.x / 2, -user.position.y + height * 0.5);
+  drawWall();
 
   for (Tile tile : tileList) {
     tile.process();
