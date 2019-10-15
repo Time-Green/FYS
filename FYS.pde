@@ -53,7 +53,7 @@ Tile getTile(int x, int y){ //return tile you're currently on
   return subList.get(constrain(x / tileWidth, 0, tilesHorizontal));
 }
 
-ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider, CollisionTypes cType){ //return an arrayList with the four surrounding tiles of the coordinates
+ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider){ //return an arrayList with the four surrounding tiles of the coordinates
   ArrayList<Tile> surrounding = new ArrayList<Tile>();
   
   int middleX = int(x + collider.size.x * .5); //calculate from the middle, because it's the average of all our colliding corners
@@ -62,39 +62,16 @@ ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider, CollisionTypes 
   int cWidth = tileWidth; //floor(collider.size.x);
   int cHeight = tileHeight; //floor(collider.size.y);
   
-  if(cType == CollisionTypes.ALL || cType == CollisionTypes.UP){
-    surrounding.add(getTile(middleX, middleY - cHeight));
-    
-    //up diagonals
-    surrounding.add(getTile(middleX - cWidth, middleY - cHeight));
-    surrounding.add(getTile(middleX + cWidth, middleY - cHeight));
-  }
+  //cardinals
+  surrounding.add(getTile(middleX, middleY - cHeight));
+  surrounding.add(getTile(middleX, middleY + cHeight));
+  surrounding.add(getTile(middleX - cWidth, middleY));
+  surrounding.add(getTile(middleX + cWidth, middleY)); 
   
-  else if(cType == CollisionTypes.ALL || cType == CollisionTypes.DOWN){
-    surrounding.add(getTile(middleX, middleY + cHeight));
-    
-    //down diagonals
-    surrounding.add(getTile(middleX + cWidth, middleY + cHeight));
-    surrounding.add(getTile(middleX - cWidth, middleY + cHeight));
-    
-  }
-  
-  else if(cType == CollisionTypes.ALL || cType == CollisionTypes.HORIZONTAL){
-    surrounding.add(getTile(middleX - cWidth, middleY));
-    surrounding.add(getTile(middleX + cWidth, middleY)); 
-    
-    //all diagonals
-    surrounding.add(getTile(middleX + cWidth, middleY + cHeight));
-    surrounding.add(getTile(middleX - cWidth, middleY + cHeight));
-    surrounding.add(getTile(middleX - cWidth, middleY - cHeight));
-    surrounding.add(getTile(middleX + cWidth, middleY - cHeight));
-  }
+  //diagonals
+  surrounding.add(getTile(middleX + cWidth, middleY + cHeight));
+  surrounding.add(getTile(middleX - cWidth, middleY + cHeight));
+  surrounding.add(getTile(middleX - cWidth, middleY - cHeight));
+  surrounding.add(getTile(middleX + cWidth, middleY - cHeight));
   return surrounding;
-}
-
-enum CollisionTypes {
-  UP,
-  DOWN,
-  HORIZONTAL, //we really don't care about left or right
-  ALL
 }

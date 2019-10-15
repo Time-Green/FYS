@@ -17,19 +17,16 @@ class Atom {
     
     if(collisionEnabled){
        
-      if(checkCollision(CollisionTypes.UP)){
+      if(checkCollision(0, velocity.y)){ //up
         velocity.y = max(velocity.y, 0);
-        println(1);
       }
       
-      if(checkCollision(CollisionTypes.DOWN)){
+      if(checkCollision(0, velocity.y)){ //down
         velocity.y = min(velocity.y, 0);
         isGrounded = true;
-        println(2);
       }
-      if(checkCollision(CollisionTypes.HORIZONTAL)){
+      if(checkCollision(velocity.x, 0)){ //horizontal
         velocity.x = 0;
-        println(3);
       }
     }
     
@@ -70,15 +67,15 @@ class Atom {
     acceleration = newForce;
   }
   
-  boolean checkCollision(CollisionTypes cType){
-    for(Tile tile : getSurroundingTiles(int(position.x), int(position.y),this, cType)){
+  boolean checkCollision(float maybeX, float maybeY){
+    for(Tile tile : getSurroundingTiles(int(position.x), int(position.y),this)){
       if(!tile.isSolid){
         continue;
       }
 
       collisionDebug(tile);
 
-      if(CollisionHelper.rectRect(position.x + velocity.x, position.y + velocity.y, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
+      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
         
         if(isMiningDown){
           tile.takeDamage(1);
