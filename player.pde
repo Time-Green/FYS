@@ -1,8 +1,11 @@
-class Player extends Mob{
-
-  void update(){
+class Player extends Mob{ 
+      
+    void update(){
+      if(Globals.gamePaused){  
+        return; 
+    }
     super.update();
-
+       
     if(keys[UP] && isGrounded()){
       user.addForce(new PVector(0, -jumpForce));
     }

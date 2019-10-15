@@ -3,6 +3,7 @@ ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile.
 
 Mob user;
+WallOfDeath lava; 
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -19,7 +20,7 @@ void setup() {
   atomList.add(player);
   user = player;
 
-  WallOfDeath lava = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
+  lava = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   atomList.add(lava);
 
   generateTiles();
@@ -42,6 +43,8 @@ void draw() {
     atom.update();
     atom.draw();
   }
+  
+  lava.checkIfPlayerHit(user); 
 }
 
 Tile getTile(int x, int y){ //return tile you're currently on
