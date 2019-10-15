@@ -15,9 +15,22 @@ class Atom {
     prepareMovement();
     isGrounded = false;
     
-    if(collisionEnabled && checkCollision()){
-      velocity.y = 0; //stop moving
-      isGrounded = true;
+    if(collisionEnabled){
+       
+      if(checkCollision(CollisionTypes.UP)){
+        velocity.y = max(velocity.y, 0);
+        println(1);
+      }
+      
+      if(checkCollision(CollisionTypes.DOWN)){
+        velocity.y = min(velocity.y, 0);
+        isGrounded = true;
+        println(2);
+      }
+      if(checkCollision(CollisionTypes.HORIZONTAL)){
+        velocity.x = 0;
+        println(3);
+      }
     }
     
     handleMovement();
@@ -53,8 +66,12 @@ class Atom {
     acceleration.add(forceToAdd);
   }
   
-  boolean checkCollision(){
-    for(Tile tile : getSurroundingTiles(int(position.x), int(position.y))){
+  void setForce(PVector newForce){
+    acceleration = newForce;
+  }
+  
+  boolean checkCollision(CollisionTypes cType){
+    for(Tile tile : getSurroundingTiles(int(position.x), int(position.y),this, cType)){
       if(!tile.isSolid){
         continue;
       }
