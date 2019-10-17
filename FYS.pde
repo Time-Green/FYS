@@ -14,6 +14,8 @@ int safeZone = 10;
 
 void setup() {
   size(1280, 720, P2D);
+  frameRate(120);
+  smooth(4);
   tileList.add(new Tile(100, 100));
 
   Player player = new Player();
@@ -38,36 +40,36 @@ void draw() {
     tile.update();
     tile.draw();
   }
-  
+
   for (Atom atom : atomList) {
     atom.update();
     atom.draw();
   }
-  
-  lava.checkIfPlayerHit(user); 
+
+  lava.checkIfPlayerHit(user);
 }
 
-Tile getTile(int x, int y){ //return tile you're currently on
+Tile getTile(int x, int y) { //return tile you're currently on
   ArrayList<Tile> subList = map.get(constrain(y / tileHeight, 0, tilesVertical));
-  
+
   return subList.get(constrain(x / tileWidth, 0, tilesHorizontal));
 }
 
-ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider){ //return an arrayList with the four surrounding tiles of the coordinates
+ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider) { //return an arrayList with the four surrounding tiles of the coordinates
   ArrayList<Tile> surrounding = new ArrayList<Tile>();
-  
+
   int middleX = int(x + collider.size.x * .5); //calculate from the middle, because it's the average of all our colliding corners
   int middleY = int(y + collider.size.y * .5);
-  
+
   int cWidth = tileWidth; //floor(collider.size.x);
   int cHeight = tileHeight; //floor(collider.size.y);
-  
+
   //cardinals
   surrounding.add(getTile(middleX, middleY - cHeight));
   surrounding.add(getTile(middleX, middleY + cHeight));
   surrounding.add(getTile(middleX - cWidth, middleY));
   surrounding.add(getTile(middleX + cWidth, middleY)); 
-  
+
   //diagonals
   surrounding.add(getTile(middleX + cWidth, middleY + cHeight));
   surrounding.add(getTile(middleX - cWidth, middleY + cHeight));

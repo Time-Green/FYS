@@ -1,17 +1,17 @@
 boolean[] keys = new boolean[128];
 
-void keyPressed(){
+void keyPressed() {
 
-  if(keyCode > keys.length){
+  if (keyCode > keys.length) {
     return;
   }
 
   keys[keyCode] = true;
 }
 
-void keyReleased(){
+void keyReleased() {
 
-  if(keyCode > keys.length){
+  if (keyCode > keys.length) {
     return;
   }
 

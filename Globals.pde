@@ -1,5 +1,4 @@
-static class Globals{
+static class Globals {
 
-  static boolean gamePaused; 
-
+  static boolean gamePaused;
 }

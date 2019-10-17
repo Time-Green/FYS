@@ -1,32 +1,32 @@
-class Player extends Mob{ 
-      
-    void update(){
-      if(Globals.gamePaused){  
-        return; 
+class Player extends Mob { 
+
+  void update() {
+    if (Globals.gamePaused) {  
+      return;
     }
     super.update();
-       
-    if(keys[UP] && isGrounded()){
+
+    if (keys[UP] && isGrounded()) {
       user.addForce(new PVector(0, -jumpForce));
     }
 
-    if(keys[DOWN]){
+    if (keys[DOWN]) {
       isMiningDown = true;
-    }else{
+    } else {
       isMiningDown = false;
     }
 
-    if(keys[LEFT]){
+    if (keys[LEFT]) {
       user.addForce(new PVector(-atomSpeed, 0));
       isMiningLeft = true;
-    }else{
+    } else {
       isMiningLeft = false;
     }
 
-    if(keys[RIGHT]){
+    if (keys[RIGHT]) {
       user.addForce(new PVector(atomSpeed, 0));
       isMiningRight = true;
-    }else{
+    } else {
       isMiningRight = false;
     }
   }

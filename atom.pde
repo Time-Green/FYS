@@ -11,73 +11,73 @@ class Atom {
   boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
 
-  void update(){
+  void update() {
     prepareMovement();
     isGrounded = false;
-    
-    if(collisionEnabled){
-       
-      if(checkCollision(0, velocity.y)){ //up
+
+    if (collisionEnabled) {
+
+      if (checkCollision(0, velocity.y)) { //up
         velocity.y = max(velocity.y, 0);
       }
-      
-      if(checkCollision(0, velocity.y)){ //down
+
+      if (checkCollision(0, velocity.y)) { //down
         velocity.y = min(velocity.y, 0);
         isGrounded = true;
       }
-      if(checkCollision(velocity.x, 0)){ //horizontal
+      if (checkCollision(velocity.x, 0)) { //horizontal
         velocity.x = 0;
       }
     }
-    
+
     handleMovement();
   }
 
-  void draw(){
+  void draw() {
     fill(atomColor);
-    rect(position.x, position.y, size.x, size.y); 
+    rect(position.x, position.y, size.x, size.y);
   }
 
   private void prepareMovement() {
     //gravity
     acceleration.add(new PVector(0, gravityForce));
 
-		velocity.add(acceleration);
+    velocity.add(acceleration);
     acceleration.mult(0);
 
-		//velocity.limit(15); //max speed
-		velocity.mult(dragFactor); //drag
+    //velocity.limit(15); //max speed
+    velocity.mult(dragFactor); //drag
   }
 
-  private void handleMovement(){
-		position.add(velocity);
+  private void handleMovement() {
+    position.add(velocity);
 
     position.x = constrain(position.x, 0, tilesHorizontal * tileWidth + 10);
-	}
+  }
 
-  boolean isGrounded(){
+  boolean isGrounded() {
     return isGrounded;
   }
 
-  void addForce(PVector forceToAdd){ //amount of pixels we move
+  void addForce(PVector forceToAdd) { //amount of pixels we move
     acceleration.add(forceToAdd);
   }
-  
-  void setForce(PVector newForce){
+
+  void setForce(PVector newForce) {
     acceleration = newForce;
   }
-  
-  boolean checkCollision(float maybeX, float maybeY){
-    for(Tile tile : getSurroundingTiles(int(position.x), int(position.y),this)){
-      if(!tile.isSolid){
+
+  boolean checkCollision(float maybeX, float maybeY) {
+    for (Tile tile : getSurroundingTiles(int(position.x), int(position.y), this)) {
+      if (!tile.isSolid) {
         continue;
       }
 
       collisionDebug(tile);
 
-      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
-        
-        if(isMiningDown){
+      if (CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)) {
+
+        if (isMiningDown) {
           tile.takeDamage(1);
         }
 

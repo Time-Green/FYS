@@ -1,3 +1,2 @@
-class Mob extends Atom{
-  
+class Mob extends Atom {
 }
