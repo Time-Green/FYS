@@ -14,7 +14,7 @@ int safeZone = 10;
 
 void setup() {
   size(1280, 720, P2D);
-  frameRate(120);
+  frameRate(60);
   smooth(4);
   tileList.add(new Tile(100, 100));
 
