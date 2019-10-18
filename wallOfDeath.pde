@@ -9,7 +9,7 @@ class WallOfDeath extends Atom {
   WallOfDeath(float wallWidth) {
     gravityForce = 0f;
     dragFactor = 1f;
-    collisionEnabled = true;
+    collisionEnabled = false;
     size = new PVector(wallWidth, wallHeight);
     position = new PVector(0, wallY);
     velocity = new PVector(0, moveSpeed);
