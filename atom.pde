@@ -5,7 +5,7 @@ class Atom {
   PVector acceleration = new PVector();
   color atomColor = color(255, 0, 0);
   float atomSpeed = 1f;
-  float jumpForce = 15f;
+  float jumpForce = 18f;
   float gravityForce = 1f;
   float groundedDragFactor = 0.95f;
   float aerialDragFactor = 0.95f;
