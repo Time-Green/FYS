@@ -4,10 +4,11 @@ class Atom {
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
   color atomColor = color(255, 0, 0);
-  float atomSpeed = 2f;
-  float jumpForce = 20f;
+  float atomSpeed = 1f;
+  float jumpForce = 15f;
   float gravityForce = 1f;
-  float dragFactor = 0.95f;
+  float groundedDragFactor = 0.95f;
+  float aerialDragFactor = 0.95f;
   boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
 
@@ -44,9 +45,12 @@ class Atom {
 
     velocity.add(acceleration);
     acceleration.mult(0);
-
-    //velocity.limit(15); //max speed
-    velocity.mult(dragFactor); //drag
+    if(isGrounded()){
+      velocity.x *= groundedDragFactor; //drag
+    }
+    else{
+      velocity.x *= aerialDragFactor; //drag but in the air
+    }
   }
 
   private void handleMovement() {
