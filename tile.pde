@@ -7,6 +7,8 @@ class Tile {
 
   float hp = 4;
 
+  PImage image;
+
   ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
 
   Tile(int x, int y) {
@@ -15,6 +17,14 @@ class Tile {
 
     positionWhole.x = x;
     positionWhole.y = y;
+
+    if(position.y == 550){
+      image = ResourceManager.getImage("GrassBlock");
+    }else if(position.y > 550 && position.y <= 1000){
+      image = ResourceManager.getImage("DirtBlock");
+    }else{
+      image = ResourceManager.getImage("StoneBlock");
+    }
   }
 
   void update() {
@@ -22,7 +32,8 @@ class Tile {
 
   void draw() {
     if (!destroyed) {
-      rect(position.x, position.y, tileWidth, tileHeight);
+      //rect(position.x, position.y, tileWidth, tileHeight);
+      image(image, position.x, position.y, tileWidth, tileHeight);
     }
   }
 

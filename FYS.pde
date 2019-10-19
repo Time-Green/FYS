@@ -13,6 +13,9 @@ int tileHeight = 50;
 int safeZone = 10;
 
 void setup() {
+  ResourceManager.setup(this);
+  loadResources();
+
   size(1280, 720, P2D);
   frameRate(60);
   smooth(4);
@@ -47,6 +50,12 @@ void draw() {
   }
 
   lava.checkIfPlayerHit(user);
+}
+
+void loadResources(){
+  ResourceManager.load("GrassBlock", "grass.block.jpg");
+  ResourceManager.load("DirtBlock", "dirt.block.jpg");
+  ResourceManager.load("StoneBlock", "stone.block.jpg");
 }
 
 Tile getTile(int x, int y) { //return tile you're currently on
