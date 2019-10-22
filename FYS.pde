@@ -32,7 +32,7 @@ void setup() {
 }
 
 void draw() {
-  background(255, 255, 255);
+  background(0, 255, 255);
 
   float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
   float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
@@ -53,6 +53,9 @@ void draw() {
 }
 
 void loadResources() {
+  //player
+  ResourceManager.load("player", "player.jpg");
+  //ores and stones
   ResourceManager.load("GrassBlock", "grass.block.jpg");
   ResourceManager.load("DirtBlock", "dirt.block.jpg");
   ResourceManager.load("StoneBlock", "stone.block.jpg");

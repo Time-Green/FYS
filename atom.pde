@@ -3,7 +3,7 @@ class Atom {
   PVector size = new PVector(40, 40);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
-  color atomColor = color(255, 0, 0);
+  //color atomColor = color(255, 0, 0);
   float atomSpeed = 1f;
   float jumpForce = 18f;
   float gravityForce = 1f;
@@ -11,6 +11,7 @@ class Atom {
   float aerialDragFactor = 0.95f;
   boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
+  PImage image;
 
   void update() {
     prepareMovement();
@@ -35,8 +36,10 @@ class Atom {
   }
 
   void draw() {
-    fill(atomColor);
-    rect(position.x, position.y, size.x, size.y);
+    //fill(atomColor);
+    image = ResourceManager.getImage("player");
+    //rect(position.x, position.y, size.x, size.y);
+    image(image, position.x, position.y, size.x, size.y);
   }
 
   private void prepareMovement() {
@@ -45,10 +48,9 @@ class Atom {
 
     velocity.add(acceleration);
     acceleration.mult(0);
-    if(isGrounded()){
+    if (isGrounded()) {
       velocity.x *= groundedDragFactor; //drag
-    }
-    else{
+    } else {
       velocity.x *= aerialDragFactor; //drag but in the air
     }
   }
