@@ -1,5 +1,5 @@
 class Atom {
-  PVector position = new PVector(100, 300);
+  PVector position = new PVector(1200, 500);
   PVector size = new PVector(40, 40);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
@@ -11,6 +11,7 @@ class Atom {
   float aerialDragFactor = 0.95f;
   boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
+  int miningcolor = #DC143C;
   PImage image;
 
   void update() {
@@ -94,7 +95,7 @@ class Atom {
   }
 
   private void collisionDebug(Tile tile) {
-    fill(255, 0, 0);
+    fill(miningcolor,100);
     rect(tile.position.x, tile.position.y, tileWidth, tileHeight);
   }
 }

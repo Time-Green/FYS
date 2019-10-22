@@ -11,6 +11,7 @@ int tileWidth = 50;
 int tileHeight = 50;
 
 int safeZone = 10;
+int backcolor = #87CEFA;
 
 void setup() {
   ResourceManager.setup(this);
@@ -32,7 +33,7 @@ void setup() {
 }
 
 void draw() {
-  background(0, 255, 255);
+  background(backcolor);
 
   float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
   float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
