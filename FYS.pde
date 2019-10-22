@@ -52,10 +52,15 @@ void draw() {
   lava.checkIfPlayerHit(user);
 }
 
-void loadResources(){
+void loadResources() {
   ResourceManager.load("GrassBlock", "grass.block.jpg");
   ResourceManager.load("DirtBlock", "dirt.block.jpg");
   ResourceManager.load("StoneBlock", "stone.block.jpg");
+  ResourceManager.load("coalBlock", "coal.block.jpg");
+  ResourceManager.load("ironBlock", "iron.block.jpg");
+  ResourceManager.load("goldBlock", "gold.block.jpg");
+  ResourceManager.load("diamondBlock", "diamond.block.jpg");
+  ResourceManager.load("bedrockBlock", "bedrock.block.jpg");
 }
 
 Tile getTile(int x, int y) { //return tile you're currently on
