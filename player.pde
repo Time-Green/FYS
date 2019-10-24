@@ -5,7 +5,11 @@ class Player extends Mob {
       return;
     }
     super.update();
+    doPlayerMovement();
 
+  }
+  
+  void doPlayerMovement(){
     if (keys[UP] && isGrounded()) {
       user.addForce(new PVector(0, -jumpForce));
     }
