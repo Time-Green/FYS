@@ -98,4 +98,7 @@ class Atom {
     fill(miningcolor,100);
     rect(tile.position.x, tile.position.y, tileWidth, tileHeight);
   }
+  int getDepth(){
+    return int(getTile(user.position.x, user.position.y).positionWhole.y);
+  }
 }

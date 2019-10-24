@@ -10,8 +10,12 @@ int tilesVertical = 50;
 int tileWidth = 50;
 int tileHeight = 50;
 
+
 int safeZone = 10;
 int backcolor = #87CEFA;
+
+int deepestDepth = 0; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
+int generationRatio = 5; //every five tiles we dig, we add 5 more
 
 void setup() {
   ResourceManager.setup(this);
@@ -29,7 +33,7 @@ void setup() {
   lava = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   atomList.add(lava);
 
-  generateTiles();
+  generateLayers(tilesVertical);
 }
 
 void draw() {
@@ -51,6 +55,7 @@ void draw() {
   }
 
   lava.checkIfPlayerHit(user);
+  updateDepth();
 }
 
 void loadResources() {
@@ -67,8 +72,10 @@ void loadResources() {
   ResourceManager.load("bedrockBlock", "bedrock.block.jpg");
 }
 
-Tile getTile(int x, int y) { //return tile you're currently on
-  ArrayList<Tile> subList = map.get(constrain(y / tileHeight, 0, tilesVertical));
+Tile getTile(float _x, float _y) { //return tile you're currently on
+  int x = int(_x);
+  int y = int(_y);
+  ArrayList<Tile> subList = map.get(constrain(y / tileHeight , 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
   return subList.get(constrain(x / tileWidth, 0, tilesHorizontal));
 }
@@ -94,4 +101,13 @@ ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider) { //return an a
   surrounding.add(getTile(middleX - cWidth, middleY - cHeight));
   surrounding.add(getTile(middleX + cWidth, middleY - cHeight));
   return surrounding;
+}
+
+void updateDepth(){ //does some stuff related to the deepest depth, currently only infinite generation
+  int depth = user.getDepth();
+  if(depth % generationRatio == 0 && depth > deepestDepth){ //check if we're on a generation point and if we have not been there before
+    generateLayers(generationRatio);
+  }
+  
+  deepestDepth = max(depth, deepestDepth);
 }
