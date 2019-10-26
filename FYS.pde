@@ -22,10 +22,10 @@ int deepestDepth = 0; //the deepest point our player has been. Could definitely 
 int generationRatio = 5; //every five tiles we dig, we add 5 more
 
 void setup() {
-path = sketchPath(audioName);
-file = new SoundFile(this, path);
-file.play();
-file.loop();
+  path = sketchPath(audioName);
+  file = new SoundFile(this, path);
+  file.play();
+  file.loop();
 
   ResourceManager.setup(this);
   loadResources();
@@ -47,11 +47,7 @@ file.loop();
 
 void draw() {
   background(backcolor);
-
-  float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
-  float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
-
-  translate(constrain(xScroll, -1270, 0), yScroll);
+  cameraScroll();
 
   for (Tile tile : tileList) {
     tile.update();
@@ -119,4 +115,10 @@ void updateDepth() { //does some stuff related to the deepest depth, currently o
   }
 
   deepestDepth = max(depth, deepestDepth);
+}
+
+void cameraScroll() {
+  float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
+  float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
+  translate(constrain(xScroll, -1270, 0), yScroll);
 }

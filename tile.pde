@@ -18,7 +18,7 @@ class Tile {
 
     positionWhole.x = x;
     positionWhole.y = y;
-
+    
     if (position.y == 550) {
       image = ResourceManager.getImage("GrassBlock");
     } else if (position.y > 550 && position.y <= 1000) {
