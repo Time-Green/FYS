@@ -52,7 +52,6 @@ class Tile {
 
   void draw() {
     if (!destroyed) {
-      //rect(position.x, position.y, tileWidth, tileHeight);
       image(image, position.x, position.y, tileWidth, tileHeight);
     }
   }
