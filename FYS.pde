@@ -2,6 +2,10 @@ ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile.
 
+import processing.sound.*;
+SoundFile file;
+String audioName = "terrariaMusic.mp3";
+String path;
 Mob user;
 WallOfDeath lava; 
 
@@ -18,6 +22,11 @@ int deepestDepth = 0; //the deepest point our player has been. Could definitely 
 int generationRatio = 5; //every five tiles we dig, we add 5 more
 
 void setup() {
+path = sketchPath(audioName);
+file = new SoundFile(this, path);
+file.play();
+file.loop();
+
   ResourceManager.setup(this);
   loadResources();
 
@@ -75,7 +84,7 @@ void loadResources() {
 Tile getTile(float _x, float _y) { //return tile you're currently on
   int x = int(_x);
   int y = int(_y);
-  ArrayList<Tile> subList = map.get(constrain(y / tileHeight , 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+  ArrayList<Tile> subList = map.get(constrain(y / tileHeight, 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
   return subList.get(constrain(x / tileWidth, 0, tilesHorizontal));
 }
@@ -103,11 +112,11 @@ ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider) { //return an a
   return surrounding;
 }
 
-void updateDepth(){ //does some stuff related to the deepest depth, currently only infinite generation
+void updateDepth() { //does some stuff related to the deepest depth, currently only infinite generation
   int depth = user.getDepth();
-  if(depth % generationRatio == 0 && depth > deepestDepth){ //check if we're on a generation point and if we have not been there before
+  if (depth % generationRatio == 0 && depth > deepestDepth) { //check if we're on a generation point and if we have not been there before
     generateLayers(generationRatio);
   }
-  
+
   deepestDepth = max(depth, deepestDepth);
 }
