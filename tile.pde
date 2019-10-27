@@ -50,10 +50,29 @@ class Tile {
   void update() {
   }
 
-  void draw() {
-    if (!destroyed) {
+  void draw(Camera camera) {
+    if (!destroyed && inCameraView(camera)) {
+
+      //dirty NullPointerException fix
+      if(image == null){
+        return;
+      }
+
       image(image, position.x, position.y, tileWidth, tileHeight);
     }
+  }
+
+  boolean inCameraView(Camera camera){
+    PVector camPos = camera.getPosition();
+
+    if(position.y > -camPos.y - tileHeight
+    && position.y < -camPos.y + height
+    && position.x > -camPos.x - tileWidth
+    && position.x < -camPos.x + width){
+      return true;
+    }
+
+    return false;
   }
 
   void takeDamage(float damageTaken) {

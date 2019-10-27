@@ -1,39 +1,36 @@
+import processing.sound.*;
+
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile.
 
-import processing.sound.*;
 SoundFile file;
-String audioName = "terrariaMusic.mp3";
-String path;
+String backgroundAudio = "terrariaMusic.mp3";
 Mob user;
-WallOfDeath lava; 
+WallOfDeath lava;
+Camera camera;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
 int tileWidth = 50;
 int tileHeight = 50;
 
-
 int safeZone = 10;
-int backcolor = #87CEFA;
+int backgroundColor = #87CEFA;
 
 int deepestDepth = 0; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
 int generationRatio = 5; //every five tiles we dig, we add 5 more
 
 void setup() {
-  path = sketchPath(audioName);
-  file = new SoundFile(this, path);
-  file.play();
+  //load and loop background music
+  file = new SoundFile(this, backgroundAudio);
   file.loop();
 
   ResourceManager.setup(this);
   loadResources();
 
   size(1280, 720, P2D);
-  frameRate(60);
   smooth(4);
-  tileList.add(new Tile(100, 100));
 
   Player player = new Player();
   atomList.add(player);
@@ -42,16 +39,19 @@ void setup() {
   lava = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   atomList.add(lava);
 
+  camera = new Camera(player);
+
   generateLayers(tilesVertical);
 }
 
 void draw() {
-  background(backcolor);
-  cameraScroll();
+  background(backgroundColor);
+  
+  camera.update();
 
   for (Tile tile : tileList) {
     tile.update();
-    tile.draw();
+    tile.draw(camera);
   }
 
   for (Atom atom : atomList) {
@@ -105,20 +105,16 @@ ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider) { //return an a
   surrounding.add(getTile(middleX - cWidth, middleY + cHeight));
   surrounding.add(getTile(middleX - cWidth, middleY - cHeight));
   surrounding.add(getTile(middleX + cWidth, middleY - cHeight));
+
   return surrounding;
 }
 
 void updateDepth() { //does some stuff related to the deepest depth, currently only infinite generation
   int depth = user.getDepth();
+
   if (depth % generationRatio == 0 && depth > deepestDepth) { //check if we're on a generation point and if we have not been there before
     generateLayers(generationRatio);
   }
 
   deepestDepth = max(depth, deepestDepth);
-}
-
-void cameraScroll() {
-  float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
-  float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
-  translate(constrain(xScroll, -1270, 0), yScroll);
 }
