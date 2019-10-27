@@ -41,6 +41,9 @@ void setup() {
 void draw() {
   background(backgroundColor);
   
+  //push and pop are needed so the hud can be correctly drawn
+  pushMatrix();
+
   camera.update();
 
   for (Tile tile : tileList) {
@@ -55,6 +58,11 @@ void draw() {
 
   lava.checkIfPlayerHit(user);
   updateDepth();
+
+  popMatrix();
+  //draw hud below popMatrix();
+
+  text("FPS: " + round(frameRate), 10, 20);
 }
 
 void loadResources() {
@@ -78,12 +86,10 @@ void loadResources() {
   ResourceManager.load("StoneBreak4", "stone4.wav");
 }
 
-Tile getTile(float _x, float _y) { //return tile you're currently on
-  int x = int(_x);
-  int y = int(_y);
-  ArrayList<Tile> subList = map.get(constrain(y / tileHeight, 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+Tile getTile(float x, float y) { //return tile you're currently on
+  ArrayList<Tile> subList = map.get(constrain(int(y) / tileHeight, 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
-  return subList.get(constrain(x / tileWidth, 0, tilesHorizontal));
+  return subList.get(constrain(int(x) / tileWidth, 0, tilesHorizontal));
 }
 
 ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider) { //return an arrayList with the four surrounding tiles of the coordinates
@@ -92,20 +98,17 @@ ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider) { //return an a
   int middleX = int(x + collider.size.x * .5); //calculate from the middle, because it's the average of all our colliding corners
   int middleY = int(y + collider.size.y * .5);
 
-  int cWidth = tileWidth; //floor(collider.size.x);
-  int cHeight = tileHeight; //floor(collider.size.y);
-
   //cardinals
-  surrounding.add(getTile(middleX, middleY - cHeight));
-  surrounding.add(getTile(middleX, middleY + cHeight));
-  surrounding.add(getTile(middleX - cWidth, middleY));
-  surrounding.add(getTile(middleX + cWidth, middleY)); 
+  surrounding.add(getTile(middleX, middleY - tileHeight));
+  surrounding.add(getTile(middleX, middleY + tileHeight));
+  surrounding.add(getTile(middleX - tileWidth, middleY));
+  surrounding.add(getTile(middleX + tileWidth, middleY)); 
 
   //diagonals
-  surrounding.add(getTile(middleX + cWidth, middleY + cHeight));
-  surrounding.add(getTile(middleX - cWidth, middleY + cHeight));
-  surrounding.add(getTile(middleX - cWidth, middleY - cHeight));
-  surrounding.add(getTile(middleX + cWidth, middleY - cHeight));
+  surrounding.add(getTile(middleX + tileWidth, middleY + tileHeight));
+  surrounding.add(getTile(middleX - tileWidth, middleY + tileHeight));
+  surrounding.add(getTile(middleX - tileWidth, middleY - tileHeight));
+  surrounding.add(getTile(middleX + tileWidth, middleY - tileHeight));
 
   return surrounding;
 }
