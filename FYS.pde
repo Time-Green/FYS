@@ -1,11 +1,7 @@
-import processing.sound.*;
-
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile.
 
-SoundFile file;
-String backgroundAudio = "terrariaMusic.mp3";
 Mob user;
 WallOfDeath lava;
 Camera camera;
@@ -22,12 +18,10 @@ int deepestDepth = 0; //the deepest point our player has been. Could definitely 
 int generationRatio = 5; //every five tiles we dig, we add 5 more
 
 void setup() {
-  //load and loop background music
-  file = new SoundFile(this, backgroundAudio);
-  file.loop();
-
   ResourceManager.setup(this);
   loadResources();
+
+  ResourceManager.getSound("Background").loop();
 
   size(1280, 720, P2D);
   smooth(4);
@@ -75,6 +69,13 @@ void loadResources() {
   ResourceManager.load("GoldBlock", "gold.block.jpg");
   ResourceManager.load("DiamondBlock", "diamond.block.jpg");
   ResourceManager.load("BedrockBlock", "bedrock.block.jpg");
+  //audio
+  ResourceManager.load("Background", "terrariaMusic.mp3");
+  ResourceManager.load("DirtBreak", "dirt.wav");
+  ResourceManager.load("StoneBreak1", "stone1.wav");
+  ResourceManager.load("StoneBreak2", "stone2.wav");
+  ResourceManager.load("StoneBreak3", "stone3.wav");
+  ResourceManager.load("StoneBreak4", "stone4.wav");
 }
 
 Tile getTile(float _x, float _y) { //return tile you're currently on

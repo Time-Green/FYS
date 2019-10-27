@@ -9,6 +9,7 @@ class Tile {
   float orechance = random(100);
 
   PImage image;
+  SoundFile breakSound;
 
   ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
 
@@ -21,28 +22,36 @@ class Tile {
     
     if (position.y == 550) {
       image = ResourceManager.getImage("GrassBlock");
+      breakSound = ResourceManager.getSound("DirtBreak");
     } else if (position.y > 550 && position.y <= 1000) {
       image = ResourceManager.getImage("DirtBlock");
+      breakSound = ResourceManager.getSound("DirtBreak");
     } else {
       if (position.y > 1000) {
         if (orechance < 80) {
           image = ResourceManager.getImage("StoneBlock");
+          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
         } else if (orechance >= 80 && orechance <= 88) {
           image = ResourceManager.getImage("CoalBlock");
+          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
         } else {
           image = ResourceManager.getImage("IronBlock");
+          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
         }
       }
       if (position.y > 8000) {
         if (orechance >= 94 && orechance <= 97) {
           image = ResourceManager.getImage("GoldBlock");
+          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
         } else if(orechance >= 98 && orechance <= 100) {
           image = ResourceManager.getImage("DiamondBlock");
+          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
         }
         
       }
       if (position.y > 20000) {
         image = ResourceManager.getImage("BedrockBlock");
+        breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
       }
     }
   }
@@ -84,6 +93,7 @@ class Tile {
   }
 
   private void destroy() {
+    breakSound.play();
     destroyed = true;
     isSolid = false;
   }
