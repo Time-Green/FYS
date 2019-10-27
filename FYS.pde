@@ -17,9 +17,14 @@ int backcolor = #87CEFA;
 int deepestDepth = 0; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
 int generationRatio = 5; //every five tiles we dig, we add 5 more
 
+UIController UI;
+
 void setup() {
   ResourceManager.setup(this);
   loadResources();
+
+  UI = new UIController();
+  UI.setup();
 
   size(1280, 720, P2D);
   frameRate(60);
@@ -34,10 +39,15 @@ void setup() {
   atomList.add(lava);
 
   generateLayers(tilesVertical);
+
+  Globals.gamePaused = true;
+  Globals.currentGameState = Globals.gameState.menu;
 }
 
 void draw() {
   background(backcolor);
+
+  UI.draw();
 
   float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
   float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
@@ -56,6 +66,15 @@ void draw() {
 
   lava.checkIfPlayerHit(user);
   updateDepth();
+
+  if (Globals.gamePaused == true) {
+    if (keys[ENTER]) {
+      Globals.gamePaused = false;
+      if (Globals.currentGameState == Globals.gameState.menu) Globals.currentGameState = Globals.gameState.inGame;
+    }
+  }
+
+  println("Globals.currentGameState: "+ Globals.currentGameState);
 }
 
 void loadResources() {
