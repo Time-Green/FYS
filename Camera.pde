@@ -11,10 +11,10 @@ public class Camera{
     }
 
     public void update(){
-        position.x = -target.position.x + width * 0.5 - target.size.x / 2;
+        position.x = constrain(-target.position.x + width * 0.5 - target.size.x / 2, -1270, 0);
         position.y = -target.position.y + height * 0.5 - target.size.y / 2;
 
-        translate(constrain(position.x, -1270, 0), position.y);
+        translate(position.x, position.y);
     }
 
     public PVector getPosition(){
