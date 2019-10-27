@@ -1,12 +1,15 @@
 class Player extends Mob { 
 
+  public Player(){
+    image = ResourceManager.getImage("player");
+  }
+
   void update() {
     if (Globals.gamePaused) {  
       return;
     }
     super.update();
     doPlayerMovement();
-
   }
   
   void doPlayerMovement(){

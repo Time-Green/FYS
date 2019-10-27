@@ -3,12 +3,12 @@ class Atom {
   PVector size = new PVector(40, 40);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
-  //color atomColor = color(255, 0, 0);
   float atomSpeed = 1f;
   float jumpForce = 18f;
   float gravityForce = 1f;
   float groundedDragFactor = 0.95f;
   float aerialDragFactor = 0.95f;
+  float breakForce = 0.99f;
   boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
   int miningcolor = #DC143C;
@@ -38,9 +38,6 @@ class Atom {
   }
 
   void draw() {
-    //fill(atomColor);
-    image = ResourceManager.getImage("player");
-    //rect(position.x, position.y, size.x, size.y);
     image(image, position.x, position.y, size.x, size.y);
   }
 
@@ -99,6 +96,7 @@ class Atom {
     fill(miningcolor,100);
     rect(tile.position.x, tile.position.y, tileWidth, tileHeight);
   }
+
   int getDepth(){
     return int(getTile(user.position.x, user.position.y).positionWhole.y);
   }

@@ -1,4 +1,7 @@
-void generateLayers(int layers) {  
+void generateLayers(int layers) {
+
+  println("Generating " + layers + " layers");
+
   int mapDepth = map.size();
 
   for(int iY = mapDepth; iY <= mapDepth + layers; iY++) {
