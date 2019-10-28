@@ -1,6 +1,6 @@
 class WallOfDeath extends Atom {
 
-  private float moveSpeed = 1f;
+  private float moveSpeed = 0;
   private float wallHeight = 100;
   private float wallY = -100;
 
@@ -36,7 +36,7 @@ class WallOfDeath extends Atom {
 
     if (CollisionHelper.rectRect(position, size, player.position, player.size)){
       Globals.gamePaused = true;
-      Globals.currentGameState = Globals.gameState.menu;
+      Globals.currentGameState = Globals.gameState.gameOver;
       
     }
   }

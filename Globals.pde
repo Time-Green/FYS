@@ -4,7 +4,8 @@ static class Globals {
 
   static enum gameState {
     menu,
-    inGame
+    inGame,
+    gameOver
   }
 
   static gameState currentGameState;
