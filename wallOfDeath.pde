@@ -14,8 +14,11 @@ class WallOfDeath extends Atom {
     position = new PVector(0, wallY);
     velocity = new PVector(0, moveSpeed);
   }
-
+  
   void update(World world){
+    
+    velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
+    
     if (Globals.gamePaused){
       return;
     }
