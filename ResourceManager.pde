@@ -6,6 +6,7 @@ public static class ResourceManager{
 
     private static HashMap<String, PImage> imageMap = new HashMap<String, PImage>();
     private static HashMap<String, SoundFile> soundMap = new HashMap<String, SoundFile>();
+    private static HashMap<String, PFont> fontMap = new HashMap<String, PFont>();
 
     public static void setup(PApplet game){
         ResourceManager.game = game;
@@ -43,6 +44,18 @@ public static class ResourceManager{
         println("Sound '" + fileName + "' loaded as: " + name);
         soundMap.put(name, sound);
     }
+
+    // private static void loadFont(String name, String fileName) {
+    //     PFont font = new PFont(game, fileName);
+
+    //     if(font == null){
+    //         println("Could not load font: " + fileName);
+    //         return;
+    //     }
+
+    //     println("Font '" + fileName + "' loaded as: " + name);
+    //     fontMap.put(name, sound);
+    // }
 
     public static PImage getImage(String name){
         PImage image = imageMap.get(name);

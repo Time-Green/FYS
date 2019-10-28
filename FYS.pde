@@ -76,21 +76,23 @@ void draw(){
 
 void loadResources(){
   //player
-  ResourceManager.load("player", "player.jpg");
+  ResourceManager.load("player", "Sprites/player.jpg");
   //ores and stones
-  ResourceManager.load("GrassBlock", "grass.block.jpg");
-  ResourceManager.load("DirtBlock", "dirt.block.jpg");
-  ResourceManager.load("StoneBlock", "stone.block.jpg");
-  ResourceManager.load("CoalBlock", "coal.block.jpg");
-  ResourceManager.load("IronBlock", "iron.block.jpg");
-  ResourceManager.load("GoldBlock", "gold.block.jpg");
-  ResourceManager.load("DiamondBlock", "diamond.block.jpg");
-  ResourceManager.load("BedrockBlock", "bedrock.block.jpg");
+  ResourceManager.load("GrassBlock", "Sprites/grass.block.jpg");
+  ResourceManager.load("DirtBlock", "Sprites/dirt.block.jpg");
+  ResourceManager.load("StoneBlock", "Sprites/stone.block.jpg");
+  ResourceManager.load("CoalBlock", "Sprites/coal.block.jpg");
+  ResourceManager.load("IronBlock", "Sprites/iron.block.jpg");
+  ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
+  ResourceManager.load("DiamondBlock", "Sprites/diamond.block.jpg");
+  ResourceManager.load("BedrockBlock", "Sprites/bedrock.block.jpg");
   //audio
-  ResourceManager.load("Background", "terrariaMusic.mp3");
-  ResourceManager.load("DirtBreak", "dirt.wav");
-  ResourceManager.load("StoneBreak1", "stone1.wav");
-  ResourceManager.load("StoneBreak2", "stone2.wav");
-  ResourceManager.load("StoneBreak3", "stone3.wav");
-  ResourceManager.load("StoneBreak4", "stone4.wav");
+  ResourceManager.load("Background", "Sound/terrariaMusic.mp3");
+  ResourceManager.load("DirtBreak", "Sound/dirt.wav");
+  ResourceManager.load("StoneBreak1", "Sound/stone1.wav");
+  ResourceManager.load("StoneBreak2", "Sound/stone2.wav");
+  ResourceManager.load("StoneBreak3", "Sound/stone3.wav");
+  ResourceManager.load("StoneBreak4", "Sound/stone4.wav");
+  //Font
+  //ResourceManager.load("Menufont", "Fonts/mario_kart_f2.ttf");
 }
