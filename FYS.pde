@@ -49,7 +49,7 @@ void draw(){
 
   if(!ResourceManager.isLoaded()){
     handleLoading();
-    
+
     return;
   }
 
@@ -97,14 +97,14 @@ void handleLoading(){
 
   String lastLoadedResource = ResourceManager.loadNext();
     
-  float loadingBarWidth = float(ResourceManager.getCurrentLoadIndex()) / float(ResourceManager.getTotalResourcesToLoad()) * width;
+  float loadingBarWidth = float(ResourceManager.getCurrentLoadIndex()) / float(ResourceManager.getTotalResourcesToLoad());
 
   //loading bar
-  fill(255, 0 , 0);
-  rect(0, height - 40, loadingBarWidth, 40);
+  fill(lerpColor(color(255, 0, 0), color(0, 255, 0), loadingBarWidth));
+  rect(0, height - 40, loadingBarWidth * width, 40);
 
   //loading display
-  fill(0, 0, 255);
+  fill(255);
   textSize(30);
   textAlign(CENTER);
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
