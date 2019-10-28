@@ -9,6 +9,7 @@ class Tile {
   float orechance = random(100);
 
   PImage image;
+  PImage destroyedImage;
   SoundFile breakSound;
 
   ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
@@ -19,6 +20,8 @@ class Tile {
 
     positionWhole.x = x;
     positionWhole.y = y;
+
+    destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
     if (position.y == 550) {
       image = ResourceManager.getImage("GrassBlock");
@@ -63,7 +66,11 @@ class Tile {
   }
 
   void draw(Camera camera) {
-    if (!destroyed && inCameraView(camera)) {
+    if(!inCameraView(camera)){
+      return;
+    }
+
+    if (!destroyed){
 
       //dirty NullPointerException fix
       if (image == null) {
@@ -71,6 +78,8 @@ class Tile {
       }
 
       image(image, position.x, position.y, tileWidth, tileHeight);
+    }else{
+      image(destroyedImage, position.x, position.y, tileWidth, tileHeight);
     }
   }
 

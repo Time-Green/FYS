@@ -20,7 +20,7 @@ void setupGame(boolean firstTime) {
 
   //ResourceManager.getSound("Background").loop();
 
-  world = new World();
+  world = new World(tilesHorizontal * tileWidth + tileWidth);
 
   player = new Player();
   atomList.add(player);
@@ -31,6 +31,7 @@ void setupGame(boolean firstTime) {
   camera = new Camera(player);
 
   world.generateLayers(tilesVertical);
+  
   if (firstTime) {
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.gameState.menu;
@@ -85,6 +86,7 @@ void loadResources() {
   //player
   ResourceManager.load("player", "Sprites/player.jpg");
   //ores and stones
+  ResourceManager.load("DestroyedBlock", "Sprites/Blocks/destroyed.png");
   ResourceManager.load("GrassBlock", "Sprites/Blocks/grassblock.png");
   ResourceManager.load("DirtBlock", "Sprites/Blocks/dirtblock.png");
   ResourceManager.load("MossBlock", "Sprites/Blocks/mossblock.png");
@@ -94,6 +96,12 @@ void loadResources() {
   ResourceManager.load("GoldBlock", "Sprites/Blocks/gold.block.jpg");
   ResourceManager.load("DiamondBlock", "Sprites/Blocks/diamond.block.jpg");
   ResourceManager.load("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
+
+  //Day Night Ciycle
+  for (int i = 0; i < 8; i++) {
+    ResourceManager.load("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");
+  }
+
   //UI
   ResourceManager.load("Heart", "Sprites/heart.png");
   //Font
