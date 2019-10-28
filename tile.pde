@@ -26,11 +26,11 @@ class Tile {
     } else if (position.y > 550 && position.y <= 1000) {
       image = ResourceManager.getImage("DirtBlock");
       breakSound = ResourceManager.getSound("DirtBreak"); 
-    } else if (position.y == 1001) {
+    } else if (position.y == 1050) {
       image = ResourceManager.getImage("MossBlock");
       breakSound = ResourceManager.getSound("DirtBreak");
     } else {
-      if (position.y > 1001) {
+      if (position.y > 1050) {
         if (orechance < 80) {
           image = ResourceManager.getImage("StoneBlock");
           breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
