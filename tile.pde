@@ -57,7 +57,7 @@ class Tile {
   }
 
   void update() {
-    rectMode(CORNER);
+    
   }
 
   void draw(Camera camera) {
@@ -94,6 +94,7 @@ class Tile {
   }
 
   private void destroy() {
+    breakSound.stop();
     breakSound.play();
     destroyed = true;
     isSolid = false;

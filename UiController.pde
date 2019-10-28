@@ -7,10 +7,11 @@ public class UIController {
 
   //Game HUD
   // Heart
-  float heartX = 100;
-  float heartY = 100;
   float heartWidth = 50;
   float heartHeight = 50;
+  float heartX = 10;
+  float heartY = 10;
+
 
   PImage heart;
   PFont font;
