@@ -19,15 +19,18 @@ class Tile {
 
     positionWhole.x = x;
     positionWhole.y = y;
-    
+
     if (position.y == 550) {
       image = ResourceManager.getImage("GrassBlock");
       breakSound = ResourceManager.getSound("DirtBreak");
     } else if (position.y > 550 && position.y <= 1000) {
       image = ResourceManager.getImage("DirtBlock");
+      breakSound = ResourceManager.getSound("DirtBreak"); 
+    } else if (position.y == 1001) {
+      image = ResourceManager.getImage("MossBlock");
       breakSound = ResourceManager.getSound("DirtBreak");
     } else {
-      if (position.y > 1000) {
+      if (position.y > 1001) {
         if (orechance < 80) {
           image = ResourceManager.getImage("StoneBlock");
           breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
@@ -43,11 +46,10 @@ class Tile {
         if (orechance >= 94 && orechance <= 97) {
           image = ResourceManager.getImage("GoldBlock");
           breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-        } else if(orechance >= 98 && orechance <= 100) {
+        } else if (orechance >= 98 && orechance <= 100) {
           image = ResourceManager.getImage("DiamondBlock");
           breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
         }
-        
       }
       if (position.y > 20000) {
         image = ResourceManager.getImage("BedrockBlock");
@@ -64,7 +66,7 @@ class Tile {
     if (!destroyed && inCameraView(camera)) {
 
       //dirty NullPointerException fix
-      if(image == null){
+      if (image == null) {
         return;
       }
 
@@ -72,13 +74,13 @@ class Tile {
     }
   }
 
-  boolean inCameraView(Camera camera){
+  boolean inCameraView(Camera camera) {
     PVector camPos = camera.getPosition();
 
-    if(position.y > -camPos.y - tileHeight
-    && position.y < -camPos.y + height
-    && position.x > -camPos.x - tileWidth
-    && position.x < -camPos.x + width){
+    if (position.y > -camPos.y - tileHeight
+      && position.y < -camPos.y + height
+      && position.x > -camPos.x - tileWidth
+      && position.x < -camPos.x + width) {
       return true;
     }
 
