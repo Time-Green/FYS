@@ -138,7 +138,7 @@ class Atom {
     rect(tile.position.x, tile.position.y, tileWidth, tileHeight);
   }
 
-  int getDepth(){
-    return int(position.y);
+  float getDepth(){
+    return position.y;
   }
 }

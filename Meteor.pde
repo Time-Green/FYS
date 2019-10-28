@@ -1,4 +1,4 @@
-public class Meteor{
+class Meteor{
 
 final int MIN_METEOR_SIZE = 10;  
 final int MAX_METEOR_SIZE = 80;  

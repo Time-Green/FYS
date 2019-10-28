@@ -2,7 +2,7 @@ public class World{
   ArrayList<Tile> tileList = new ArrayList<Tile>();
   ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile.
   
-  int deepestDepth = 0; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
+  float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
   int generationRatio = 5; //every five tiles we dig, we add 5 more
 
   int safeZone = 10;
@@ -82,7 +82,7 @@ ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider){ //return an ar
 }
 
 void updateDepth(){ //does some stuff related to the deepest depth, currently only infinite generation
-    int depth = player.getDepth();
+    float depth = player.getDepth();
 
     if(depth % generationRatio == 0 && depth > deepestDepth){ //check if we're on a generation point and if we have not been there before
       generateLayers(generationRatio);
