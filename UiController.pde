@@ -30,6 +30,8 @@ public class UIController {
     } else if (Globals.currentGameState == Globals.gameState.inGame) {
       gameHUD();
     }
+
+    rectMode(CORNER);
   }
 
   void gameOver() {
@@ -43,8 +45,6 @@ public class UIController {
     text("Over", width/2, height/3);
     textFont(font, menuFontSize/2.2);
     text("Press Enter to restart", width/2, height/2);
-
-    rectMode(CORNER);
   }
 
   void startMenu() {
@@ -59,9 +59,6 @@ public class UIController {
     text("RAIN", width/2, height/3);
     textFont(font, menuFontSize/2);
     text("Press Enter to start", width/2, height/2);
-
-
-    rectMode(CORNER);
   }
 
   void gameHUD() {
