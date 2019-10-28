@@ -14,13 +14,25 @@ int tileHeight = 50;
 int backgroundColor = #87CEFA;
 
 void setupGame(boolean firstTime) {
+UIController ui;
+
+boolean firstTime = true;
+
+void setup(){
+  size(1280, 720, P2D);
+
+  ResourceManager.setup(this);
+  prepareResourceLoading();
+}
+
+void setupGame(){
   atomList.clear();
 
   ui = new UIController();
 
   //ResourceManager.getSound("Background").loop();
 
-  world = new World();
+  world = new World(tilesHorizontal * tileWidth + tileWidth);
 
   player = new Player();
   atomList.add(player);
@@ -34,22 +46,26 @@ void setupGame(boolean firstTime) {
   camera = new Camera(player);
 
   world.generateLayers(tilesVertical);
+
   if (firstTime) {
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.gameState.menu;
   }
 }
 
-void setup() {
-  size(1280, 720, P2D);
+void draw(){
 
-  ResourceManager.setup(this);
-  loadResources();
-  setupGame(true);
-}
+  if(!ResourceManager.isLoaded()){
+    handleLoading();
 
-void draw() {
-  background(backgroundColor);
+    return;
+  }
+
+  //setup game after loading
+  if(firstTime){
+    setupGame();
+    firstTime = false;
+  }
 
   //push and pop are needed so the hud can be correctly drawn
   pushMatrix();
@@ -59,22 +75,22 @@ void draw() {
   world.update();
   world.draw(camera);
 
-  for (Atom atom : atomList) {
+  for (Atom atom : atomList){
     atom.update(world);
     atom.draw();
   }
 
   world.updateDepth();
 
-  if (keys[ENTER]) {
+  if(keys[ENTER]){
     Globals.gamePaused = false;
 
-    if (Globals.currentGameState == Globals.gameState.menu) {
+    if(Globals.currentGameState == Globals.gameState.menu){
       Globals.currentGameState = Globals.gameState.inGame;
-      setupGame(false);
-    } else if (Globals.currentGameState == Globals.gameState.gameOver) {
+      setupGame();
+    }else if(Globals.currentGameState == Globals.gameState.gameOver){
       Globals.currentGameState = Globals.gameState.inGame;
-      setupGame(true);
+      setupGame();
     }
   }
 
@@ -84,35 +100,51 @@ void draw() {
   ui.draw();
 }
 
-void loadResources() {
-  //player
-  ResourceManager.load("player", "Sprites/player.jpg");
-  //ores and stones
-  //ResourceManager.load("GrassBlock", "Sprites/grass.block.jpg");
-  ResourceManager.load("GrassBlock", "Sprites/grassblock.png");
-  //ResourceManager.load("DirtBlock", "Sprites/dirt.block.jpg");
-  ResourceManager.load("DirtBlock", "Sprites/dirtblock.png");
-  //ResourceManager.load("StoneBlock", "Sprites/stone.block.jpg");
-  ResourceManager.load("StoneBlock", "Sprites/mossblock.png");
-  ResourceManager.load("StoneBlock", "Sprites/stoneblock.png");
-  ResourceManager.load("CoalBlock", "Sprites/coal.block.jpg");
-  ResourceManager.load("IronBlock", "Sprites/iron.block.jpg");
-  ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
-  ResourceManager.load("DiamondBlock", "Sprites/diamond.block.jpg");
-  ResourceManager.load("BedrockBlock", "Sprites/bedrock.block.jpg");
+void handleLoading(){
+  background(0);
 
-  //Enemies
-  ResourceManager.load("TestEnemy", "Sprites/eTest.jpg");
-  
+  String lastLoadedResource = ResourceManager.loadNext();
+    
+  float loadingBarWidth = float(ResourceManager.getCurrentLoadIndex()) / float(ResourceManager.getTotalResourcesToLoad());
+
+  //loading bar
+  fill(lerpColor(color(255, 0, 0), color(0, 255, 0), loadingBarWidth));
+  rect(0, height - 40, loadingBarWidth * width, 40);
+
+  //loading display
+  fill(255);
+  textSize(30);
+  textAlign(CENTER);
+  text("Loaded: " + lastLoadedResource, width / 2, height - 10);
+}
+
+void prepareResourceLoading(){
+  //Player
+  ResourceManager.prepareLoad("player", "Sprites/player.jpg");
+  //Tiles
+  ResourceManager.prepareLoad("DestroyedBlock", "Sprites/Blocks/destroyed.png");
+  ResourceManager.prepareLoad("GrassBlock", "Sprites/Blocks/grassblock.png");
+  ResourceManager.prepareLoad("DirtBlock", "Sprites/Blocks/dirtblock.png");
+  ResourceManager.prepareLoad("MossBlock", "Sprites/Blocks/mossblock.png");
+  ResourceManager.prepareLoad("StoneBlock", "Sprites/Blocks/stoneblock.png");
+  ResourceManager.prepareLoad("CoalBlock", "Sprites/Blocks/coal.block.jpg");
+  ResourceManager.prepareLoad("IronBlock", "Sprites/Blocks/iron.block.jpg");
+  ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/gold.block.jpg");
+  ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamond.block.jpg");
+  ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
+  //Day Night Ciycle
+  for(int i = 0; i < 8; i++){
+    ResourceManager.prepareLoad("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");
+  }
   //UI
-  ResourceManager.load("Heart", "Sprites/heart.png");
-  //Font
-  ResourceManager.load("Menufont", "Fonts/mario_kart_f2.ttf");
-  //audio
-  //ResourceManager.load("Background", "Sound/terrariaMusic.mp3");
-  ResourceManager.load("DirtBreak", "Sound/dirt.wav");
-  ResourceManager.load("StoneBreak1", "Sound/stone1.wav");
-  ResourceManager.load("StoneBreak2", "Sound/stone2.wav");
-  ResourceManager.load("StoneBreak3", "Sound/stone3.wav");
-  ResourceManager.load("StoneBreak4", "Sound/stone4.wav");
+  ResourceManager.prepareLoad("Heart", "Sprites/heart.png");
+  //Fonts
+  ResourceManager.prepareLoad("Menufont", "Fonts/mario_kart_f2.ttf");
+  //Audio
+  //ResourceManager.prepareLoad("Background", "Sound/terrariaMusic.mp3");
+  ResourceManager.prepareLoad("DirtBreak", "Sound/dirt.wav");
+  ResourceManager.prepareLoad("StoneBreak1", "Sound/stone1.wav");
+  ResourceManager.prepareLoad("StoneBreak2", "Sound/stone2.wav");
+  ResourceManager.prepareLoad("StoneBreak3", "Sound/stone3.wav");
+  ResourceManager.prepareLoad("StoneBreak4", "Sound/stone4.wav");
 }

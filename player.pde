@@ -4,6 +4,8 @@ class Player extends Mob {
   float savedTime;
   boolean isHurt;
 
+  int score = 0;
+
   public Player(){
     image = ResourceManager.getImage("player");
     savedTime = second();
@@ -61,4 +63,9 @@ class Player extends Mob {
       this.totalHealth--;
     }
   }
+
+  void addScore(int amount){
+    score += amount;
+  }
+  
 }

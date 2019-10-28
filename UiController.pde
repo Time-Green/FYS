@@ -2,71 +2,90 @@ public class UIController {
 
   //Colors
   color titleColor = #FA3535;
-  color titleOutline = #FAFA2A;
   color titleBackground = #FFA500;
 
   //Game HUD
-  // Heart
+  //Heart
   float heartWidth = 50;
   float heartHeight = 50;
   float heartX = 10;
   float heartY = 10;
 
-
   PImage heart;
   PFont font;
   float menuFontSize = 96;
 
-  UIController() {
+  UIController(){
     font = ResourceManager.getFont("Menufont");
     heart = ResourceManager.getImage("Heart");
+
+    textFont(font);
   }
 
-  void draw() {
-    if (Globals.currentGameState == Globals.gameState.menu) {
+  void draw(){
+    //draw hud at center position
+    rectMode(CENTER);
+    textAlign(CENTER);
+
+    if(Globals.currentGameState == Globals.gameState.menu){
       startMenu();
-    } else if (Globals.currentGameState == Globals.gameState.gameOver) {
+    }else if(Globals.currentGameState == Globals.gameState.gameOver){
       gameOver();
-    } else if (Globals.currentGameState == Globals.gameState.inGame) {
+    }else if(Globals.currentGameState == Globals.gameState.inGame){
       gameHUD();
     }
-  }
 
-  void gameOver() {
-    rectMode(CENTER);
-    fill(titleBackground);
-    rect(width/2, (float)height/4.5, width-menuFontSize*4, menuFontSize*2);
-    textAlign(CENTER);
-    textFont(font, menuFontSize);
-    fill(titleColor);
-    text("Game", width/2, height/5);
-    text("Over", width/2, height/3);
-    textFont(font, menuFontSize/2.2);
-    text("Press Enter to restart", width/2, height/2);
-
+    //reset rectMode
     rectMode(CORNER);
+    textAlign(LEFT);
+
+    drawFps();
   }
 
-  void startMenu() {
-
-    rectMode(CENTER);
+  void gameOver(){
     fill(titleBackground);
-    rect(width/2, (float)height/4.5, width-menuFontSize*4, menuFontSize*2);
-    textAlign(CENTER);
-    textFont(font, menuFontSize);
+    rect(width / 2, (float)height / 4.15, width - menuFontSize * 4, menuFontSize * 2.5);
+
     fill(titleColor);
-    text("ROCKY", width/2, height/5);
-    text("RAIN", width/2, height/3);
-    textFont(font, menuFontSize/2);
-    text("Press Enter to start", width/2, height/2);
-
-
-    rectMode(CORNER);
+    textSize(menuFontSize);
+    text("Game\nOver", width / 2, height / 5);
+    
+    textSize(menuFontSize / 2.2);
+    text("Press Enter to restart", width / 2, height / 2);
   }
 
-  void gameHUD() {
-    for (int i = 0; i < player.totalHealth; i++) {
+  void startMenu(){
+    fill(titleBackground);
+    rect(width / 2, (float)height / 4.15, width - menuFontSize * 4, menuFontSize * 2.5);
+
+    fill(titleColor);
+    textSize(menuFontSize);
+    text("ROCKY\nRAIN", width / 2, height / 5);
+
+    textSize(menuFontSize / 2);
+    text("Press Enter to start", width / 2, height / 2);
+  }
+
+  void gameHUD(){
+    for (int i = 0; i < player.currentHealth; i++) {
       image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
     }
+
+    textAlign(LEFT);
+    fill(255);
+    textSize(20);
+    text("Score:" + player.score, 20, 80);
+
+    textAlign(LEFT);
+    fill(255);
+    textSize(20);
+    text("Depth:" + round((player.getDepth() / tileHeight) - 10), 20, 100);
+  }
+
+  void drawFps(){
+    textAlign(RIGHT);
+    fill(255);
+    textSize(20);
+    text(round(frameRate) + " FPS", width - 10, 25);
   }
 }
