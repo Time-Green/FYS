@@ -18,8 +18,6 @@ public static class ResourceManager{
   }
 
   public static void prepareLoad(String name, String fileName){
-    println("Preparing load for " + name);
-
     totalResourcesToLoad++;
 
     resourcesToLoadNames.add(name);

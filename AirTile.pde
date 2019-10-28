@@ -5,8 +5,4 @@ class AirTile extends Tile{
     
     isSolid = false;
   }
-
-  //void draw(){
-  //  return;
-  //}
 }

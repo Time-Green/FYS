@@ -13,9 +13,8 @@ int tileHeight = 50;
 
 int backgroundColor = #87CEFA;
 
-// UIController ui;
-
 boolean firstTime = true;
+boolean firstStart = true;
 
 void setup(){
   size(1280, 720, P2D);
@@ -24,7 +23,7 @@ void setup(){
   prepareResourceLoading();
 }
 
-void setupGame(boolean firstTime){
+void setupGame(){
   atomList.clear();
 
   ui = new UIController();
@@ -62,7 +61,7 @@ void draw(){
 
   //setup game after loading
   if(firstTime){
-    setupGame(true);
+    setupGame();
     firstTime = false;
   }
 
@@ -86,10 +85,14 @@ void draw(){
 
     if(Globals.currentGameState == Globals.gameState.menu){
       Globals.currentGameState = Globals.gameState.inGame;
-      setupGame(false);
+      if(firstStart){
+        firstStart = false;
+      }else{
+        setupGame();
+      }
     }else if(Globals.currentGameState == Globals.gameState.gameOver){
       Globals.currentGameState = Globals.gameState.inGame;
-      setupGame(false);
+      setupGame();
     }
   }
 
@@ -120,6 +123,8 @@ void handleLoading(){
 void prepareResourceLoading(){
   //Player
   ResourceManager.prepareLoad("player", "Sprites/player.jpg");
+  //Enemies
+  ResourceManager.prepareLoad("TestEnemy", "Sprites/eTest.jpg");
   //Tiles
   ResourceManager.prepareLoad("DestroyedBlock", "Sprites/Blocks/destroyed.png");
   ResourceManager.prepareLoad("GrassBlock", "Sprites/Blocks/grassblock.png");
@@ -131,8 +136,6 @@ void prepareResourceLoading(){
   ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/gold.block.jpg");
   ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamond.block.jpg");
   ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
-
-  ResourceManager.prepareLoad("TestEnemy", "Sprites/eTest.jpg");
   //Day Night Ciycle
   for(int i = 0; i < 8; i++){
     ResourceManager.prepareLoad("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");
