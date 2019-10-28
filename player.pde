@@ -4,17 +4,18 @@ class Player extends Mob {
     image = ResourceManager.getImage("player");
   }
 
-  void update() {
+  void update(World world) {
     if (Globals.gamePaused) {  
       return;
     }
-    super.update();
+    
+    super.update(world);
     doPlayerMovement();
   }
   
   void doPlayerMovement(){
     if (keys[UP] && isGrounded()) {
-      user.addForce(new PVector(0, -jumpForce));
+      addForce(new PVector(0, -jumpForce));
     }
 
     if (keys[DOWN]) {
@@ -24,14 +25,14 @@ class Player extends Mob {
     }
 
     if (keys[LEFT]) {
-      user.addForce(new PVector(-atomSpeed, 0));
+      addForce(new PVector(-atomSpeed, 0));
       isMiningLeft = true;
     } else {
       isMiningLeft = false;
     }
 
     if (keys[RIGHT]) {
-      user.addForce(new PVector(atomSpeed, 0));
+      addForce(new PVector(atomSpeed, 0));
       isMiningRight = true;
     } else {
       isMiningRight = false;

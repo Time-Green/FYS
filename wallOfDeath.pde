@@ -6,7 +6,7 @@ class WallOfDeath extends Atom {
 
   color wallColor = #FF8C33;
 
-  WallOfDeath(float wallWidth) {
+  WallOfDeath(float wallWidth){
     gravityForce = 0f;
     groundedDragFactor = 1f;
     collisionEnabled = false;
@@ -15,23 +15,27 @@ class WallOfDeath extends Atom {
     velocity = new PVector(0, moveSpeed);
   }
 
-  // If the WoD hits the player, the game is paused. 
-  void checkIfPlayerHit(Mob player) {
-    if (CollisionHelper.rectRect(position, size, player.position, player.size)) {
-      Globals.gamePaused = false;
-    }
-  }
-
-  void update() {
-    if (Globals.gamePaused) {
+  void update(World world){
+    if (Globals.gamePaused){
       return;
-    }    
-    super.update();
+    }
+
+    checkPlayerCollision();
+
+    super.update(world);
   }
 
-  void draw() {
+  void draw(){
     fill(wallColor);
     rect(position.x, position.y, size.x, size.y);
     fill(255);
+  }
+
+  // If the WoD hits the player, the game is paused. 
+  private void checkPlayerCollision(){
+
+    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
+      Globals.gamePaused = false;
+    }
   }
 }
