@@ -21,7 +21,6 @@ class Atom {
 
   void Prepare(){
     position = startPosition;
-    
   }
 
   void update(World world){
@@ -31,27 +30,32 @@ class Atom {
     if(collisionEnabled){   
       ArrayList<Tile> colliders = new ArrayList<Tile>(); 
       
-      colliders = checkCollision(world, 0, min(velocity.y, 0));  
+      colliders = checkCollision(world, 0, min(velocity.y, 0));
+      
       if(colliders.size() != 0){ //up
         velocity.y = max(velocity.y, 0);
       }    
       
-      colliders = checkCollision(world, 0, max(velocity.y, 0)); 
+      colliders = checkCollision(world, 0, max(velocity.y, 0));
+
       if(colliders.size() != 0){ //down
         velocity.y = min(velocity.y, 0);
         isGrounded = true;       
         for(Tile tile : colliders){
+
           if(isMiningDown){
             tile.takeDamage(1); 
           }
         }  
       }
-      println(velocity.x);
+
       if(velocity.x < 0){
-        colliders = checkCollision(world, min(velocity.x, 0), 0);  
+        colliders = checkCollision(world, min(velocity.x, 0), 0);
+
         if(colliders.size() != 0){ //left
           velocity.x = 0;
           for(Tile tile : colliders){
+
             if(isMiningLeft){
               tile.takeDamage(1); 
             }

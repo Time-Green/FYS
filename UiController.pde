@@ -62,7 +62,7 @@ public class UIController {
   }
 
   void gameHUD() {
-    for (int i = 0; i < player.totalHealth; i++) {
+    for (int i = 0; i < player.currentHealth; i++) {
       image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
     }
   }
