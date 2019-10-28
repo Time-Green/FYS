@@ -85,15 +85,15 @@ void loadResources() {
   //player
   ResourceManager.load("player", "Sprites/player.jpg");
   //ores and stones
-  ResourceManager.load("GrassBlock", "Sprites/grassblock.png");
-  ResourceManager.load("DirtBlock", "Sprites/dirtblock.png");
-  ResourceManager.load("MossBlock", "Sprites/mossblock.png");
-  ResourceManager.load("StoneBlock", "Sprites/stoneblock.png");
-  ResourceManager.load("CoalBlock", "Sprites/coal.block.jpg");
-  ResourceManager.load("IronBlock", "Sprites/iron.block.jpg");
-  ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
-  ResourceManager.load("DiamondBlock", "Sprites/diamond.block.jpg");
-  ResourceManager.load("BedrockBlock", "Sprites/bedrock.block.jpg");
+  ResourceManager.load("GrassBlock", "Sprites/Blocks/grassblock.png");
+  ResourceManager.load("DirtBlock", "Sprites/Blocks/dirtblock.png");
+  ResourceManager.load("MossBlock", "Sprites/Blocks/mossblock.png");
+  ResourceManager.load("StoneBlock", "Sprites/Blocks/stoneblock.png");
+  ResourceManager.load("CoalBlock", "Sprites/Blocks/coal.block.jpg");
+  ResourceManager.load("IronBlock", "Sprites/Blocks/iron.block.jpg");
+  ResourceManager.load("GoldBlock", "Sprites/Blocks/gold.block.jpg");
+  ResourceManager.load("DiamondBlock", "Sprites/Blocks/diamond.block.jpg");
+  ResourceManager.load("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
   //UI
   ResourceManager.load("Heart", "Sprites/heart.png");
   //Font
