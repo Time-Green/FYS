@@ -75,12 +75,17 @@ public class UIController {
     fill(255);
     textSize(20);
     text("Score:" + player.score, 20, 80);
-  }
 
-  void drawFps(){
     textAlign(LEFT);
     fill(255);
     textSize(20);
-    text(round(frameRate) + " FPS", width - 150, 25);
+    text("Depth:" + round((player.getDepth() / tileHeight) - 10), 20, 100);
+  }
+
+  void drawFps(){
+    textAlign(RIGHT);
+    fill(255);
+    textSize(20);
+    text(round(frameRate) + " FPS", width - 10, 25);
   }
 }

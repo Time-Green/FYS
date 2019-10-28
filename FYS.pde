@@ -13,6 +13,15 @@ int backgroundColor = #87CEFA;
 
 UIController ui;
 
+void setup() {
+  size(1280, 720, P2D);
+
+  ResourceManager.setup(this);
+  loadResources();
+  
+  setupGame(true);
+}
+
 void setupGame(boolean firstTime) {
   atomList.clear();
 
@@ -36,14 +45,6 @@ void setupGame(boolean firstTime) {
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.gameState.menu;
   }
-}
-
-void setup() {
-  size(1280, 720, P2D);
-
-  ResourceManager.setup(this);
-  loadResources();
-  setupGame(true);
 }
 
 void draw() {
