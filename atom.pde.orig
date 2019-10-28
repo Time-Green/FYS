@@ -14,8 +14,12 @@ class Atom {
   int miningcolor = #DC143C;
   PImage image;
 
+<<<<<<< HEAD
   void update(World world){
+=======
+  void update() {
     rectMode(CORNER);
+>>>>>>> f143a65253ff6fa112ec1f156863103d56f82a7b
     prepareMovement();
     isGrounded = false;
 
