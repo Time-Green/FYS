@@ -69,6 +69,9 @@ void draw() {
     if (Globals.currentGameState == Globals.gameState.menu) {
       Globals.currentGameState = Globals.gameState.inGame;
       setupGame(false);
+    } else if (Globals.currentGameState == Globals.gameState.gameOver) {
+      Globals.currentGameState = Globals.gameState.inGame;
+      setupGame(true);
     }
   }
 
@@ -86,7 +89,9 @@ void loadResources() {
   ResourceManager.load("GrassBlock", "Sprites/grassblock.png");
   //ResourceManager.load("DirtBlock", "Sprites/dirt.block.jpg");
   ResourceManager.load("DirtBlock", "Sprites/dirtblock.png");
-  ResourceManager.load("StoneBlock", "Sprites/stone.block.jpg");
+  //ResourceManager.load("StoneBlock", "Sprites/stone.block.jpg");
+  ResourceManager.load("StoneBlock", "Sprites/mossblock.png");
+  ResourceManager.load("StoneBlock", "Sprites/stoneblock.png");
   ResourceManager.load("CoalBlock", "Sprites/coal.block.jpg");
   ResourceManager.load("IronBlock", "Sprites/iron.block.jpg");
   ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
