@@ -18,7 +18,7 @@ void setupGame(boolean firstTime) {
 
   ui = new UIController();
 
-  ResourceManager.getSound("Background").loop();
+  //ResourceManager.getSound("Background").loop();
 
   world = new World();
 
@@ -97,13 +97,12 @@ void loadResources() {
   ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
   ResourceManager.load("DiamondBlock", "Sprites/diamond.block.jpg");
   ResourceManager.load("BedrockBlock", "Sprites/bedrock.block.jpg");
-  
   //UI
   ResourceManager.load("Heart", "Sprites/heart.png");
   //Font
   ResourceManager.load("Menufont", "Fonts/mario_kart_f2.ttf");
   //audio
-  ResourceManager.load("Background", "Sound/terrariaMusic.mp3");
+  //ResourceManager.load("Background", "Sound/terrariaMusic.mp3");
   ResourceManager.load("DirtBreak", "Sound/dirt.wav");
   ResourceManager.load("StoneBreak1", "Sound/stone1.wav");
   ResourceManager.load("StoneBreak2", "Sound/stone2.wav");
