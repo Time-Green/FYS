@@ -1,3 +1,4 @@
 class Mob extends Atom {
-  int totalHealth = 3;
+  int maxHealth = 3;
+  int currentHealth = maxHealth;
 }

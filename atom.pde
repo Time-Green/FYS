@@ -21,7 +21,6 @@ class Atom {
 
   void Prepare(){
     position = startPosition;
-    
   }
 
   void update(World world){
@@ -29,42 +28,51 @@ class Atom {
     isGrounded = false;
 
     if(collisionEnabled){   
-      ArrayList<Tile> coliders = new ArrayList<Tile>(); 
+      ArrayList<Tile> colliders = new ArrayList<Tile>(); 
       
-      coliders = checkCollision(world, 0, min(velocity.y, 0));  
-      if(coliders.size() != 0){ //up
+      colliders = checkCollision(world, 0, min(velocity.y, 0));
+      
+      if(colliders.size() != 0){ //up
         velocity.y = max(velocity.y, 0);
       }    
-      coliders = checkCollision(world, 0, max(velocity.y, 0)); 
-      if(coliders.size() != 0){ //down
+      
+      colliders = checkCollision(world, 0, max(velocity.y, 0));
+
+      if(colliders.size() != 0){ //down
         velocity.y = min(velocity.y, 0);
         isGrounded = true;       
-        for(Tile tile : coliders){
+        for(Tile tile : colliders){
+
           if(isMiningDown){
             tile.takeDamage(1); 
           }
         }  
       }
-      
-      coliders = checkCollision(world, min(velocity.x, 0), 0);  
-      if(coliders.size() != 0){ //left
-        velocity.x = 0;
-        for(Tile tile : coliders){
-          if(isMiningLeft){
-            tile.takeDamage(1); 
-          }
-        }  
+
+      if(velocity.x < 0){
+        colliders = checkCollision(world, min(velocity.x, 0), 0);
+
+        if(colliders.size() != 0){ //left
+          velocity.x = 0;
+          for(Tile tile : colliders){
+
+            if(isMiningLeft){
+              tile.takeDamage(1); 
+            }
+          }  
+        }
       }
-      
-      checkCollision(world, max(velocity.x, 0), 0);
-      if(coliders.size() != 0){ //right
-        velocity.x = 0;
-        for(Tile tile : coliders){
-          if(isMiningRight){
-            tile.takeDamage(1); 
-          }
-        }  
-      }     
+      else if(velocity.x > 0){
+        colliders = checkCollision(world, max(velocity.x, 0), 0);
+        if(colliders.size() != 0){ //right
+          velocity.x = 0;
+          for(Tile tile : colliders){
+            if(isMiningRight){
+              tile.takeDamage(1); 
+            }
+          }  
+        }     
+      }
     }
 
     handleMovement();
@@ -107,7 +115,7 @@ class Atom {
   }
 
   ArrayList checkCollision(World world, float maybeX, float maybeY){
-    ArrayList<Tile> coliders = new ArrayList<Tile>(); 
+    ArrayList<Tile> colliders = new ArrayList<Tile>(); 
     
     for (Tile tile : world.getSurroundingTiles(int(position.x), int(position.y), this)){
 
@@ -118,20 +126,11 @@ class Atom {
       debugCollision(tile);
 
       if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
-
-        //if(isMiningDown){
-        //  tile.takeDamage(1);
-        //} 
-        //else if(isMiningLeft){
-        //   tile.takeDamage(1);
-        //} 
-                
-
-        coliders.add(tile);      
+        colliders.add(tile);      
       }
     }
 
-    return coliders;
+    return colliders;
   }
 
   private void debugCollision(Tile tile){

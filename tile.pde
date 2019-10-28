@@ -59,7 +59,7 @@ class Tile {
   }
 
   void update() {
-    rectMode(CORNER);
+    
   }
 
   void draw(Camera camera) {
