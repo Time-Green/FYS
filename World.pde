@@ -56,9 +56,7 @@ public class World {
 
   Tile getTileToGenerate(int x, int depth){
     float orechance = random(100);
-
-    println(depth);
-
+    
     if(depth <= safeZone)
     {
       return new AirTile(x, depth);
