@@ -28,7 +28,7 @@ class Player extends Mob {
       }
     }
 
-    if (this.totalHealth == 0) Globals.currentGameState = Globals.gameState.gameOver;
+    if (this.currentHealth == 0) Globals.currentGameState = Globals.gameState.gameOver;
   }
   
   void doPlayerMovement() {
@@ -60,7 +60,7 @@ class Player extends Mob {
   public void playerHurt() {
     if (isHurt == false) {
       isHurt = true;
-      this.totalHealth--;
+      this.currentHealth--;
     }
   }
 

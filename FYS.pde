@@ -13,8 +13,7 @@ int tileHeight = 50;
 
 int backgroundColor = #87CEFA;
 
-void setupGame(boolean firstTime) {
-UIController ui;
+// UIController ui;
 
 boolean firstTime = true;
 
@@ -25,7 +24,7 @@ void setup(){
   prepareResourceLoading();
 }
 
-void setupGame(){
+void setupGame(boolean firstTime){
   atomList.clear();
 
   ui = new UIController();
@@ -63,7 +62,7 @@ void draw(){
 
   //setup game after loading
   if(firstTime){
-    setupGame();
+    setupGame(true);
     firstTime = false;
   }
 
@@ -87,10 +86,10 @@ void draw(){
 
     if(Globals.currentGameState == Globals.gameState.menu){
       Globals.currentGameState = Globals.gameState.inGame;
-      setupGame();
+      setupGame(false);
     }else if(Globals.currentGameState == Globals.gameState.gameOver){
       Globals.currentGameState = Globals.gameState.inGame;
-      setupGame();
+      setupGame(false);
     }
   }
 
@@ -132,6 +131,8 @@ void prepareResourceLoading(){
   ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/gold.block.jpg");
   ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamond.block.jpg");
   ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
+
+  ResourceManager.prepareLoad("TestEnemy", "Sprites/eTest.jpg");
   //Day Night Ciycle
   for(int i = 0; i < 8; i++){
     ResourceManager.prepareLoad("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");
