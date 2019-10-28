@@ -70,11 +70,17 @@ public class UIController {
     for (int i = 0; i < player.currentHealth; i++) {
       image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
     }
+
+    textAlign(LEFT);
+    fill(255);
+    textSize(20);
+    text("Score:" + player.score, 20, 80);
   }
 
   void drawFps(){
+    textAlign(LEFT);
     fill(255);
     textSize(20);
-    text("FPS:" + round(frameRate), 10, 25);
+    text(round(frameRate) + " FPS", width - 150, 25);
   }
 }

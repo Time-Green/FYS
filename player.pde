@@ -1,5 +1,7 @@
 class Player extends Mob { 
 
+  int score = 0;
+
   public Player(){
     image = ResourceManager.getImage("player");
   }
@@ -37,5 +39,9 @@ class Player extends Mob {
     } else {
       isMiningRight = false;
     }
+  }
+
+  void addScore(int amount){
+    score += amount;
   }
 }

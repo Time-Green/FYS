@@ -31,7 +31,7 @@ void setupGame(boolean firstTime) {
   camera = new Camera(player);
 
   world.generateLayers(tilesVertical);
-  
+
   if (firstTime) {
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.gameState.menu;

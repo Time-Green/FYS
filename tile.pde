@@ -1,4 +1,4 @@
-class Tile {
+class Tile{
   PVector position = new PVector();
   PVector positionWhole = new PVector(); //same as position, but pixels instead of complete tiles
 
@@ -6,7 +6,6 @@ class Tile {
   boolean isSolid = true;
 
   float hp = 4;
-  float orechance = random(100);
 
   PImage image;
   PImage destroyedImage;
@@ -31,43 +30,6 @@ class Tile {
       isSolid = false;
 
       return;
-    }
-
-    if (position.y == 550) {
-      image = ResourceManager.getImage("GrassBlock");
-      breakSound = ResourceManager.getSound("DirtBreak");
-    } else if (position.y > 550 && position.y <= 1000) {
-      image = ResourceManager.getImage("DirtBlock");
-      breakSound = ResourceManager.getSound("DirtBreak"); 
-    } else if (position.y == 1050) {
-      image = ResourceManager.getImage("MossBlock");
-      breakSound = ResourceManager.getSound("DirtBreak");
-    } else {
-      if (position.y > 1050) {
-        if (orechance < 80) {
-          image = ResourceManager.getImage("StoneBlock");
-          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-        } else if (orechance >= 80 && orechance <= 88) {
-          image = ResourceManager.getImage("CoalBlock");
-          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-        } else {
-          image = ResourceManager.getImage("IronBlock");
-          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-        }
-      }
-      if (position.y > 8000) {
-        if (orechance >= 94 && orechance <= 97) {
-          image = ResourceManager.getImage("GoldBlock");
-          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-        } else if (orechance >= 98 && orechance <= 100) {
-          image = ResourceManager.getImage("DiamondBlock");
-          breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-        }
-      }
-      if (position.y > 20000) {
-        image = ResourceManager.getImage("BedrockBlock");
-        breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-      }
     }
   }
 
@@ -114,7 +76,7 @@ class Tile {
     }
   }
 
-  private void destroy() {
+  public void destroy() {
     playBreakSound();
     destroyed = true;
     isSolid = false;
