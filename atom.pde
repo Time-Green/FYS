@@ -29,19 +29,36 @@ class Atom {
     isGrounded = false;
 
     if(collisionEnabled){
-
-      if(checkCollision(world, 0, velocity.y)){ //up
+           
+      ArrayList<Tile> coliders = new ArrayList<Tile>(); 
+      
+      coliders = checkCollision(world, 0, velocity.y);  
+      if(coliders.size() != 0){ //up
         velocity.y = max(velocity.y, 0);
-      }
-
-      if(checkCollision(world, 0, velocity.y)){ //down
+      }    
+      
+      if(coliders.size() != 0){ //down
         velocity.y = min(velocity.y, 0);
-        isGrounded = true;
+        isGrounded = true;       
+        if(isMiningDown){
+       //   tile.takeDamage(1);  jonah - 28/10/19
+        }
       }
-
-      if(checkCollision(world, velocity.x, 0)){ //horizontal
+      
+      coliders = checkCollision(world, min(velocity.x, 0), 0);  
+      if(coliders.size() != 0){ //left
         velocity.x = 0;
       }
+      
+      checkCollision(world, max(velocity.x, 0), 0);
+      if(coliders.size() != 0){ //right
+      for(Tile tile : coliders){
+        if(isMiningRight){
+          tile.takeDamage(1); 
+        }
+      }  
+        velocity.x = 0;
+      }     
     }
 
     handleMovement();
@@ -83,7 +100,9 @@ class Atom {
     acceleration = newForce;
   }
 
-  boolean checkCollision(World world, float maybeX, float maybeY){
+  ArrayList checkCollision(World world, float maybeX, float maybeY){
+    ArrayList<Tile> coliders = new ArrayList<Tile>(); 
+    
     for (Tile tile : world.getSurroundingTiles(int(position.x), int(position.y), this)){
 
       if(!tile.isSolid){
@@ -94,15 +113,19 @@ class Atom {
 
       if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
 
-        if(isMiningDown){
-          tile.takeDamage(1);
-        }
+        //if(isMiningDown){
+        //  tile.takeDamage(1);
+        //} 
+        //else if(isMiningLeft){
+        //   tile.takeDamage(1);
+        //} 
+                
 
-        return true;
+        coliders.add(tile);      
       }
     }
 
-    return false;
+    return coliders;
   }
 
   private void debugCollision(Tile tile){
