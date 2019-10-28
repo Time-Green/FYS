@@ -94,6 +94,7 @@ class Tile {
   }
 
   private void destroy() {
+    breakSound.stop();
     breakSound.play();
     destroyed = true;
     isSolid = false;
