@@ -91,6 +91,8 @@ void loadResources(){
   ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
   ResourceManager.load("DiamondBlock", "Sprites/diamond.block.jpg");
   ResourceManager.load("BedrockBlock", "Sprites/bedrock.block.jpg");
+  //Font
+  ResourceManager.load("Menufont", "Fonts/mario_kart_f2.ttf");
   //audio
   ResourceManager.load("Background", "Sound/terrariaMusic.mp3");
   ResourceManager.load("DirtBreak", "Sound/dirt.wav");
@@ -98,6 +100,4 @@ void loadResources(){
   ResourceManager.load("StoneBreak2", "Sound/stone2.wav");
   ResourceManager.load("StoneBreak3", "Sound/stone3.wav");
   ResourceManager.load("StoneBreak4", "Sound/stone4.wav");
-  //Font
-  //ResourceManager.load("Menufont", "Fonts/mario_kart_f2.ttf");
 }

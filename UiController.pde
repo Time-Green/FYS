@@ -9,7 +9,7 @@ public class UIController {
   float menuFontSize = 96;
     
   UIController(){
-    font = createFont("Fonts/mario_kart_f2.ttf", menuFontSize);
+    font = ResourceManager.getFont("Menufont");
   }
 
   void draw(){
@@ -26,6 +26,6 @@ public class UIController {
       text("Press Enter to start", width/2, height/2);
     }
 
-  rectMode(CORNER);
+    rectMode(CORNER);
   }
 }

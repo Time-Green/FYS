@@ -2,80 +2,94 @@ import processing.sound.*;
 
 public static class ResourceManager{
 
-    private static PApplet game;
+  private static PApplet game;
 
-    private static HashMap<String, PImage> imageMap = new HashMap<String, PImage>();
-    private static HashMap<String, SoundFile> soundMap = new HashMap<String, SoundFile>();
-    private static HashMap<String, PFont> fontMap = new HashMap<String, PFont>();
+  private static HashMap<String, PImage> imageMap = new HashMap<String, PImage>();
+  private static HashMap<String, SoundFile> soundMap = new HashMap<String, SoundFile>();
+  private static HashMap<String, PFont> fontMap = new HashMap<String, PFont>();
 
-    public static void setup(PApplet game){
-        ResourceManager.game = game;
-    }
-
-    public static void load(String name, String fileName){
-        if(fileName.endsWith(".png") || fileName.endsWith(".jpg")){
-            loadImage(name, fileName);
-        }
-        else if(fileName.endsWith(".mp3") || fileName.endsWith(".wav")){
-            loadSoundFile(name, fileName);
-        }
+  public static void setup(PApplet game){
+      ResourceManager.game = game;
+  }
+  
+  public static void load(String name, String fileName){
+      if(fileName.endsWith(".png") || fileName.endsWith(".jpg")){
+        loadImage(name, fileName);
+      }
+      else if(fileName.endsWith(".mp3") || fileName.endsWith(".wav")){
+        loadSoundFile(name, fileName);
+      }
+      else if(fileName.endsWith(".ttf")){
+        loadFont(name, fileName);
+      }
     }
 
     private static void loadImage(String name, String fileName){
-        PImage image = game.loadImage(fileName);
+      PImage image = game.loadImage(fileName);
 
-        if(image == null){
-            println("Could not load image: " + fileName);
-            return;
-        }
+      if(image == null){
+        println("Could not load image: " + fileName);
+        return;
+      }
 
-        println("Image '" + fileName + "' loaded as: " + name);
-        imageMap.put(name, image);
+      println("Image '" + fileName + "' loaded as: " + name);
+      imageMap.put(name, image);
     }
 
     private static void loadSoundFile(String name, String fileName){
-        SoundFile sound = new SoundFile(game, fileName);
+      SoundFile sound = new SoundFile(game, fileName);
 
-        if(sound == null){
-            println("Could not load sound: " + fileName);
-            return;
-        }
+      if(sound == null){
+        println("Could not load sound: " + fileName);
+        return;
+      }
 
-        println("Sound '" + fileName + "' loaded as: " + name);
-        soundMap.put(name, sound);
+      println("Sound '" + fileName + "' loaded as: " + name);
+      soundMap.put(name, sound);
     }
 
-    // private static void loadFont(String name, String fileName) {
-    //     PFont font = new PFont(game, fileName);
+    private static void loadFont(String name, String fileName) {
+      PFont font = game.createFont(fileName, 32);
 
-    //     if(font == null){
-    //         println("Could not load font: " + fileName);
-    //         return;
-    //     }
+      if(font == null){
+        println("Could not load font: " + fileName);
+        return;
+      }
 
-    //     println("Font '" + fileName + "' loaded as: " + name);
-    //     fontMap.put(name, sound);
-    // }
+      println("Font '" + fileName + "' loaded as: " + name);
+      fontMap.put(name, font);
+    }
 
     public static PImage getImage(String name){
-        PImage image = imageMap.get(name);
+      PImage image = imageMap.get(name);
 
-        if(image == null){
-            println("Image '" + name + "' not found!");
-            return null;
-        }
+      if(image == null){
+        println("Image '" + name + "' not found!");
+        return null;
+      }
 
-        return image;
+      return image;
     }
 
     public static SoundFile getSound(String name){
-        SoundFile sound = soundMap.get(name);
+      SoundFile sound = soundMap.get(name);
 
-        if(sound == null){
-            println("SoundFile '" + name + "' not found!");
-            return null;
-        }
+      if(sound == null){
+        println("SoundFile '" + name + "' not found!");
+        return null;
+      }
 
-        return sound;
+      return sound;
+    }
+
+    public static PFont getFont(String name){
+      PFont font = fontMap.get(name);
+
+      if(font == null){
+        println("Font '" + name + "' not found!");
+        return null;
+      }
+
+      return font;
     }
 }
