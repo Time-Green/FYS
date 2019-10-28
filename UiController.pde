@@ -14,7 +14,6 @@ public class UIController {
 
   void draw(){
     if (Globals.currentGameState == Globals.gameState.menu){
-      rectMode(CENTER);
       fill(titleBackground);
       rect(width/2, (float)height/4.5, width-menuFontSize*4, menuFontSize*2);
       textAlign(CENTER);
@@ -26,6 +25,5 @@ public class UIController {
       text("Press Enter to start", width/2, height/2);
     }
 
-  rectMode(CORNER);
   }
 }

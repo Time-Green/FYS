@@ -28,36 +28,42 @@ class Atom {
     prepareMovement();
     isGrounded = false;
 
-    if(collisionEnabled){
-           
+    if(collisionEnabled){   
       ArrayList<Tile> coliders = new ArrayList<Tile>(); 
       
-      coliders = checkCollision(world, 0, velocity.y);  
+      coliders = checkCollision(world, 0, min(velocity.y, 0));  
       if(coliders.size() != 0){ //up
         velocity.y = max(velocity.y, 0);
       }    
-      
+      coliders = checkCollision(world, 0, max(velocity.y, 0)); 
       if(coliders.size() != 0){ //down
         velocity.y = min(velocity.y, 0);
         isGrounded = true;       
-        if(isMiningDown){
-       //   tile.takeDamage(1);  jonah - 28/10/19
-        }
+        for(Tile tile : coliders){
+          if(isMiningDown){
+            tile.takeDamage(1); 
+          }
+        }  
       }
       
       coliders = checkCollision(world, min(velocity.x, 0), 0);  
       if(coliders.size() != 0){ //left
         velocity.x = 0;
+        for(Tile tile : coliders){
+          if(isMiningLeft){
+            tile.takeDamage(1); 
+          }
+        }  
       }
       
       checkCollision(world, max(velocity.x, 0), 0);
       if(coliders.size() != 0){ //right
-      for(Tile tile : coliders){
-        if(isMiningRight){
-          tile.takeDamage(1); 
-        }
-      }  
         velocity.x = 0;
+        for(Tile tile : coliders){
+          if(isMiningRight){
+            tile.takeDamage(1); 
+          }
+        }  
       }     
     }
 
