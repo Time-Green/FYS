@@ -13,11 +13,11 @@ int backgroundColor = #87CEFA;
 
 UIController ui;
 
-void setupGame(boolean firstTime){
+void setupGame(boolean firstTime) {
   atomList.clear();
-  
+
   ui = new UIController();
-  
+
   ResourceManager.getSound("Background").loop();
 
   world = new World();
@@ -31,24 +31,23 @@ void setupGame(boolean firstTime){
   camera = new Camera(player);
 
   world.generateLayers(tilesVertical);
-  if(firstTime){
+  if (firstTime) {
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.gameState.menu;
   }
 }
 
-void setup(){
+void setup() {
   size(1280, 720, P2D);
 
   ResourceManager.setup(this);
   loadResources();
   setupGame(true);
-
 }
 
-void draw(){
+void draw() {
   background(backgroundColor);
-  
+
   //push and pop are needed so the hud can be correctly drawn
   pushMatrix();
 
@@ -57,35 +56,36 @@ void draw(){
   world.update();
   world.draw(camera);
 
-  for(Atom atom : atomList){
+  for (Atom atom : atomList) {
     atom.update(world);
     atom.draw();
   }
 
   world.updateDepth();
 
-  if(keys[ENTER]){
+  if (keys[ENTER]) {
     Globals.gamePaused = false;
 
-    if(Globals.currentGameState == Globals.gameState.menu){
+    if (Globals.currentGameState == Globals.gameState.menu) {
       Globals.currentGameState = Globals.gameState.inGame;
       setupGame(false);
     }
   }
-  
+
   popMatrix();
   //draw hud below popMatrix();
 
   ui.draw();
 }
 
-void loadResources(){
+void loadResources() {
   //player
   ResourceManager.load("player", "Sprites/player.jpg");
   //ores and stones
   //ResourceManager.load("GrassBlock", "Sprites/grass.block.jpg");
   ResourceManager.load("GrassBlock", "Sprites/grassblock.png");
-  ResourceManager.load("DirtBlock", "Sprites/dirt.block.jpg");
+  //ResourceManager.load("DirtBlock", "Sprites/dirt.block.jpg");
+  ResourceManager.load("DirtBlock", "Sprites/dirtblock.png");
   ResourceManager.load("StoneBlock", "Sprites/stone.block.jpg");
   ResourceManager.load("CoalBlock", "Sprites/coal.block.jpg");
   ResourceManager.load("IronBlock", "Sprites/iron.block.jpg");
