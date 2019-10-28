@@ -15,7 +15,6 @@ class Atom {
   PImage image;
 
   void update(World world){
-    rectMode(CORNER);
     prepareMovement();
     isGrounded = false;
 

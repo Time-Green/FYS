@@ -20,7 +20,6 @@ void setup(){
   loadResources();
 
   ui = new UIController();
-  ui.setup();
   
   ResourceManager.getSound("Background").loop();
 
@@ -41,12 +40,6 @@ void setup(){
 }
 
 void draw(){
-  background(backcolor);
-
-  ui.draw();
-
-  float xScroll = -user.position.x + width * 0.5 - user.size.x / 2;
-  float yScroll = -user.position.y + height * 0.5 - user.size.y / 2;
   background(backgroundColor);
   
   //push and pop are needed so the hud can be correctly drawn
@@ -64,17 +57,21 @@ void draw(){
 
   world.updateDepth();
 
-  if (Globals.gamePaused == true) {
-    if (keys[ENTER]) {
+  if(Globals.gamePaused == true){
+
+    if(keys[ENTER]){
       Globals.gamePaused = false;
-      if (Globals.currentGameState == Globals.gameState.menu) Globals.currentGameState = Globals.gameState.inGame;
+
+      if(Globals.currentGameState == Globals.gameState.menu){
+        Globals.currentGameState = Globals.gameState.inGame;
+      }
     }
   }
   
   popMatrix();
   //draw hud below popMatrix();
 
-  text("FPS: " + round(frameRate), 10, 20);
+  ui.draw();
 }
 
 void loadResources(){
