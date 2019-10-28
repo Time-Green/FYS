@@ -85,11 +85,8 @@ void loadResources() {
   //player
   ResourceManager.load("player", "Sprites/player.jpg");
   //ores and stones
-  //ResourceManager.load("GrassBlock", "Sprites/grass.block.jpg");
   ResourceManager.load("GrassBlock", "Sprites/grassblock.png");
-  //ResourceManager.load("DirtBlock", "Sprites/dirt.block.jpg");
   ResourceManager.load("DirtBlock", "Sprites/dirtblock.png");
-  //ResourceManager.load("StoneBlock", "Sprites/stone.block.jpg");
   ResourceManager.load("MossBlock", "Sprites/mossblock.png");
   ResourceManager.load("StoneBlock", "Sprites/stoneblock.png");
   ResourceManager.load("CoalBlock", "Sprites/coal.block.jpg");
