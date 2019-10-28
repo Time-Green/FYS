@@ -1,7 +1,13 @@
-class Player extends Mob { 
+class Player extends Mob {
+
+  float hurtTimer = 1f;
+  float savedTime;
+  boolean isHurt;
 
   public Player(){
     image = ResourceManager.getImage("player");
+    savedTime = second();
+    isHurt = false;
   }
 
   void update(World world) {
@@ -11,9 +17,19 @@ class Player extends Mob {
     
     super.update(world);
     doPlayerMovement();
+
+    if (isHurt == true) {
+      float passedTime = second() - savedTime;
+      if (passedTime > hurtTimer) {
+        savedTime = second();
+        isHurt = false;
+      }
+    }
+
+    if (this.totalHealth == 0) Globals.currentGameState = Globals.gameState.gameOver;
   }
   
-  void doPlayerMovement(){
+  void doPlayerMovement() {
     if (keys[UP] && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
     }
@@ -36,6 +52,13 @@ class Player extends Mob {
       isMiningRight = true;
     } else {
       isMiningRight = false;
+    }
+  }
+
+  public void playerHurt() {
+    if (isHurt == false) {
+      isHurt = true;
+      this.totalHealth--;
     }
   }
 }

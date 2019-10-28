@@ -3,6 +3,8 @@ ArrayList<Atom> atomList = new ArrayList<Atom>();
 World world;
 Player player;
 Camera camera;
+UIController ui;
+Enemy tEnemy;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -11,19 +13,20 @@ int tileHeight = 50;
 
 int backgroundColor = #87CEFA;
 
-UIController ui;
-
 void setupGame(boolean firstTime) {
   atomList.clear();
 
   ui = new UIController();
 
-  ResourceManager.getSound("Background").loop();
+  //ResourceManager.getSound("Background").loop();
 
   world = new World();
 
   player = new Player();
   atomList.add(player);
+
+  tEnemy = new Enemy();
+  atomList.add(tEnemy);
 
   WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   atomList.add(wallOfDeath);
@@ -97,13 +100,16 @@ void loadResources() {
   ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
   ResourceManager.load("DiamondBlock", "Sprites/diamond.block.jpg");
   ResourceManager.load("BedrockBlock", "Sprites/bedrock.block.jpg");
+
+  //Enemies
+  ResourceManager.load("TestEnemy", "Sprites/eTest.jpg");
   
   //UI
   ResourceManager.load("Heart", "Sprites/heart.png");
   //Font
   ResourceManager.load("Menufont", "Fonts/mario_kart_f2.ttf");
   //audio
-  ResourceManager.load("Background", "Sound/terrariaMusic.mp3");
+  //ResourceManager.load("Background", "Sound/terrariaMusic.mp3");
   ResourceManager.load("DirtBreak", "Sound/dirt.wav");
   ResourceManager.load("StoneBreak1", "Sound/stone1.wav");
   ResourceManager.load("StoneBreak2", "Sound/stone2.wav");
