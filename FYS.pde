@@ -69,6 +69,9 @@ void draw() {
     if (Globals.currentGameState == Globals.gameState.menu) {
       Globals.currentGameState = Globals.gameState.inGame;
       setupGame(false);
+    } else if (Globals.currentGameState == Globals.gameState.gameOver) {
+      Globals.currentGameState = Globals.gameState.inGame;
+      setupGame(true);
     }
   }
 
