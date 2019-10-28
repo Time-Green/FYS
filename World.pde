@@ -7,6 +7,15 @@ public class World{
 
   int safeZone = 10;
 
+  PImage dayNightImage;
+
+  float wallWidth;
+
+  World(float wallWidth){
+    this.wallWidth = wallWidth;
+    dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, 8)));
+  }
+
   public void update(){
     for(Tile tile : tileList){
       tile.update();
@@ -14,6 +23,8 @@ public class World{
   }
 
   public void draw(Camera camera){
+    image(dayNightImage, 0, 0, wallWidth, 1080);
+
     for(Tile tile : tileList){
       tile.draw(camera);
     }

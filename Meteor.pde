@@ -11,6 +11,5 @@ Meteor(){
 void update(){
   ellipseMode(CENTER);
   ellipse(100, 100, random(MIN_METEOR_SIZE, MAX_METEOR_SIZE), random(MIN_METEOR_SIZE, MAX_METEOR_SIZE)); 
-}
-
+  }
 }
