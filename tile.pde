@@ -12,6 +12,9 @@ class Tile {
   PImage destroyedImage;
   SoundFile breakSound;
 
+  float caveSpawningNoiceScale = 0.1f;
+  float caveSpawningPosibiltyScale = 0.68f;
+
   ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
 
   Tile(int x, int y) {
@@ -22,6 +25,13 @@ class Tile {
     positionWhole.y = y;
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
+
+    if(position.y > 1050 && noise(float(x) * caveSpawningNoiceScale, float(y) * caveSpawningNoiceScale) > caveSpawningPosibiltyScale){
+      destroyed = true;
+      isSolid = false;
+
+      return;
+    }
 
     if (position.y == 550) {
       image = ResourceManager.getImage("GrassBlock");
