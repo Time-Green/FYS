@@ -67,7 +67,7 @@ void draw(){
   if(keys[ENTER]){
     Globals.gamePaused = false;
 
-    if(Globals.currentGameState == Globals.gameState.menu){
+    if(Globals.currentGameState == Globals.gameState.menu || Globals.currentGameState == Globals.gameState.gameOver){
       Globals.currentGameState = Globals.gameState.inGame;
       setupGame(false);
     }
@@ -91,6 +91,8 @@ void loadResources(){
   ResourceManager.load("GoldBlock", "Sprites/gold.block.jpg");
   ResourceManager.load("DiamondBlock", "Sprites/diamond.block.jpg");
   ResourceManager.load("BedrockBlock", "Sprites/bedrock.block.jpg");
+  //UI
+  ResourceManager.load("Heart", "Sprites/heart.png");
   //Font
   ResourceManager.load("Menufont", "Fonts/mario_kart_f2.ttf");
   //audio

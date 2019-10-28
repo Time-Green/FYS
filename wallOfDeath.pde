@@ -36,7 +36,7 @@ class WallOfDeath extends Atom {
 
     if (CollisionHelper.rectRect(position, size, player.position, player.size)){
       Globals.gamePaused = true;
-      Globals.currentGameState = Globals.gameState.menu;
+      Globals.currentGameState = Globals.gameState.gameOver;
       
     }
   }
