@@ -1,6 +1,6 @@
 class WallOfDeath extends Atom {
 
-  private float moveSpeed = 0;
+  private float moveSpeed = 1f;
   private float wallHeight = 100;
   private float wallY = -100;
 
