@@ -13,12 +13,9 @@ int backgroundColor = #87CEFA;
 
 UIController ui;
 
-void setup(){
-  size(1280, 720, P2D);
-
-  ResourceManager.setup(this);
-  loadResources();
-
+void setupGame(boolean firstTime){
+  atomList.clear();
+  
   ui = new UIController();
   
   ResourceManager.getSound("Background").loop();
@@ -34,9 +31,19 @@ void setup(){
   camera = new Camera(player);
 
   world.generateLayers(tilesVertical);
+  if(firstTime){
+    Globals.gamePaused = true;
+    Globals.currentGameState = Globals.gameState.menu;
+  }
+}
 
-  Globals.gamePaused = true;
-  Globals.currentGameState = Globals.gameState.menu;
+void setup(){
+  size(1280, 720, P2D);
+
+  ResourceManager.setup(this);
+  loadResources();
+  setupGame(true);
+
 }
 
 void draw(){
@@ -57,14 +64,12 @@ void draw(){
 
   world.updateDepth();
 
-  if(Globals.gamePaused == true){
+  if(keys[ENTER]){
+    Globals.gamePaused = false;
 
-    if(keys[ENTER]){
-      Globals.gamePaused = false;
-
-      if(Globals.currentGameState == Globals.gameState.menu){
-        Globals.currentGameState = Globals.gameState.inGame;
-      }
+    if(Globals.currentGameState == Globals.gameState.menu){
+      Globals.currentGameState = Globals.gameState.inGame;
+      setupGame(false);
     }
   }
   
