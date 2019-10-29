@@ -10,7 +10,8 @@ class Atom {
   float groundedDragFactor = 0.95f;
   float aerialDragFactor = 0.95f;
   float breakForce = 0.99f;
-  boolean isGrounded, isMiningDown, isMiningLeft, isMiningRight;
+  boolean isGrounded; 
+  boolean isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
   int miningcolor = #DC143C;
   PImage image;
@@ -44,7 +45,7 @@ class Atom {
         for(Tile tile : colliders){
 
           if(isMiningDown){
-            tile.takeDamage(1); 
+            attemptMine(tile);
           }
         }  
       }
@@ -57,7 +58,7 @@ class Atom {
           for(Tile tile : colliders){
 
             if(isMiningLeft){
-              tile.takeDamage(1); 
+              attemptMine(tile);
             }
           }  
         }
@@ -68,7 +69,7 @@ class Atom {
           velocity.x = 0;
           for(Tile tile : colliders){
             if(isMiningRight){
-              tile.takeDamage(1); 
+              attemptMine(tile);
             }
           }  
         }     
@@ -123,7 +124,7 @@ class Atom {
         continue;
       }
 
-      debugCollision(tile);
+      //debugCollision(tile);
 
       if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
         colliders.add(tile);      
@@ -141,4 +142,9 @@ class Atom {
   float getDepth(){
     return position.y;
   }
+  void attemptMine(Tile tile){
+    return;
+  }
 }
+
+

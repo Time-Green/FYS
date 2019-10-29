@@ -5,14 +5,15 @@ class Tile{
   boolean destroyed;
   boolean isSolid = true;
 
-  float hp = 4;
+  float maxHp = 4;
+  float hp = maxHp;
 
   PImage image;
   PImage destroyedImage;
   SoundFile breakSound;
 
-  float caveSpawningNoiceScale = 0.1f;
-  float caveSpawningPosibiltyScale = 0.68f;
+  float caveSpawningNoiseScale = 0.1f;
+  float caveSpawningPossibilityScale = 0.68f; //lower for more caves
 
   ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
 
@@ -25,7 +26,7 @@ class Tile{
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
-    if(position.y > 1050 && noise(float(x) * caveSpawningNoiceScale, float(y) * caveSpawningNoiceScale) > caveSpawningPosibiltyScale){
+    if(position.y > 1050 && noise(float(x) * caveSpawningNoiseScale, float(y) * caveSpawningNoiseScale) > caveSpawningPossibilityScale){
       destroyed = true;
       isSolid = false;
 
@@ -70,10 +71,13 @@ class Tile{
 
   void takeDamage(float damageTaken) {
     hp -= damageTaken;
-
+    
     if (hp <= 0) {
       destroy();
     }
+  }
+  boolean canMine(){
+    return isSolid;
   }
 
   public void destroy() {
