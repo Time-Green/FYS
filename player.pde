@@ -18,15 +18,9 @@ class Player extends Mob {
     super.update(world);
     doPlayerMovement();
 
-    if (isHurt == true) {
-      float passedTime = second() - savedTime;
-      if (passedTime > hurtTimer) {
-        savedTime = second();
-        isHurt = false;
-      }
+    if (this.currentHealth == 0){
+      Globals.currentGameState = Globals.gameState.gameOver;
     }
-
-    if (this.currentHealth == 0) Globals.currentGameState = Globals.gameState.gameOver;
   }
   
   void doPlayerMovement() {
@@ -58,5 +52,4 @@ class Player extends Mob {
   void addScore(int amount){
     score += amount;
   }
-  
 }

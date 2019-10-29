@@ -20,10 +20,25 @@ class Mob extends Atom {
     tile.takeDamage(getDamage());
   }
 
+  void update(World world){
+    super.update(world);
+
+    if (isHurt == true){
+      float passedTime = second() - savedTime;
+
+      if (passedTime > hurtTimer) {
+        savedTime = second();
+        isHurt = false;
+      }
+    }
+  }
+
   public void takeDamage(int amount){
     if(isHurt == false){
       isHurt = true;
       currentHealth -= amount;
+
+      CameraShaker.induceStress(0.5f);
     }
   }
 

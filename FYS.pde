@@ -21,6 +21,8 @@ void setup(){
 
   ResourceManager.setup(this);
   prepareResourceLoading();
+
+  CameraShaker.setup(this);
 }
 
 void setupGame(){
@@ -41,6 +43,7 @@ void setupGame(){
   WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   atomList.add(wallOfDeath);
 
+  CameraShaker.reset();
   camera = new Camera(player);
 
   world.generateLayers(tilesVertical);
@@ -68,6 +71,7 @@ void draw(){
   //push and pop are needed so the hud can be correctly drawn
   pushMatrix();
 
+  CameraShaker.update();
   camera.update();
 
   world.update();
