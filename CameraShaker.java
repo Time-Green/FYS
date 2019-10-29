@@ -45,8 +45,6 @@ public class CameraShaker
         ).mult(shake);
 
         trauma = game.constrain(trauma - recoverySpeed, 0, 1);
-
-        game.println(currentShakeOffset.x + " : " + currentShakeOffset.y);
     }
 
     public static void reset(){
