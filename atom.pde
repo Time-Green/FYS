@@ -1,10 +1,9 @@
 class Atom {
   PVector position;
-  PVector startPosition = new PVector(1200, 500);
   PVector size = new PVector(40, 40);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
-  float atomSpeed = 1f;
+  float speed = 1f;
   float jumpForce = 18f;
   float gravityForce = 1f;
   float groundedDragFactor = 0.95f;
@@ -15,14 +14,6 @@ class Atom {
   boolean collisionEnabled = true;
   int miningcolor = #DC143C;
   PImage image;
-
-  Atom(){
-    Prepare();
-  }
-
-  void Prepare(){
-    position = startPosition;
-  }
 
   void update(World world){
     prepareMovement();

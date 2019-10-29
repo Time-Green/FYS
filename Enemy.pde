@@ -2,6 +2,8 @@ class Enemy extends Mob {
 
   public Enemy(){
     image = ResourceManager.getImage("TestEnemy");
+
+    position = new PVector(1000, 500);
   }
 
   void update(World world){
@@ -18,7 +20,7 @@ class Enemy extends Mob {
   private void checkPlayerCollision(){
 
     if (CollisionHelper.rectRect(position, size, player.position, player.size)){
-      player.playerHurt();
+      player.takeDamage(getDamage());
     }
   }
 }

@@ -1,6 +1,9 @@
 class Mob extends Atom {
   int maxHealth = 3;
   int currentHealth = maxHealth;
+  float hurtTimer = 1f;
+  float savedTime;
+  boolean isHurt;
   int miningCooldown = 1; //cooldown in millis
   int lastMine = 0; //before someone rolls by and removes the '= 0' in name of 'optimization', it's because of readability 
 
@@ -15,6 +18,13 @@ class Mob extends Atom {
 
     lastMine = millis();
     tile.takeDamage(getDamage());
+  }
+
+  public void takeDamage(int amount){
+    if(isHurt == false){
+      isHurt = true;
+      currentHealth -= amount;
+    }
   }
 
   int getDamage(){ //obviously temporary till we get something like damage going

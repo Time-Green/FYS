@@ -1,15 +1,13 @@
 class Player extends Mob {
 
-  float hurtTimer = 1f;
-  float savedTime;
-  boolean isHurt;
-
+  PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
   public Player(){
     image = ResourceManager.getImage("player");
     savedTime = second();
     isHurt = false;
+    position = spawnPosition;
   }
 
   void update(World world) {
@@ -43,24 +41,17 @@ class Player extends Mob {
     }
 
     if (keys[LEFT]) {
-      addForce(new PVector(-atomSpeed, 0));
+      addForce(new PVector(-speed, 0));
       isMiningLeft = true;
     } else {
       isMiningLeft = false;
     }
 
     if (keys[RIGHT]) {
-      addForce(new PVector(atomSpeed, 0));
+      addForce(new PVector(speed, 0));
       isMiningRight = true;
     } else {
       isMiningRight = false;
-    }
-  }
-
-  public void playerHurt() {
-    if (isHurt == false) {
-      isHurt = true;
-      this.currentHealth--;
     }
   }
 
