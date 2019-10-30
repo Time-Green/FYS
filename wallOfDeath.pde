@@ -5,6 +5,9 @@ class WallOfDeath extends Atom {
   private float wallY = -100;
 
   color wallColor = #FF8C33;
+  
+  //for debug only
+  final boolean ENABLEPLAYERCOLLISION = false;
 
   int destroyTilesAfter = 10; //destroys tiles permanently x tiles behind the WoD
 
@@ -24,9 +27,11 @@ class WallOfDeath extends Atom {
     if (Globals.gamePaused){
       return;
     }
-
-    checkPlayerCollision();
+    
     cleanUpTiles();
+    if(ENABLEPLAYERCOLLISION){
+      checkPlayerCollision();
+    }
 
     super.update(world);
   }
