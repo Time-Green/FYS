@@ -4,7 +4,7 @@ class Mob extends Atom {
   float hurtTimer = 1f;
   float savedTime;
   boolean isHurt;
-  int miningCooldown = 1; //cooldown in millis
+  int miningCooldown = 100; //cooldown in millis
   int lastMine = 0; //before someone rolls by and removes the '= 0' in name of 'optimization', it's because of readability 
 
   void attemptMine(Tile tile){

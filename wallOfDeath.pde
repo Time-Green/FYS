@@ -5,6 +5,9 @@ class WallOfDeath extends Atom {
   private float wallY = -100;
 
   color wallColor = #FF8C33;
+  
+  //for debug only
+  final boolean ENABLEPLAYERCOLLISION = false;
 
   WallOfDeath(float wallWidth){
     gravityForce = 0f;
@@ -23,7 +26,9 @@ class WallOfDeath extends Atom {
       return;
     }
 
-    checkPlayerCollision();
+    if(ENABLEPLAYERCOLLISION){
+      checkPlayerCollision();
+    }
 
     super.update(world);
   }
