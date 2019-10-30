@@ -19,7 +19,9 @@ public class Camera{
         position.y = (-target.position.y + height * 0.5 - target.size.y / 2) + currentCameraShakeOffset.y;
 
         //limit x position so the camera doesent go to far to the left or right
-        position.x = constrain(position.x, -1270, 0);
+        float minXposotion = -(tilesHorizontal * tileWidth + tileWidth - width);
+        position.x = constrain(position.x, minXposotion, 0);
+        println(position.x);
 
         translate(position.x, position.y);
     }
