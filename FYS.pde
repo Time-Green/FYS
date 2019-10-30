@@ -16,7 +16,7 @@ int backgroundColor = #87CEFA;
 boolean firstTime = true;
 boolean firstStart = true;
 
-void setup(){
+void setup() {
   size(1280, 720, P2D);
 
   ResourceManager.setup(this);
@@ -25,7 +25,7 @@ void setup(){
   CameraShaker.setup(this);
 }
 
-void setupGame(){
+void setupGame() {
   atomList.clear();
 
   ui = new UIController();
@@ -58,16 +58,16 @@ void setupGame(){
   }
 }
 
-void draw(){
+void draw() {
 
-  if(!ResourceManager.isLoaded()){
+  if (!ResourceManager.isLoaded()) {
     handleLoading();
 
     return;
   }
 
   //setup game after loading
-  if(firstTime){
+  if (firstTime) {
     setupGame();
     firstTime = false;
   }
@@ -81,24 +81,24 @@ void draw(){
   world.update();
   world.draw(camera);
 
-  for (Atom atom : atomList){
+  for (Atom atom : atomList) {
     atom.update(world);
     atom.draw();
   }
 
   world.updateDepth();
 
-  if(keys[ENTER]){
+  if (keys[ENTER]) {
     Globals.gamePaused = false;
 
-    if(Globals.currentGameState == Globals.gameState.menu){
+    if (Globals.currentGameState == Globals.gameState.menu) {
       Globals.currentGameState = Globals.gameState.inGame;
-      if(firstStart){
+      if (firstStart) {
         firstStart = false;
-      }else{
+      } else {
         setupGame();
       }
-    }else if(Globals.currentGameState == Globals.gameState.gameOver){
+    } else if (Globals.currentGameState == Globals.gameState.gameOver) {
       Globals.currentGameState = Globals.gameState.inGame;
       setupGame();
     }
@@ -110,11 +110,11 @@ void draw(){
   ui.draw();
 }
 
-void handleLoading(){
+void handleLoading() {
   background(0);
 
   String lastLoadedResource = ResourceManager.loadNext();
-    
+
   float loadingBarWidth = float(ResourceManager.getCurrentLoadIndex()) / float(ResourceManager.getTotalResourcesToLoad());
 
   //loading bar
@@ -128,7 +128,7 @@ void handleLoading(){
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
 }
 
-void prepareResourceLoading(){
+void prepareResourceLoading() {
   //Player
   ResourceManager.prepareLoad("player", "Sprites/player.jpg");
   //Enemies
@@ -139,13 +139,15 @@ void prepareResourceLoading(){
   ResourceManager.prepareLoad("DirtBlock", "Sprites/Blocks/dirtblock.png");
   ResourceManager.prepareLoad("MossBlock", "Sprites/Blocks/mossblock.png");
   ResourceManager.prepareLoad("StoneBlock", "Sprites/Blocks/stoneblock.png");
-  ResourceManager.prepareLoad("CoalBlock", "Sprites/Blocks/coal.block.jpg");
-  ResourceManager.prepareLoad("IronBlock", "Sprites/Blocks/iron.block.jpg");
-  ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/gold.block.jpg");
-  ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamond.block.jpg");
+  ResourceManager.prepareLoad("CoalBlock", "Sprites/Blocks/coalblock.png");
+  ResourceManager.prepareLoad("IronBlock", "Sprites/Blocks/ironblock.png");
+  ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/goldblock.png");
+  ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamondblock.png");
+  ResourceManager.prepareLoad("LapisBlock", "Sprites/Blocks/lapisblock.png");
+  ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
   ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
   //Day Night Ciycle
-  for(int i = 0; i < 8; i++){
+  for (int i = 0; i < 8; i++) {
     ResourceManager.prepareLoad("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");
   }
   //UI
