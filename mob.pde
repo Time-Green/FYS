@@ -24,10 +24,13 @@ class Mob extends Atom {
     super.update(world);
 
     if (isHurt == true){
-      float passedTime = second() - savedTime;
+      //float passedTime = second() - savedTime;
 
-      if (passedTime > hurtTimer) {
-        savedTime = second();
+      // if (passedTime > hurtTimer) {
+      if (frameCount % 60 == 0) {
+        
+        //savedTime = second();
+        
         isHurt = false;
       }
     }
@@ -37,6 +40,7 @@ class Mob extends Atom {
     if(isHurt == false){
       isHurt = true;
       currentHealth -= amount;
+      
 
       CameraShaker.induceStress(0.5f);
     }
