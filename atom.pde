@@ -1,17 +1,25 @@
 class Atom {
+  //Vectors
   PVector position;
   PVector size = new PVector(40, 40);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
+
+  //Movement
   float speed = 1f;
   float jumpForce = 18f;
   float gravityForce = 1f;
   float groundedDragFactor = 0.95f;
   float aerialDragFactor = 0.95f;
   float breakForce = 0.99f;
+
+  //Bools
   boolean isGrounded; 
   boolean isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
+  boolean walkLeft;
+
+  //Tiles
   int miningcolor = #DC143C;
   PImage image;
 
@@ -38,6 +46,8 @@ class Atom {
           if(isMiningDown){
             attemptMine(tile);
           }
+
+          
         }  
       }
 
@@ -46,8 +56,9 @@ class Atom {
 
         if(colliders.size() != 0){ //left
           velocity.x = 0;
-          for(Tile tile : colliders){
+          walkLeft =!walkLeft;
 
+          for(Tile tile : colliders){
             if(isMiningLeft){
               attemptMine(tile);
             }
@@ -58,11 +69,13 @@ class Atom {
         colliders = checkCollision(world, max(velocity.x, 0), 0);
         if(colliders.size() != 0){ //right
           velocity.x = 0;
+          walkLeft =!walkLeft;
+
           for(Tile tile : colliders){
             if(isMiningRight){
               attemptMine(tile);
             }
-          }  
+          }
         }     
       }
     }
@@ -135,6 +148,11 @@ class Atom {
   }
   void attemptMine(Tile tile){
     return;
+  }
+
+  boolean randomBool() {
+    if ((int) random(2) == 0) return true;
+    else return false;
   }
 }
 

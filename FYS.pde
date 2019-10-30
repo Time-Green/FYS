@@ -4,7 +4,7 @@ World world;
 Player player;
 Camera camera;
 UIController ui;
-Enemy tEnemy;
+Enemy[] enemies;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -37,8 +37,12 @@ void setupGame(){
   player = new Player();
   atomList.add(player);
 
-  tEnemy = new Enemy();
-  atomList.add(tEnemy);
+  enemies = new Enemy[1];
+
+  for (int i = 0; i < 1; ++i) {
+    enemies[i] = new Enemy();
+    atomList.add(enemies[i]);
+  }
 
   WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   atomList.add(wallOfDeath);

@@ -46,7 +46,7 @@ public class CameraShaker
 
         trauma = game.constrain(trauma - recoverySpeed, 0, 1);
 
-        game.println(currentShakeOffset.x + " : " + currentShakeOffset.y);
+        //game.println(currentShakeOffset.x + " : " + currentShakeOffset.y);
     }
 
     public static void reset(){
