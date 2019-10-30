@@ -24,7 +24,7 @@ class Tile{
     positionWhole.x = x;
     positionWhole.y = y;
 
-    setMaxHp(4);
+    setMaxHp(2);
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
