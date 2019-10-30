@@ -11,6 +11,7 @@ class Tile{
   PImage image;
   PImage destroyedImage;
   SoundFile breakSound;
+  float painDiscolor = 50;
 
   float caveSpawningNoiseScale = 0.1f;
   float caveSpawningPossibilityScale = 0.68f; //lower for more caves
@@ -49,8 +50,9 @@ class Tile{
       if (image == null) {
         return;
       }
-
+      tint(255 - painDiscolor * (maxHp - hp));
       image(image, position.x, position.y, tileWidth, tileHeight);
+      tint(255);
     }else{
       image(destroyedImage, position.x, position.y, tileWidth, tileHeight);
     }
