@@ -17,7 +17,7 @@ class Mob extends Atom {
     }
 
     lastMine = millis();
-    tile.takeDamage(getDamage());
+    tile.takeDamage(getAttackPower());
   }
 
   void update(World world){
@@ -41,12 +41,11 @@ class Mob extends Atom {
       isHurt = true;
       currentHealth -= amount;
       
-
       CameraShaker.induceStress(0.5f);
     }
   }
 
-  int getDamage(){ //obviously temporary till we get something like damage going
+  int getAttackPower(){ //obviously temporary till we get something like damage going
     return 1; 
   }
 }

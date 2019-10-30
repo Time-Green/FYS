@@ -3,8 +3,7 @@ public class BedrockTile extends Tile{
   public BedrockTile(int x, int y){
     super(x, y);
 
-    maxHp = 9999;
-    hp = maxHp;
+    setMaxHp(9999);
       
     image = ResourceManager.getImage("BedrockBlock");
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
@@ -13,6 +12,6 @@ public class BedrockTile extends Tile{
   void update(){
     super.update();
 
-    hp = maxHp;
+    setMaxHp(9999);
   }
 }

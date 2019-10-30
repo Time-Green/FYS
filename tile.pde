@@ -5,8 +5,7 @@ class Tile{
   boolean destroyed;
   boolean isSolid = true;
 
-  float maxHp = 4;
-  float hp = maxHp;
+  private float maxHp, hp;
 
   PImage image;
   PImage destroyedImage;
@@ -24,6 +23,8 @@ class Tile{
 
     positionWhole.x = x;
     positionWhole.y = y;
+
+    setMaxHp(4);
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
@@ -95,5 +96,10 @@ class Tile{
   private void playBreakSound(){
     breakSound.stop();
     breakSound.play();
+  }
+
+  void setMaxHp(int hpToSet){
+    maxHp = hpToSet;
+    hp = hpToSet;
   }
 }

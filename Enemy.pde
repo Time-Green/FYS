@@ -12,9 +12,9 @@ class Enemy extends Mob {
   enemyType myType;
 
   public Enemy(){
-    this.image = ResourceManager.getImage("TestEnemy");
+    image = ResourceManager.getImage("TestEnemy");
 
-    this.position = new PVector(1000, 500);
+    position = new PVector(1000, 500);
 
     // this.mySpeed = random(0, 1);
     // this.walkLeft = randomBool();
@@ -26,16 +26,16 @@ class Enemy extends Mob {
         //Do nothing in case something goes wrong
       return;
       case 0 :
-        this.myType = enemyType.normal;
+        myType = enemyType.normal;
       break;
       case 1 :
-        this.myType = enemyType.digger;
+        myType = enemyType.digger;
       break;
       case 2 :
-        this.myType = enemyType.bomb;
+        myType = enemyType.bomb;
       break;
       case 3 :
-        this.myType = enemyType.ghost;
+        myType = enemyType.ghost;
       break;
     }
   }
@@ -52,19 +52,19 @@ class Enemy extends Mob {
     enemyMovement();
 
     //Todo: get this to work
-    if (this.position.x <= 100.0f) this.walkLeft = !this.walkLeft;
+    if (position.x <= 100.0f) walkLeft = !walkLeft;
     println("position.x: "+position.x);
     // world
   }
 
   private void enemyCollision(){
-    if (CollisionHelper.rectRect(this.position, this.size, player.position, player.size))
-      player.takeDamage(getDamage());
+    if (CollisionHelper.rectRect(position, size, player.position, player.size))
+      player.takeDamage(getAttackPower());
   }
 
   private void enemyMovement() {
-    if (this.walkLeft) this.speed = this.mySpeed;
-    else this.speed = -this.mySpeed;
-    addForce(new PVector(this.speed, 0));
+    if (walkLeft) speed = mySpeed;
+    else speed = -mySpeed;
+    addForce(new PVector(speed, 0));
   }
 }
