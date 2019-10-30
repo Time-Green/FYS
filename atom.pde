@@ -80,7 +80,7 @@ class Atom {
       }
     }
 
-    handleMovement();
+    handleMovement(world);
   }
 
   void draw(){
@@ -101,10 +101,10 @@ class Atom {
     }
   }
 
-  private void handleMovement(){
+  private void handleMovement(World world){
     position.add(velocity);
 
-    position.x = constrain(position.x, 0, tilesHorizontal * tileWidth + 10);
+    position.x = constrain(position.x, 0, world.getWidth() + 10);
   }
 
   boolean isGrounded(){
@@ -146,14 +146,8 @@ class Atom {
   float getDepth(){
     return position.y;
   }
+
   void attemptMine(Tile tile){
     return;
   }
-
-  boolean randomBool() {
-    if ((int) random(2) == 0) return true;
-    else return false;
-  }
 }
-
-

@@ -157,4 +157,8 @@ public class World {
   PVector getWholePosition(Atom atom){//return the X and Y in tiles
     return new PVector(floor(atom.position.x / tileWidth), floor(atom.position.y / tileHeight));
   }
+
+  float getWidth(){
+    return tilesHorizontal * tileWidth;
+  }
 }

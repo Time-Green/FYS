@@ -1,4 +1,4 @@
-  enum enemyType {//This has to go ouside the class because it has to
+  enum EnemyType {//This has to go ouside the class because it has to
     normal,
     digger,
     bomb,
@@ -6,36 +6,39 @@
   }
 
 class Enemy extends Mob {
-
-  float mySpeed = 1f;
-
-  enemyType myType;
+  EnemyType myType;
 
   public Enemy(){
     image = ResourceManager.getImage("TestEnemy");
 
-    position = new PVector(1000, 500);
+    speed = 10;
 
-    // this.mySpeed = random(0, 1);
-    // this.walkLeft = randomBool();
+    position = new PVector(1000, 500);
+    velocity = new PVector(-speed, 0);
+    
+    //set dragfactors to 1 so we dont slow down by drag
+    groundedDragFactor = 1f;
+    aerialDragFactor = 1f;
 
     int typeSelect = (int)random(0, 4);
+    
     //Give this enemy their type based on the result of typeSelect
     switch (typeSelect) {
       default :
         //Do nothing in case something goes wrong
+        println("WARNING: EnemyType not found!");
       return;
       case 0 :
-        myType = enemyType.normal;
+        myType = EnemyType.normal;
       break;
       case 1 :
-        myType = enemyType.digger;
+        myType = EnemyType.digger;
       break;
       case 2 :
-        myType = enemyType.bomb;
+        myType = EnemyType.bomb;
       break;
       case 3 :
-        myType = enemyType.ghost;
+        myType = EnemyType.ghost;
       break;
     }
   }
@@ -48,23 +51,24 @@ class Enemy extends Mob {
 
     super.update(world);
 
-    enemyCollision();
-    enemyMovement();
-
-    //Todo: get this to work
-    if (position.x <= 100.0f) walkLeft = !walkLeft;
-    println("position.x: "+position.x);
-    // world
+    handleCollision();
+    handleMovement(world);
   }
 
-  private void enemyCollision(){
-    if (CollisionHelper.rectRect(position, size, player.position, player.size))
+  private void handleCollision(){
+    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
       player.takeDamage(getAttackPower());
+    }
   }
 
-  private void enemyMovement() {
-    if (walkLeft) speed = mySpeed;
-    else speed = -mySpeed;
-    addForce(new PVector(speed, 0));
+  private void handleMovement(World world){
+
+    if(position.x < 10){
+      velocity = new PVector(speed, 0);
+    }
+
+    if(position.x > world.getWidth() - 10){
+      velocity = new PVector(-speed, 0);
+    }
   }
 }
