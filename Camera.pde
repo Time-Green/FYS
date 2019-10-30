@@ -21,7 +21,6 @@ public class Camera{
         //limit x position so the camera doesent go to far to the left or right
         float minXposotion = -(tilesHorizontal * tileWidth + tileWidth - width);
         position.x = constrain(position.x, minXposotion, 0);
-        println(position.x);
 
         translate(position.x, position.y);
     }
