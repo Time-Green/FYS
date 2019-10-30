@@ -45,7 +45,7 @@ public class World {
     if(subList.size() == 0){
       return voidTile;
     }
-    return subList.get(constrain(int(x) / tileWidth, 0, subList.size()));
+    return subList.get(constrain(int(x) / tileWidth, 0, subList.size() - 1));
   }
 
   void generateLayers(int layers) {
