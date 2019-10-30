@@ -1,6 +1,9 @@
 public class World {
   ArrayList<Tile> tileList = new ArrayList<Tile>();
-  ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with x, y and Tile.
+  ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
+  Tile voidTile = new Tile(0, 0); //return the void tile if there's no tile
+
+  ArrayList<Tile> tileDestroy = new ArrayList<Tile>();
 
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
   int generationRatio = 5; //every five tiles we dig, we add 5 more
@@ -17,6 +20,12 @@ public class World {
   }
 
   public void update() {
+    for(Tile tile : tileDestroy){
+      tileList.remove(tile);
+      map.get(int(tile.positionWhole.y)).remove(tile);
+    }
+    tileDestroy.clear();
+
     for (Tile tile : tileList) {
       tile.update();
     }
@@ -33,8 +42,10 @@ public class World {
   //return tile you're currently on
   Tile getTile(float x, float y) {
     ArrayList<Tile> subList = map.get(constrain(int(y) / tileHeight, 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
-
-    return subList.get(constrain(int(x) / tileWidth, 0, tilesHorizontal));
+    if(subList.size() == 0){
+      return voidTile;
+    }
+    return subList.get(constrain(int(x) / tileWidth, 0, subList.size()));
   }
 
   void generateLayers(int layers) {
@@ -137,5 +148,13 @@ public class World {
     }
 
     deepestDepth = max(depth, deepestDepth);
+  }
+
+  ArrayList<Tile> getLayer(int layer){
+    return world.map.get(layer);
+  }
+
+  PVector getWholePosition(Atom atom){//return the X and Y in tiles
+    return new PVector(floor(atom.position.x / tileWidth), floor(atom.position.y / tileHeight));
   }
 }

@@ -1,6 +1,6 @@
 class Tile{
   PVector position = new PVector();
-  PVector positionWhole = new PVector(); //same as position, but pixels instead of complete tiles
+  PVector positionWhole = new PVector(); //same as position, but complete tiles instead of pixels
 
   boolean destroyed;
   boolean isSolid = true;
@@ -86,6 +86,10 @@ class Tile{
     playBreakSound();
     destroyed = true;
     isSolid = false;
+  }
+
+  public void delete(){
+    world.tileDestroy.add(this);
   }
 
   private void playBreakSound(){

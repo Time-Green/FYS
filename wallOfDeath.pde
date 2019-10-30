@@ -6,6 +6,8 @@ class WallOfDeath extends Atom {
 
   color wallColor = #FF8C33;
 
+  int destroyTilesAfter = 10; //destroys tiles permanently x tiles behind the WoD
+
   WallOfDeath(float wallWidth){
     gravityForce = 0f;
     groundedDragFactor = 1f;
@@ -24,6 +26,7 @@ class WallOfDeath extends Atom {
     }
 
     checkPlayerCollision();
+    cleanUpTiles();
 
     super.update(world);
   }
@@ -41,6 +44,16 @@ class WallOfDeath extends Atom {
       Globals.gamePaused = true;
       Globals.currentGameState = Globals.gameState.gameOver;
       
+    }
+  }
+  private void cleanUpTiles(){
+    int layer = int(world.getWholePosition(this).y - destroyTilesAfter);
+    if(layer < 0){ //it's not time to destroy yet, because we just started
+      return;
+    }
+    
+    for(Tile tile : world.getLayer(layer)){
+        tile.delete();
     }
   }
 }
