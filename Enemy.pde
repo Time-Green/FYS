@@ -11,7 +11,7 @@ class Enemy extends Mob {
   public Enemy(){
     image = ResourceManager.getImage("TestEnemy");
 
-    speed = 10;
+    speed = 5;
 
     position = new PVector(1000, 500);
     velocity = new PVector(-speed, 0);
@@ -53,6 +53,9 @@ class Enemy extends Mob {
 
     handleCollision();
     handleMovement(world);
+
+    if (position.x < 10) walkLeft = false;
+    if (position.x > world.getWidth() - 10) walkLeft = true;
   }
 
   private void handleCollision(){
@@ -63,12 +66,8 @@ class Enemy extends Mob {
 
   private void handleMovement(World world){
 
-    if(position.x < 10){
-      velocity = new PVector(speed, 0);
-    }
+    if(!walkLeft) velocity = new PVector(speed, 0);
 
-    if(position.x > world.getWidth() - 10){
-      velocity = new PVector(-speed, 0);
-    }
+    if(walkLeft)  velocity = new PVector(-speed, 0);
   }
 }

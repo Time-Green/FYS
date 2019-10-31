@@ -56,7 +56,7 @@ class Atom {
 
         if(colliders.size() != 0){ //left
           velocity.x = 0;
-          walkLeft =!walkLeft;
+          walkLeft = !walkLeft;
 
           for(Tile tile : colliders){
             if(isMiningLeft){
