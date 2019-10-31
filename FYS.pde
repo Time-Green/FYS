@@ -143,7 +143,7 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("IronBlock", "Sprites/Blocks/ironblock.png");
   ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/goldblock.png");
   ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamondblock.png");
-  ResourceManager.prepareLoad("LapisBlock", "Sprites/Blocks/lapisblock.png");
+  ResourceManager.prepareLoad("LapisBlock", "Sprites/Blocks/Lapisblock.png");
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
   ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
   //Day Night Ciycle
