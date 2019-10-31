@@ -37,10 +37,16 @@ void setupGame() {
   player = new Player();
   atomList.add(player);
 
-  enemies = new Enemy[1];
+  int enemyLenght = 4;
+  enemies = new Enemy[enemyLenght];
 
-  for (int i = 0; i < 1; ++i) {
-    enemies[i] = new DigEnemy();
+  enemies[0] = new WalkEnemy();
+  enemies[1] = new DigEnemy();
+  enemies[2] = new GhostEnemy();
+  enemies[3] = new BombEnemy();
+
+  for (int i = 0; i < enemyLenght; ++i) {
+
     atomList.add(enemies[i]);
   }
 
