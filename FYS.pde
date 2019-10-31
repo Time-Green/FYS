@@ -40,7 +40,7 @@ void setupGame() {
   enemies = new Enemy[1];
 
   for (int i = 0; i < 1; ++i) {
-    enemies[i] = new Enemy();
+    enemies[i] = new DigEnemy();
     atomList.add(enemies[i]);
   }
 
@@ -132,7 +132,10 @@ void prepareResourceLoading() {
   //Player
   ResourceManager.prepareLoad("player", "Sprites/player.jpg");
   //Enemies
-  ResourceManager.prepareLoad("TestEnemy", "Sprites/eTest.jpg");
+  ResourceManager.prepareLoad("WalkEnemy", "Sprites/Enemies/WalkEnemyTest.jpg");
+  ResourceManager.prepareLoad("DigEnemy", "Sprites/Enemies/DigEnemy.jpg");
+  ResourceManager.prepareLoad("BombEnemy", "Sprites/Enemies/BombEnemyTest.png");
+  ResourceManager.prepareLoad("GhostEnemy", "Sprites/Enemies/GhostEnemy.png");
   //Tiles
   ResourceManager.prepareLoad("DestroyedBlock", "Sprites/Blocks/destroyed.png");
   ResourceManager.prepareLoad("GrassBlock", "Sprites/Blocks/grassblock.png");

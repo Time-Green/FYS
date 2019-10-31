@@ -2,6 +2,7 @@ class Atom {
   //Vectors
   PVector position;
   PVector size = new PVector(40, 40);
+  PVector scaleSize = new PVector(1, 1);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
 
@@ -14,7 +15,7 @@ class Atom {
   float breakForce = 0.99f;
 
   //Bools
-  boolean isGrounded; 
+  boolean isGrounded;
   boolean isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
   boolean walkLeft;
@@ -27,14 +28,14 @@ class Atom {
     prepareMovement();
     isGrounded = false;
 
-    if(collisionEnabled){   
-      ArrayList<Tile> colliders = new ArrayList<Tile>(); 
-      
+    if(collisionEnabled){
+      ArrayList<Tile> colliders = new ArrayList<Tile>();
+
       colliders = checkCollision(world, 0, min(velocity.y, 0));
       
       if(colliders.size() != 0){ //up
         velocity.y = max(velocity.y, 0);
-      }    
+      }
       
       colliders = checkCollision(world, 0, max(velocity.y, 0));
 
@@ -47,7 +48,6 @@ class Atom {
             attemptMine(tile);
           }
 
-          
         }  
       }
 
@@ -62,7 +62,7 @@ class Atom {
             if(isMiningLeft){
               attemptMine(tile);
             }
-          }  
+          }
         }
       }
       else if(velocity.x > 0){
@@ -84,7 +84,10 @@ class Atom {
   }
 
   void draw(){
+    pushMatrix();
+    scale(scaleSize.x,scaleSize.y);
     image(image, position.x, position.y, size.x, size.y);
+    popMatrix();
   }
 
   private void prepareMovement(){
