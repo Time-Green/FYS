@@ -5,8 +5,6 @@ class Player extends Mob {
 
   public Player(){
     image = ResourceManager.getImage("player");
-    // savedTime = second();
-    // isHurt = false;
     position = spawnPosition;
   }
 

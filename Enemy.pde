@@ -9,12 +9,12 @@ class Enemy extends Mob {
   EnemyType myType;
 
   public Enemy(){
-    image = ResourceManager.getImage("TestEnemy");
+    this.image = ResourceManager.getImage("TestEnemy");
 
-    speed = 5;
+    this.speed = 5;
 
-    position = new PVector(1000, 500);
-    velocity = new PVector(-speed, 0);
+    this.position = new PVector(1000, 500);
+    this.velocity = new PVector(-speed, 0);
     
     //set dragfactors to 1 so we dont slow down by drag
     groundedDragFactor = 1f;
@@ -54,20 +54,20 @@ class Enemy extends Mob {
     handleCollision();
     handleMovement(world);
 
-    if (position.x < 10) walkLeft = false;
-    if (position.x > world.getWidth() - 10) walkLeft = true;
+    if (this.position.x < 10) this.walkLeft = false;
+    if (this.position.x > world.getWidth() - 10) this.walkLeft = true;
   }
 
   private void handleCollision(){
-    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
+    if (CollisionHelper.rectRect(this.position, this.size, player.position, player.size)){
       player.takeDamage(getAttackPower());
     }
   }
 
   private void handleMovement(World world){
 
-    if(!walkLeft) velocity = new PVector(speed, 0);
+    if(!this.walkLeft) this.velocity = new PVector(speed, 0);
 
-    if(walkLeft)  velocity = new PVector(-speed, 0);
+    if(this.walkLeft)  this.velocity = new PVector(-speed, 0);
   }
 }
