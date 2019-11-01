@@ -16,7 +16,7 @@ public class Bird extends Mob{
         if(flyingLeft){
             velocity = new PVector(random(-5f, -2f), 0);
         }else{
-            velocity = new PVector(random(5f, 2f), 0);
+            velocity = new PVector(random(2f, 5f), 0);
         }
 
         //set dragfactors to 1 so we dont slow down by drag
