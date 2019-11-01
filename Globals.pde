@@ -1,12 +1,11 @@
-static class Globals {
+static class Globals{
+  
+  static boolean gamePaused = true;
+  static GameState currentGameState = GameState.MainMenu;
 
-  static boolean gamePaused;
-
-  static enum gameState {
-    menu,
-    inGame,
-    gameOver
+  static enum GameState{
+    MainMenu,
+    InGame,
+    GameOver
   }
-
-  static gameState currentGameState;
 }

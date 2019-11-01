@@ -12,10 +12,8 @@ int tileHeight = 50;
 
 int birdCount = 10;
 
-int backgroundColor = #87CEFA;
-
 boolean firstTime = true;
-boolean firstStart = true;
+//boolean firstStart = true;
 
 void setup() {
   size(1280, 720, P2D);
@@ -63,11 +61,6 @@ void setupGame() {
   camera = new Camera(player);
 
   world.generateLayers(tilesVertical);
-
-  if(firstTime){
-    Globals.gamePaused = true;
-    Globals.currentGameState = Globals.gameState.menu;
-  }
 }
 
 void draw(){
@@ -80,8 +73,8 @@ void draw(){
 
   //setup game after loading
   if(firstTime){
-    setupGame();
     firstTime = false;
+    setupGame();
   }
 
   //push and pop are needed so the hud can be correctly drawn
@@ -100,27 +93,47 @@ void draw(){
 
   world.updateDepth();
 
-  if(keys[ENTER]){
-    Globals.gamePaused = false;
-
-    if (Globals.currentGameState == Globals.gameState.menu){
-      Globals.currentGameState = Globals.gameState.inGame;
-
-      if(firstStart){
-        firstStart = false;
-      }else{
-        setupGame();
-      }
-    }else if(Globals.currentGameState == Globals.gameState.gameOver){
-      Globals.currentGameState = Globals.gameState.inGame;
-      setupGame();
-    }
-  }
-
   popMatrix();
   //draw hud below popMatrix();
 
+  handleGameFlow();
+
   ui.draw();
+}
+
+void handleGameFlow(){
+
+  switch (Globals.currentGameState) {
+
+    //not much happens yet if we are ingame..
+    case InGame:
+      
+    break;
+
+    case MainMenu:
+
+      //if we are in the main menu we start the game by pressing enter
+      if(keys[ENTER]){
+        startGame();
+      }
+
+    break;
+
+    case GameOver:
+      
+      //if we died we restart the game by pressing enter
+      if(keys[ENTER]){
+        startGame();
+      }
+
+    break;	
+  }
+}
+
+void startGame(){
+  Globals.gamePaused = false;
+  Globals.currentGameState = Globals.GameState.InGame;
+  setupGame();
 }
 
 void handleLoading(){

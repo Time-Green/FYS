@@ -9,45 +9,61 @@ class Player extends Mob {
   }
 
   void update(World world) {
+
     if (Globals.gamePaused) {  
       return;
     }
     
     super.update(world);
-    doPlayerMovement();
 
-    if (this.currentHealth == 0){
-      Globals.currentGameState = Globals.gameState.gameOver;
-    }
+    doPlayerMovement();
   }
   
-  void doPlayerMovement() {
-    if (keys[UP] && isGrounded()) {
+  void doPlayerMovement(){
+    if(keys[UP] && isGrounded()){
       addForce(new PVector(0, -jumpForce));
     }
 
-    if (keys[DOWN]) {
+    if(keys[DOWN]){
       isMiningDown = true;
-    } else {
+    }else{
       isMiningDown = false;
     }
 
-    if (keys[LEFT]) {
+    if(keys[LEFT]){
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
-    } else {
+    }else{
       isMiningLeft = false;
     }
 
-    if (keys[RIGHT]) {
+    if(keys[RIGHT]){
       addForce(new PVector(speed, 0));
       isMiningRight = true;
-    } else {
+    }else{
       isMiningRight = false;
     }
   }
 
-  void addScore(int amount){
-    score += amount;
+  void addScore(int scoreToAdd){
+    score += scoreToAdd;
+  }
+
+  public void takeDamage(int damageTaken){
+
+    if(isHurt == false){
+      // if the player has taken damage, add camera shake
+      CameraShaker.induceStress(0.6f);
+    }
+
+    //needs to happan after camera shake because else 'isHurt' will be always true
+    super.takeDamage(damageTaken);
+  }
+
+  public void die(){
+    super.die();
+
+    Globals.gamePaused = true;
+    Globals.currentGameState = Globals.GameState.GameOver;
   }
 }

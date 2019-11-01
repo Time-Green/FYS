@@ -6,31 +6,32 @@ class WallOfDeath extends Atom {
 
   color wallColor = #FF8C33;
 
-  int destroyTilesAfter = 10; //destroys tiles permanently x tiles behind the WoD
+  final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
 
   WallOfDeath(float wallWidth){
-    //for debug only, Remove this line of code when puplishing
-    this.collisionEnabled = false;
-    gravityForce = 0f;
-    groundedDragFactor = 1f;
-    collisionEnabled = false;
-    size = new PVector(wallWidth, wallHeight);
     position = new PVector(0, wallY);
     velocity = new PVector(0, moveSpeed);
+    size = new PVector(wallWidth, wallHeight);
+
+    //for debug only, Remove this line of code when puplishing
+    collisionEnabled = false;
+
+    //movement is not done with gravity but only with velocity
+    gravityForce = 0f;
+    groundedDragFactor = 1f;
   }
   
   void update(World world){
-    
-    velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
-    
+
     if (Globals.gamePaused){
       return;
     }
-    
-    cleanUpTiles();
-    
 
     super.update(world);
+
+    velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
+    
+    cleanUpTiles();
   }
 
   void draw(){
@@ -44,13 +45,16 @@ class WallOfDeath extends Atom {
 
     if (CollisionHelper.rectRect(position, size, player.position, player.size)){
       Globals.gamePaused = true;
-      Globals.currentGameState = Globals.gameState.gameOver;
-      
+      Globals.currentGameState = Globals.GameState.GameOver;
     }
+
   }
+
   private void cleanUpTiles(){
-    int layer = int(world.getWholePosition(this).y - destroyTilesAfter);
-    if(layer < 0){ //it's not time to destroy yet, because we just started
+    int layer = int(world.getWholePosition(this).y - DESTROYTILESAFTER);
+
+    //it's not time to destroy yet, because we just started
+    if(layer < 0){
       return;
     }
     

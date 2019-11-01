@@ -25,13 +25,14 @@ public class UIController {
   void draw(){
     //draw hud at center position
     rectMode(CENTER);
-    textAlign(CENTER);
+    textAlign(CENTER, CENTER);
 
-    if(Globals.currentGameState == Globals.gameState.menu){
+    // draw hud based on current gamestate
+    if(Globals.currentGameState == Globals.GameState.MainMenu){
       startMenu();
-    }else if(Globals.currentGameState == Globals.gameState.gameOver){
+    }else if(Globals.currentGameState == Globals.GameState.GameOver){
       gameOver();
-    }else if(Globals.currentGameState == Globals.gameState.inGame){
+    }else if(Globals.currentGameState == Globals.GameState.InGame){
       gameHUD();
     }
 
@@ -43,27 +44,47 @@ public class UIController {
   }
 
   void gameOver(){
-    fill(titleBackground);
-    rect(width / 2, (float)height / 4.15, width - menuFontSize * 4, menuFontSize * 2.5);
 
+    //background rect pos & size
+    float rectXPos = width / 2;
+    float rectYPos = (float)height / 4.15;
+    float rectWidth = width - menuFontSize * 4;
+    float rectHeight = menuFontSize * 2.5;
+
+    //title background
+    fill(titleBackground);
+    rect(rectXPos, rectYPos, rectWidth, rectHeight);
+
+    //title
     fill(titleColor);
     textSize(menuFontSize);
-    text("Game\nOver", width / 2, height / 5);
+    text("Game Over", rectXPos, rectYPos, rectWidth, rectHeight);
     
+    //sub text
     textSize(menuFontSize / 2.2);
-    text("Press Enter to restart", width / 2, height / 2);
+    text("Press Enter to restart", width / 2, height / 2 - 30);
   }
 
   void startMenu(){
-    fill(titleBackground);
-    rect(width / 2, (float)height / 4.15, width - menuFontSize * 4, menuFontSize * 2.5);
+    
+    //background rect pos & size
+    float rectXPos = width / 2;
+    float rectYPos = (float)height / 4.15;
+    float rectWidth = width - menuFontSize * 4;
+    float rectHeight = menuFontSize * 2.5;
 
+    //title background
+    fill(titleBackground);
+    rect(rectXPos, rectYPos, rectWidth, rectHeight);
+
+    //title
     fill(titleColor);
     textSize(menuFontSize);
-    text("ROCKY\nRAIN", width / 2, height / 5);
+    text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
+    //sub text
     textSize(menuFontSize / 2);
-    text("Press Enter to start", width / 2, height / 2);
+    text("Press Enter to start", width / 2, height / 2 - 30);
   }
 
   void gameHUD(){
