@@ -24,12 +24,12 @@ class Enemy extends Mob {
 
     if (position.x < 10){
       velocity = new PVector(speed, 0);
-      scaleSize.x = -1;
+      flipSpriteHorizontal = true;
     }
 
     if (position.x > world.getWidth() - 10){
       velocity = new PVector(-speed, 0);
-      scaleSize.x = 1;
+      flipSpriteHorizontal = false;
     }
   }
 

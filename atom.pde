@@ -2,7 +2,6 @@ class Atom {
   //Vectors
   PVector position;
   PVector size = new PVector(40, 40);
-  PVector scaleSize = new PVector(1,1);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
 
@@ -20,6 +19,8 @@ class Atom {
   boolean collisionEnabled = true;
   boolean walkLeft;
   boolean worldBorderCheck = true;
+  boolean flipSpriteHorizontal;
+  boolean flipSpriteVertical;
 
   //Tiles
   int miningcolor = #DC143C;
@@ -88,12 +89,19 @@ class Atom {
     pushMatrix();
 
     translate(position.x, position.y);
-    scale(scaleSize.x,scaleSize.y);
 
-    if(scaleSize.x == 1){
+    if(!flipSpriteHorizontal && !flipSpriteVertical){
+      scale(1, 1);
       image(image, 0, 0, size.x, size.y);
-    }else if(scaleSize.x == -1){
+    }else if(flipSpriteHorizontal && !flipSpriteVertical){
+      scale(-1, 1);
       image(image, -size.x, 0, size.x, size.y);
+    }else if(!flipSpriteHorizontal && flipSpriteVertical){
+      scale(1, -1);
+      image(image, 0, -size.y, size.x, size.y);
+    }else if(flipSpriteHorizontal && flipSpriteVertical){
+      scale(-1, -1);
+      image(image, -size.x, -size.y, size.x, size.y);
     }
 
     popMatrix();
