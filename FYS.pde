@@ -11,6 +11,8 @@ int tilesVertical = 50;
 int tileWidth = 50;
 int tileHeight = 50;
 
+int birdCount = 10;
+
 int backgroundColor = #87CEFA;
 
 boolean firstTime = true;
@@ -45,9 +47,14 @@ void setupGame() {
   enemies[2] = new GhostEnemy();
   enemies[3] = new BombEnemy();
 
-  for (int i = 0; i < enemyLenght; ++i) {
-
+  for(int i = 0; i < enemyLenght; i++){
     atomList.add(enemies[i]);
+  }
+
+  for(int i = 0; i < birdCount; i++){
+    Bird bird = new Bird(world);
+
+    atomList.add(bird);
   }
 
   WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
@@ -58,22 +65,22 @@ void setupGame() {
 
   world.generateLayers(tilesVertical);
 
-  if (firstTime) {
+  if(firstTime){
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.gameState.menu;
   }
 }
 
-void draw() {
+void draw(){
 
-  if (!ResourceManager.isLoaded()) {
+  if(!ResourceManager.isLoaded()){
     handleLoading();
 
     return;
   }
 
   //setup game after loading
-  if (firstTime) {
+  if(firstTime){
     setupGame();
     firstTime = false;
   }
@@ -87,24 +94,25 @@ void draw() {
   world.update();
   world.draw(camera);
 
-  for (Atom atom : atomList) {
+  for(Atom atom : atomList){
     atom.update(world);
     atom.draw();
   }
 
   world.updateDepth();
 
-  if (keys[ENTER]) {
+  if(keys[ENTER]){
     Globals.gamePaused = false;
 
-    if (Globals.currentGameState == Globals.gameState.menu) {
+    if (Globals.currentGameState == Globals.gameState.menu){
       Globals.currentGameState = Globals.gameState.inGame;
-      if (firstStart) {
+
+      if(firstStart){
         firstStart = false;
-      } else {
+      }else{
         setupGame();
       }
-    } else if (Globals.currentGameState == Globals.gameState.gameOver) {
+    }else if(Globals.currentGameState == Globals.gameState.gameOver){
       Globals.currentGameState = Globals.gameState.inGame;
       setupGame();
     }
@@ -116,7 +124,7 @@ void draw() {
   ui.draw();
 }
 
-void handleLoading() {
+void handleLoading(){
   background(0);
 
   String lastLoadedResource = ResourceManager.loadNext();
@@ -134,7 +142,7 @@ void handleLoading() {
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
 }
 
-void prepareResourceLoading() {
+void prepareResourceLoading(){
   //Player
   ResourceManager.prepareLoad("player", "Sprites/player.jpg");
   //Enemies
@@ -155,6 +163,13 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("LapisBlock", "Sprites/Blocks/lapisblock.png");
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
   ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
+  //Animals
+  ResourceManager.prepareLoad("BirdFlyingLeft0", "Sprites/Animals/tile018.png");
+  ResourceManager.prepareLoad("BirdFlyingLeft1", "Sprites/Animals/tile019.png");
+  ResourceManager.prepareLoad("BirdFlyingLeft2", "Sprites/Animals/tile020.png");
+  ResourceManager.prepareLoad("BirdFlyingRight0", "Sprites/Animals/tile030.png");
+  ResourceManager.prepareLoad("BirdFlyingRight1", "Sprites/Animals/tile031.png");
+  ResourceManager.prepareLoad("BirdFlyingRight2", "Sprites/Animals/tile032.png");
   //Day Night Ciycle
   for (int i = 0; i < 8; i++) {
     ResourceManager.prepareLoad("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");

@@ -19,6 +19,7 @@ class Atom {
   boolean isMiningDown, isMiningLeft, isMiningRight;
   boolean collisionEnabled = true;
   boolean walkLeft;
+  boolean worldBorderCheck = true;
 
   //Tiles
   int miningcolor = #DC143C;
@@ -107,7 +108,9 @@ class Atom {
   private void handleMovement(World world){
     position.add(velocity);
 
-    position.x = constrain(position.x, 0, world.getWidth() + 10);
+    if(worldBorderCheck){
+      position.x = constrain(position.x, 0, world.getWidth() + 10);
+    }
   }
 
   boolean isGrounded(){
