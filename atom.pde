@@ -2,7 +2,7 @@ class Atom {
   //Vectors
   PVector position;
   PVector size = new PVector(40, 40);
-  //PVector scaleSize = new PVector(40,40);
+  PVector scaleSize = new PVector(1,1);
   PVector velocity = new PVector();
   PVector acceleration = new PVector();
 
@@ -85,10 +85,18 @@ class Atom {
   }
 
   void draw(){
-    //pushMatrix();
-    //scale(scaleSize.x,scaleSize.y);
-    image(image, position.x, position.y, size.x, size.y);
-    //popMatrix();
+    pushMatrix();
+
+    translate(position.x, position.y);
+    scale(scaleSize.x,scaleSize.y);
+
+    if(scaleSize.x == 1){
+      image(image, 0, 0, size.x, size.y);
+    }else if(scaleSize.x == -1){
+      image(image, -size.x, 0, size.x, size.y);
+    }
+
+    popMatrix();
   }
 
   private void prepareMovement(){

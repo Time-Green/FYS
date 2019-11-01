@@ -4,8 +4,6 @@ class GhostEnemy extends Enemy {
         image = ResourceManager.getImage("GhostEnemy");
         collisionEnabled = false;
         gravityForce = 0;
-        this.position = new PVector(1000, 600);
-        
+        position = new PVector(1000, 600);
     }
-
 }

@@ -21,22 +21,21 @@ class Enemy extends Mob {
     super.update(world);
 
     handleCollision();
-    handleMovement(world);
 
-    if (position.x < 10) walkLeft = false;
-    if (position.x > world.getWidth() - 10) walkLeft = true;
+    if (position.x < 10){
+      velocity = new PVector(speed, 0);
+      scaleSize.x = -1;
+    }
+
+    if (position.x > world.getWidth() - 10){
+      velocity = new PVector(-speed, 0);
+      scaleSize.x = 1;
+    }
   }
 
   private void handleCollision(){
     if (CollisionHelper.rectRect(position, size, player.position, player.size)){
       player.takeDamage(getAttackPower());
     }
-  }
-
-  private void handleMovement(World world){
-
-    if(!walkLeft) velocity = new PVector(speed, 0);
-
-    if(walkLeft) velocity = new PVector(-speed, 0);
   }
 }
