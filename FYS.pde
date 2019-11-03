@@ -156,7 +156,7 @@ void handleLoading() {
 
 void prepareResourceLoading() {
   //Player
-  ResourceManager.prepareLoad("player", "Sprites/player.jpg");
+  ResourceManager.prepareLoad("player", "Sprites/player.png");
   //Enemies
   ResourceManager.prepareLoad("WalkEnemy", "Sprites/Enemies/WalkEnemyTest.jpg");
   ResourceManager.prepareLoad("DigEnemy", "Sprites/Enemies/DigEnemy.jpg");
