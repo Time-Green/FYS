@@ -44,11 +44,11 @@ void setupGame() {
   enemies[2] = new GhostEnemy();
   enemies[3] = new BombEnemy();
 
-  for(int i = 0; i < enemyLenght; i++){
+  for (int i = 0; i < enemyLenght; i++) {
     atomList.add(enemies[i]);
   }
 
-  for(int i = 0; i < birdCount; i++){
+  for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
 
     atomList.add(bird);
@@ -63,16 +63,16 @@ void setupGame() {
   world.generateLayers(tilesVertical);
 }
 
-void draw(){
+void draw() {
 
-  if(!ResourceManager.isLoaded()){
+  if (!ResourceManager.isLoaded()) {
     handleLoading();
 
     return;
   }
 
   //setup game after loading
-  if(firstTime){
+  if (firstTime) {
     firstTime = false;
     setupGame();
   }
@@ -86,7 +86,7 @@ void draw(){
   world.update();
   world.draw(camera);
 
-  for(Atom atom : atomList){
+  for (Atom atom : atomList) {
     atom.update(world);
     atom.draw();
   }
@@ -101,42 +101,42 @@ void draw(){
   ui.draw();
 }
 
-void handleGameFlow(){
+void handleGameFlow() {
 
   switch (Globals.currentGameState) {
 
     //not much happens yet if we are ingame..
-    case InGame:
-      
-    break;
-
-    case MainMenu:
-
-      //if we are in the main menu we start the game by pressing enter
-      if(keys[ENTER]){
-        startGame();
-      }
+  case InGame:
 
     break;
 
-    case GameOver:
-      
-      //if we died we restart the game by pressing enter
-      if(keys[ENTER]){
-        startGame();
-      }
+  case MainMenu:
 
-    break;	
+    //if we are in the main menu we start the game by pressing enter
+    if (keys[ENTER]) {
+      startGame();
+    }
+
+    break;
+
+  case GameOver:
+
+    //if we died we restart the game by pressing enter
+    if (keys[ENTER]) {
+      startGame();
+    }
+
+    break;
   }
 }
 
-void startGame(){
+void startGame() {
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
   setupGame();
 }
 
-void handleLoading(){
+void handleLoading() {
   background(0);
 
   String lastLoadedResource = ResourceManager.loadNext();
@@ -154,7 +154,7 @@ void handleLoading(){
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
 }
 
-void prepareResourceLoading(){
+void prepareResourceLoading() {
   //Player
   ResourceManager.prepareLoad("player", "Sprites/player.jpg");
   //Enemies
@@ -173,7 +173,13 @@ void prepareResourceLoading(){
   ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/goldblock.png");
   ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamondblock.png");
   ResourceManager.prepareLoad("LapisBlock", "Sprites/Blocks/lapisblock.png");
+  ResourceManager.prepareLoad("RedstoneBlock", "Sprites/Blocks/redstoneblock.png");
+  ResourceManager.prepareLoad("AmethystBlock", "Sprites/Blocks/amethystblock.png");
+  ResourceManager.prepareLoad("ObsedianBlock", "Sprites/Blocks/obsedianblock.png");
+  //special
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
+  ResourceManager.prepareLoad("Meteor", "Sprites/meteor.png");
+  ResourceManager.prepareLoad("Meteor 2", "Sprites/meteor 2.png");
   ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
   //Animals
   ResourceManager.prepareLoad("BirdFlyingLeft0", "Sprites/Animals/tile018.png");
