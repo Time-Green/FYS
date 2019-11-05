@@ -160,7 +160,7 @@ void prepareResourceLoading() {
   //Enemies
   ResourceManager.prepareLoad("WalkEnemy", "Sprites/Enemies/WalkEnemyTest.jpg");
   ResourceManager.prepareLoad("DigEnemy", "Sprites/Enemies/DigEnemy.jpg");
-  ResourceManager.prepareLoad("BombEnemy", "Sprites/Enemies/BombEnemyTest.png");
+  ResourceManager.prepareLoad("BombEnemy", "Sprites/Enemies/bombEnemy.png");
   ResourceManager.prepareLoad("GhostEnemy", "Sprites/Enemies/GhostEnemy.png");
   //Tiles
   ResourceManager.prepareLoad("DestroyedBlock", "Sprites/Blocks/destroyed.png");

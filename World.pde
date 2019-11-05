@@ -161,4 +161,11 @@ public class World {
   float getWidth(){
     return tilesHorizontal * tileWidth;
   }
+
+  public void createExplosion(int xPos, int yPos, Atom collider) {
+    for (Tile tile : getSurroundingTiles(xPos, yPos, collider)) {
+      if(!tile.isSolid) continue;
+      tile.destroy();
+    }
+  }
 }
