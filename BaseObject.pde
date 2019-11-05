@@ -3,8 +3,6 @@ class BaseObject {
     PVector size = new PVector(40, 40);
     boolean density = true;
 
-
-
     void specialDestroy(){ //remove from certain lists
         return;
     }
@@ -21,8 +19,8 @@ class BaseObject {
         return;
     }
 
-    void destroy(){
-
+    void delete(){
+        destroyList.remove(this);
     }
 
     boolean canMine(){ //could be useful for attacking

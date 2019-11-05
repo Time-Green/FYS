@@ -154,7 +154,7 @@ public class World {
     for (BaseObject object : getSurroundingTiles(xPos, yPos, collider)) {
       if(!object.density) 
         continue;
-      object.destroy();
+      object.delete();
     }
     CameraShaker.induceStress(1f);
   }
