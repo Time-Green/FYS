@@ -1,7 +1,5 @@
-class Atom {
+class Atom extends BaseObject{
   //Vectors
-  protected PVector position;
-  protected PVector size = new PVector(40, 40);
   protected PVector velocity = new PVector();
   protected PVector acceleration = new PVector();
 
@@ -26,7 +24,18 @@ class Atom {
   protected int miningcolor = #DC143C;
   protected PImage image;
 
-  void update(World world){
+  Atom(){
+    PVector size = new PVector(40,40);
+  }
+  void specialAdd(){
+    atomList.add(this);
+  }
+
+  void specialDestroy(){
+    atomList.remove(this);
+  }
+
+  void update(){
     prepareMovement();
     isGrounded = false;
 
@@ -142,27 +151,29 @@ class Atom {
   }
 
   ArrayList checkCollision(World world, float maybeX, float maybeY){
-    ArrayList<Tile> colliders = new ArrayList<Tile>(); 
-    
-    for (Tile tile : world.getSurroundingTiles(int(position.x), int(position.y), this)){
+    ArrayList<BaseObject> colliders = new ArrayList<BaseObject>(); 
+    ArrayList<BaseObject> potentialColliders = new ArrayList<BaseObject>();
 
-      if(!tile.isSolid){
+    potentialColliders.addAll(world.getSurroundingTiles(int(position.x), int(position.y), this));
+    for (BaseObject object : potentialColliders){
+
+      if(!object.density){
         continue;
       }
 
-      //debugCollision(tile);
+      debugCollision(object);
 
-      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
-        colliders.add(tile);      
+      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, object.position.x, object.position.y, tileWidth, tileHeight)){
+        colliders.add(object);      
       }
     }
 
     return colliders;
   }
 
-  private void debugCollision(Tile tile){
+  private void debugCollision(BaseObject object){
     fill(miningcolor,100);
-    rect(tile.position.x, tile.position.y, tileWidth, tileHeight);
+    rect(object.position.x, object.position.y, tileWidth, tileHeight);
   }
 
   float getDepth(){
