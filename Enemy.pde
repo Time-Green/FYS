@@ -12,6 +12,14 @@ class Enemy extends Mob {
     aerialDragFactor = 1f;
   }
 
+  void specialAdd(){
+    mobList.add(this);
+  }
+
+  void specialDestroy(){
+    mobList.remove(this);
+  }
+
   void update(){
 
     if (Globals.gamePaused) {
