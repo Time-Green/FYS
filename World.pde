@@ -162,10 +162,16 @@ public class World {
     return tilesHorizontal * tileWidth;
   }
 
-  public void createExplosion(int xPos, int yPos, Atom collider) {
-    for (Tile tile : getSurroundingTiles(xPos, yPos, collider)) {
-      if(!tile.isSolid) continue;
-      tile.destroy();
+  public void createExplosion(int xPos, int yPos, float explosionRange) {
+    for (Tile tile : tileList) {
+      float d = dist(xPos, yPos, tile.position.x, tile.position.y);
+      if (d <= explosionRange) {
+        tile.destroy();
+      }
     }
+    // for (Tile tile : getSurroundingTiles(xPos, yPos, collider)) {
+    //   if(!tile.isSolid) continue;
+    //   tile.destroy();
+    // }
   }
 }
