@@ -124,9 +124,17 @@ void handleGameFlow() {
     //if we died we restart the game by pressing enter
     if (keys[ENTER]) {
       startGame();
+      Globals.gamePaused = false;
     }
 
     break;
+  
+  case GamePaused:
+    //if the game has been paused the player can contineu the game
+    if (keys[ENTER]) {
+      Globals.gamePaused = false;
+      Globals.currentGameState = Globals.GameState.InGame;
+    }
   }
 }
 
