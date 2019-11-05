@@ -22,7 +22,7 @@ class BaseObject {
     }
 
     void delete(){
-        destroyList(this);
+        destroyList.remove(this);
     }
 
     boolean canMine(){ //could be useful for attacking
