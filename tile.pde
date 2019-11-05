@@ -95,10 +95,6 @@ class Tile extends BaseObject{
     density = false;
   }
 
-  public void delete(){
-    destroyList.add(this);
-  }
-
   private void playBreakSound(){
     breakSound.stop();
     breakSound.play();
