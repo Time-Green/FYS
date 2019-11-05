@@ -20,4 +20,8 @@ class BaseObject {
     void draw(){
         return;
     }
+
+    void destroy(){
+        
+    }
 }

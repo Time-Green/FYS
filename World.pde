@@ -147,9 +147,10 @@ public class World {
   }
 
   public void createExplosion(int xPos, int yPos, Atom collider) {
-    for (Tile tile : getSurroundingTiles(xPos, yPos, collider)) {
-      if(!tile.isSolid) continue;
-      tile.destroy();
+    for (BaseObject object : getSurroundingTiles(xPos, yPos, collider)) {
+      if(!object.density) 
+        continue;
+      object.destroy();
     }
   }
 }
