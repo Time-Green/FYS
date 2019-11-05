@@ -36,8 +36,7 @@ public class UIController {
     if(Globals.currentGameState == Globals.GameState.MainMenu){
       startMenu();
     }else if(Globals.currentGameState == Globals.GameState.GameOver){
-      // gameOver();
-      pauseScreen();
+      gameOver();
     }else if(Globals.currentGameState == Globals.GameState.InGame){
       gameHUD();
     } else if(Globals.currentGameState == Globals.GameState.GamePaused){
