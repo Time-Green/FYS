@@ -26,6 +26,7 @@ class BombEnemy extends Enemy {
                 if (d <= explosionRange) player.takeDamage(getAttackPower());
                 isDead = true;
             }
+            //delete();
         }
 
     }

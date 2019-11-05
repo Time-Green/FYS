@@ -12,12 +12,13 @@ class DigEnemy extends Enemy {
         else this.walkLeft = false;
 
         if (player.position.y < this.position.y) {
-            this.isMiningDown = true;
-            //this.isMiningUp = false;
-            //gravityForce = 1;
-        } else if (player.position.y > this.position.y || player.position.y == this.position.y ) {
+            
             this.isMiningDown = false;
-            // gravityForce = -1;
+            //this.isMiningUp = false;
+            gravityForce = 0;
+        } else {
+            this.isMiningDown = true;
+            gravityForce = 1;
         }
 
         if (walkLeft) {
