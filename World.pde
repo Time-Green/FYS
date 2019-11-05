@@ -156,9 +156,6 @@ public class World {
         continue;
       object.destroy();
     }
-    // for (Tile tile : getSurroundingTiles(xPos, yPos, collider)) {
-    //   if(!tile.isSolid) continue;
-    //   tile.destroy();
-    // }
+    CameraShaker.induceStress(1f);
   }
 }

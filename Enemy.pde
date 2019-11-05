@@ -23,12 +23,12 @@ class Enemy extends Mob {
     handleCollision();
 
     //Can you please stop removing this bool from this script please?
-    if (!walkLeft) {
-      velocity = new PVector(speed, 0);
-      flipSpriteHorizontal = true;
-    } else {
+    if (walkLeft) {
       velocity = new PVector(-speed, 0);
       flipSpriteHorizontal = false;
+    } else {
+      velocity = new PVector(speed, 0);
+      flipSpriteHorizontal = true;      
     }
 
     if (position.x < 10) walkLeft = false;
