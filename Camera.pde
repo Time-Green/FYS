@@ -8,7 +8,7 @@ public class Camera{
         position = new PVector();
 
         update();
-    }
+    }B
 
     public void update(){
         //get current camera shake
