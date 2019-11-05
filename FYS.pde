@@ -176,6 +176,7 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("RedstoneBlock", "Sprites/Blocks/redstoneblock.png");
   ResourceManager.prepareLoad("AmethystBlock", "Sprites/Blocks/amethystblock.png");
   ResourceManager.prepareLoad("ObsedianBlock", "Sprites/Blocks/obsedianblock.png");
+  ResourceManager.prepareLoad("MysteryBlock", "Sprites/Blocks/mysteryblock.jpg");
   //special
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
   ResourceManager.prepareLoad("Meteor", "Sprites/meteor.png");

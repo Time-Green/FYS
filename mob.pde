@@ -3,6 +3,7 @@ class Mob extends Atom {
   //Health
   int maxHealth = 3;
   int currentHealth = maxHealth;
+  boolean isImmortal = false;  
 
   //Taking damage
   final float HURTCOOLDOWN  = 60f;
@@ -45,8 +46,14 @@ class Mob extends Atom {
   }
 
   public void takeDamage(int damageTaken){
+  
+  if(isImmortal){
 
-    if(isHurt == false){
+      return; 
+  }   
+  else{
+
+      if(isHurt == false){
 
       isHurt = true;
       currentHealth -= damageTaken;
@@ -55,6 +62,8 @@ class Mob extends Atom {
         die();
       }
     }
+  }
+    
   }
 
   public void die(){

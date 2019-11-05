@@ -92,7 +92,11 @@ public class World {
       }
       else if (orechance >= 80 && orechance <= 88)
       {
-        return new CoalTile(x, depth);
+        return new CoalTile(x, depth); 
+      }
+      else if (orechance >= 98 && orechance <= 100){
+        
+        return new MysteryTile(x, depth); 
       }
       else
       {
