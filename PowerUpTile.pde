@@ -13,6 +13,7 @@ void pickUp(){
 }
 
 void destroy(){
+    
     super.destroy();
 
 }
