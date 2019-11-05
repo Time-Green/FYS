@@ -184,11 +184,20 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("RedstoneBlock", "Sprites/Blocks/redstoneblock.png");
   ResourceManager.prepareLoad("AmethystBlock", "Sprites/Blocks/amethystblock.png");
   ResourceManager.prepareLoad("ObsedianBlock", "Sprites/Blocks/obsedianblock.png");
-  //special
-  ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
-  ResourceManager.prepareLoad("Meteor", "Sprites/meteor.png");
-  ResourceManager.prepareLoad("Meteor 2", "Sprites/meteor 2.png");
-  ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
+    ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
+  //Meteor
+  ResourceManager.prepareLoad("Meteor", "Sprites/Destruction/meteor.png");
+  ResourceManager.prepareLoad("Meteor 2", "Sprites/Destruction/meteor 2.png");
+  //Cave
+  ResourceManager.prepareLoad("Chest", "Sprites/Cave/chest.png");
+  ResourceManager.prepareLoad("Torch", "Sprites/Cave/torch.png");
+  //Landscape
+  ResourceManager.prepareLoad("Leafe", "Sprites/Landscape/leafe.png");
+  ResourceManager.prepareLoad("Wood", "Sprites/Landscape/wood.png");
+  //House 
+  ResourceManager.prepareLoad("Door", "Sprites/House/door.png");
+  ResourceManager.prepareLoad("Glass", "Sprites/House/glass.png");
+  ResourceManager.prepareLoad("WoodPlank", "Sprites/House/woodplank.png");
   //Animals
   ResourceManager.prepareLoad("BirdFlyingLeft0", "Sprites/Animals/tile018.png");
   ResourceManager.prepareLoad("BirdFlyingLeft1", "Sprites/Animals/tile019.png");

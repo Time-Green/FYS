@@ -112,7 +112,7 @@ public class World {
     }
     else
     {
-      return new BedrockTile(x, depth);
+      return new ObsedianTile(x, depth);
     }
 
     println("WARNING: tile not found!");
