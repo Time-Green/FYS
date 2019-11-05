@@ -20,7 +20,7 @@ class BombEnemy extends Enemy {
             explosionTimer--;
             if (explosionTimer <= 0 && isDead == false) {
                 this.size.x = 0;
-                world.createExplosion(int(position.x), int(position.y), explosionRange);
+                world.createExplosion(int(position.x), int(position.y), this);
                 this.gravityForce = 0;
                 float d = dist(this.position.x, this.position.y, player.position.x, player.position.y);
                 if (d <= explosionRange) player.takeDamage(getAttackPower());
