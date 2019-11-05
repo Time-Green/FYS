@@ -3,8 +3,6 @@ class BaseObject {
     PVector size = new PVector(40, 40);
     boolean density = true;
 
-
-
     void specialDestroy(){ //remove from certain lists
         return;
     }
