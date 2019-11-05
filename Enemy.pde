@@ -1,6 +1,6 @@
 class Enemy extends Mob {
 
-  public Enemy(){
+  public Enemy() {
 
     speed = 5;
 
@@ -14,7 +14,7 @@ class Enemy extends Mob {
 
   void update(World world){
 
-    if (Globals.gamePaused){
+    if (Globals.gamePaused) {
       return;
     }
 
@@ -22,15 +22,18 @@ class Enemy extends Mob {
 
     handleCollision();
 
-    if (position.x < 10){
+    //Can you please stop removing this bool from this script please?
+    if (!walkLeft) {
       velocity = new PVector(speed, 0);
       flipSpriteHorizontal = true;
-    }
-
-    if (position.x > world.getWidth() - 10){
+    } else {
       velocity = new PVector(-speed, 0);
       flipSpriteHorizontal = false;
     }
+
+    if (position.x < 10) walkLeft = false;
+    if (position.x > world.getWidth() - 10) walkLeft = true;
+
   }
 
   private void handleCollision(){
