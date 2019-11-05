@@ -1,25 +1,19 @@
 class Mob extends Atom {
 
   //Health
-  protected int maxHealth = 3;
-  protected int currentHealth = maxHealth;
+  int maxHealth = 3;
+  int currentHealth = maxHealth;
+  boolean isImmortal = false;  
 
   //Taking damage
-  protected final float HURTCOOLDOWN  = 60f;
-  protected float timeSinceLastHurt = 0f; 
-  protected boolean isHurt;
+  final float HURTCOOLDOWN  = 60f;
+  float timeSinceLastHurt = 0f; 
+  boolean isHurt;
 
   //Mining
   final int MININGCOOLDOWN = 100; //cooldown in millis
   int lastMine = 0; //before someone rolls by and removes the '= 0' in name of 'optimization', it's because of readability 
-  
-  void specialAdd(){
-    mobList.add(this);
-  }
 
-  void specialDestroy(){
-    mobList.remove(this);
-  }
   public void attemptMine(Tile tile){
 
     //ask the tile if they wanna be mined first
@@ -39,29 +33,37 @@ class Mob extends Atom {
   public void update(){
     super.update();
 
-    if(this.isHurt == true){
+    if(isHurt == true){
 
       //Count up intul we can be hurt again
-      this.timeSinceLastHurt ++;
+      timeSinceLastHurt ++;
 
-      if(this.timeSinceLastHurt >= HURTCOOLDOWN){
-        this.timeSinceLastHurt = 0;
-        this.isHurt = false; 
+      if(timeSinceLastHurt >= HURTCOOLDOWN){
+        timeSinceLastHurt = 0;
+        isHurt = false; 
       }
     }
   }
 
   public void takeDamage(int damageTaken){
+  
+  if(isImmortal){
 
-    if(this.isHurt == false){
+      return; 
+  }   
+  else{
 
-      this.isHurt = true;
-      this.currentHealth -= damageTaken;
+      if(isHurt == false){
 
-      if(this.currentHealth <= 0){
+      isHurt = true;
+      currentHealth -= damageTaken;
+
+      if(currentHealth <= 0){
         die();
       }
     }
+  }
+    
   }
 
   public void die(){

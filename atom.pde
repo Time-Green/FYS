@@ -53,10 +53,10 @@ class Atom extends BaseObject{
       if(colliders.size() != 0){ //down
         velocity.y = min(velocity.y, 0);
         isGrounded = true;       
-        for(Tile tile : colliders){
+        for(BaseObject object : colliders){
 
           if(isMiningDown){
-            attemptMine(tile);
+            attemptMine(object);
           }
 
         }  
@@ -69,9 +69,9 @@ class Atom extends BaseObject{
           velocity.x = 0;
           walkLeft = !walkLeft;
 
-          for(Tile tile : colliders){
+          for(BaseObject object : colliders){
             if(isMiningLeft){
-              attemptMine(tile);
+              attemptMine(object);
             }
           }
         }
@@ -82,9 +82,9 @@ class Atom extends BaseObject{
           velocity.x = 0;
           walkLeft =!walkLeft;
 
-          for(Tile tile : colliders){
+          for(BaseObject object : colliders){
             if(isMiningRight){
-              attemptMine(tile);
+              attemptMine(object);
             }
           }
         }     
@@ -155,13 +155,15 @@ class Atom extends BaseObject{
     ArrayList<BaseObject> potentialColliders = new ArrayList<BaseObject>();
 
     potentialColliders.addAll(world.getSurroundingTiles(int(position.x), int(position.y), this));
+    potentialColliders.addAll(atomList);
+    
     for (BaseObject object : potentialColliders){
 
       if(!object.density){
         continue;
       }
 
-      debugCollision(object);
+      //debugCollision(object);
 
       if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, object.position.x, object.position.y, tileWidth, tileHeight)){
         colliders.add(object);      
@@ -180,7 +182,7 @@ class Atom extends BaseObject{
     return position.y;
   }
 
-  void attemptMine(Tile tile){
+  void attemptMine(BaseObject object){
     return;
   }
 }
