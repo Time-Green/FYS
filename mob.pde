@@ -1,13 +1,13 @@
 class Mob extends Atom {
 
   //Health
-  int maxHealth = 3;
-  int currentHealth = maxHealth;
+  protected int maxHealth = 3;
+  protected int currentHealth = maxHealth;
 
   //Taking damage
-  final float HURTCOOLDOWN  = 60f;
-  float timeSinceLastHurt = 0f; 
-  boolean isHurt;
+  protected final float HURTCOOLDOWN  = 60f;
+  protected float timeSinceLastHurt = 0f; 
+  protected boolean isHurt;
 
   //Mining
   final int MININGCOOLDOWN = 100; //cooldown in millis
@@ -39,26 +39,26 @@ class Mob extends Atom {
   public void update(){
     super.update();
 
-    if(isHurt == true){
+    if(this.isHurt == true){
 
       //Count up intul we can be hurt again
-      timeSinceLastHurt ++;
+      this.timeSinceLastHurt ++;
 
-      if(timeSinceLastHurt >= HURTCOOLDOWN){
-        timeSinceLastHurt = 0;
-        isHurt = false; 
+      if(this.timeSinceLastHurt >= HURTCOOLDOWN){
+        this.timeSinceLastHurt = 0;
+        this.isHurt = false; 
       }
     }
   }
 
   public void takeDamage(int damageTaken){
 
-    if(isHurt == false){
+    if(this.isHurt == false){
 
-      isHurt = true;
-      currentHealth -= damageTaken;
+      this.isHurt = true;
+      this.currentHealth -= damageTaken;
 
-      if(currentHealth <= 0){
+      if(this.currentHealth <= 0){
         die();
       }
     }

@@ -1,28 +1,28 @@
 class Atom extends BaseObject{
   //Vectors
-  PVector velocity = new PVector();
-  PVector acceleration = new PVector();
+  protected PVector velocity = new PVector();
+  protected PVector acceleration = new PVector();
 
   //Movement
-  float speed = 1f;
-  float jumpForce = 18f;
-  float gravityForce = 1f;
-  float groundedDragFactor = 0.95f;
-  float aerialDragFactor = 0.95f;
-  float breakForce = 0.99f;
+  protected float speed = 1f;
+  protected float jumpForce = 18f;
+  protected float gravityForce = 1f;
+  protected float groundedDragFactor = 0.95f;
+  protected float aerialDragFactor = 0.95f;
+  protected float breakForce = 0.99f;
 
   //Bools
-  boolean isGrounded;
-  boolean isMiningDown, isMiningLeft, isMiningRight;
-  boolean collisionEnabled = true;
-  boolean walkLeft;
-  boolean worldBorderCheck = true;
-  boolean flipSpriteHorizontal;
-  boolean flipSpriteVertical;
+  protected boolean isGrounded;
+  protected boolean isMiningDown, isMiningLeft, isMiningRight;
+  protected boolean collisionEnabled = true;
+  protected boolean walkLeft;
+  protected boolean worldBorderCheck = true;
+  protected boolean flipSpriteHorizontal;
+  protected boolean flipSpriteVertical;
 
   //Tiles
-  int miningcolor = #DC143C;
-  PImage image;
+  protected int miningcolor = #DC143C;
+  protected PImage image;
 
   Atom(){
     PVector size = new PVector(40,40);

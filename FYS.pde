@@ -150,9 +150,17 @@ void handleGameFlow() {
     //if we died we restart the game by pressing enter
     if (keys[ENTER]) {
       startGame();
+      Globals.gamePaused = false;
     }
 
     break;
+  
+  case GamePaused:
+    //if the game has been paused the player can contineu the game
+    if (keys[ENTER]) {
+      Globals.gamePaused = false;
+      Globals.currentGameState = Globals.GameState.InGame;
+    }
   }
 }
 
@@ -186,7 +194,7 @@ void prepareResourceLoading() {
   //Enemies
   ResourceManager.prepareLoad("WalkEnemy", "Sprites/Enemies/WalkEnemyTest.jpg");
   ResourceManager.prepareLoad("DigEnemy", "Sprites/Enemies/DigEnemy.jpg");
-  ResourceManager.prepareLoad("BombEnemy", "Sprites/Enemies/BombEnemyTest.png");
+  ResourceManager.prepareLoad("BombEnemy", "Sprites/Enemies/bombEnemy.png");
   ResourceManager.prepareLoad("GhostEnemy", "Sprites/Enemies/GhostEnemy.png");
   //Tiles
   ResourceManager.prepareLoad("DestroyedBlock", "Sprites/Blocks/destroyed.png");
