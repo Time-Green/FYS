@@ -50,6 +50,11 @@ class Player extends Mob {
 
   public void takeDamage(int damageTaken){
 
+    if(isImmortal){
+    
+      return;         
+    }
+
     if(isHurt == false){
       // if the player has taken damage, add camera shake
       CameraShaker.induceStress(0.6f);

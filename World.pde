@@ -76,7 +76,11 @@ public class World {
       }
       else if (orechance >= 80 && orechance <= 88)
       {
-        return new CoalTile(x, depth);
+        return new CoalTile(x, depth); 
+      }
+      else if (orechance >= 98 && orechance <= 100){
+        
+        return new MysteryTile(x, depth); 
       }
       else
       {
@@ -152,9 +156,6 @@ public class World {
         continue;
       object.destroy();
     }
-    // for (Tile tile : getSurroundingTiles(xPos, yPos, collider)) {
-    //   if(!tile.isSolid) continue;
-    //   tile.destroy();
-    // }
+    CameraShaker.induceStress(1f);
   }
 }
