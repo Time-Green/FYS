@@ -35,7 +35,7 @@ class Mob extends Atom {
 
     if(isHurt == true){
 
-      //Count up intul we can be hurt again
+      //Count up until we can be hurt again
       timeSinceLastHurt ++;
 
       if(timeSinceLastHurt >= HURTCOOLDOWN){
