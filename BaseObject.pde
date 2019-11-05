@@ -22,6 +22,15 @@ class BaseObject {
     }
 
     void destroy(){
-        
+
+    }
+
+    boolean canMine(){ //could be useful for attacking
+        return false;
+    
+    }
+
+    void takeDamage(float damageTaken){
+
     }
 }

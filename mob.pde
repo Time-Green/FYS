@@ -20,10 +20,10 @@ class Mob extends Atom {
   void specialDestroy(){
     mobList.remove(this);
   }
-  public void attemptMine(Tile tile){
+  public void attemptMine(BaseObject object){
 
     //ask the tile if they wanna be mined first
-    if(!tile.canMine()){
+    if(!object.canMine()){
       return;
     }
 
@@ -33,7 +33,7 @@ class Mob extends Atom {
     }
 
     lastMine = millis();
-    tile.takeDamage(getAttackPower());
+    object.takeDamage(getAttackPower());
   }
 
   public void update(){
