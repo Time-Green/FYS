@@ -1,9 +1,6 @@
 public class World {
-  ArrayList<Tile> tileList = new ArrayList<Tile>();
   ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
   Tile voidTile = new Tile(0, 0); //return the void tile if there's no tile
-
-  ArrayList<Tile> tileDestroy = new ArrayList<Tile>();
 
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
   int generationRatio = 5; //every five tiles we dig, we add 5 more
@@ -20,23 +17,10 @@ public class World {
   }
 
   public void update() {
-    for(Tile tile : tileDestroy){
-      tileList.remove(tile);
-      map.get(int(tile.positionWhole.y)).remove(tile);
-    }
-    tileDestroy.clear();
-
-    for (Tile tile : tileList) {
-      tile.update();
-    }
   }
 
   public void draw(Camera camera) {
     image(dayNightImage, 0, 0, wallWidth, 1080);
-
-    for (Tile tile : tileList) {
-      tile.draw(camera);
-    }
   }
 
   //return tile you're currently on
@@ -60,7 +44,7 @@ public class World {
         Tile tile = getTileToGenerate(x, y);
 
         subArray.add(tile); 
-        tileList.add(tile);
+        objectList.add(0, tile); //add at 0, so they're always loaded first
       }
     }
   }
@@ -119,8 +103,8 @@ public class World {
     return new AirTile(x, depth);
   }
 
-  ArrayList<Tile> getSurroundingTiles(int x, int y, Atom collider) { //return an arrayList with the four surrounding tiles of the coordinates
-    ArrayList<Tile> surrounding = new ArrayList<Tile>();
+  ArrayList<BaseObject> getSurroundingTiles(int x, int y, Atom collider) { //return an arrayList with the four surrounding tiles of the coordinates
+    ArrayList<BaseObject> surrounding = new ArrayList<BaseObject>();
 
     int middleX = int(x + collider.size.x * .5); //calculate from the middle, because it's the average of all our colliding corners
     int middleY = int(y + collider.size.y * .5);
