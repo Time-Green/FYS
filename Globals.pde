@@ -6,6 +6,7 @@ static class Globals{
   static enum GameState{
     MainMenu,
     InGame,
-    GameOver
+    GameOver,
+    GamePaused
   }
 }
