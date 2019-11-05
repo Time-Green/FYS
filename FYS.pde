@@ -135,6 +135,10 @@ void handleGameFlow() {
       Globals.gamePaused = false;
       Globals.currentGameState = Globals.GameState.InGame;
     }
+    if (keys[17]) {
+      startGame();
+      Globals.gamePaused = false;
+    }
   }
 }
 

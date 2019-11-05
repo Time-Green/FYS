@@ -136,6 +136,8 @@ public class UIController {
     //sub text
     textSize(menuFontSize / 2.2);
     text("Press Enter to continue", width / 2, height / 2 - 30);
+    text("Press CTRL to restart", width / 2, height / 2 + 60);
+
 
 
   }
