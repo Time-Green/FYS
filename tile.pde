@@ -1,9 +1,7 @@
-class Tile{
-  PVector position = new PVector();
-  PVector positionWhole = new PVector(); //same as position, but complete tiles instead of pixels
+class Tile extends BaseObject{
+  PVector gridPosition = new PVector(); //same as position, but complete tiles instead of pixels
 
   boolean destroyed;
-  boolean isSolid = true;
 
   private float maxHp, hp;
 
@@ -15,14 +13,15 @@ class Tile{
   float caveSpawningNoiseScale = 0.1f;
   float caveSpawningPossibilityScale = 0.68f; //lower for more caves
 
-  ArrayList<Atom> contents = new ArrayList<Atom>(); //all Atoms on that specific tile
-
   Tile(int x, int y) {
     position.x = x * tileWidth;
     position.y = y * tileHeight;
 
-    positionWhole.x = x;
-    positionWhole.y = y;
+    size.x = tileWidth;
+    size.y = tileHeight;
+
+    gridPosition.x = x;
+    gridPosition.y = y;
 
     setMaxHp(2);
 
@@ -30,17 +29,24 @@ class Tile{
 
     if(position.y > 1050 && noise(float(x) * caveSpawningNoiseScale, float(y) * caveSpawningNoiseScale) > caveSpawningPossibilityScale){
       destroyed = true;
-      isSolid = false;
+      density = false;
 
       return;
     }
   }
-
-  void update() {
-    
+  void specialAdd(){
+    tileList.add(this);
   }
 
-  void draw(Camera camera) {
+  void specialDestroy(){
+     world.map.get(int(gridPosition.y)).remove(this);
+     tileList.remove(this);
+  }
+
+  void update() {
+  }
+
+  void draw() {
     if(!inCameraView(camera)){
       return;
     }
@@ -80,17 +86,17 @@ class Tile{
     }
   }
   boolean canMine(){
-    return isSolid;
+    return density;
   }
 
   public void destroy() {
     playBreakSound();
     destroyed = true;
-    isSolid = false;
+    density = false;
   }
 
   public void delete(){
-    world.tileDestroy.add(this);
+    destroyList.add(this);
   }
 
   private void playBreakSound(){

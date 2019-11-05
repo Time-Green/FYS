@@ -30,8 +30,8 @@ class Mob extends Atom {
     tile.takeDamage(getAttackPower());
   }
 
-  public void update(World world){
-    super.update(world);
+  public void update(){
+    super.update();
 
     if(isHurt == true){
 

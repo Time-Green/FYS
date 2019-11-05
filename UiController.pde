@@ -23,6 +23,11 @@ public class UIController {
   }
 
   void draw(){
+
+    if(keys[83] && Globals.currentGameState == Globals.GameState.InGame){
+      Globals.gamePaused = true;
+      Globals.currentGameState = Globals.GameState.GamePaused;
+    }
     //draw hud at center position
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
@@ -34,6 +39,8 @@ public class UIController {
       gameOver();
     }else if(Globals.currentGameState == Globals.GameState.InGame){
       gameHUD();
+    } else if(Globals.currentGameState == Globals.GameState.GamePaused){
+      pauseScreen();
     }
 
     //reset rectMode
@@ -108,5 +115,30 @@ public class UIController {
     fill(255);
     textSize(20);
     text(round(frameRate) + " FPS", width - 10, 25);
+  }
+
+  void pauseScreen(){
+    //background rect pos & size
+    float rectXPos = width / 2;
+    float rectYPos = (float)height / 4.15;
+    float rectWidth = width - menuFontSize * 4;
+    float rectHeight = menuFontSize * 2.5;
+
+    //title background
+    fill(titleBackground);
+    rect(rectXPos, rectYPos, rectWidth, rectHeight);
+
+    //title
+    fill(titleColor);
+    textSize(menuFontSize);
+    text("Paused", rectXPos, rectYPos, rectWidth, rectHeight);
+    
+    //sub text
+    textSize(menuFontSize / 2.2);
+    text("Press Enter to continue", width / 2, height / 2 - 30);
+    text("Press CTRL to restart", width / 2, height / 2 + 60);
+
+
+
   }
 }

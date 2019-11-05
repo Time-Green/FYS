@@ -1,32 +1,41 @@
-class Atom {
+class Atom extends BaseObject{
   //Vectors
-  PVector position;
-  PVector size = new PVector(40, 40);
-  PVector velocity = new PVector();
-  PVector acceleration = new PVector();
+  protected PVector velocity = new PVector();
+  protected PVector acceleration = new PVector();
 
   //Movement
-  float speed = 1f;
-  float jumpForce = 18f;
-  float gravityForce = 1f;
-  float groundedDragFactor = 0.95f;
-  float aerialDragFactor = 0.95f;
-  float breakForce = 0.99f;
+  protected float speed = 1f;
+  protected float jumpForce = 18f;
+  protected float gravityForce = 1f;
+  protected float groundedDragFactor = 0.95f;
+  protected float aerialDragFactor = 0.95f;
+  protected float breakForce = 0.99f;
 
   //Bools
-  boolean isGrounded;
-  boolean isMiningDown, isMiningLeft, isMiningRight;
-  boolean collisionEnabled = true;
-  boolean walkLeft;
-  boolean worldBorderCheck = true;
-  boolean flipSpriteHorizontal;
-  boolean flipSpriteVertical;
+  protected boolean isGrounded;
+  protected boolean isMiningDown, isMiningLeft, isMiningRight;
+  protected boolean collisionEnabled = true;
+  protected boolean walkLeft;
+  protected boolean worldBorderCheck = true;
+  protected boolean flipSpriteHorizontal;
+  protected boolean flipSpriteVertical;
 
   //Tiles
-  int miningcolor = #DC143C;
-  PImage image;
+  protected int miningcolor = #DC143C;
+  protected PImage image;
 
-  void update(World world){
+  Atom(){
+    PVector size = new PVector(40,40);
+  }
+  void specialAdd(){
+    atomList.add(this);
+  }
+
+  void specialDestroy(){
+    atomList.remove(this);
+  }
+
+  void update(){
     prepareMovement();
     isGrounded = false;
 
@@ -44,10 +53,10 @@ class Atom {
       if(colliders.size() != 0){ //down
         velocity.y = min(velocity.y, 0);
         isGrounded = true;       
-        for(Tile tile : colliders){
+        for(BaseObject object : colliders){
 
           if(isMiningDown){
-            attemptMine(tile);
+            attemptMine(object);
           }
 
         }  
@@ -60,9 +69,9 @@ class Atom {
           velocity.x = 0;
           walkLeft = !walkLeft;
 
-          for(Tile tile : colliders){
+          for(BaseObject object : colliders){
             if(isMiningLeft){
-              attemptMine(tile);
+              attemptMine(object);
             }
           }
         }
@@ -73,9 +82,9 @@ class Atom {
           velocity.x = 0;
           walkLeft =!walkLeft;
 
-          for(Tile tile : colliders){
+          for(BaseObject object : colliders){
             if(isMiningRight){
-              attemptMine(tile);
+              attemptMine(object);
             }
           }
         }     
@@ -142,34 +151,38 @@ class Atom {
   }
 
   ArrayList checkCollision(World world, float maybeX, float maybeY){
-    ArrayList<Tile> colliders = new ArrayList<Tile>(); 
-    
-    for (Tile tile : world.getSurroundingTiles(int(position.x), int(position.y), this)){
+    ArrayList<BaseObject> colliders = new ArrayList<BaseObject>(); 
+    ArrayList<BaseObject> potentialColliders = new ArrayList<BaseObject>();
 
-      if(!tile.isSolid){
+    potentialColliders.addAll(world.getSurroundingTiles(int(position.x), int(position.y), this));
+    potentialColliders.addAll(atomList);
+    
+    for (BaseObject object : potentialColliders){
+
+      if(!object.density){
         continue;
       }
 
-      //debugCollision(tile);
+      //debugCollision(object);
 
-      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, tile.position.x, tile.position.y, tileWidth, tileHeight)){
-        colliders.add(tile);      
+      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, object.position.x, object.position.y, tileWidth, tileHeight)){
+        colliders.add(object);      
       }
     }
 
     return colliders;
   }
 
-  private void debugCollision(Tile tile){
+  private void debugCollision(BaseObject object){
     fill(miningcolor,100);
-    rect(tile.position.x, tile.position.y, tileWidth, tileHeight);
+    rect(object.position.x, object.position.y, tileWidth, tileHeight);
   }
 
   float getDepth(){
     return position.y;
   }
 
-  void attemptMine(Tile tile){
+  void attemptMine(BaseObject object){
     return;
   }
 }

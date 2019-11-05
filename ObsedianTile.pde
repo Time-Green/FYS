@@ -1,11 +1,11 @@
-public class BedrockTile extends Tile{
+public class ObsedianTile extends Tile{
 
-  public BedrockTile(int x, int y){
+  public ObsedianTile(int x, int y){
     super(x, y);
 
     setMaxHp(9999);
       
-    image = ResourceManager.getImage("BedrockBlock");
+    image = ResourceManager.getImage("ObsedianBlock");
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
