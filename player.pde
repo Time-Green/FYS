@@ -8,13 +8,12 @@ class Player extends Mob {
     position = spawnPosition;
   }
 
-  void update(World world) {
-
+  void update() {
     if (Globals.gamePaused) {  
       return;
     }
     
-    super.update(world);
+    super.update();
 
     doPlayerMovement();
   }

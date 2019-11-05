@@ -21,13 +21,13 @@ class WallOfDeath extends Atom {
     groundedDragFactor = 1f;
   }
   
-  void update(World world){
+  void update(){
 
     if (Globals.gamePaused){
       return;
     }
 
-    super.update(world);
+    super.update();
 
     velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
     
@@ -52,13 +52,15 @@ class WallOfDeath extends Atom {
 
   private void cleanUpTiles(){
     int layer = int(world.getWholePosition(this).y - DESTROYTILESAFTER);
-
+    println(1);
     //it's not time to destroy yet, because we just started
     if(layer < 0){
+      println(2);
       return;
     }
     
     for(Tile tile : world.getLayer(layer)){
+        println(3);
         tile.delete();
     }
   }

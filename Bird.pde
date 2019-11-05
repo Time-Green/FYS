@@ -48,8 +48,8 @@ public class Bird extends Mob{
         animatedImage.draw();
     }
 
-    void update(World world){
-        super.update(world);
+    void update(){
+        super.update();
 
         if(flyingLeft && position.x < -32){
             position.x = world.getWidth() + 100;

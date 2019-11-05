@@ -1,4 +1,11 @@
+ArrayList<BaseObject> objectList = new ArrayList<BaseObject>();
+ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>();
+
+//These only exists as helpers. All drawing and updating is handled from objectList
+ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Atom> atomList = new ArrayList<Atom>();
+ArrayList<Mob> mobList = new ArrayList<Mob>();
+
 World world;
 Player player;
 Camera camera;
@@ -25,7 +32,7 @@ void setup() {
 }
 
 void setupGame() {
-  atomList.clear();
+  objectList.clear();
 
   ui = new UIController();
 
@@ -34,7 +41,8 @@ void setupGame() {
   world = new World(tilesHorizontal * tileWidth + tileWidth);
 
   player = new Player();
-  atomList.add(player);
+  objectList.add(player);
+  player.specialAdd();
 
   int enemyLenght = 4;
   enemies = new Enemy[enemyLenght];
@@ -45,17 +53,19 @@ void setupGame() {
   enemies[3] = new BombEnemy();
 
   for (int i = 0; i < enemyLenght; i++) {
-    atomList.add(enemies[i]);
+    objectList.add(enemies[i]);
   }
 
   for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
 
-    atomList.add(bird);
+    objectList.add(bird);
+    bird.specialAdd();
   }
 
   WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
-  atomList.add(wallOfDeath);
+  objectList.add(wallOfDeath);
+  wallOfDeath.specialAdd();
 
   CameraShaker.reset();
   camera = new Camera(player);
@@ -86,10 +96,8 @@ void draw() {
   world.update();
   world.draw(camera);
 
-  for (Atom atom : atomList) {
-    atom.update(world);
-    atom.draw();
-  }
+  updateObjects();
+  drawObjects();
 
   world.updateDepth();
 
@@ -99,6 +107,24 @@ void draw() {
   handleGameFlow();
 
   ui.draw();
+}
+
+void updateObjects(){
+  for(BaseObject object : destroyList){
+    objectList.remove(object);
+    object.specialDestroy(); //tiles need to remove themselves from the tilegrid
+  }
+  destroyList.clear();
+
+  for (BaseObject object : objectList) {
+    object.update();
+  }
+}
+
+void drawObjects(){
+  for(BaseObject object : objectList){
+    object.draw();
+  }
 }
 
 void handleGameFlow() {
@@ -134,6 +160,10 @@ void handleGameFlow() {
     if (keys[ENTER]) {
       Globals.gamePaused = false;
       Globals.currentGameState = Globals.GameState.InGame;
+    }
+    if (keys[17]) {
+      startGame();
+      Globals.gamePaused = false;
     }
   }
 }

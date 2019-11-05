@@ -12,13 +12,13 @@ class Enemy extends Mob {
     aerialDragFactor = 1f;
   }
 
-  void update(World world){
+  void update(){
 
     if (Globals.gamePaused) {
       return;
     }
 
-    super.update(world);
+    super.update();
 
     handleCollision();
 

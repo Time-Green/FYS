@@ -12,15 +12,15 @@ class BombEnemy extends Enemy {
         this.speed = 2.5f;
     }
 
-    void update(World world) {
-        super.update(world);
+    void update() {
+        super.update();
 
         if (isExploding == true) {
             this.speed = 0;
             explosionTimer--;
             if (explosionTimer <= 0 && isDead == false) {
                 this.size.x = 0;
-                world.createExplosion(int(position.x), int(position.y), this);
+                world.createExplosion(int(position.x), int(position.y), explosionRange);
                 this.gravityForce = 0;
                 float d = dist(this.position.x, this.position.y, player.position.x, player.position.y);
                 if (d <= explosionRange) player.takeDamage(getAttackPower());
