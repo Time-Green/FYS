@@ -155,11 +155,15 @@ class Atom extends BaseObject{
     ArrayList<BaseObject> potentialColliders = new ArrayList<BaseObject>();
 
     potentialColliders.addAll(world.getSurroundingTiles(int(position.x), int(position.y), this));
-    potentialColliders.addAll(atomList);
+    //potentialColliders.addAll(mobList);
     
     for (BaseObject object : potentialColliders){
 
       if(!object.density){
+        continue;
+      }
+
+      if(object == this){
         continue;
       }
 
