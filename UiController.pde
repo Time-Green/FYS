@@ -10,6 +10,9 @@ public class UIController {
   float heartHeight = 50;
   float heartX = 10;
   float heartY = 10;
+  float slotOffsetX = 40; 
+  float slotOffsetY = 40; 
+  float slotSize = 40; 
 
   PImage heart;
   PFont font;
@@ -108,6 +111,9 @@ public class UIController {
     fill(255);
     textSize(20);
     text("Depth:" + round((player.getDepth() / tileHeight) - 10), 20, 100);
+
+    fill(0); 
+    rect(width - slotOffsetX, height - slotOffsetY, slotSize, slotSize); 
   }
 
   void drawFps(){
