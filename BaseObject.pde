@@ -19,8 +19,8 @@ class BaseObject {
         return;
     }
 
-    void destroy(){
-
+    void delete(){
+        destroyList.remove(this);
     }
 
     boolean canMine(){ //could be useful for attacking
