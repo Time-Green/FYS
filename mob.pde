@@ -14,10 +14,10 @@ class Mob extends Atom {
   final int MININGCOOLDOWN = 100; //cooldown in millis
   int lastMine = 0; //before someone rolls by and removes the '= 0' in name of 'optimization', it's because of readability 
 
-  public void attemptMine(Tile tile){
+  public void attemptMine(BaseObject object){
 
     //ask the tile if they wanna be mined first
-    if(!tile.canMine()){
+    if(!object.canMine()){
       return;
     }
 
@@ -27,7 +27,7 @@ class Mob extends Atom {
     }
 
     lastMine = millis();
-    tile.takeDamage(getAttackPower());
+    object.takeDamage(getAttackPower());
   }
 
   public void update(){
