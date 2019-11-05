@@ -12,8 +12,8 @@ class BombEnemy extends Enemy {
         this.speed = 2.5f;
     }
 
-    void update(World world) {
-        super.update(world);
+    void update() {
+        super.update();
 
         if (isExploding == true) {
             this.speed = 0;
