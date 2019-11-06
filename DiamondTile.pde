@@ -8,10 +8,4 @@ public class DiamondTile extends ResourceTile{
       image = ResourceManager.getImage("DiamondBlock");
       breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     }
-
-    void destroy(){
-      super.destroy();
-
-      giveScoreToPlayer();
-    }
 }

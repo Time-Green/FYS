@@ -41,8 +41,7 @@ void setupGame() {
   world = new World(tilesHorizontal * tileWidth + tileWidth);
 
   player = new Player();
-  objectList.add(player);
-  player.specialAdd();
+  load(player);
 
   int enemyLenght = 4;
   enemies = new Enemy[enemyLenght];
@@ -53,19 +52,17 @@ void setupGame() {
   enemies[3] = new EnemyBomb();
 
   for (int i = 0; i < enemyLenght; i++) {
-    objectList.add(enemies[i]);
+    load(enemies[i]);
   }
 
   for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
 
-    objectList.add(bird);
-    bird.specialAdd();
+    load(bird);
   }
 
   WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
-  objectList.add(wallOfDeath);
-  wallOfDeath.specialAdd();
+  load(wallOfDeath);
 
   CameraShaker.reset();
   camera = new Camera(player);
@@ -109,10 +106,9 @@ void draw() {
   ui.draw();
 }
 
-void updateObjects(){
-  for(BaseObject object : destroyList){
-    objectList.remove(object);
-    object.specialDestroy(); //tiles need to remove themselves from the tilegrid
+void updateObjects() {
+  for (BaseObject object : destroyList) {
+    object.destroyed(); //handle some dying stuff, like removing ourselves from our type specific lists
   }
   destroyList.clear();
 
@@ -121,8 +117,8 @@ void updateObjects(){
   }
 }
 
-void drawObjects(){
-  for(BaseObject object : objectList){
+void drawObjects() {
+  for (BaseObject object : objectList) {
     object.draw();
   }
 }
@@ -154,7 +150,7 @@ void handleGameFlow() {
     }
 
     break;
-  
+
   case GamePaused:
     //if the game has been paused the player can contineu the game
     if (keys[ENTER]) {
@@ -192,6 +188,14 @@ void handleLoading() {
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
 }
 
+void load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
+  newObject.specialAdd();
+}
+
+void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
+  destroyList.add(deletingObject); //queue for deletion
+}
+
 void prepareResourceLoading() {
   //Player
   ResourceManager.prepareLoad("player", "Sprites/player.png");
@@ -215,11 +219,20 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("AmethystBlock", "Sprites/Blocks/amethystblock.png");
   ResourceManager.prepareLoad("ObsedianBlock", "Sprites/Blocks/obsedianblock.png");
   ResourceManager.prepareLoad("MysteryBlock", "Sprites/Blocks/mysteryblock.jpg");
-  //special
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
-  ResourceManager.prepareLoad("Meteor", "Sprites/meteor.png");
-  ResourceManager.prepareLoad("Meteor 2", "Sprites/meteor 2.png");
-  ResourceManager.prepareLoad("BedrockBlock", "Sprites/Blocks/bedrock.block.jpg");
+  //destruction
+  ResourceManager.prepareLoad("Meteor", "Sprites/Destruction/meteor.png");
+  ResourceManager.prepareLoad("Meteor 2", "Sprites/Destruction/meteor 2.png");
+  //Cave
+  ResourceManager.prepareLoad("Chest", "Sprites/Cave/chest.png");
+  ResourceManager.prepareLoad("Torch", "Sprites/Cave/torch.png");
+  //Landscape
+  ResourceManager.prepareLoad("Leafe", "Sprites/Landscape/leafe.png");
+  ResourceManager.prepareLoad("Wood", "Sprites/Landscape/wood.png");
+  //House 
+  ResourceManager.prepareLoad("Door", "Sprites/House/door.png");
+  ResourceManager.prepareLoad("Glass", "Sprites/House/glass.png");
+  ResourceManager.prepareLoad("WoodPlank", "Sprites/House/woodplank.png");
   //Animals
   ResourceManager.prepareLoad("BirdFlyingLeft0", "Sprites/Animals/tile018.png");
   ResourceManager.prepareLoad("BirdFlyingLeft1", "Sprites/Animals/tile019.png");

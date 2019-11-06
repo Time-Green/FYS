@@ -14,6 +14,8 @@ class Tile extends BaseObject{
   float caveSpawningPossibilityScale = 0.68f; //lower for more caves
 
   Tile(int x, int y) {
+    loadInBack = true;
+
     position.x = x * tileWidth;
     position.y = y * tileHeight;
 
@@ -35,12 +37,14 @@ class Tile extends BaseObject{
     }
   }
   void specialAdd(){
+    super.specialAdd();
     tileList.add(this);
   }
 
-  void specialDestroy(){
-     world.map.get(int(gridPosition.y)).remove(this);
-     tileList.remove(this);
+  void destroyed(){
+    super.destroyed();
+    world.map.get(int(gridPosition.y)).remove(this);
+    tileList.remove(this);
   }
 
   void update() {
@@ -82,14 +86,14 @@ class Tile extends BaseObject{
     hp -= damageTaken;
     
     if (hp <= 0) {
-      destroy();
+      mine();
     }
   }
   boolean canMine(){
     return density;
   }
 
-  public void destroy() {
+  public void mine() {
     playBreakSound();
     destroyed = true;
     density = false;

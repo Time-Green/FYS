@@ -6,8 +6,8 @@ public class MysteryTile extends PowerUpTile {
         image = ResourceManager.getImage("MysteryBlock");
     }
 
-    void destroy(){
-        super.destroy(); 
+    void mine(){
+        super.mine(); 
     }
 
 }

@@ -10,4 +10,9 @@ public class ResourceTile extends Tile{
         player.addScore(value);
     }
 
+    void mine(){
+        super.mine();
+        giveScoreToPlayer();
+    }
+
 }

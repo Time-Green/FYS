@@ -106,8 +106,9 @@ public class World {
     println("WARNING: tile not found!");
     return new AirTile(x, depth);
   }
-
-  ArrayList<BaseObject> getSurroundingTiles(int x, int y, Atom collider) { //return an arrayList with the four surrounding tiles of the coordinates
+//returns an arraylist with the 8 tiles surrounding the coordinations. returns BaseObjects so that it can easily be joined with every object list
+//but it's still kinda weird I'll admit
+  ArrayList<BaseObject> getSurroundingTiles(int x, int y, Atom collider) { 
     ArrayList<BaseObject> surrounding = new ArrayList<BaseObject>();
 
     int middleX = int(x + collider.size.x * .5); //calculate from the middle, because it's the average of all our colliding corners
@@ -154,7 +155,8 @@ public class World {
     for (BaseObject object : getSurroundingTiles(xPos, yPos, collider)) {
       if(!object.density) 
         continue;
-      object.delete();
+      Tile tile = (Tile) object; //getSurroundingTiles returns tiles casted as objects
+      tile.mine(); 
     }
     CameraShaker.induceStress(1f);
   }

@@ -1,7 +1,6 @@
 class Enemy extends Mob {
 
   public Enemy() {
-
     speed = 5;
 
     position = new PVector(1000, 500);
@@ -13,10 +12,12 @@ class Enemy extends Mob {
   }
 
   void specialAdd(){
+    super.specialAdd();
     mobList.add(this);
   }
 
-  void specialDestroy(){
+  void destroyed(){
+    super.destroyed();
     mobList.remove(this);
   }
 
