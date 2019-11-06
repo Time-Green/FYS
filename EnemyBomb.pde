@@ -1,13 +1,13 @@
-class BombEnemy extends Enemy {
+class EnemyBomb extends Enemy {
 
     private float explosionRange = 80;
     private PVector exposionSize = new PVector(size.x + explosionRange, size.y + explosionRange);
     
     private boolean isExploding = false;
-    float explosionTimer = 1.5f * 60f;
+    private float explosionTimer = 1.5f * 60f;
     private boolean isDead = false;
     
-    BombEnemy() {
+    EnemyBomb() {
         image = ResourceManager.getImage("BombEnemy");
         this.speed = 2.5f;
     }

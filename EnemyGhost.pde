@@ -1,6 +1,6 @@
-class GhostEnemy extends Enemy {
+class EnemyGhost extends Enemy {
 
-    GhostEnemy() {
+    EnemyGhost() {
         image = ResourceManager.getImage("GhostEnemy");
         collisionEnabled = false;
         gravityForce = 0;

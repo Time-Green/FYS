@@ -1,6 +1,6 @@
-class WalkEnemy extends Enemy {
+class EnemyWalker extends Enemy {
 
-    WalkEnemy() {
+    EnemyWalker() {
         image = ResourceManager.getImage("WalkEnemy");
         
     }

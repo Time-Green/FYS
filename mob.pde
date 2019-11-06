@@ -6,7 +6,7 @@ class Mob extends Atom {
   boolean isImmortal = false;  
 
   //Taking damage
-  final float HURTCOOLDOWN  = 60f;
+  final float HURTCOOLDOWN = 60f;
   float timeSinceLastHurt = 0f; 
   boolean isHurt;
 

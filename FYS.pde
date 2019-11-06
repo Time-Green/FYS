@@ -47,10 +47,10 @@ void setupGame() {
   int enemyLenght = 4;
   enemies = new Enemy[enemyLenght];
 
-  enemies[0] = new WalkEnemy();
-  enemies[1] = new DigEnemy();
-  enemies[2] = new GhostEnemy();
-  enemies[3] = new BombEnemy();
+  enemies[0] = new EnemyWalker();
+  enemies[1] = new EnemyDigger();
+  enemies[2] = new EnemyGhost();
+  enemies[3] = new EnemyBomb();
 
   for (int i = 0; i < enemyLenght; i++) {
     objectList.add(enemies[i]);

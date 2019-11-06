@@ -1,7 +1,8 @@
 class BaseObject {
-    PVector position = new PVector(0,0);
-    PVector size = new PVector(40, 40);
-    boolean density = true;
+    protected PVector position = new PVector(0,0);
+    protected float objectSize = 40f;
+    protected PVector size = new PVector(objectSize, objectSize);
+    protected boolean density = true;
 
     void specialDestroy(){ //remove from certain lists
         return;
