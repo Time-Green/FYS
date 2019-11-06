@@ -9,7 +9,7 @@ class EnemyDigger extends Enemy {
         this.speed = resetSpeed;
         //1f = 1 tile
         float tileDistance = 10f;
-        chaseDistance = objectSize * tileDistance;
+        chaseDistance = OBJECTSIZE * tileDistance;
     }
 
     void update() {
@@ -17,24 +17,29 @@ class EnemyDigger extends Enemy {
 
         float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
         if (distanceToPlayer <= chaseDistance) {
-            
-            this.speed = resetSpeed;
+
             //Chase the player
+            this.speed = resetSpeed;
+
             if (player.position.x < this.position.x) this.walkLeft = true;
             else this.walkLeft = false;
 
-            if (this.walkLeft) {
+            if (this.walkLeft) {//GO left
                 this.isMiningLeft = true;
                 this.isMiningRight = false;
-            } else {
+            } else {//Go right
                 this.isMiningLeft = false;
-                this.isMiningRight = true;    
+                this.isMiningRight = true;
             }
 
-            if (player.position.y > this.position.y) {
+            if (player.position.y > this.position.y) {//Go down
                 this.isMiningDown = true;
-            } else {
+                this.isMiningUp = false;
+                this.gravityForce = 1;
+            } else {//Go up
+                this.isMiningUp = true;
                 this.isMiningDown = false;
+                this.gravityForce = -1;
             }
 
         } else {
@@ -42,8 +47,6 @@ class EnemyDigger extends Enemy {
             this.speed = 0;
             this.isMiningDown = false;
         }
-
-        println("isMiningDown: "+isMiningDown);
 
     }
 }

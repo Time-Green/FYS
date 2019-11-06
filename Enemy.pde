@@ -1,14 +1,14 @@
 class Enemy extends Mob {
 
   public Enemy() {
-    speed = 5;
+    this.speed = 5f;
 
-    position = new PVector(1000, 500);
-    velocity = new PVector(-speed, 0);
+    this.position = new PVector(1000, 500);
+    this.velocity = new PVector(-speed, 0);
     
     //set dragfactors to 1 so we dont slow down by drag
-    groundedDragFactor = 1f;
-    aerialDragFactor = 1f;
+    this.groundedDragFactor = 1f;
+    this.aerialDragFactor = 1f;
   }
 
   void specialAdd(){
@@ -32,12 +32,14 @@ class Enemy extends Mob {
     handleCollision();
 
     //Can you please stop removing this bool from this script please?
-    if (walkLeft) {
-      velocity = new PVector(-speed, 0);
-      flipSpriteHorizontal = false;
+    if (this.walkLeft) {
+      this.velocity = new PVector(-speed, 0);
+      //Flip the image if we are on the ground
+      if(this.isGrounded) this.flipSpriteHorizontal = false;
     } else {
-      velocity = new PVector(speed, 0);
-      flipSpriteHorizontal = true;      
+      this.velocity = new PVector(speed, 0);
+      //Flip the image if we are on the ground
+      if(this.isGrounded) this.flipSpriteHorizontal = true;      
     }
 
     if (position.x < 10) walkLeft = false;

@@ -13,7 +13,7 @@ class Atom extends BaseObject{
 
   //Bools
   protected boolean isGrounded;
-  protected boolean isMiningDown, isMiningLeft, isMiningRight;
+  protected boolean isMiningDown, isMiningUp, isMiningLeft, isMiningRight;
   protected boolean collisionEnabled = true;
   protected boolean walkLeft;
   protected boolean worldBorderCheck = true;
@@ -48,6 +48,13 @@ class Atom extends BaseObject{
       
       if(colliders.size() != 0){ //up
         velocity.y = max(velocity.y, 0);
+        for(BaseObject object : colliders){
+
+          if(isMiningUp) {
+            attemptMine(object);
+          }
+
+        }  
       }
       
       colliders = checkCollision(world, 0, max(velocity.y, 0));

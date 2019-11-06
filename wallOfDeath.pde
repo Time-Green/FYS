@@ -4,9 +4,9 @@ class WallOfDeath extends Atom {
   private float wallHeight = 100;
   private float wallY = -100;
 
-  color wallColor = #FF8C33;
+  private color wallColor = #FF8C33;
 
-  final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
+  private final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
 
   WallOfDeath(float wallWidth){
     position = new PVector(0, wallY);

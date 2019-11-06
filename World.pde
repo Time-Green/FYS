@@ -68,8 +68,7 @@ public class World {
     {
       return new DirtStoneTransitionTile(x, depth);
     }
-    else if (depth > 15)
-    {
+    else if (depth > 15) {
       if (orechance < 80)
       {
         return new StoneTile(x, depth);
@@ -79,7 +78,6 @@ public class World {
         return new CoalTile(x, depth); 
       }
       else if (orechance >= 98 && orechance <= 100){
-        
         return new MysteryTile(x, depth); 
       }
       else
@@ -87,8 +85,7 @@ public class World {
         return new IronTile(x, depth);
       }
     }
-    else if (depth < 800)
-    {
+    else if (depth < 800) {
       if (orechance >= 94 && orechance <= 97)
       {
         return new GoldTile(x, depth);

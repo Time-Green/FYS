@@ -1,10 +1,10 @@
 class BaseObject {
 
     protected PVector position = new PVector(0,0);
-    protected float objectSize = 40f;
-    protected PVector size = new PVector(objectSize, objectSize);
+    protected final float OBJECTSIZE = 40f;
+    protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
     protected boolean density = true;
-    boolean loadInBack = false; //true to insert at the front of draw, so player doesn't get loaded behind tiles
+    protected boolean loadInBack = false; //true to insert at the front of draw, so player doesn't get loaded behind tiles
 
     void update(){
         return;
