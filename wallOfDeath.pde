@@ -61,7 +61,7 @@ class WallOfDeath extends Atom {
     
     for(Tile tile : world.getLayer(layer)){
         //println(3);
-        tile.delete();
+        delete(tile);
     }
   }
 }

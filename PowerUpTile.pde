@@ -12,9 +12,9 @@ void pickUp(){
 
 }
 
-void destroy(){
+void mine(){
     
-    super.destroy();
+    super.mine();
 
 }
 }

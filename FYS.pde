@@ -41,8 +41,7 @@ void setupGame() {
   world = new World(tilesHorizontal * tileWidth + tileWidth);
 
   player = new Player();
-  objectList.add(player);
-  player.specialAdd();
+  load(player);
 
   int enemyLenght = 4;
   enemies = new Enemy[enemyLenght];
@@ -53,19 +52,17 @@ void setupGame() {
   enemies[3] = new BombEnemy();
 
   for (int i = 0; i < enemyLenght; i++) {
-    objectList.add(enemies[i]);
+    load(enemies[i]);
   }
 
   for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
 
-    objectList.add(bird);
-    bird.specialAdd();
+    load(bird);
   }
 
   WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
-  objectList.add(wallOfDeath);
-  wallOfDeath.specialAdd();
+  load(wallOfDeath);
 
   CameraShaker.reset();
   camera = new Camera(player);
@@ -111,8 +108,7 @@ void draw() {
 
 void updateObjects(){
   for(BaseObject object : destroyList){
-    objectList.remove(object);
-    object.specialDestroy(); //tiles need to remove themselves from the tilegrid
+    object.destroyed(); //handle some dying stuff, like removing ourselves from our type specific lists
   }
   destroyList.clear();
 
@@ -190,6 +186,14 @@ void handleLoading() {
   textSize(30);
   textAlign(CENTER);
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
+}
+
+void load(BaseObject newObject){ //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
+  newObject.specialAdd();
+}
+
+void delete(BaseObject deletingObject){ //handles removal, call delete(object) to delete that object from the world
+  destroyList.add(deletingObject); //queue for deletion
 }
 
 void prepareResourceLoading() {

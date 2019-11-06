@@ -28,10 +28,12 @@ class Atom extends BaseObject{
     PVector size = new PVector(40,40);
   }
   void specialAdd(){
+    super.specialAdd();
     atomList.add(this);
   }
 
-  void specialDestroy(){
+  void destroyed(){
+    super.destroyed();
     atomList.remove(this);
   }
 
