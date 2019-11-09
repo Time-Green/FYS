@@ -46,6 +46,7 @@ class EnemyDigger extends Enemy {
             //Don't chase the player
             this.speed = 0;
             this.isMiningDown = false;
+            this.gravityForce = 1;
         }
 
     }

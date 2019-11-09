@@ -5,7 +5,6 @@ class EnemyBomb extends Enemy {
     
     private boolean isExploding = false;
     private float explosionTimer = 1.5f * 60f;
-    private boolean isDead = false;
     
     EnemyBomb() {
         image = ResourceManager.getImage("BombEnemy");
@@ -18,15 +17,13 @@ class EnemyBomb extends Enemy {
         if (isExploding == true) {
             this.speed = 0;
             explosionTimer--;
-            if (explosionTimer <= 0 && isDead == false) {
-                this.size.x = 0;
+            if (explosionTimer <= 0) {
                 world.createExplosion(int(position.x), int(position.y), this);
-                this.gravityForce = 0;
                 float d = dist(this.position.x, this.position.y, player.position.x, player.position.y);
                 if (d <= explosionRange) player.takeDamage(getAttackPower());
-                isDead = true;
+                delete(this);
             }
-            //delete();
+            
         }
 
     }
@@ -34,7 +31,6 @@ class EnemyBomb extends Enemy {
     protected void handleCollision(){
         super.handleCollision();
 
-        // size.add(explosionRange,explosionRange);
         if (CollisionHelper.rectRect(this.position, exposionSize, player.position, player.size)){
             isExploding = true;
         }
