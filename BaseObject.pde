@@ -5,6 +5,7 @@ class BaseObject {
     protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
     protected boolean density = true;
     protected boolean loadInBack = false; //true to insert at the front of draw, so player doesn't get loaded behind tiles
+    protected boolean atomCollision = false; //do we collide with atoms themselves?
 
     void update(){
         return;
@@ -34,7 +35,11 @@ class BaseObject {
     
     }
 
-    void takeDamage(float damageTaken){
+    void takeDamage(int damageTaken){
+        return;
+    }
 
+    void pushed(Atom atom, float x, float y){ //we got pushed by an atom
+        return;
     }
 }

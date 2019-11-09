@@ -10,6 +10,8 @@ class Atom extends BaseObject{
   protected float groundedDragFactor = 0.95f;
   protected float aerialDragFactor = 0.95f;
   protected float breakForce = 0.99f;
+  protected float weight = 5f; //the higher, the more difficult it is too push
+
 
   //Bools
   protected boolean isGrounded;
@@ -19,6 +21,7 @@ class Atom extends BaseObject{
   protected boolean worldBorderCheck = true;
   protected boolean flipSpriteHorizontal;
   protected boolean flipSpriteVertical;
+  protected boolean anchored = false; //true if we are completely immovable
 
   //Tiles
   protected int miningcolor = #DC143C;
@@ -47,56 +50,66 @@ class Atom extends BaseObject{
       colliders = checkCollision(world, 0, min(velocity.y, 0));
       
       if(colliders.size() != 0){ //up
-        velocity.y = max(velocity.y, 0);
+        
         for(BaseObject object : colliders){
-
+          object.pushed(this, 0, velocity.y);
           if(isMiningUp) {
             attemptMine(object);
           }
 
         }  
+        velocity.y = max(velocity.y, 0);
       }
       
       colliders = checkCollision(world, 0, max(velocity.y, 0));
 
       if(colliders.size() != 0){ //down
-        velocity.y = min(velocity.y, 0);
+        
         isGrounded = true;       
         for(BaseObject object : colliders){
+          object.pushed(this, 0, velocity.y);
 
           if(isMiningDown){
             attemptMine(object);
           }
 
         }  
+        velocity.y = min(velocity.y, 0);
       }
 
       if(velocity.x < 0){
         colliders = checkCollision(world, min(velocity.x, 0), 0);
 
         if(colliders.size() != 0){ //left
-          velocity.x = 0;
+          
           walkLeft = !walkLeft;
 
           for(BaseObject object : colliders){
+            object.pushed(this, velocity.x, 0);
+
             if(isMiningLeft){
               attemptMine(object);
             }
           }
+          velocity.x = 0;
         }
+        
       }
       else if(velocity.x > 0){
         colliders = checkCollision(world, max(velocity.x, 0), 0);
         if(colliders.size() != 0){ //right
-          velocity.x = 0;
+          
           walkLeft =!walkLeft;
 
           for(BaseObject object : colliders){
+            object.pushed(this, velocity.x, 0);
+
             if(isMiningRight){
               attemptMine(object);
             }
           }
-        }     
+          velocity.x = 0;  
+        }   
       }
     }
 
@@ -140,7 +153,9 @@ class Atom extends BaseObject{
   }
 
   private void handleMovement(World world){
-    position.add(velocity);
+    if(!anchored){
+      position.add(velocity);
+    }
 
     if(worldBorderCheck){
       position.x = constrain(position.x, 0, world.getWidth() + 10);
@@ -152,11 +167,15 @@ class Atom extends BaseObject{
   }
 
   void addForce(PVector forceToAdd){ //amount of pixels we move
-    acceleration.add(forceToAdd);
+    if(!anchored){
+      acceleration.add(forceToAdd);
+    }
   }
 
   void setForce(PVector newForce){
-    acceleration = newForce;
+    if(!anchored){
+      acceleration = newForce;
+    }
   }
 
   ArrayList checkCollision(World world, float maybeX, float maybeY){
@@ -164,11 +183,11 @@ class Atom extends BaseObject{
     ArrayList<BaseObject> potentialColliders = new ArrayList<BaseObject>();
 
     potentialColliders.addAll(world.getSurroundingTiles(int(position.x), int(position.y), this));
-    //potentialColliders.addAll(mobList);
+    potentialColliders.addAll(atomList);
     
     for (BaseObject object : potentialColliders){
 
-      if(!object.density){
+      if(!object.density || !object.atomCollision){
         continue;
       }
 
@@ -178,7 +197,7 @@ class Atom extends BaseObject{
 
       //debugCollision(object);
 
-      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, object.position.x, object.position.y, tileWidth, tileHeight)){
+      if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, object.position.x, object.position.y, object.size.x, object.size.y)){
         colliders.add(object);      
       }
     }
@@ -197,5 +216,13 @@ class Atom extends BaseObject{
 
   void attemptMine(BaseObject object){
     return;
+  }
+
+  public void moveTo(PVector newPosition){ //for moving to specific coords, but made so we could add some extra checks to it later if we need to
+    position.set(newPosition);
+  }
+
+  void pushed(Atom atom, float x, float y){ //use x and y, because whoever calls this needs fine controle over the directions that actually push, and this is easiest
+    velocity.add(x, y);
   }
 }

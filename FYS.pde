@@ -1,5 +1,6 @@
 ArrayList<BaseObject> objectList = new ArrayList<BaseObject>();
-ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>();
+ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the objectList,
+ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
 //These only exists as helpers. All drawing and updating is handled from objectList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -112,6 +113,11 @@ void updateObjects() {
   }
   destroyList.clear();
 
+  for(BaseObject object : loadList){
+    object.specialAdd();
+  }
+  loadList.clear();
+
   for (BaseObject object : objectList) {
     object.update();
   }
@@ -189,7 +195,12 @@ void handleLoading() {
 }
 
 void load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
-  newObject.specialAdd();
+  loadList.add(newObject); //qeue for loading
+}
+
+void load(Atom newAtom, PVector setPosition){
+  loadList.add(newAtom);
+  newAtom.moveTo(setPosition);
 }
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
@@ -240,6 +251,8 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("BirdFlyingRight0", "Sprites/Animals/tile030.png");
   ResourceManager.prepareLoad("BirdFlyingRight1", "Sprites/Animals/tile031.png");
   ResourceManager.prepareLoad("BirdFlyingRight2", "Sprites/Animals/tile032.png");
+  //Obstacles
+  ResourceManager.prepareLoad("Spike", "Sprites/Structures/spike.png");
   //Day Night Ciycle
   for (int i = 0; i < 8; i++) {
     ResourceManager.prepareLoad("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");

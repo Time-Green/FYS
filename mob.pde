@@ -12,7 +12,7 @@ class Mob extends Atom {
 
   //Mining
   final int MININGCOOLDOWN = 100; //cooldown in millis
-  int lastMine = 0; //before someone rolls by and removes the '= 0' in name of 'optimization', it's because of readability 
+  int lastMine;
 
   public void attemptMine(BaseObject object){
 
