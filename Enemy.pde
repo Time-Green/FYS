@@ -32,22 +32,33 @@ class Enemy extends Mob {
     handleCollision();
 
     //Can you please stop removing this bool from this script please?
-    if (this.walkLeft) {
+    if(this.walkLeft){
       this.velocity = new PVector(-speed, 0);
       //Flip the image if we are on the ground
-      if(this.isGrounded) this.flipSpriteHorizontal = false;
-    } else {
+
+      if(this.isGrounded){
+        this.flipSpriteHorizontal = false;
+      }
+    }else{
       this.velocity = new PVector(speed, 0);
       //Flip the image if we are on the ground
-      if(this.isGrounded) this.flipSpriteHorizontal = true;      
+
+      if(this.isGrounded){
+        this.flipSpriteHorizontal = true;   
+      }   
     }
 
-    if (position.x < 10) walkLeft = false;
-    if (position.x > world.getWidth() - 10) walkLeft = true;
+    if (position.x < 10){
+      walkLeft = false;
+    }
 
+    if (position.x > world.getWidth() - 10){
+      walkLeft = true;
+    }
   }
 
   protected void handleCollision(){
+    
     if (CollisionHelper.rectRect(position, size, player.position, player.size)){
       player.takeDamage(getAttackPower());
     }

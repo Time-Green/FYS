@@ -27,10 +27,11 @@ public class UIController {
 
   void draw(){
 
-    if(keys[83] && Globals.currentGameState == Globals.GameState.InGame){
+    if(InputHelper.isKeyDown('p') && Globals.currentGameState == Globals.GameState.InGame){
       Globals.gamePaused = true;
       Globals.currentGameState = Globals.GameState.GamePaused;
     }
+
     //draw hud at center position
     rectMode(CENTER);
     textAlign(CENTER, CENTER);
@@ -143,8 +144,5 @@ public class UIController {
     textSize(menuFontSize / 2.2);
     text("Press Enter to continue", width / 2, height / 2 - 30);
     text("Press CTRL to restart", width / 2, height / 2 + 60);
-
-
-
   }
 }

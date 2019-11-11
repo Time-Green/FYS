@@ -6,10 +6,15 @@ class Player extends Mob {
   public Player(){
     image = ResourceManager.getImage("player");
     position = spawnPosition;
+
+    isImmortal = true;
+
+    setupLightSource(this, 600f, 1f);
   }
 
-  void update() {
-    if (Globals.gamePaused) {  
+  void update(){
+
+    if(Globals.gamePaused){  
       return;
     }
     
@@ -19,24 +24,25 @@ class Player extends Mob {
   }
   
   void doPlayerMovement(){
-    if(keys[UP] && isGrounded()){
+
+    if(InputHelper.isKeyDown(UP) && isGrounded()){
       addForce(new PVector(0, -jumpForce));
     }
 
-    if(keys[DOWN]){
+    if(InputHelper.isKeyDown(DOWN)){
       isMiningDown = true;
     }else{
       isMiningDown = false;
     }
 
-    if(keys[LEFT]){
+    if(InputHelper.isKeyDown(LEFT)){
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
     }else{
       isMiningLeft = false;
     }
 
-    if(keys[RIGHT]){
+    if(InputHelper.isKeyDown(RIGHT)){
       addForce(new PVector(speed, 0));
       isMiningRight = true;
     }else{

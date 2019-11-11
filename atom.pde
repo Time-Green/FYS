@@ -12,7 +12,6 @@ class Atom extends BaseObject{
   protected float breakForce = 0.99f;
   protected float weight = 5f; //the higher, the more difficult it is too push
 
-
   //Bools
   protected boolean isGrounded;
   protected boolean isMiningDown, isMiningUp, isMiningLeft, isMiningRight;
@@ -28,8 +27,9 @@ class Atom extends BaseObject{
   protected PImage image;
 
   Atom(){
-    PVector size = new PVector(40,40);
+
   }
+
   void specialAdd(){
     super.specialAdd();
     atomList.add(this);
@@ -41,6 +41,8 @@ class Atom extends BaseObject{
   }
 
   void update(){
+    super.update();
+
     prepareMovement();
     isGrounded = false;
 
@@ -52,12 +54,14 @@ class Atom extends BaseObject{
       if(colliders.size() != 0){ //up
         
         for(BaseObject object : colliders){
-          object.pushed(this, 0, velocity.y);
+          object.pushed(this, 0, velocity.y); 
+
           if(isMiningUp) {
             attemptMine(object);
           }
 
-        }  
+        } 
+        
         velocity.y = max(velocity.y, 0);
       }
       
@@ -65,7 +69,8 @@ class Atom extends BaseObject{
 
       if(colliders.size() != 0){ //down
         
-        isGrounded = true;       
+        isGrounded = true;    
+
         for(BaseObject object : colliders){
           object.pushed(this, 0, velocity.y);
 
@@ -73,7 +78,8 @@ class Atom extends BaseObject{
             attemptMine(object);
           }
 
-        }  
+        }
+
         velocity.y = min(velocity.y, 0);
       }
 
@@ -90,13 +96,16 @@ class Atom extends BaseObject{
             if(isMiningLeft){
               attemptMine(object);
             }
+
           }
+
           velocity.x = 0;
         }
-        
       }
       else if(velocity.x > 0){
+
         colliders = checkCollision(world, max(velocity.x, 0), 0);
+
         if(colliders.size() != 0){ //right
           
           walkLeft =!walkLeft;
@@ -107,7 +116,9 @@ class Atom extends BaseObject{
             if(isMiningRight){
               attemptMine(object);
             }
+
           }
+          
           velocity.x = 0;  
         }   
       }
@@ -117,9 +128,13 @@ class Atom extends BaseObject{
   }
 
   void draw(){
+    super.draw();
+
     pushMatrix();
 
     translate(position.x, position.y);
+
+    tint(lightningAmount);
 
     if(!flipSpriteHorizontal && !flipSpriteVertical){
       scale(1, 1);
@@ -134,6 +149,8 @@ class Atom extends BaseObject{
       scale(-1, -1);
       image(image, -size.x, -size.y, size.x, size.y);
     }
+
+    tint(255);
 
     popMatrix();
   }

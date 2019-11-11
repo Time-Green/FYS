@@ -7,6 +7,9 @@ ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Atom> atomList = new ArrayList<Atom>();
 ArrayList<Mob> mobList = new ArrayList<Mob>();
 
+//list of all objects that emit light
+ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
+
 World world;
 Player player;
 Camera camera;
@@ -109,6 +112,12 @@ void draw() {
 
 void updateObjects() {
   for (BaseObject object : destroyList) {
+
+    //clean up light sources of they are destroyed
+    if(lightSources.contains(object)){
+      lightSources.remove(object);
+    }
+
     object.destroyed(); //handle some dying stuff, like removing ourselves from our type specific lists
   }
   destroyList.clear();
@@ -141,7 +150,7 @@ void handleGameFlow() {
   case MainMenu:
 
     //if we are in the main menu we start the game by pressing enter
-    if (keys[ENTER]) {
+    if (InputHelper.isKeyDown(ENTER)){
       startGame();
     }
 
@@ -150,7 +159,7 @@ void handleGameFlow() {
   case GameOver:
 
     //if we died we restart the game by pressing enter
-    if (keys[ENTER]) {
+    if (InputHelper.isKeyDown(ENTER)){
       startGame();
       Globals.gamePaused = false;
     }
@@ -159,11 +168,12 @@ void handleGameFlow() {
 
   case GamePaused:
     //if the game has been paused the player can contineu the game
-    if (keys[ENTER]) {
+    if (InputHelper.isKeyDown(ENTER)){
       Globals.gamePaused = false;
       Globals.currentGameState = Globals.GameState.InGame;
     }
-    if (keys[17]) {
+    
+    if (InputHelper.isKeyDown('o')){
       startGame();
       Globals.gamePaused = false;
     }
@@ -205,6 +215,12 @@ void load(Atom newAtom, PVector setPosition){
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion
+}
+
+void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor){
+  object.lightEmitAmount = lightEmitAmount;
+  object.distanceDimFactor = dimFactor;
+  lightSources.add(object);
 }
 
 void prepareResourceLoading() {
@@ -268,4 +284,12 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("StoneBreak2", "Sound/stone2.wav");
   ResourceManager.prepareLoad("StoneBreak3", "Sound/stone3.wav");
   ResourceManager.prepareLoad("StoneBreak4", "Sound/stone4.wav");
+}
+
+void keyPressed(){
+  InputHelper.onKeyPressed(keyCode, key);
+}
+
+void keyReleased(){
+  InputHelper.onKeyReleased(keyCode, key);
 }

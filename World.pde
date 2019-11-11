@@ -11,24 +11,29 @@ public class World {
 
   float wallWidth;
 
-  World(float wallWidth) {
+  final float CAVESPAWNINGNOICESCALE = 0.1f;
+  final float CAVESPAWNINGPOSSIBILITYSCALE = 0.68f; //lower for more caves
+
+  World(float wallWidth){
     this.wallWidth = wallWidth;
     dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, 8)));
   }
 
-  public void update() {
+  public void update(){
   }
 
-  public void draw(Camera camera) {
+  public void draw(Camera camera){
     image(dayNightImage, 0, 0, wallWidth, 1080);
   }
 
   //return tile you're currently on
-  Tile getTile(float x, float y) {
+  Tile getTile(float x, float y){
     ArrayList<Tile> subList = map.get(constrain(int(y) / tileHeight, 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+
     if(subList.size() == 0){
       return voidTile;
     }
+
     return subList.get(constrain(int(x) / tileWidth, 0, subList.size() - 1));
   }
 
@@ -36,11 +41,11 @@ public class World {
 
     int mapDepth = map.size();
 
-    for (int y = mapDepth; y <= mapDepth + layers; y++) {
+    for(int y = mapDepth; y <= mapDepth + layers; y++){
       ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
       map.add(subArray); // add the empty tile-list to the bigger list. We'll fill it a few lines down
 
-      for (int x = 0; x <= tilesHorizontal; x++) {
+      for(int x = 0; x <= tilesHorizontal; x++){
         Tile tile = getTileToGenerate(x, y);
 
         subArray.add(tile); 
@@ -69,6 +74,7 @@ public class World {
       return new DirtStoneTransitionTile(x, depth);
     }
     else if (depth > 15) {
+
       if (orechance < 80)
       {
         return new StoneTile(x, depth);
@@ -86,6 +92,7 @@ public class World {
       }
     }
     else if (depth < 800) {
+
       if (orechance >= 94 && orechance <= 97)
       {
         return new GoldTile(x, depth);
@@ -101,8 +108,10 @@ public class World {
     }
 
     println("WARNING: tile not found!");
+
     return new AirTile(x, depth);
   }
+
 //returns an arraylist with the 8 tiles surrounding the coordinations. returns BaseObjects so that it can easily be joined with every object list
 //but it's still kinda weird I'll admit
   ArrayList<BaseObject> getSurroundingTiles(int x, int y, Atom collider) { 

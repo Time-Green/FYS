@@ -7,11 +7,11 @@ class Tile extends BaseObject{
 
   PImage image;
   PImage destroyedImage;
-  SoundFile breakSound;
-  float painDiscolor = 50;
 
-  float caveSpawningNoiseScale = 0.1f;
-  float caveSpawningPossibilityScale = 0.68f; //lower for more caves
+  SoundFile breakSound;
+  float dammageDiscolor = 50;
+
+  float distanceToPlayer = 0.0f;
 
   Tile(int x, int y) {
     loadInBack = true;
@@ -30,57 +30,53 @@ class Tile extends BaseObject{
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
-    if(position.y > 1050 && noise(float(x) * caveSpawningNoiseScale, float(y) * caveSpawningNoiseScale) > caveSpawningPossibilityScale){
+    if(position.y > 1050 && noise(float(x) * world.CAVESPAWNINGNOICESCALE, float(y) * world.CAVESPAWNINGNOICESCALE) > world.CAVESPAWNINGPOSSIBILITYSCALE){
       destroyed = true;
       density = false;
 
       return;
     }
   }
+
   void specialAdd(){
     super.specialAdd();
+
     tileList.add(this);
   }
 
   void destroyed(){
     super.destroyed();
+
     world.map.get(int(gridPosition.y)).remove(this);
     tileList.remove(this);
   }
 
-  void update() {
+  void update(){
+    super.update();
   }
 
-  void draw() {
+  void draw(){
     if(!inCameraView(camera)){
       return;
     }
 
+    super.draw();
+
     if (!destroyed){
 
       //dirty NullPointerException fix
-      if (image == null) {
+      if (image == null){
         return;
       }
-      tint(255 - painDiscolor * (maxHp - hp));
+      
+      tint(lightningAmount - dammageDiscolor * (maxHp - hp));
       image(image, position.x, position.y, tileWidth, tileHeight);
       tint(255);
     }else{
+      tint(lightningAmount);
       image(destroyedImage, position.x, position.y, tileWidth, tileHeight);
+      tint(255);
     }
-  }
-
-  boolean inCameraView(Camera camera) {
-    PVector camPos = camera.getPosition();
-
-    if (position.y > -camPos.y - tileHeight
-      && position.y < -camPos.y + height
-      && position.x > -camPos.x - tileWidth
-      && position.x < -camPos.x + width) {
-      return true;
-    }
-
-    return false;
   }
 
   void takeDamage(int damageTaken) {
