@@ -50,6 +50,7 @@ public class World {
 
         subArray.add(tile); 
         objectList.add(0, tile); //add at 0, so they're always loaded first
+        load(tile);
       }
     }
   }
@@ -135,6 +136,18 @@ public class World {
     return surrounding;
   }
 
+  ArrayList<Tile> getTilesInRadius (PVector pos, float radius) {
+    ArrayList<Tile> returnList = new ArrayList<Tile>();
+    for (Tile tile : tileList) {
+
+      if(dist(pos.x, pos.y, tile.position.x, tile.position.y) < radius) {
+        returnList.add(tile);
+      }
+    }
+
+    return returnList;
+  }
+
   void updateDepth() { //does some stuff related to the deepest depth, currently only infinite generation
     float depth = player.getDepth();
 
@@ -155,15 +168,5 @@ public class World {
 
   float getWidth(){
     return tilesHorizontal * tileWidth;
-  }
-
-  public void createExplosion(int xPos, int yPos, Atom collider) {
-    for (BaseObject object : getSurroundingTiles(xPos, yPos, collider)) {
-      if(!object.density) 
-        continue;
-      Tile tile = (Tile) object; //getSurroundingTiles returns tiles casted as objects
-      tile.mine(); 
-    }
-    CameraShaker.induceStress(1f);
   }
 }
