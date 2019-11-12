@@ -2,7 +2,10 @@ class Explosion extends BaseObject {
 
   //ArrayList<BaseObject> Explosion = new ArrayList<BaseObject>();
 
-  float radius;
+  float maxRadius; 
+  float currentRadius = 0;
+  float radiusIncrease = 35;
+  
   //player.position.x
   //player.position.y
   //player.takeDamage
@@ -16,16 +19,17 @@ class Explosion extends BaseObject {
 
   Explosion(PVector spawnPos, float radius) {
     position = spawnPos.copy();
-    this.radius = radius;
+    maxRadius = radius;
 
     //image = ResourceManager.getImage("Particle.jpg");
     //Sound = ResourceManager.getSound("Explosion.wav");
-    explode();
+
   }
 
   void explode() {
-    ArrayList<Tile> tilesInExplosionRadius = world.getTilesInRadius(position, radius);
+    ArrayList<Tile> tilesInExplosionRadius = world.getTilesInRadius(position, currentRadius);
     for (Tile tile : tilesInExplosionRadius) {
+
       if (!tile.density) 
         continue;
 
@@ -36,6 +40,12 @@ class Explosion extends BaseObject {
   }
 
   void update() {
+    super.update();
+
+    if(currentRadius <= maxRadius) {
+      currentRadius += radiusIncrease;
+      explode();
+    }
   }
 
   void draw() {
