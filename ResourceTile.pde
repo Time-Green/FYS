@@ -11,7 +11,7 @@ public class ResourceTile extends Tile{
     void mine(){
         super.mine();
         for (int i = 0; i < pickUpDropAmountValue; i++) {
-            load(new ScorePickUp(new PVector(position.x + 10 + random(size.x - 20), position.y + 10 + random(size.y - 20)), this));
+            load(new ScorePickUp(new PVector(position.x + 10 + random(size.x - 60), position.y + 10 + random(size.y - 60)), this));
         }
     }
 
