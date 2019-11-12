@@ -49,7 +49,6 @@ public class World {
         Tile tile = getTileToGenerate(x, y);
 
         subArray.add(tile); 
-        objectList.add(0, tile); //add at 0, so they're always loaded first
         load(tile);
       }
     }
@@ -160,10 +159,10 @@ public class World {
   }
 
   ArrayList<Tile> getLayer(int layer){
-    return world.map.get(layer);
+    return map.get(layer);
   }
 
-  PVector getWholePosition(Atom atom){//return the X and Y in tiles
+  PVector getGridPosition(Atom atom){//return the X and Y in tiles
     return new PVector(floor(atom.position.x / tileWidth), floor(atom.position.y / tileHeight));
   }
 

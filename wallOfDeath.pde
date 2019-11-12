@@ -51,17 +51,15 @@ class WallOfDeath extends Atom {
   }
 
   private void cleanUpTiles(){
-    int layer = int(world.getWholePosition(this).y - DESTROYTILESAFTER);
-    //println(1);
+    int layer = int(world.getGridPosition(this).y - DESTROYTILESAFTER);
+
     //it's not time to destroy yet, because we just started
     if(layer < 0){
-     //println(2);
       return;
     }
     
     for(Tile tile : world.getLayer(layer)){
-        //println(3);
-        delete(tile);
+      delete(tile);
     }
   }
 }
