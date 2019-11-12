@@ -2,6 +2,7 @@ public class ResourceTile extends Tile{
 
     int value;
     int pickUpDropAmountValue = 5;
+    PImage pickUpImage;
 
     public ResourceTile(int x, int y){
         super(x, y);

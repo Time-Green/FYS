@@ -9,10 +9,7 @@ public class PickUp extends Atom{
     }
 
     void draw(){
-        // super.draw();
-        fill(lightningAmount);
-        circle(position.x, position.y, radius*2);
-        fill(255);
+        super.draw();
     }
 
     void update(){
@@ -39,6 +36,7 @@ public class ScorePickUp extends PickUp{
     public ScorePickUp(PVector spawnPosition, ResourceTile tile) {
         super(spawnPosition);
         score = tile.value / tile.pickUpDropAmountValue;
+        image = tile.pickUpImage;
     }
 
     void pickedUp(Atom atom){
