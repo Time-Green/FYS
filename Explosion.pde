@@ -1,29 +1,21 @@
 class Explosion extends BaseObject {
 
-  //ArrayList<BaseObject> Explosion = new ArrayList<BaseObject>();
-
   float maxRadius; 
   float currentRadius = 0;
   float radiusIncrease = 35;
-  
-  //player.position.x
-  //player.position.y
-  //player.takeDamage
-  //tile.takeDamage
 
   float fade = 0.75f;
   float time = 180;
   //if the framerate is 60 then the time is 1 second, now the timer is set on 3 seconds
   boolean done = false;
 
+  SoundFile explosionSound;
 
   Explosion(PVector spawnPos, float radius) {
     position = spawnPos.copy();
     maxRadius = radius;
 
-    //image = ResourceManager.getImage("Particle.jpg");
-    //Sound = ResourceManager.getSound("Explosion.wav");
-
+    explosionSound = ResourceManager.getSound("Explosion");
   }
 
   void explode() {
@@ -37,6 +29,7 @@ class Explosion extends BaseObject {
     }
 
     CameraShaker.induceStress(1f);
+    explosionSound.play();
   }
 
   void update() {

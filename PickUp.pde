@@ -10,7 +10,13 @@ public class PickUp extends Atom{
 
     void draw(){
         // super.draw();
+        fill(lightningAmount);
         circle(position.x, position.y, radius*2);
+        fill(255);
+    }
+
+    void update(){
+        super.update();
     }
 
     void pushed(Atom atom, float x, float y){
@@ -39,5 +45,13 @@ public class ScorePickUp extends PickUp{
         player.addScore(score);
 
         super.pickedUp(atom);
+    }
+
+    void draw(){
+        super.draw();
+    }
+
+    void update(){
+        super.update();
     }
 }

@@ -284,6 +284,7 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("StoneBreak2", "Sound/stone2.wav");
   ResourceManager.prepareLoad("StoneBreak3", "Sound/stone3.wav");
   ResourceManager.prepareLoad("StoneBreak4", "Sound/stone4.wav");
+  ResourceManager.prepareLoad("Explosion", "Sound/explosion.wav");
 }
 
 void keyPressed(){

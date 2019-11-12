@@ -1,10 +1,10 @@
 class EnemyBomb extends Enemy {
 
     private float explosionRange = 80;
-    private PVector explosionSize = new PVector(size.x + explosionRange, size.y + explosionRange);
     
     private boolean isExploding = false;
-    private float explosionTimer = 1.5f * 60f;
+    private float explosionTimer = 90f;
+    private float explosionSize = 1000;
     
     EnemyBomb() {
         image = ResourceManager.getImage("BombEnemy");
@@ -14,25 +14,29 @@ class EnemyBomb extends Enemy {
     void update() {
         super.update();
 
-        if (isExploding == true) {
+        if (isExploding) {
+
             this.speed = 0;
             explosionTimer--;
+
             if (explosionTimer <= 0) {
-                load(new Explosion(position, 400));
-                //world.createExplosion(int(position.x), int(position.y), this);
-                float d = dist(this.position.x, this.position.y, player.position.x, player.position.y);
-                if (d <= explosionRange) player.takeDamage(getAttackPower());
+
+                load(new Explosion(position, explosionSize));
+                float distance = dist(this.position.x, this.position.y, player.position.x, player.position.y);
+
+                if (distance <= explosionRange){
+                    player.takeDamage(getAttackPower());
+                }
+
                 delete(this);
             }
-            
         }
-
     }
 
     protected void handleCollision(){
         super.handleCollision();
 
-        if (CollisionHelper.rectRect(this.position, explosionSize, player.position, player.size)){
+        if (CollisionHelper.rectRect(position, new PVector(size.x + explosionRange, size.y + explosionRange), player.position, player.size)){
             isExploding = true;
         }
     }
