@@ -28,7 +28,7 @@ class Explosion extends BaseObject {
 
       float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
 
-      tile.takeDamage(round(dammage));
+      tile.takeDamage(dammage);
     }
 
     CameraShaker.induceStress(0.25f);

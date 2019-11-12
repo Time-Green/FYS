@@ -1,13 +1,15 @@
 public class MysteryTile extends PowerUpTile {
+  
+  public MysteryTile (int x, int y) {
+    super(x,y);
 
-    public MysteryTile (int x, int y) {
+    name = "MysteryTile[" + x + "," + y + "]";
+        
+    image = ResourceManager.getImage("MysteryBlock");
+  }
 
-        super(x,y);
-        image = ResourceManager.getImage("MysteryBlock");
-    }
-
-    void mine(){
-        super.mine(); 
-    }
+  void mine(){
+    super.mine(); 
+  }
 
 }

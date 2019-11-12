@@ -79,7 +79,7 @@ class Tile extends BaseObject{
     }
   }
 
-  void takeDamage(int damageTaken) {
+  void takeDamage(float damageTaken) {
     hp -= damageTaken;
     
     if (hp <= 0) {

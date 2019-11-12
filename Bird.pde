@@ -5,6 +5,7 @@ public class Bird extends Mob{
 
     public Bird(World world){
 
+        name = "Bird";
         //some birds will fly right
         if(random(0, 2) < 1){
             flyingLeft = false;

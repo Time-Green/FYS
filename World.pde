@@ -3,7 +3,7 @@ public class World {
   Tile voidTile = new Tile(0, 0); //return the void tile if there's no tile
 
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
-  int generationRatio = 5; //every five tiles we dig, we add 5 more
+  int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
 
   int safeZone = 10;
 
@@ -37,20 +37,22 @@ public class World {
     return subList.get(constrain(int(x) / tileWidth, 0, subList.size() - 1));
   }
 
-  void generateLayers(int layers) {
+  void updateWorldDepth() {
 
     int mapDepth = map.size();
-
-    for(int y = mapDepth; y <= mapDepth + layers; y++){
+    
+    for(int y = mapDepth; y <= int((player.getDepth() - 10 * tileHeight) / tileHeight) + generateOffset; y++){
+      
       ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
-      map.add(subArray); // add the empty tile-list to the bigger list. We'll fill it a few lines down
-
+      
       for(int x = 0; x <= tilesHorizontal; x++){
         Tile tile = getTileToGenerate(x, y);
 
-        subArray.add(tile); 
+        subArray.add(tile);
         load(tile);
       }
+
+      map.add(subArray);// add the empty tile-list to the bigger list
     }
   }
 
@@ -151,11 +153,10 @@ public class World {
   void updateDepth() { //does some stuff related to the deepest depth, currently only infinite generation
     float depth = player.getDepth();
 
-    if (depth % generationRatio == 0 && depth > deepestDepth) { //check if we're on a generation point and if we have not been there before
-      generateLayers(generationRatio);
+    if (depth > deepestDepth) { //check if we're on a generation point and if we have not been there before
+      updateWorldDepth();
+      deepestDepth = depth;
     }
-
-    deepestDepth = max(depth, deepestDepth);
   }
 
   ArrayList<Tile> getLayer(int layer){

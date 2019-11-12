@@ -24,7 +24,7 @@ int tileHeight = 50;
 int birdCount = 10;
 
 boolean firstTime = true;
-//boolean firstStart = true;
+boolean firstStart = true;
 
 void setup() {
   size(1280, 720, P2D);
@@ -71,7 +71,7 @@ void setupGame() {
   CameraShaker.reset();
   camera = new Camera(player);
 
-  world.generateLayers(tilesVertical);
+  world.updateWorldDepth();
 }
 
 void draw() {
@@ -127,6 +127,7 @@ void updateObjects() {
   }
   loadList.clear();
 
+  //println("Updating " + objectList.size() + " objects");
   for (BaseObject object : objectList) {
     object.update();
   }
@@ -183,7 +184,12 @@ void handleGameFlow() {
 void startGame() {
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
-  setupGame();
+
+  if(firstStart){
+    firstStart = false;
+  }else{
+    setupGame();
+  }
 }
 
 void handleLoading() {

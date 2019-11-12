@@ -1,8 +1,8 @@
 class Mob extends Atom {
 
   //Health
-  int maxHealth = 3;
-  int currentHealth = maxHealth;
+  float maxHealth = 3;
+  float currentHealth = maxHealth;
   boolean isImmortal = false;  
 
   //Taking damage
@@ -36,7 +36,7 @@ class Mob extends Atom {
     if(isHurt == true){
 
       //Count up until we can be hurt again
-      timeSinceLastHurt ++;
+      timeSinceLastHurt++;
 
       if(timeSinceLastHurt >= HURTCOOLDOWN){
         timeSinceLastHurt = 0;
@@ -45,25 +45,21 @@ class Mob extends Atom {
     }
   }
 
-  public void takeDamage(int damageTaken){
+  public void takeDamage(float damageTaken){
   
-  if(isImmortal){
-
+    if(isImmortal){
       return; 
-  }   
-  else{
+    }else{
 
       if(isHurt == false){
+        isHurt = true;
+        currentHealth -= damageTaken;
 
-      isHurt = true;
-      currentHealth -= damageTaken;
-
-      if(currentHealth <= 0){
-        die();
+        if(currentHealth <= 0){
+          die();
+        }
       }
     }
-  }
-    
   }
 
   public void die(){
@@ -73,5 +69,5 @@ class Mob extends Atom {
   int getAttackPower(){ //obviously temporary till we get something like damage going
     return 1; 
   }
-
+  
 }

@@ -9,6 +9,9 @@ class WallOfDeath extends Atom {
   private final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
 
   WallOfDeath(float wallWidth){
+
+    name = "Wall of Death";
+
     position = new PVector(0, wallY);
     velocity = new PVector(0, moveSpeed);
     size = new PVector(wallWidth, wallHeight);

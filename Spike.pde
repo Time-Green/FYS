@@ -6,10 +6,10 @@ class Spike extends Obstacle{
         anchored = true;
     }
 
-    void pushed(Atom atom, float px, float py){
-        println(px, py);
-        if(py > 0){ //something fell on us, and we're a spike soooo
-            atom.takeDamage(1);
+    void pushed(Mob mob, PVector otherPosition){
+
+        if(otherPosition.y > 0){ //something fell on us, and we're a spike soooo
+            mob.takeDamage(1f);
         }
     }
 }

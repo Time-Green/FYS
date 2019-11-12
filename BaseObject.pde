@@ -1,5 +1,7 @@
 class BaseObject {
 
+  public String name = "";
+
   protected PVector position = new PVector(0,0);
   protected final float OBJECTSIZE = 40f;
   protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
@@ -58,9 +60,11 @@ class BaseObject {
   void specialAdd(){ //add to certain lists
 
     if(loadInBack){
+      //println("adding: " + name);
       objectList.add(0, this);
     }
     else{
+      //println("adding: " + name);
       objectList.add(this); 
     }
     
@@ -71,7 +75,7 @@ class BaseObject {
     return false;
   }
 
-  void takeDamage(int damageTaken){
+  void takeDamage(float damageTaken){
 
   }
 
