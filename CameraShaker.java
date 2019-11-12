@@ -7,13 +7,15 @@ public class CameraShaker
 
     private static PVector currentShakeOffset = new PVector();
 
+    private static float maxTraumaIntensity = 2;
+
     // Maximum distance in each direction the transform
     // with translate during shaking.
-    private static PVector maximumShakeAmount = new PVector(25, 25);
+    private static PVector maximumShakeAmount = new PVector(30, 30);
 
     // Frequency of the Perlin noise function. Higher values
     // will result in faster shaking.
-    private static float frequency = 15;
+    private static float frequency = 10;
 
     // Trauma is taken to this power before
     // shaking is applied. Higher values will result in a smoother
@@ -44,9 +46,7 @@ public class CameraShaker
             maximumShakeAmount.y * (game.noise(seed + 1, game.millis() * 1000 * frequency) * 2 - 1)
         ).mult(shake);
 
-        trauma = game.constrain(trauma - recoverySpeed, 0, 1);
-
-        //game.println(currentShakeOffset.x + " : " + currentShakeOffset.y);
+        trauma = game.constrain(trauma - recoverySpeed, 0, maxTraumaIntensity);
     }
 
     public static void reset(){
@@ -61,11 +61,11 @@ public class CameraShaker
     public static void induceStress(float stress)
     {
         seed = game.random(1);
-        trauma = game.constrain(trauma + stress, 0, 1);
+        trauma = game.constrain(trauma + stress, 0, maxTraumaIntensity);
     }
 
     public static void setTrauma(float traumaToSet)
     {
-        trauma = game.constrain(traumaToSet, 0, 1);
+        trauma = game.constrain(traumaToSet, 0, maxTraumaIntensity);
     }
 }

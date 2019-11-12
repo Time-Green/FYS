@@ -31,7 +31,7 @@ class Explosion extends BaseObject {
       tile.takeDamage(round(dammage));
     }
 
-    CameraShaker.induceStress(1f);
+    CameraShaker.induceStress(0.25f);
 
     //explosionSound.stop();
     explosionSound.play();
