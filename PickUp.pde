@@ -1,6 +1,6 @@
 public class PickUp extends Atom{
     
-    float radius = 10;
+    float radius = 30;
 
     public PickUp (PVector spawnPosition) {
         position = spawnPosition.copy();
