@@ -74,7 +74,7 @@ class WallOfDeath extends Atom {
       //is the object above the wall of death..
       if(object.position.y < position.y - DESTROYTILESAFTER * tileHeight){
 
-        //dont remove player
+        //..and its not the player..
         if(object instanceof Player){
           continue;
         }
