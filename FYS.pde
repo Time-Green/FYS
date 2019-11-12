@@ -249,7 +249,7 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
   ResourceManager.prepareLoad("TNTBlock", "Sprites/Destruction/TNT.png");
   //Pickup
-  // ResourceManager.prepareLoad("CoalPickUp", "Sprites/Drops/coaldrop.png");
+  ResourceManager.prepareLoad("CoalPickUp", "Sprites/Drops/coaldrop.png");
   ResourceManager.prepareLoad("IronPickUp", "Sprites/Drops/irondrop.png");
   // ResourceManager.prepareLoad("GoldPickUp", "Sprites/Drops/golddrop.png");
   //destruction
