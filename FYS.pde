@@ -247,6 +247,7 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("ObsedianBlock", "Sprites/Blocks/obsedianblock.png");
   ResourceManager.prepareLoad("MysteryBlock", "Sprites/Blocks/mysteryblock.jpg");
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
+  ResourceManager.prepareLoad("TNTBlock", "Sprites/Destruction/TNT.png");
   //Pickup
   ResourceManager.prepareLoad("CoalPickUp", "Sprites/Drops/coaldrop.png");
   ResourceManager.prepareLoad("IronPickUp", "Sprites/Drops/irondrop.png");
