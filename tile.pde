@@ -94,6 +94,11 @@ class Tile extends BaseObject{
     playBreakSound();
     destroyed = true;
     density = false;
+
+    //if this tile generates light and is destroyed, disable the lightsource by removing it
+    if(lightSources.contains(this)){
+      lightSources.remove(this);
+    }
   }
 
   private void playBreakSound(){

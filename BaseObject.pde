@@ -33,7 +33,7 @@ class BaseObject {
       lightningAmount += constrain((lightSource.lightEmitAmount - distanceToLightSource) * lightSource.distanceDimFactor, 0, 255);
     }
 
-    //make sure the object cant get brighter than max (255)
+    //make sure the object can't get brighter than 255
     lightningAmount = constrain(lightningAmount, 0, 255);
   }
 

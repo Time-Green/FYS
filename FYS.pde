@@ -108,6 +108,8 @@ void draw() {
   handleGameFlow();
 
   ui.draw();
+
+  println("lightSources: "+lightSources.size());
 }
 
 void updateObjects() {

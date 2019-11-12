@@ -4,7 +4,7 @@ class EnemyBomb extends Enemy {
     
     private boolean isExploding = false;
     private float explosionTimer = 90f;
-    private float explosionSize = 500;
+    private float explosionSize = 1000;
     
     EnemyBomb() {
         image = ResourceManager.getImage("BombEnemy");
