@@ -17,7 +17,6 @@ public class PickUp extends Atom{
 
         if(atom instanceof Player){
             pickedUp(atom);
-            println("feafesfesf");
         }
 
     }
