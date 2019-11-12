@@ -1,7 +1,7 @@
 public class ResourceTile extends Tile{
 
     int value;
-    int pickUpDropAmountValue = 5;
+    int pickUpDropAmountValue = 1;
     PImage pickUpImage;
 
     public ResourceTile(int x, int y){

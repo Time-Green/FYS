@@ -1,13 +1,13 @@
 class Explosion extends BaseObject {
 
-  float maxRadius; 
+  float maxRadius;
+  float maxDamage = 5;
   float currentRadius = 0;
   float radiusIncrease = 35;
 
   float fade = 0.75f;
   float time = 180;
   //if the framerate is 60 then the time is 1 second, now the timer is set on 3 seconds
-  boolean done = false;
 
   SoundFile explosionSound;
 
@@ -20,15 +20,20 @@ class Explosion extends BaseObject {
 
   void explode() {
     ArrayList<Tile> tilesInExplosionRadius = world.getTilesInRadius(position, currentRadius);
+
     for (Tile tile : tilesInExplosionRadius) {
 
       if (!tile.density) 
         continue;
 
-      tile.takeDamage(10);
+      float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
+
+      tile.takeDamage(round(dammage));
     }
 
     CameraShaker.induceStress(1f);
+
+    //explosionSound.stop();
     explosionSound.play();
   }
 
