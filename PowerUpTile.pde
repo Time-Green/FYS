@@ -9,12 +9,9 @@ public PowerUpTile(int x, int y){
 
 void pickUp(){
 
-
 }
 
 void mine(){
-    
     super.mine();
-
-}
+    }
 }

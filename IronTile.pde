@@ -7,5 +7,6 @@ public class IronTile extends ResourceTile{
 
       image = ResourceManager.getImage("IronBlock");
       breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
+      pickUpImage = ResourceManager.getImage("IronPickUp");
     }
 }
