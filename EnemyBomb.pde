@@ -18,7 +18,7 @@ class EnemyBomb extends Enemy {
             this.speed = 0;
             explosionTimer--;
             if (explosionTimer <= 0) {
-                load(new Explosion(position, 4000));
+                load(new Explosion(position, 400));
                 //world.createExplosion(int(position.x), int(position.y), this);
                 float d = dist(this.position.x, this.position.y, player.position.x, player.position.y);
                 if (d <= explosionRange) player.takeDamage(getAttackPower());
