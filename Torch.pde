@@ -1,0 +1,31 @@
+public class Torch extends Atom{
+
+  private float startingBrightness = 200;
+  private float minBrightness = 150;
+  private float maxBrightness = 250;
+
+  public Torch(){
+    image = ResourceManager.getImage("Torch");
+      
+    collisionEnabled = false;
+    gravityForce = 0;
+
+    setupLightSource(this, startingBrightness, 1f);
+  }
+
+  public void draw(){
+    super.draw();
+  }
+
+  public void update(){
+    super.update();
+
+    //light flikker
+    lightEmitAmount += random(-5f, 5f);
+    lightEmitAmount = constrain(lightEmitAmount, minBrightness, maxBrightness);
+  }
+
+  void destroyed(){
+    super.destroyed();
+  }
+}

@@ -34,6 +34,12 @@ class Tile extends BaseObject{
       destroyed = true;
       density = false;
 
+      //5% change to spawn torch
+      if(random(100) < 5)
+      {
+        load(new Torch(), position.copy());
+      }
+
       return;
     }
   }

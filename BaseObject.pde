@@ -82,4 +82,9 @@ class BaseObject {
   void pushed(Atom atom, float x, float y){ //we got pushed by an atom
 
   }
+
+  public void moveTo(PVector newPosition){ //for moving to specific coords, but made so we could add some extra checks to it later if we need to
+    position.set(newPosition);
+  }
+  
 }

@@ -127,7 +127,6 @@ void updateObjects() {
   }
   loadList.clear();
 
-  //println("Updating " + objectList.size() + " objects");
   for (BaseObject object : objectList) {
     object.update();
   }
@@ -214,9 +213,9 @@ void load(BaseObject newObject) { //handles all the basic stuff to add it to the
   loadList.add(newObject); //qeue for loading
 }
 
-void load(Atom newAtom, PVector setPosition){
-  loadList.add(newAtom);
-  newAtom.moveTo(setPosition);
+void load(BaseObject newObject, PVector setPosition){
+  loadList.add(newObject);
+  newObject.moveTo(setPosition);
 }
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
@@ -254,6 +253,8 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("MysteryBlock", "Sprites/Blocks/mysteryblock.jpg");
   ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
   ResourceManager.prepareLoad("TNTBlock", "Sprites/Destruction/TNT.png");
+  //Decoration
+  ResourceManager.prepareLoad("Torch", "Sprites/Cave/torch.png");
   //Pickup
   ResourceManager.prepareLoad("CoalPickUp", "Sprites/Drops/coaldrop.png");
   ResourceManager.prepareLoad("IronPickUp", "Sprites/Drops/irondrop.png");

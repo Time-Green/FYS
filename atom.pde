@@ -235,10 +235,6 @@ class Atom extends BaseObject{
     return;
   }
 
-  public void moveTo(PVector newPosition){ //for moving to specific coords, but made so we could add some extra checks to it later if we need to
-    position.set(newPosition);
-  }
-
   void pushed(Atom atom, float x, float y){ //use x and y, because whoever calls this needs fine controle over the directions that actually push, and this is easiest
     velocity.add(x, y);
   }

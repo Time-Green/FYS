@@ -35,6 +35,7 @@ class WallOfDeath extends Atom {
     velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
     
     cleanUpTiles();
+    cleanUpObjects();
   }
 
   void draw(){
@@ -63,6 +64,24 @@ class WallOfDeath extends Atom {
     
     for(Tile tile : world.getLayer(layer)){
       delete(tile);
+    }
+  }
+
+  private void cleanUpObjects(){
+
+    for (BaseObject object : objectList) {
+      
+      //is the object above the wall of death..
+      if(object.position.y < position.y - DESTROYTILESAFTER * tileHeight){
+
+        //dont remove player
+        if(object instanceof Player){
+          continue;
+        }
+
+        //..https://www.youtube.com/watch?v=Kbx7m2qVVA0
+        delete(object);
+      }
     }
   }
 }
