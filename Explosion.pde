@@ -16,6 +16,9 @@ class Explosion extends BaseObject {
     maxRadius = radius;
 
     explosionSound = ResourceManager.getSound("Explosion");
+    
+    //flash
+    setupLightSource(this, radius * 2f, 1f);
   }
 
   void explode() {
@@ -40,9 +43,17 @@ class Explosion extends BaseObject {
   void update() {
     super.update();
 
-    if(currentRadius <= maxRadius) {
+    if(currentRadius < maxRadius) {
       currentRadius += radiusIncrease;
+
+      if(currentRadius > maxRadius){
+        currentRadius = maxRadius;
+      }
+
       explode();
+    }
+    else{
+      delete(this);
     }
   }
 

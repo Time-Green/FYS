@@ -1,6 +1,6 @@
 public class ExplosionTile extends Tile{
 
-  private float explosionSize = 200;
+  private float explosionSize = 250;
 
   public ExplosionTile(int x, int y){
     super(x, y); 
