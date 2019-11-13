@@ -34,7 +34,7 @@ class WallOfDeath extends Atom {
 
     velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
     
-    cleanUpTiles();
+    //cleanUpTiles();
     cleanUpObjects();
   }
 
