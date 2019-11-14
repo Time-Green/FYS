@@ -70,4 +70,9 @@ class Mob extends Atom {
     return 1; 
   }
   
+  void setMaxHp(float hpToSet){
+    maxHealth = hpToSet;
+    currentHealth = maxHealth;
+  }
 }
+

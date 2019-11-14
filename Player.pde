@@ -7,6 +7,7 @@ class Player extends Mob {
     name = "Player";
     image = ResourceManager.getImage("player");
     position = spawnPosition;
+    setMaxHp(15);
 
     isImmortal = false;
 
