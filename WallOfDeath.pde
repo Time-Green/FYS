@@ -5,7 +5,7 @@ class WallOfDeath extends Atom {
   private float wallY = -100;
   private int currentDepthCheck = 0; 
 
-  private final int MAX_DEPTH_CHECK = 10; 
+  private final int MAX_DEPTH_CHECK = 25; 
 
   private color wallColor = #FF8C33;
 
@@ -33,7 +33,7 @@ class WallOfDeath extends Atom {
       return;
     }
 
-  if(frameCount % 15 == 0){ 
+  if(frameCount % 5 == 0){ 
 
     spawnAstroid();  
  
@@ -43,7 +43,6 @@ class WallOfDeath extends Atom {
 
     velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
     
-    //cleanUpTiles();
     cleanUpObjects();
   }
 
@@ -63,36 +62,56 @@ class WallOfDeath extends Atom {
 
   }
 
-  private void cleanUpTiles(){
-    int layer = int(world.getGridPosition(this).y - DESTROYTILESAFTER);
+  void spawnAstroid(){
 
-    //it's not time to destroy yet, because we just started
-    if(layer < 0){
-      return;
-    }
+    int scanDepth = currentDepthCheck + MAX_DEPTH_CHECK;
     
-    for(Tile tile : world.getLayer(layer)){
-      delete(tile);
+    Tile spawnTarget = null;
+    
+    for(int i = currentDepthCheck; i < scanDepth; i++){
+
+      ArrayList<Tile> tileRow = world.getLayer(i);
+      ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>();
+
+      for(Tile tile : tileRow){
+
+        if(tile.density){
+          destructibleTilesInRow.add(tile);
+        }
+      }
+
+      if(destructibleTilesInRow.size() > 0){
+        
+        spawnTarget = destructibleTilesInRow.get(int(random(destructibleTilesInRow.size())));
+        break;
+
+      }else{
+        currentDepthCheck++;
+      }
+    }
+
+    if(spawnTarget != null){
+
+      if(random(4) < 2){
+        spawnTargetedMeteor(spawnTarget.position.x);
+      }else{
+        spawnRandomTargetedMeteor();
+      }
+
+    }else{
+      spawnRandomTargetedMeteor();
     }
   }
 
-  void spawnAstroid(){
+  private void spawnTargetedMeteor(float targetPosX){
 
-    for(int i = currentDepthCheck; i < currentDepthCheck + MAX_DEPTH_CHECK; i++){
-    ArrayList<Tile> tileRow = world.getLayer(i);
+    float spawnPosX = targetPosX + random(-tileWidth * 2, tileWidth * 2);
 
-    ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>(); 
+    load(new Meteor(), new PVector(spawnPosX, position.y)); 
+  }
 
-     for(Tile tile : tileRow){
-       if(tile.density){
-         destructibleTilesInRow.add(tile);
-       }
-       if(destructibleTilesInRow.size() == 0){
-         currentDepthCheck++; 
-       }
-     }
-    }
-     load(new Meteor(), new PVector(1000,position.y)); 
+  private void spawnRandomTargetedMeteor(){
+    load(new Meteor(), new PVector(random(tilesHorizontal * tileWidth + tileWidth), position.y)); 
   }
 
   private void cleanUpObjects(){

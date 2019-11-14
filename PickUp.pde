@@ -5,7 +5,7 @@ public class PickUp extends Atom{
     public PickUp (PVector spawnPosition) {
         position = spawnPosition.copy();
         size = new PVector(radius, radius);
-        atomCollision = true;
+        atomCollision = false;
     }
 
     void draw(){
