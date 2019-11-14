@@ -6,8 +6,8 @@ public class BaseParticle extends Atom {
 
   float maxLifeTime = 2000; //max 2000ms life time
 
-  float minSize = 6;
-  float maxSize = 15;
+  float minSize = 8;
+  float maxSize = 20;
 
   color particleColor = color(255);
 
