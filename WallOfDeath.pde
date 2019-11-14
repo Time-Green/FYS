@@ -3,6 +3,9 @@ class WallOfDeath extends Atom {
   private float moveSpeed = 1f;
   private float wallHeight = 100;
   private float wallY = -100;
+  private int currentDepthCheck = 0; 
+
+  private final int MAX_DEPTH_CHECK = 10; 
 
   private color wallColor = #FF8C33;
 
@@ -31,7 +34,8 @@ class WallOfDeath extends Atom {
     }
 
   if(frameCount % 15 == 0){ 
-    load(new Meteor(position.y)); 
+
+    spawnAstroid();  
  
   }
 
@@ -70,6 +74,25 @@ class WallOfDeath extends Atom {
     for(Tile tile : world.getLayer(layer)){
       delete(tile);
     }
+  }
+
+  void spawnAstroid(){
+
+    for(int i = currentDepthCheck; i < currentDepthCheck + MAX_DEPTH_CHECK; i++){
+    ArrayList<Tile> tileRow = world.getLayer(i);
+
+    ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>(); 
+
+     for(Tile tile : tileRow){
+       if(tile.density){
+         destructibleTilesInRow.add(tile);
+       }
+       if(destructibleTilesInRow.size() == 0){
+         currentDepthCheck++; 
+       }
+     }
+    }
+     load(new Meteor(), new PVector(1000,position.y)); 
   }
 
   private void cleanUpObjects(){
