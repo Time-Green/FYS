@@ -30,7 +30,12 @@ class WallOfDeath extends Atom {
       return;
     }
 
-    super.update();
+  if(frameCount % 15 == 0){ 
+    load(new Meteor(position.y)); 
+ 
+  }
+
+  super.update();
 
     velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
     
