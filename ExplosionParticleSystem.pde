@@ -11,7 +11,7 @@ public class ExplosionParticleSystem extends BaseParticleSystem {
         float circleY = sin(randomAngle) * randomRadius;
         PVector particleSpawnAcceleration = new PVector(circleX, circleY);
 
-        BaseParticle particle = new BaseParticle(this, position, particleSpawnAcceleration);
+        ExplosionParticle particle = new ExplosionParticle(this, position, particleSpawnAcceleration);
         load(particle);
     }
   }

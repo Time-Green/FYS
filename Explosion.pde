@@ -19,7 +19,7 @@ class Explosion extends BaseObject {
     //flash
     setupLightSource(this, radius * 2f, 1f);
 
-    ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 500, radius / 10);
+    ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 500, radius / 15);
     load(particleSystem);
   }
 

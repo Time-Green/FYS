@@ -1,45 +1,51 @@
 public class BaseParticle extends Atom {
 
-    BaseParticleSystem particleSystem;
-    PVector spawnAcceleration;
-    float size, sizeDegrade;
+  BaseParticleSystem particleSystem;
+  PVector spawnAcceleration;
+  float size, spawnTime;
 
-    public BaseParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc){
-        super();
+  float maxLifeTime = 2000; //max 2000ms life time
 
-        gravityForce = 0.0f;
-        collisionEnabled = false;
-        worldBorderCheck = false;
-        groundedDragFactor = 1.0f;
-        aerialDragFactor = 1.0f;
+  float minSize = 6;
+  float maxSize = 15;
 
-        spawnAcceleration = spawnAcc;
-        particleSystem = parentParticleSystem;
+  color particleColor = color(255);
 
-        position.set(spawnLocation);
-        acceleration.set(spawnAcceleration);
-        size = random(4, 10);
-        sizeDegrade = random(0.5, 1);
+  public BaseParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc){
+    super();
+
+    gravityForce = 0.0f;
+    collisionEnabled = false;
+    worldBorderCheck = false;
+    groundedDragFactor = 1.0f;
+    aerialDragFactor = 1.0f;
+
+    spawnAcceleration = spawnAcc;
+    particleSystem = parentParticleSystem;
+
+    position.set(spawnLocation);
+    acceleration.set(spawnAcceleration);
+    size = random(minSize, maxSize);
+    spawnTime = millis();
+  }
+
+  void update(){
+    super.update();
+
+    //if the particle is to old..
+    if(millis() > spawnTime + maxLifeTime){
+      cleanup();
     }
+  }
 
-    void update(){
-        super.update();
+  void draw(){
+    fill(particleColor);
+    rect(position.x - size / 2, position.y - size / 2, size, size);
+    fill(255);
+  }
 
-        updateSize();
-    }
-
-    void draw(){
-        //super.draw();
-        
-        rect(position.x - size / 2, position.y - size / 2, size, size);
-    }
-
-    private void updateSize(){
-        size -= sizeDegrade;
-        
-        if(size <= 0){
-            particleSystem.currentParticleAmount--;
-            delete(this);
-        }
-    }
+  void cleanup(){
+    particleSystem.currentParticleAmount--;
+    delete(this);
+  }
 }
