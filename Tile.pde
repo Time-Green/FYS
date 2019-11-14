@@ -62,7 +62,7 @@ class Tile extends BaseObject{
   }
 
   void draw(){
-    if(!inCameraView(camera)){
+    if(!inCameraView()){
       return;
     }
 
@@ -112,7 +112,7 @@ class Tile extends BaseObject{
     breakSound.play();
   }
 
-  void setMaxHp(int hpToSet){
+  void setMaxHp(float hpToSet){
     maxHp = hpToSet;
     hp = hpToSet;
   }

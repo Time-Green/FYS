@@ -38,7 +38,7 @@ class BaseObject {
   }
 
   // check if this object is in camera view
-  boolean inCameraView(Camera camera) {
+  boolean inCameraView() {
     PVector camPos = camera.getPosition();
 
     if (position.y > -camPos.y - tileHeight
