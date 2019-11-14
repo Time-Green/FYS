@@ -5,7 +5,6 @@ public class PickUp extends Atom{
     public PickUp (PVector spawnPosition) {
         position = spawnPosition.copy();
         size = new PVector(radius, radius);
-        atomCollision = false;
     }
 
     void draw(){
@@ -16,16 +15,18 @@ public class PickUp extends Atom{
         super.update();
     }
 
-    void pushed(Atom atom, float x, float y){
-
-        if(atom instanceof Player){
-            pickedUp(atom);
-        }
-
-    }
-
-    void pickedUp(Atom atom){
+    void pickedUp(BaseObject object){
         delete(this);
     }
 
+    boolean canCollideWith(BaseObject object){
+        if(object instanceof Player){ //maybe replace with canPickUp?
+            pickedUp(object);
+            return false;
+        }
+        else if(object instanceof PickUp){
+            return false;
+        }
+        return super.canCollideWith(object);
+    }
 }

@@ -44,87 +44,90 @@ class Atom extends BaseObject{
     super.update();
 
     prepareMovement();
+    doCollision();
+    handleMovement(world);
+  }
+
+  void doCollision(){
+    if(!collisionEnabled){
+        return;
+    }
     isGrounded = false;
+    ArrayList<Tile> colliders = new ArrayList<Tile>();
 
-    if(collisionEnabled){
-      ArrayList<Tile> colliders = new ArrayList<Tile>();
-
-      colliders = checkCollision(world, 0, min(velocity.y, 0));
+    colliders = checkCollision(world, 0, min(velocity.y, 0));
       
-      if(colliders.size() != 0){ //up
+    if(colliders.size() != 0){ //up
         
-        for(BaseObject object : colliders){
-          object.pushed(this, 0, velocity.y); 
+      for(BaseObject object : colliders){
+        object.pushed(this, 0, velocity.y); 
 
-          if(isMiningUp) {
-            attemptMine(object);
-          }
+        if(isMiningUp) {
+          attemptMine(object);
+        }
 
-        } 
+      } 
         
-        velocity.y = max(velocity.y, 0);
+      velocity.y = max(velocity.y, 0);
+    }
+      
+    colliders = checkCollision(world, 0, max(velocity.y, 0));
+
+    if(colliders.size() != 0){ //down
+        
+      isGrounded = true;    
+
+      for(BaseObject object : colliders){
+        object.pushed(this, 0, velocity.y);
+
+        if(isMiningDown){
+          attemptMine(object);
+        }
+
       }
-      
-      colliders = checkCollision(world, 0, max(velocity.y, 0));
 
-      if(colliders.size() != 0){ //down
-        
-        isGrounded = true;    
+      velocity.y = min(velocity.y, 0);
+    }
+
+    if(velocity.x < 0){
+      colliders = checkCollision(world, min(velocity.x, 0), 0);
+
+      if(colliders.size() != 0){ //left
+          
+        walkLeft = !walkLeft;
 
         for(BaseObject object : colliders){
-          object.pushed(this, 0, velocity.y);
+          object.pushed(this, velocity.x, 0);
 
-          if(isMiningDown){
+          if(isMiningLeft){
             attemptMine(object);
           }
 
         }
 
-        velocity.y = min(velocity.y, 0);
-      }
-
-      if(velocity.x < 0){
-        colliders = checkCollision(world, min(velocity.x, 0), 0);
-
-        if(colliders.size() != 0){ //left
-          
-          walkLeft = !walkLeft;
-
-          for(BaseObject object : colliders){
-            object.pushed(this, velocity.x, 0);
-
-            if(isMiningLeft){
-              attemptMine(object);
-            }
-
-          }
-
-          velocity.x = 0;
-        }
-      }
-      else if(velocity.x > 0){
-
-        colliders = checkCollision(world, max(velocity.x, 0), 0);
-
-        if(colliders.size() != 0){ //right
-          
-          walkLeft =!walkLeft;
-
-          for(BaseObject object : colliders){
-            object.pushed(this, velocity.x, 0);
-
-            if(isMiningRight){
-              attemptMine(object);
-            }
-
-          }
-          
-          velocity.x = 0;  
-        }   
+        velocity.x = 0;
       }
     }
 
-    handleMovement(world);
+    else if(velocity.x > 0){
+
+      colliders = checkCollision(world, max(velocity.x, 0), 0);
+
+      if(colliders.size() != 0){ //right
+          
+        walkLeft =!walkLeft;
+
+        for(BaseObject object : colliders){
+          object.pushed(this, velocity.x, 0);
+
+          if(isMiningRight){
+            attemptMine(object);
+          }
+
+        }
+        velocity.x = 0;  
+      }   
+    }
   }
 
   void draw(){
@@ -204,10 +207,6 @@ class Atom extends BaseObject{
     
     for (BaseObject object : potentialColliders){
 
-      if(!object.density || !object.atomCollision){
-        continue;
-      }
-
       if(object == this){
         continue;
       }
@@ -215,6 +214,9 @@ class Atom extends BaseObject{
       //debugCollision(object);
 
       if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, object.position.x, object.position.y, object.size.x, object.size.y)){
+        if(!object.canCollideWith(this)){
+          continue;
+        }
         colliders.add(object);      
       }
     }
@@ -237,5 +239,13 @@ class Atom extends BaseObject{
 
   void pushed(Atom atom, float x, float y){ //use x and y, because whoever calls this needs fine controle over the directions that actually push, and this is easiest
     velocity.add(x, y);
+  }
+
+  boolean canCollideWith(BaseObject object){
+    if(!density){
+      return false;
+    }
+    
+    return atomCollision || object.atomCollision;
   }
 }
