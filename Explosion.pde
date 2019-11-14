@@ -7,18 +7,20 @@ class Explosion extends BaseObject {
 
   float fade = 0.75f;
   float time = 180;
-  //if the framerate is 60 then the time is 1 second, now the timer is set on 3 seconds
 
   SoundFile explosionSound;
 
   Explosion(PVector spawnPos, float radius) {
-    position = spawnPos.copy();
+    position.set(spawnPos);
     maxRadius = radius;
 
     explosionSound = ResourceManager.getSound("Explosion");
     
     //flash
     setupLightSource(this, radius * 2f, 1f);
+
+    ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 500, radius / 10);
+    load(particleSystem);
   }
 
   void explode() {

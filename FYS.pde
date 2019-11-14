@@ -27,8 +27,8 @@ boolean firstTime = true;
 boolean firstStart = true;
 
 void setup() {
-  // /size(1280, 720, P2D);
-  fullScreen(P2D);
+  size(1280, 720, P2D);
+  //fullScreen(P2D);
 
   ResourceManager.setup(this);
   prepareResourceLoading();

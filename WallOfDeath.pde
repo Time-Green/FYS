@@ -33,7 +33,7 @@ class WallOfDeath extends Atom {
       return;
     }
 
-  if(frameCount % 5 == 0){ 
+  if(frameCount % 15 == 0){ 
 
     spawnAstroid();  
  
