@@ -8,7 +8,7 @@ class Player extends Mob {
     image = ResourceManager.getImage("player");
     position = spawnPosition;
 
-    isImmortal = true;
+    isImmortal = false;
 
     setupLightSource(this, 600f, 1f);
   }

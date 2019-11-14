@@ -62,7 +62,7 @@ class Tile extends BaseObject{
   }
 
   void draw(){
-    if(!inCameraView(camera)){
+    if(!inCameraView()){
       return;
     }
 
