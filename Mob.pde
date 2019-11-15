@@ -1,4 +1,4 @@
-class Mob extends Atom {
+class Mob extends Movable {
 
   //Health
   float maxHealth = 3;

@@ -15,7 +15,7 @@ class Tile extends BaseObject{
 
   Tile(int x, int y) {
     loadInBack = true;
-    atomCollision = true;
+    movableCollision = true;
 
     position.x = x * tileWidth;
     position.y = y * tileHeight;

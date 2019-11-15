@@ -1,4 +1,4 @@
-class Meteor extends Atom{
+class Meteor extends Movable{
 
   Meteor(){
     gravityForce = 1.0f; 

@@ -1,4 +1,4 @@
-public class Torch extends Atom{
+public class Torch extends Movable{
 
   private float startingBrightness = 200;
   private float minBrightness = 150;

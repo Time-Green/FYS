@@ -1,4 +1,4 @@
-public class BaseParticle extends Atom {
+public class BaseParticle extends Movable {
 
   BaseParticleSystem particleSystem;
   PVector spawnAcceleration;

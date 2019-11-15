@@ -1,4 +1,4 @@
-public class PickUp extends Atom{
+public class PickUp extends Movable{
     
     float radius = 30;
 

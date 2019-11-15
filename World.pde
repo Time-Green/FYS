@@ -117,7 +117,7 @@ public class World {
 
 //returns an arraylist with the 8 tiles surrounding the coordinations. returns BaseObjects so that it can easily be joined with every object list
 //but it's still kinda weird I'll admit
-  ArrayList<BaseObject> getSurroundingTiles(int x, int y, Atom collider) { 
+  ArrayList<BaseObject> getSurroundingTiles(int x, int y, Movable collider) { 
     ArrayList<BaseObject> surrounding = new ArrayList<BaseObject>();
 
     int middleX = int(x + collider.size.x * .5); //calculate from the middle, because it's the average of all our colliding corners
@@ -163,8 +163,8 @@ public class World {
     return map.get(layer);
   }
 
-  PVector getGridPosition(Atom atom){//return the X and Y in tiles
-    return new PVector(floor(atom.position.x / tileWidth), floor(atom.position.y / tileHeight));
+  PVector getGridPosition(Movable movable){//return the X and Y in tiles
+    return new PVector(floor(movable.position.x / tileWidth), floor(movable.position.y / tileHeight));
   }
 
   float getWidth(){

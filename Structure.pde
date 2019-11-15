@@ -1,2 +1,2 @@
-class Structure extends Atom {
+class Structure extends Movable {
 }

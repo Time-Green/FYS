@@ -1,4 +1,4 @@
-class Atom extends BaseObject{
+class Movable extends BaseObject{
   //Vectors
   protected PVector velocity = new PVector();
   protected PVector acceleration = new PVector();
@@ -26,18 +26,18 @@ class Atom extends BaseObject{
   protected int miningcolor = #DC143C;
   protected PImage image;
 
-  Atom(){
+  Movable(){
     super();
   }
 
   void specialAdd(){
     super.specialAdd();
-    atomList.add(this);
+    movableList.add(this);
   }
 
   void destroyed(){
     super.destroyed();
-    atomList.remove(this);
+    movableList.remove(this);
   }
 
   void update(){
@@ -203,7 +203,7 @@ class Atom extends BaseObject{
     ArrayList<BaseObject> potentialColliders = new ArrayList<BaseObject>();
 
     potentialColliders.addAll(world.getSurroundingTiles(int(position.x), int(position.y), this));
-    potentialColliders.addAll(atomList);
+    potentialColliders.addAll(movableList);
     
     for (BaseObject object : potentialColliders){
 
@@ -237,7 +237,7 @@ class Atom extends BaseObject{
     return;
   }
 
-  void pushed(Atom atom, float x, float y){ //use x and y, because whoever calls this needs fine controle over the directions that actually push, and this is easiest
+  void pushed(Movable movable, float x, float y){ //use x and y, because whoever calls this needs fine controle over the directions that actually push, and this is easiest
     velocity.add(x, y);
   }
 
@@ -246,6 +246,6 @@ class Atom extends BaseObject{
       return false;
     }
     
-    return atomCollision || object.atomCollision;
+    return movableCollision || object.movableCollision;
   }
 }

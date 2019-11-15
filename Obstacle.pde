@@ -1,7 +1,7 @@
-class Obstacle extends Atom{
+class Obstacle extends Movable{
 
     Obstacle(){
-        atomCollision = true;
+        movableCollision = true;
         anchored = false;
     }
 }

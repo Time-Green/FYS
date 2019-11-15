@@ -5,7 +5,7 @@ class BaseObject {
   protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
   protected boolean density = true;
   protected boolean loadInBack = false; //true to insert at the front of draw, so player doesn't get loaded behind tiles
-  protected boolean atomCollision = false; //do we collide with atoms themselves?
+  protected boolean movableCollision = false; //do we collide with movables themselves?
 
   float lightningAmount = 255.0f; // the amount this object is lit up (0-255)
   float lightEmitAmount = 0.0f; // the amount of light this object emits
@@ -77,7 +77,7 @@ class BaseObject {
 
   }
 
-  void pushed(Atom atom, float x, float y){ //we got pushed by an atom
+  void pushed(Movable movable, float x, float y){ //we got pushed by an movable
     return;
   }
 

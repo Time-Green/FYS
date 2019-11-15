@@ -1,4 +1,4 @@
-class WallOfDeath extends Atom {
+class WallOfDeath extends Movable {
 
   //private float moveSpeed = 1f;
   private float wallYOffset = 600;

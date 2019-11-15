@@ -4,7 +4,7 @@ ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we 
 
 //These only exists as helpers. All drawing and updating is handled from objectList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
-ArrayList<Atom> atomList = new ArrayList<Atom>();
+ArrayList<Movable> movableList = new ArrayList<Movable>();
 ArrayList<Mob> mobList = new ArrayList<Mob>();
 
 //list of all objects that emit light
