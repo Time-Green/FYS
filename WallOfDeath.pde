@@ -12,9 +12,9 @@ class WallOfDeath extends Movable {
 
   WallOfDeath(float wallWidth){
 
-    //velocity = new PVector(0, moveSpeed);
-    size = new PVector(wallWidth, tileHeight * 2);
-    position = new PVector(0, -size.y - wallYOffset);
+    //velocity.set(0, moveSpeed);
+    size.set(wallWidth, tileHeight * 2);
+    position.set(0, -size.y - wallYOffset);
 
     //for debug only, Remove this line of code when puplishing
     collisionEnabled = false;

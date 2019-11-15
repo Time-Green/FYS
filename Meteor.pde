@@ -3,7 +3,7 @@ class Meteor extends Movable{
   Meteor(){
     gravityForce = 1.0f; 
     aerialDragFactor = 1.0f; 
-    size = new PVector(tileWidth * 2, tileHeight * 2); 
+    size.set(tileWidth * 2, tileHeight * 2); 
     image = ResourceManager.getImage("Meteor 2"); 
   }
 

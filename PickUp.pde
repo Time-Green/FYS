@@ -4,7 +4,7 @@ public class PickUp extends Movable{
 
     public PickUp (PVector spawnPosition) {
         position.set(spawnPosition);
-        size = new PVector(radius, radius);
+        size.set(radius, radius);
     }
 
     void draw(){

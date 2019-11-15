@@ -1,7 +1,7 @@
 class Spike extends Obstacle{
 
     Spike(){
-        size = new PVector(10, 50);
+        size.set(10, 50);
         image = ResourceManager.getImage("Spike");
         anchored = true;
     }
