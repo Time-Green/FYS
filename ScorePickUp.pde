@@ -7,10 +7,10 @@ public class ScorePickUp extends PickUp{
         image = tile.pickUpImage;
     }
 
-    void pickedUp(Atom atom){
+    void pickedUp(BaseObject object){
         player.addScore(score);
 
-        super.pickedUp(atom);
+        super.pickedUp(object);
     }
 
     void draw(){
