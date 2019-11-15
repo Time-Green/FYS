@@ -27,7 +27,7 @@ class Atom extends BaseObject{
   protected PImage image;
 
   Atom(){
-
+    super();
   }
 
   void specialAdd(){

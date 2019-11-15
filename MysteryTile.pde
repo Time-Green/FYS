@@ -2,9 +2,7 @@ public class MysteryTile extends PowerUpTile {
   
   public MysteryTile (int x, int y) {
     super(x,y);
-
-    name = "MysteryTile[" + x + "," + y + "]";
-        
+  
     image = ResourceManager.getImage("MysteryBlock");
   }
 

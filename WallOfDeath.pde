@@ -1,8 +1,7 @@
 class WallOfDeath extends Atom {
 
-  private float moveSpeed = 1f;
-  private float wallHeight = 100;
-  private float wallY = -100;
+  //private float moveSpeed = 1f;
+  private float wallYOffset = 600;
   private int currentDepthCheck = 0; 
 
   private final int MAX_DEPTH_CHECK = 25; 
@@ -13,11 +12,9 @@ class WallOfDeath extends Atom {
 
   WallOfDeath(float wallWidth){
 
-    name = "Wall of Death";
-
-    position = new PVector(0, wallY);
-    velocity = new PVector(0, moveSpeed);
-    size = new PVector(wallWidth, wallHeight);
+    //velocity = new PVector(0, moveSpeed);
+    size = new PVector(wallWidth, tileHeight * 2);
+    position = new PVector(0, -size.y - wallYOffset);
 
     //for debug only, Remove this line of code when puplishing
     collisionEnabled = false;
@@ -33,15 +30,14 @@ class WallOfDeath extends Atom {
       return;
     }
 
-  if(frameCount % 15 == 0){ 
-
+  if(frameCount % 5 == 0){ 
     spawnAstroid();  
- 
   }
 
   super.update();
 
-    velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
+    //velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
+    position.y = currentDepthCheck * tileHeight - size.y - wallYOffset;
     
     cleanUpObjects();
   }
@@ -64,6 +60,7 @@ class WallOfDeath extends Atom {
 
   void spawnAstroid(){
 
+    //max depth we are going to scan
     int scanDepth = currentDepthCheck + MAX_DEPTH_CHECK;
     
     Tile spawnTarget = null;

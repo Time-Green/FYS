@@ -1,7 +1,5 @@
 class BaseObject {
 
-  public String name = "";
-
   protected PVector position = new PVector(0,0);
   protected final float OBJECTSIZE = 40f;
   protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);

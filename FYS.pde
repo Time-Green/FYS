@@ -275,12 +275,10 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("Glass", "Sprites/House/glass.png");
   ResourceManager.prepareLoad("WoodPlank", "Sprites/House/woodplank.png");
   //Animals
-  ResourceManager.prepareLoad("BirdFlyingLeft0", "Sprites/Animals/tile018.png");
-  ResourceManager.prepareLoad("BirdFlyingLeft1", "Sprites/Animals/tile019.png");
-  ResourceManager.prepareLoad("BirdFlyingLeft2", "Sprites/Animals/tile020.png");
-  ResourceManager.prepareLoad("BirdFlyingRight0", "Sprites/Animals/tile030.png");
-  ResourceManager.prepareLoad("BirdFlyingRight1", "Sprites/Animals/tile031.png");
-  ResourceManager.prepareLoad("BirdFlyingRight2", "Sprites/Animals/tile032.png");
+  for (int i = 0; i < 3; i++) {
+    int imageIndex = 30 + i;
+    ResourceManager.prepareLoad("BirdFlying" + i, "Sprites/Animals/tile0" + imageIndex + ".png");
+  }
   //Obstacles
   ResourceManager.prepareLoad("Spike", "Sprites/Structures/spike.png");
   //Day Night Ciycle
@@ -294,10 +292,9 @@ void prepareResourceLoading() {
   //Audio
   //ResourceManager.prepareLoad("Background", "Sound/terrariaMusic.mp3");
   ResourceManager.prepareLoad("DirtBreak", "Sound/dirt.wav");
-  ResourceManager.prepareLoad("StoneBreak1", "Sound/stone1.wav");
-  ResourceManager.prepareLoad("StoneBreak2", "Sound/stone2.wav");
-  ResourceManager.prepareLoad("StoneBreak3", "Sound/stone3.wav");
-  ResourceManager.prepareLoad("StoneBreak4", "Sound/stone4.wav");
+  for(int i = 1; i < 5; i++){
+    ResourceManager.prepareLoad("StoneBreak" + i, "Sound/stone" + i + ".wav");
+  }
   ResourceManager.prepareLoad("Explosion", "Sound/explosion.wav");
 }
 

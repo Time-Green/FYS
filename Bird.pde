@@ -3,9 +3,11 @@ public class Bird extends Mob{
   AnimatedImage animatedImage;
   boolean flyingLeft = true;
 
+  final float MINSPEED = 2.0f;
+  final float MAXSPEED = 5.0f;
+
   public Bird(World world){
 
-    name = "Bird";
     //some birds will fly right
     if(random(0, 2) < 1){
       flyingLeft = false;
@@ -13,11 +15,11 @@ public class Bird extends Mob{
 
     //set spawn position and velocity
     position = new PVector(random(0, world.getWidth()), random(150, 300));
+    velocity = new PVector(random(MINSPEED, MAXSPEED), 0);
 
     if(flyingLeft){
-      velocity = new PVector(random(-5f, -2f), 0);
-    }else{
-      velocity = new PVector(random(2f, 5f), 0);
+      flipSpriteHorizontal = true;  
+      velocity.mult(-1);
     }
 
     //set dragfactors to 1 so we dont slow down by drag
@@ -27,22 +29,17 @@ public class Bird extends Mob{
     //disable gravity
     gravityForce = 0f;
 
+    //allow bird to fly of the screen
     worldBorderCheck = false;
 
     PImage[] frames = new PImage[3];
 
-    if(flyingLeft){
-      for(int i = 0; i < 3; i++){
-        frames[i] = ResourceManager.getImage("BirdFlyingLeft" + i); 
-      }
-    }else{
-      for(int i = 0; i < 3; i++){
-        frames[i] = ResourceManager.getImage("BirdFlyingRight" + i); 
-      }
+    for(int i = 0; i < 3; i++){
+      frames[i] = ResourceManager.getImage("BirdFlying" + i); 
     }
 
     //animation speed based on x velocity
-    animatedImage = new AnimatedImage(frames, 10 - abs(velocity.x), position);
+    animatedImage = new AnimatedImage(frames, 10 - abs(velocity.x), position, flipSpriteHorizontal);
   }
 
   void draw(){

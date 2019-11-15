@@ -3,14 +3,26 @@ public class AnimatedImage{
   PImage[] frames;
   float frameDelay;
   PVector drawPosition;
+  boolean flipSpriteHorizontal;
 
-  public AnimatedImage(PImage[] frames, float frameDelay, PVector drawPosition){
+  public AnimatedImage(PImage[] frames, float frameDelay, PVector drawPosition, boolean flipSpriteHorizontal){
     this.frames = frames;
     this.frameDelay = frameDelay;
     this.drawPosition = drawPosition;
+    this.flipSpriteHorizontal = flipSpriteHorizontal;
   }
 
   public void draw(){
-    image(frames[frameCount / round(frameDelay) % frames.length], drawPosition.x, drawPosition.y);
+    pushMatrix();
+
+    translate(drawPosition.x, drawPosition.y);
+
+    if(flipSpriteHorizontal){
+      scale(-1, 1);
+    }
+    
+    image(frames[frameCount / round(frameDelay) % frames.length], 0, 0);
+
+    popMatrix();
   }
 }

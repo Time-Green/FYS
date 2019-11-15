@@ -51,7 +51,7 @@ public class UIController {
     rectMode(CORNER);
     textAlign(LEFT);
 
-    drawFps();
+    drawStats();
   }
 
   void gameOver(){
@@ -117,11 +117,12 @@ public class UIController {
     rect(width - slotOffsetX, height - slotOffsetY, slotSize, slotSize); 
   }
 
-  void drawFps(){
+  void drawStats(){
     textAlign(RIGHT);
     fill(255);
     textSize(20);
     text(round(frameRate) + " FPS", width - 10, 25);
+    text(objectList.size() + " objects", width - 10, 45);
   }
 
   void pauseScreen(){

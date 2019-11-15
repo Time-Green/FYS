@@ -37,7 +37,7 @@ class Tile extends BaseObject{
       //5% change to spawn torch
       if(random(100) < 5)
       {
-        load(new Torch(), position.copy());
+        load(new Torch(position));
       }
 
       return;
@@ -92,6 +92,7 @@ class Tile extends BaseObject{
       mine();
     }
   }
+  
   boolean canMine(){
     return density;
   }

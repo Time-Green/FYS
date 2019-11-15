@@ -4,7 +4,10 @@ public class Torch extends Atom{
   private float minBrightness = 150;
   private float maxBrightness = 250;
 
-  public Torch(){
+  public Torch(PVector spawnPos){
+    super();
+
+    position.set(spawnPos);
     image = ResourceManager.getImage("Torch");
       
     collisionEnabled = false;
