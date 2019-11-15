@@ -1,4 +1,4 @@
-class Explosion extends BaseObject {
+class Explosion extends BaseObject{
 
   float maxRadius;
   float maxDamage = 5;
@@ -10,7 +10,9 @@ class Explosion extends BaseObject {
 
   SoundFile explosionSound;
 
-  Explosion(PVector spawnPos, float radius) {
+  ArrayList<Tile> tilesInMaxExplosionRadius = new ArrayList<Tile>();
+
+  Explosion(PVector spawnPos, float radius){
     position.set(spawnPos);
     maxRadius = radius;
 
@@ -19,17 +21,32 @@ class Explosion extends BaseObject {
     //flash
     setupLightSource(this, radius * 2f, 1f);
 
+    //get tiles inside max range
+    tilesInMaxExplosionRadius = world.getTilesInRadius(position, maxRadius);
+
+    //create particle system
     ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 200, radius / 15);
     load(particleSystem);
   }
 
-  void explode() {
-    ArrayList<Tile> tilesInExplosionRadius = world.getTilesInRadius(position, currentRadius);
+  void explode(){
+    ArrayList<Tile> tilesInCurrentExplosionRadius = new ArrayList<Tile>();
 
-    for (Tile tile : tilesInExplosionRadius) {
+    for(Tile tile : tilesInMaxExplosionRadius){
 
-      if (!tile.density) 
+      if(dist(position.x, position.y, tile.position.x, tile.position.y) < currentRadius){
+        tilesInCurrentExplosionRadius.add(tile);
+      }
+
+    }
+
+    for(Tile tile : tilesInCurrentExplosionRadius){
+
+      //only deal damage to tiles that can be destroyed
+      if(!tile.density) 
+      {
         continue;
+      }
 
       float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
 
@@ -42,7 +59,7 @@ class Explosion extends BaseObject {
     explosionSound.play();
   }
 
-  void update() {
+  void update(){
     super.update();
 
     if(currentRadius < maxRadius) {
@@ -59,9 +76,11 @@ class Explosion extends BaseObject {
     }
   }
 
-  void draw() {
+  void draw(){
+
   }
 
-  void fade() {
+  void fade(){
+
   }
 }
