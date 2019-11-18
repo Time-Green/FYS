@@ -5,7 +5,7 @@ class EnemyDigger extends Enemy {
     private float resetSpeed = 5f;
 
     EnemyDigger() {
-        image = ResourceManager.getImage("DigEnemy");
+        image = ResourceManager.getImage("Mole");
         this.speed = resetSpeed;
         //1f = 1 tile
         float tileDistance = 10f;

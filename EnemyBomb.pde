@@ -7,7 +7,7 @@ class EnemyBomb extends Enemy {
     private float explosionSize = 500;
     
     EnemyBomb() {
-        image = ResourceManager.getImage("BombEnemy");
+        image = ResourceManager.getImage("Bomb");
         this.speed = 2.5f;
     }
 

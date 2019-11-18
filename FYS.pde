@@ -234,9 +234,9 @@ void prepareResourceLoading() {
   ResourceManager.prepareLoad("player", "Sprites/player.png");
   //Enemies
   ResourceManager.prepareLoad("WalkEnemy", "Sprites/Enemies/WalkEnemyTest.jpg");
-  ResourceManager.prepareLoad("DigEnemy", "Sprites/Enemies/DiggerEnemy.png");
-  ResourceManager.prepareLoad("BombEnemy", "Sprites/Enemies/bombEnemy.png");
-  ResourceManager.prepareLoad("GhostEnemy", "Sprites/Enemies/GhostEnemy.png");
+  ResourceManager.prepareLoad("Mole", "Sprites/Enemies/mole.png");
+  ResourceManager.prepareLoad("Bomb", "Sprites/Enemies/bomb.png");
+  ResourceManager.prepareLoad("Ghost", "Sprites/Enemies/ghost.png");
   //Tiles
   ResourceManager.prepareLoad("DestroyedBlock", "Sprites/Blocks/destroyed.png");
   ResourceManager.prepareLoad("GrassBlock", "Sprites/Blocks/grassblock.png");
