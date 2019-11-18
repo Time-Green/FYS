@@ -5,7 +5,7 @@ class Player extends Mob {
 
   public Player(){
     
-    image = ResourceManager.getImage("player");
+    image = ResourceManager.getImage("Player");
     position = spawnPosition;
     setMaxHp(15);
 

@@ -19,7 +19,7 @@ public class UIController {
   float menuFontSize = 96;
 
   UIController(){
-    font = ResourceManager.getFont("Menufont");
+    font = ResourceManager.getFont("MenuFont");
     heart = ResourceManager.getImage("Heart");
 
     textFont(font);

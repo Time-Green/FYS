@@ -31,7 +31,7 @@ void setup() {
   //fullScreen(P2D);
 
   ResourceManager.setup(this);
-  prepareResourceLoading();
+  ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
 }
@@ -227,75 +227,6 @@ void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
   object.lightEmitAmount = lightEmitAmount;
   object.distanceDimFactor = dimFactor;
   lightSources.add(object);
-}
-
-void prepareResourceLoading() {
-  //Player
-  ResourceManager.prepareLoad("player", "Sprites/player.png");
-  //Enemies
-  ResourceManager.prepareLoad("WalkEnemy", "Sprites/Enemies/WalkEnemyTest.jpg");
-  ResourceManager.prepareLoad("DigEnemy", "Sprites/Enemies/DiggerEnemy.png");
-  ResourceManager.prepareLoad("BombEnemy", "Sprites/Enemies/bombEnemy.png");
-  ResourceManager.prepareLoad("GhostEnemy", "Sprites/Enemies/GhostEnemy.png");
-  //Tiles
-  ResourceManager.prepareLoad("DestroyedBlock", "Sprites/Blocks/destroyed.png");
-  ResourceManager.prepareLoad("GrassBlock", "Sprites/Blocks/grassblock.png");
-  ResourceManager.prepareLoad("DirtBlock", "Sprites/Blocks/dirtblock.png");
-  ResourceManager.prepareLoad("MossBlock", "Sprites/Blocks/mossblock.png");
-  ResourceManager.prepareLoad("StoneBlock", "Sprites/Blocks/stoneblock.png");
-  ResourceManager.prepareLoad("CoalBlock", "Sprites/Blocks/coalblock.png");
-  ResourceManager.prepareLoad("IronBlock", "Sprites/Blocks/ironblock.png");
-  ResourceManager.prepareLoad("GoldBlock", "Sprites/Blocks/goldblock.png");
-  ResourceManager.prepareLoad("DiamondBlock", "Sprites/Blocks/diamondblock.png");
-  ResourceManager.prepareLoad("LapisBlock", "Sprites/Blocks/lapisblock.png");
-  ResourceManager.prepareLoad("RedstoneBlock", "Sprites/Blocks/redstoneblock.png");
-  ResourceManager.prepareLoad("AmethystBlock", "Sprites/Blocks/amethystblock.png");
-  ResourceManager.prepareLoad("ObsedianBlock", "Sprites/Blocks/obsedianblock.png");
-  ResourceManager.prepareLoad("MysteryBlock", "Sprites/Blocks/mysteryblock.jpg");
-  ResourceManager.prepareLoad("LavaBlock", "Sprites/Blocks/lavablock.png");
-  ResourceManager.prepareLoad("TNTBlock", "Sprites/Destruction/TNT.png");
-  //Decoration
-  ResourceManager.prepareLoad("Torch", "Sprites/Cave/torch.png");
-  //Pickup
-  ResourceManager.prepareLoad("CoalPickUp", "Sprites/Drops/coaldrop.png");
-  ResourceManager.prepareLoad("IronPickUp", "Sprites/Drops/irondrop.png");
-  ResourceManager.prepareLoad("GoldPickUp", "Sprites/Drops/golddrop.png");
-  ResourceManager.prepareLoad("DiamondPickUp", "Sprites/Drops/diamonddrop.png");
-  //destruction
-  ResourceManager.prepareLoad("Meteor", "Sprites/Destruction/meteor.png");
-  ResourceManager.prepareLoad("Meteor 2", "Sprites/Destruction/meteor 2.png");
-  //Cave
-  ResourceManager.prepareLoad("Chest", "Sprites/Cave/chest.png");
-  ResourceManager.prepareLoad("Torch", "Sprites/Cave/torch.png");
-  //Landscape
-  ResourceManager.prepareLoad("Leafe", "Sprites/Landscape/leafe.png");
-  ResourceManager.prepareLoad("Wood", "Sprites/Landscape/wood.png");
-  //House 
-  ResourceManager.prepareLoad("Door", "Sprites/House/door.png");
-  ResourceManager.prepareLoad("Glass", "Sprites/House/glass.png");
-  ResourceManager.prepareLoad("WoodPlank", "Sprites/House/woodplank.png");
-  //Animals
-  for (int i = 0; i < 3; i++) {
-    int imageIndex = 30 + i;
-    ResourceManager.prepareLoad("BirdFlying" + i, "Sprites/Animals/tile0" + imageIndex + ".png");
-  }
-  //Obstacles
-  ResourceManager.prepareLoad("Spike", "Sprites/Structures/spike.png");
-  //Day Night Ciycle
-  for (int i = 0; i < 8; i++) {
-    ResourceManager.prepareLoad("DayNightCycle" + i, "Sprites/DayNightCycle/DayNightCycle" + i + ".png");
-  }
-  //UI
-  ResourceManager.prepareLoad("Heart", "Sprites/heart.png");
-  //Fonts
-  ResourceManager.prepareLoad("Menufont", "Fonts/mario_kart_f2.ttf");
-  //Audio
-  //ResourceManager.prepareLoad("Background", "Sound/terrariaMusic.mp3");
-  ResourceManager.prepareLoad("DirtBreak", "Sound/dirt.wav");
-  for(int i = 1; i < 5; i++){
-    ResourceManager.prepareLoad("StoneBreak" + i, "Sound/stone" + i + ".wav");
-  }
-  ResourceManager.prepareLoad("Explosion", "Sound/explosion.wav");
 }
 
 void keyPressed(){
