@@ -12,6 +12,7 @@ ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
 World world;
 Player player;
+WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
 Enemy[] enemies;
@@ -41,8 +42,6 @@ void setupGame() {
 
   ui = new UIController();
 
-  //ResourceManager.getSound("Background").loop();
-
   world = new World(tilesHorizontal * tileWidth + tileWidth);
 
   player = new Player();
@@ -66,7 +65,7 @@ void setupGame() {
     load(bird);
   }
 
-  WallOfDeath wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
+  wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   load(wallOfDeath);
 
   CameraShaker.reset();

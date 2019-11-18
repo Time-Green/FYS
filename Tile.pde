@@ -70,7 +70,7 @@ class Tile extends BaseObject{
 
     if (!destroyed){
 
-      //dirty NullPointerException fix
+      //if we dont have an image, we cant draw anything
       if (image == null){
         return;
       }
