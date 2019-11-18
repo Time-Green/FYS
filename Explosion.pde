@@ -27,6 +27,10 @@ class Explosion extends BaseObject{
     //create particle system
     ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 200, radius / 15);
     load(particleSystem);
+
+    //play sound
+    explosionSound.stop();
+    explosionSound.play();
   }
 
   void explode(){
@@ -55,8 +59,8 @@ class Explosion extends BaseObject{
 
     CameraShaker.induceStress(0.05f);
 
-    explosionSound.stop();
-    explosionSound.play();
+    //explosionSound.stop();
+    //explosionSound.play();
   }
 
   void update(){
