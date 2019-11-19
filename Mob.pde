@@ -11,7 +11,7 @@ class Mob extends Movable {
   boolean isHurt;
 
   //Mining
-  final int MININGCOOLDOWN = 100; //cooldown in millis
+  int miningCooldown = 1; //cooldown in millis
   int lastMine;
 
   public void attemptMine(BaseObject object){
@@ -22,7 +22,7 @@ class Mob extends Movable {
     }
 
     //simple cooldown check
-    if(millis() < lastMine + MININGCOOLDOWN){
+    if(millis() < lastMine + miningCooldown){
       return;
     }
 
