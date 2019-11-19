@@ -1,4 +1,7 @@
 import processing.sound.*;
+import org.gamecontrolplus.gui.*;
+import org.gamecontrolplus.*;
+import net.java.games.input.*;
 
 public static class ResourceManager{
 
@@ -17,6 +20,39 @@ public static class ResourceManager{
     ResourceManager.game = game;
   }
 
+  public static void prepareResourceLoading(){
+    String dataPath = game.sketchPath("data");
+    
+    File dataFolder = new File(dataPath);
+
+    println(dataFolder);
+
+    searchInFolder(dataFolder);
+  }
+
+  private static void searchInFolder(File folder){
+
+    for (File file : folder.listFiles()){
+
+      if(file.isDirectory()){
+        searchInFolder(file);
+      }else if(file.isFile()){
+        prepareLoad(getFileName(file), file.getPath());
+      }
+    }
+  }
+
+  private static String getFileName(File file){
+    String name = file.getName();
+    int pos = name.lastIndexOf(".");
+      
+    if (pos > 0){
+      name = name.substring(0, pos);
+    }
+
+    return name;
+  }
+
   public static void prepareLoad(String name, String fileName){
     totalResourcesToLoad++;
 
@@ -25,7 +61,6 @@ public static class ResourceManager{
   }
 
   public static String loadNext(){
-
     String currentResourceName = resourcesToLoadNames.get(currentLoadIndex);
     String currentResourceFileName = resourcesToLoadFileNames.get(currentLoadIndex);
 
@@ -67,7 +102,6 @@ public static class ResourceManager{
       return;
     }
 
-    println("Image '" + fileName + "' loaded as: " + name);
     imageMap.put(name, image);
   }
 
@@ -79,7 +113,6 @@ public static class ResourceManager{
       return;
     }
 
-    println("Sound '" + fileName + "' loaded as: " + name);
     soundMap.put(name, sound);
   }
 
@@ -91,7 +124,6 @@ public static class ResourceManager{
       return;
     }
 
-    println("Font '" + fileName + "' loaded as: " + name);
     fontMap.put(name, font);
   }
 

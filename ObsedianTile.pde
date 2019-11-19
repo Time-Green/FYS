@@ -3,7 +3,7 @@ public class ObsedianTile extends Tile{
   public ObsedianTile(int x, int y){
     super(x, y);
 
-    setMaxHp(9999);
+    setMaxHp(2);
       
     image = ResourceManager.getImage("ObsedianBlock");
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
@@ -12,6 +12,7 @@ public class ObsedianTile extends Tile{
   void update(){
     super.update();
 
-    setMaxHp(9999);
+    //keep health at 2 so the player can't mine it
+    setMaxHp(2);
   }
 }

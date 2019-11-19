@@ -14,8 +14,8 @@ public class Bird extends Mob{
     }
 
     //set spawn position and velocity
-    position = new PVector(random(0, world.getWidth()), random(150, 300));
-    velocity = new PVector(random(MINSPEED, MAXSPEED), 0);
+    position.set(random(0, world.getWidth()), random(150, 300));
+    velocity.set(random(MINSPEED, MAXSPEED), 0);
 
     if(flyingLeft){
       flipSpriteHorizontal = true;  

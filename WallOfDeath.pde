@@ -12,9 +12,9 @@ class WallOfDeath extends Movable {
 
   WallOfDeath(float wallWidth){
 
-    //velocity = new PVector(0, moveSpeed);
-    size = new PVector(wallWidth, tileHeight * 2);
-    position = new PVector(0, -size.y - wallYOffset);
+    //velocity.set(0, moveSpeed);
+    size.set(wallWidth, tileHeight * 2);
+    position.set(0, -size.y - wallYOffset);
 
     //for debug only, Remove this line of code when puplishing
     collisionEnabled = false;
@@ -30,11 +30,11 @@ class WallOfDeath extends Movable {
       return;
     }
 
-  if(frameCount % 5 == 0){ 
-    spawnAstroid();  
-  }
+    super.update();
 
-  super.update();
+    if(frameCount % 30 == 0){ 
+      spawnAstroid();  
+    }
 
     //velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
     position.y = currentDepthCheck * tileHeight - size.y - wallYOffset;

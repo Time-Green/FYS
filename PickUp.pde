@@ -1,9 +1,10 @@
 public class PickUp extends Movable{
-    
-    float radius = 30;
 
     boolean canTake = true; //in-case we need an override to stop people picking stuff up, like thrown dynamite
 
+    PickUp(){
+        size.set(30, 30);
+    }
     void draw(){
         super.draw();
     }
