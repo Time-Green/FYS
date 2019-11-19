@@ -19,7 +19,7 @@ class Explosion extends BaseObject{
     explosionSound = ResourceManager.getSound("Explosion");
     
     //flash
-    setupLightSource(this, radius * 2f, 1f);
+    setupLightSource(this, radius, 1f);
 
     //get tiles inside max range
     tilesInMaxExplosionRadius = world.getTilesInRadius(position, maxRadius);
