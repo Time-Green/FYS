@@ -1,4 +1,7 @@
 import processing.sound.*;
+import org.gamecontrolplus.gui.*;
+import org.gamecontrolplus.*;
+import net.java.games.input.*;
 
 public static class ResourceManager{
 

@@ -3,6 +3,10 @@ class Player extends Mob {
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
+  private ControlIO control;
+  private Configuration config;
+  private ControlDevice gpad;
+
   public Player(){
     
     image = ResourceManager.getImage("Player");
