@@ -1,16 +1,15 @@
 public class ScorePickUp extends PickUp{
     int score;
 
-    public ScorePickUp(PVector spawnPosition, ResourceTile tile) {
-        super(spawnPosition);
+    public ScorePickUp(ResourceTile tile) {
         score = tile.value / tile.pickUpDropAmountValue;
         image = tile.pickUpImage;
     }
 
-    void pickedUp(BaseObject object){
+    void pickedUp(Mob mob){
         player.addScore(score);
 
-        super.pickedUp(object);
+        super.pickedUp(mob);
     }
 
     void draw(){

@@ -88,4 +88,9 @@ class BaseObject {
   boolean canCollideWith(BaseObject object){ //return false for magically phasing through things. 
     return density;
   }
+
+  void collidedWith(BaseObject object){
+    return;
+  }
+
 }

@@ -217,6 +217,8 @@ class Movable extends BaseObject{
         if(!object.canCollideWith(this)){
           continue;
         }
+        object.collidedWith(this);
+        collidedWith(object);
         colliders.add(object);      
       }
     }

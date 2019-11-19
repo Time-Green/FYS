@@ -14,6 +14,11 @@ public class UIController {
   float slotOffsetY = 40; 
   float slotSize = 40; 
 
+  //Inventory
+  float inventoryX = width * .8;
+  float inventoryY = height * .8;
+  float inventoryOffset = 50;
+
   PImage heart;
   PFont font;
   float menuFontSize = 96;
@@ -50,6 +55,8 @@ public class UIController {
     //reset rectMode
     rectMode(CORNER);
     textAlign(LEFT);
+
+    drawInventory();
 
     drawStats();
   }
@@ -145,5 +152,11 @@ public class UIController {
     textSize(menuFontSize / 2.2);
     text("Press Enter to continue", width / 2, height / 2 - 30);
     text("Press CTRL to restart", width / 2, height / 2 + 60);
+  }
+
+  void drawInventory(){
+    for(Item item : player.inventory){
+      image(item.image, inventoryX + inventoryOffset * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
+    }
   }
 }

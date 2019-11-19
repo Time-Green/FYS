@@ -50,6 +50,12 @@ class Player extends Mob {
     }else{
       isMiningRight = false;
     }
+    if(InputHelper.isKeyDown(' ')){ 
+      useInventory();
+    }
+    if(InputHelper.isKeyDown('g')){ //for 'testing'
+      load(new Dynamite(), new PVector(position.x + 100, position.y));
+    }
   }
 
   void addScore(int scoreToAdd){
@@ -77,5 +83,9 @@ class Player extends Mob {
 
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.GameState.GameOver;
+  }
+
+  boolean canPickUp(PickUp pickUp){
+    return true;
   }
 }
