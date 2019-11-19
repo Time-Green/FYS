@@ -12,14 +12,16 @@ public class UIController {
   float heartY = 10;
   float slotOffsetX = 40; 
   float slotOffsetY = 40; 
-  float slotSize = 40; 
+  float slotSize = 40;
+
+  private final boolean DRAWSTATS = true;
 
   PImage heart;
   PFont font;
   float menuFontSize = 96;
 
   UIController(){
-    font = ResourceManager.getFont("Menufont");
+    font = ResourceManager.getFont("MenuFont");
     heart = ResourceManager.getImage("Heart");
 
     textFont(font);
@@ -59,7 +61,9 @@ public class UIController {
     rectMode(CORNER);
     textAlign(LEFT);
 
-    drawStats();
+    if(DRAWSTATS){
+      drawStats();
+    }
   }
 
   void gameOver(){
@@ -131,6 +135,7 @@ public class UIController {
     textSize(20);
     text(round(frameRate) + " FPS", width - 10, 25);
     text(objectList.size() + " objects", width - 10, 45);
+    text(round(wallOfDeath.position.y) + " WoD Y pos", width - 10, 65);
   }
 
   void pauseScreen(){
