@@ -37,14 +37,22 @@ public class UIController {
     textAlign(CENTER, CENTER);
 
     // draw hud based on current gamestate
-    if(Globals.currentGameState == Globals.GameState.MainMenu){
-      startMenu();
-    }else if(Globals.currentGameState == Globals.GameState.GameOver){
-      gameOver();
-    }else if(Globals.currentGameState == Globals.GameState.InGame){
-      gameHUD();
-    } else if(Globals.currentGameState == Globals.GameState.GamePaused){
-      pauseScreen();
+    switch (Globals.currentGameState) {
+      default :
+        println("Something went wrong with the game state");
+      break;
+      case MainMenu:
+        startMenu();
+      break;	
+      case GameOver:
+        gameOver();
+      break;
+      case InGame :
+        gameHUD();
+      break;
+      case GamePaused :
+        pauseScreen();
+      break;		
     }
 
     //reset rectMode
