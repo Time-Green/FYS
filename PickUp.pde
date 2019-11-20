@@ -1,32 +1,42 @@
 public class PickUp extends Movable{
-    
-    float radius = 30;
 
-    public PickUp (PVector spawnPosition) {
-        position.set(spawnPosition);
-        size.set(radius, radius);
+  boolean canTake = true; //in-case we need an override to stop people picking stuff up, like thrown dynamite
+
+  PickUp(){
+    size.set(30, 30);
+  }
+  void draw(){
+    super.draw();
+  }
+
+  void update(){
+    super.update();
+  }
+
+  void pickedUp(Mob mob){
+    delete(this);
+  }
+
+  boolean canCollideWith(BaseObject object){
+
+    if(object instanceof Mob){
+      Mob mob = (Mob) object;
+
+      if(canTake && mob.canPickUp(this)){ //maybe replace with canPickUp?
+        pickedUp(mob);
+
+        return false;
+      }
     }
 
-    void draw(){
-        super.draw();
+    if(object instanceof PickUp){
+      return false;
     }
 
-    void update(){
-        super.update();
-    }
+    return super.canCollideWith(object);
+  }
 
-    void pickedUp(BaseObject object){
-        delete(this);
-    }
-
-    boolean canCollideWith(BaseObject object){
-        if(object instanceof Player){ //maybe replace with canPickUp?
-            pickedUp(object);
-            return false;
-        }
-        else if(object instanceof PickUp){
-            return false;
-        }
-        return super.canCollideWith(object);
-    }
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }

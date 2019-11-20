@@ -55,4 +55,8 @@ public class Bird extends Mob{
         position.x = -32;
     }
   }
+
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }

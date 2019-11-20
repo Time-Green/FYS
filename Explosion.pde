@@ -10,7 +10,7 @@ class Explosion extends BaseObject{
 
   SoundFile explosionSound;
 
-  ArrayList<Tile> tilesInMaxExplosionRadius = new ArrayList<Tile>();
+  ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
 
   Explosion(PVector spawnPos, float radius){
     position.set(spawnPos);
@@ -19,10 +19,10 @@ class Explosion extends BaseObject{
     explosionSound = ResourceManager.getSound("Explosion");
     
     //flash
-    setupLightSource(this, radius * 2f, 1f);
+    setupLightSource(this, radius, 1f);
 
-    //get tiles inside max range
-    tilesInMaxExplosionRadius = world.getTilesInRadius(position, maxRadius);
+    //get objects inside max range
+    objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
 
     //create particle system
     ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 200, radius / 15);
@@ -34,33 +34,25 @@ class Explosion extends BaseObject{
   }
 
   void explode(){
-    ArrayList<Tile> tilesInCurrentExplosionRadius = new ArrayList<Tile>();
+    ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
 
-    for(Tile tile : tilesInMaxExplosionRadius){
+    for(BaseObject object : objectsInMaxRadius){
 
-      if(dist(position.x, position.y, tile.position.x, tile.position.y) < currentRadius){
-        tilesInCurrentExplosionRadius.add(tile);
+      if(dist(position.x, position.y, object.position.x, object.position.y) < currentRadius){
+        objectsInCurrentExplosionRadius.add(object);
       }
 
     }
 
-    for(Tile tile : tilesInCurrentExplosionRadius){
+    for(BaseObject object : objectsInCurrentExplosionRadius){
 
-      //only deal damage to tiles that can be destroyed
-      if(!tile.density) 
-      {
-        continue;
-      }
-
+      //damage falloff
       float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
 
-      tile.takeDamage(dammage);
+      object.takeDamage(dammage);
     }
 
     CameraShaker.induceStress(0.05f);
-
-    //explosionSound.stop();
-    //explosionSound.play();
   }
 
   void update(){

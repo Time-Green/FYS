@@ -23,4 +23,8 @@ public class BaseParticleSystem extends BaseObject {
   void draw(){
     super.draw();
   }
+
+  void takeDamage(float damageTaken){
+    
+  }
 }

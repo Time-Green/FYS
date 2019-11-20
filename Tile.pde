@@ -30,7 +30,7 @@ class Tile extends BaseObject{
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
-    if(position.y > 1050 && noise(float(x) * world.CAVESPAWNINGNOICESCALE, float(y) * world.CAVESPAWNINGNOICESCALE) > world.CAVESPAWNINGPOSSIBILITYSCALE){
+    if(position.y > 1050 && noise(float(x) * world.currentBiome.caveSpawningNoiseScale, float(y) * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale){
       destroyed = true;
       density = false;
 
@@ -86,6 +86,8 @@ class Tile extends BaseObject{
   }
 
   void takeDamage(float damageTaken) {
+    super.takeDamage(damageTaken);
+    
     hp -= damageTaken;
     
     if (hp <= 0) {
@@ -97,8 +99,12 @@ class Tile extends BaseObject{
     return density;
   }
 
-  public void mine() {
-    playBreakSound();
+  public void mine(){
+
+    if(breakSound != null){
+      playBreakSound();
+    }
+
     destroyed = true;
     density = false;
 

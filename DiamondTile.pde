@@ -9,4 +9,8 @@ public class DiamondTile extends ResourceTile{
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     pickUpImage = ResourceManager.getImage("DiamondPickUp");
   }
+
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }

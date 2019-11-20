@@ -11,8 +11,14 @@ class Mob extends Movable {
   boolean isHurt;
 
   //Mining
-  final int MININGCOOLDOWN = 100; //cooldown in millis
+  int miningCooldown = 1; //cooldown in millis
   int lastMine;
+
+  //Inventory
+  ArrayList<Item> inventory = new ArrayList<Item>();
+  int maxInventory = 2;
+  int lastUse;
+  int useCooldown = 100;
 
   public void attemptMine(BaseObject object){
 
@@ -22,7 +28,7 @@ class Mob extends Movable {
     }
 
     //simple cooldown check
-    if(millis() < lastMine + MININGCOOLDOWN){
+    if(millis() < lastMine + miningCooldown){
       return;
     }
 
@@ -46,7 +52,8 @@ class Mob extends Movable {
   }
 
   public void takeDamage(float damageTaken){
-  
+    super.takeDamage(damageTaken);
+    
     if(isImmortal){
       return; 
     }else{
@@ -73,6 +80,31 @@ class Mob extends Movable {
   void setMaxHp(float hpToSet){
     maxHealth = hpToSet;
     currentHealth = maxHealth;
+  }
+
+  boolean canPickUp(PickUp pickUp){
+    return false;
+  }
+
+  boolean canAddToInventory(Item item){
+    return inventory.size() < maxInventory;
+  }
+
+  void addToInventory(Item item){
+    nullSpace(item);
+    inventory.add(item);
+  }
+
+  void useInventory(){
+    if(lastUse + useCooldown < millis()  && inventory.size() != 0){
+      Item item = inventory.get(inventory.size() - 1);
+      item.onUse(this);
+      lastUse = millis();
+    }
+  }
+
+  void removeFromInventory(Item item){
+    inventory.remove(item);
   }
 }
 

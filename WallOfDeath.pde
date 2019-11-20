@@ -32,7 +32,7 @@ class WallOfDeath extends Movable {
 
     super.update();
 
-    if(frameCount % 30 == 0){ 
+    if(frameCount % 25 == 0){ 
       spawnAstroid();  
     }
 
@@ -127,5 +127,9 @@ class WallOfDeath extends Movable {
         delete(object);
       }
     }
+  }
+
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
   }
 }

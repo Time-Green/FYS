@@ -241,10 +241,27 @@ void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
   lightSources.add(object);
 }
 
+ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
+  ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
+
+  for (BaseObject object : objectList) {
+
+    if(dist(pos.x, pos.y, object.position.x, object.position.y) < radius){
+      objectsInRadius.add(object);
+    }
+  }
+
+  return objectsInRadius;
+}
+
 void keyPressed(){
   InputHelper.onKeyPressed(keyCode, key);
 }
 
 void keyReleased(){
   InputHelper.onKeyReleased(keyCode, key);
+}
+
+void nullSpace(BaseObject baseObject){ //remove from the map without deleting 
+  baseObject.position.set(1, 9999999); //ssssh, dont tell anyone
 }
