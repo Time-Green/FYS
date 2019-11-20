@@ -16,6 +16,7 @@ WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
 Enemy[] enemies;
+Controller controller;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -35,6 +36,8 @@ void setup() {
   ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
+
+  controller = new Controller();
 }
 
 void setupGame() {
@@ -54,6 +57,8 @@ void setupGame() {
   enemies[1] = new EnemyDigger();
   enemies[2] = new EnemyGhost();
   enemies[3] = new EnemyBomb();
+
+  
 
   for (int i = 0; i < enemyLenght; i++) {
     load(enemies[i]);
@@ -143,40 +148,48 @@ void handleGameFlow() {
   switch (Globals.currentGameState) {
 
     //not much happens yet if we are ingame..
-  case InGame:
+    case InGame:
+
+      if (InputHelper.isKeyDown('p') || controller.isButtonDown("START")) {
+        Globals.currentGameState = Globals.GameState.GamePaused;
+      }
 
     break;
 
-  case MainMenu:
+    case MainMenu:
 
-    //if we are in the main menu we start the game by pressing enter
-    if (InputHelper.isKeyDown(ENTER)){
-      startGame();
-    }
-
-    break;
-
-  case GameOver:
-
-    //if we died we restart the game by pressing enter
-    if (InputHelper.isKeyDown(ENTER)){
-      startGame();
-      Globals.gamePaused = false;
-    }
+      //if we are in the main menu we start the game by pressing enter
+      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
+        startGame();
+      }
 
     break;
 
-  case GamePaused:
-    //if the game has been paused the player can contineu the game
-    if (InputHelper.isKeyDown(ENTER)){
-      Globals.gamePaused = false;
-      Globals.currentGameState = Globals.GameState.InGame;
+    case GameOver:
+      Globals.gamePaused = true;
+
+      //if we died we restart the game by pressing enter
+      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
+        startGame();
+      }
+
+    break;
+
+    case GamePaused:
+      Globals.gamePaused = true;
+      
+      //if the game has been paused the player can contineu the game
+      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
+        Globals.gamePaused = false;
+        Globals.currentGameState = Globals.GameState.InGame;
+      }
+      
+      //Reset game
+      if (InputHelper.isKeyDown('o') || controller.isButtonDown("SELECT")){
+        startGame();
     }
-    
-    if (InputHelper.isKeyDown('o')){
-      startGame();
-      Globals.gamePaused = false;
-    }
+
+    break;
   }
 }
 

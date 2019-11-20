@@ -1,0 +1,4 @@
+Player controller
+Y	Vertical movement	3	SLIDER	Y-as	0	1.0	0.0
+X	Horizontal movement	3	SLIDER	X-as	0	1.0	0.0
+JUMP	Jump button	1	BUTTON	Knop 2	0	0.0	0.0

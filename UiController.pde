@@ -27,12 +27,7 @@ public class UIController {
     textFont(font);
   }
 
-  void draw(){
-
-    if(InputHelper.isKeyDown('p') && Globals.currentGameState == Globals.GameState.InGame){
-      Globals.gamePaused = true;
-      Globals.currentGameState = Globals.GameState.GamePaused;
-    }
+  void draw() {
 
     //draw hud at center position
     rectMode(CENTER);
