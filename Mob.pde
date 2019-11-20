@@ -90,7 +90,7 @@ class Mob extends Movable {
   }
 
   void addToInventory(Item item){
-    item.position.set(0,0);
+    nullSpace(item);
     inventory.add(item);
   }
 

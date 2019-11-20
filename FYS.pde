@@ -235,3 +235,7 @@ void keyPressed(){
 void keyReleased(){
   InputHelper.onKeyReleased(keyCode, key);
 }
+
+void nullSpace(BaseObject baseObject){ //remove from the map without deleting 
+  baseObject.position.set(1, 9999999); //ssssh, dont tell anyone
+}
