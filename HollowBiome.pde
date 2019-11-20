@@ -1,6 +1,6 @@
 class HollowBiome extends Biome{
     
-    Hollow(){
+    HollowBiome(){
         caveSpawningPossibilityScale = .51;
     }
 }
