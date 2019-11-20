@@ -39,6 +39,10 @@ public class BaseParticle extends Movable {
   }
 
   void draw(){
+    if(!inCameraView()){
+      return;
+    }
+    
     fill(particleColor);
     rect(position.x - size / 2, position.y - size / 2, size, size);
     fill(255);

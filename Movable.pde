@@ -131,6 +131,10 @@ class Movable extends BaseObject{
   }
 
   void draw(){
+    if(!inCameraView()){
+      return;
+    }
+    
     super.draw();
 
     pushMatrix();

@@ -142,7 +142,9 @@ public class UIController {
     textSize(20);
     text(round(frameRate) + " FPS", width - 10, 25);
     text(objectList.size() + " objects", width - 10, 45);
-    text(round(wallOfDeath.position.y) + " WoD Y pos", width - 10, 65);
+    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 65);
+    text(round(player.position.y) + " Player Y Pos", width - 10, 85);
+    text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, 105);
   }
 
   void pauseScreen(){
