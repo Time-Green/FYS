@@ -8,11 +8,15 @@ public class ResourceTile extends Tile{
 		super(x, y);
 	}
 
-    void mine(){
-        super.mine();
-        // for (int i = 0; i < pickUpDropAmountValue; i++) {
-        //    load(new ScorePickUp(this), new PVector(position.x + 10 + random(size.x - 60), position.y + 10 + random(size.y - 60)));
-        // }
-    }
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
+
+  void mine(){
+    super.mine();
+    // for (int i = 0; i < pickUpDropAmountValue; i++) {
+    //    load(new ScorePickUp(this), new PVector(position.x + 10 + random(size.x - 60), position.y + 10 + random(size.y - 60)));
+    // }
+  }
 
 }

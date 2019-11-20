@@ -9,4 +9,8 @@ public class GoldTile extends ResourceTile{
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     pickUpImage = ResourceManager.getImage("GoldPickUp");
   }
+
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }

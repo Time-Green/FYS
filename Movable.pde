@@ -215,8 +215,6 @@ class Movable extends BaseObject{
         continue;
       }
 
-      //debugCollision(object);
-
       if(CollisionHelper.rectRect(position.x + maybeX, position.y + maybeY, size.x, size.y, object.position.x, object.position.y, object.size.x, object.size.y)){
         if(!object.canCollideWith(this)){
           continue;
@@ -230,9 +228,8 @@ class Movable extends BaseObject{
     return colliders;
   }
 
-  private void debugCollision(BaseObject object){
-    fill(miningcolor,100);
-    rect(object.position.x, object.position.y, tileWidth, tileHeight);
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
   }
 
   float getDepth(){

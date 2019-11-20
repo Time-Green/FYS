@@ -5,4 +5,8 @@ class AirTile extends Tile{
 
     density = false;
   }
+
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }

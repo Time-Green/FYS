@@ -65,8 +65,6 @@ class BaseObject {
       //println("adding: " + name);
       objectList.add(this); 
     }
-    
-    return;
   }
 
   boolean canMine(){ //could be useful for attacking
@@ -78,7 +76,7 @@ class BaseObject {
   }
 
   void pushed(Movable movable, float x, float y){ //we got pushed by an movable
-    return;
+    
   }
 
   public void moveTo(PVector newPosition){ //for moving to specific coords, but made so we could add some extra checks to it later if we need to
@@ -90,7 +88,7 @@ class BaseObject {
   }
 
   void collidedWith(BaseObject object){
-    return;
+    
   }
 
 }

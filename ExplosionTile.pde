@@ -13,4 +13,7 @@ public class ExplosionTile extends Tile{
     load(new Explosion(position, explosionSize));
   }
 
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }

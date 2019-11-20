@@ -63,4 +63,8 @@ class Enemy extends Mob {
       player.takeDamage(getAttackPower());
     }
   }
+
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }

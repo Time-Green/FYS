@@ -52,7 +52,8 @@ class Mob extends Movable {
   }
 
   public void takeDamage(float damageTaken){
-  
+    super.takeDamage(damageTaken);
+    
     if(isImmortal){
       return; 
     }else{

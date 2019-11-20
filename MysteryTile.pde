@@ -10,4 +10,8 @@ public class MysteryTile extends PowerUpTile {
     super.mine(); 
   }
 
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
+
 }

@@ -10,7 +10,9 @@ class Explosion extends BaseObject{
 
   SoundFile explosionSound;
 
-  ArrayList<Tile> tilesInMaxExplosionRadius = new ArrayList<Tile>();
+  //ArrayList<Tile> tilesInMaxExplosionRadius = new ArrayList<Tile>();
+
+  ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
 
   Explosion(PVector spawnPos, float radius){
     position.set(spawnPos);
@@ -22,7 +24,10 @@ class Explosion extends BaseObject{
     setupLightSource(this, radius, 1f);
 
     //get tiles inside max range
-    tilesInMaxExplosionRadius = world.getTilesInRadius(position, maxRadius);
+    //tilesInMaxExplosionRadius = world.getTilesInRadius(position, maxRadius);
+
+    //get objects inside max range
+    objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
 
     //create particle system
     ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 200, radius / 15);
@@ -33,7 +38,7 @@ class Explosion extends BaseObject{
     explosionSound.play();
   }
 
-  void explode(){
+  void explodeTiles(){
     ArrayList<Tile> tilesInCurrentExplosionRadius = new ArrayList<Tile>();
 
     for(Tile tile : tilesInMaxExplosionRadius){
@@ -58,9 +63,28 @@ class Explosion extends BaseObject{
     }
 
     CameraShaker.induceStress(0.05f);
+  }
 
-    //explosionSound.stop();
-    //explosionSound.play();
+  void explode(){
+    ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
+
+    for(BaseObject object : objectsInMaxRadius){
+
+      if(dist(position.x, position.y, object.position.x, object.position.y) < currentRadius){
+        objectsInCurrentExplosionRadius.add(tile);
+      }
+
+    }
+
+    for(BaseObject object : objectsInCurrentExplosionRadius){
+
+      //damage falloff
+      float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
+
+      object.takeDamage(dammage);
+    }
+
+    CameraShaker.induceStress(0.05f);
   }
 
   void update(){

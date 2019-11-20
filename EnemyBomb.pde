@@ -1,43 +1,47 @@
 class EnemyBomb extends Enemy {
 
-    private float explosionRange = 80;
-    
-    private boolean isExploding = false;
-    private float explosionTimer = 90f;
-    private float explosionSize = 500;
-    
-    EnemyBomb() {
-        image = ResourceManager.getImage("BombEnemy");
-        this.speed = 2.5f;
-    }
+  private float explosionRange = 80;
+  
+  private boolean isExploding = false;
+  private float explosionTimer = 90f;
+  private float explosionSize = 500;
+  
+  EnemyBomb() {
+    image = ResourceManager.getImage("BombEnemy");
+    this.speed = 2.5f;
+  }
 
-    void update() {
-        super.update();
+  void update() {
+    super.update();
 
-        if (isExploding) {
+    if (isExploding) {
 
-            this.speed = 0;
-            explosionTimer--;
+      this.speed = 0;
+      explosionTimer--;
 
-            if (explosionTimer <= 0) {
+      if (explosionTimer <= 0) {
 
-                load(new Explosion(position, explosionSize));
-                float distance = dist(this.position.x, this.position.y, player.position.x, player.position.y);
+        load(new Explosion(position, explosionSize));
+        float distance = dist(this.position.x, this.position.y, player.position.x, player.position.y);
 
-                if (distance <= explosionRange){
-                    player.takeDamage(getAttackPower());
-                }
-
-                delete(this);
-            }
+        if (distance <= explosionRange){
+            player.takeDamage(getAttackPower());
         }
-    }
 
-    protected void handleCollision(){
-        super.handleCollision();
-
-        if (CollisionHelper.rectRect(position, new PVector(size.x + explosionRange, size.y + explosionRange), player.position, player.size)){
-            isExploding = true;
-        }
+        delete(this);
+      }
     }
+  }
+
+  protected void handleCollision(){
+    super.handleCollision();
+
+    if (CollisionHelper.rectRect(position, new PVector(size.x + explosionRange, size.y + explosionRange), player.position, player.size)){
+      isExploding = true;
+    }
+  }
+
+  void takeDamage(float damageTaken){
+    super.takeDamage(damageTaken);
+  }
 }
