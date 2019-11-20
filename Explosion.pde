@@ -12,7 +12,7 @@ class Explosion extends BaseObject{
 
   //ArrayList<Tile> tilesInMaxExplosionRadius = new ArrayList<Tile>();
 
-  ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
+  ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
 
   Explosion(PVector spawnPos, float radius){
     position.set(spawnPos);
@@ -38,32 +38,32 @@ class Explosion extends BaseObject{
     explosionSound.play();
   }
 
-  void explodeTiles(){
-    ArrayList<Tile> tilesInCurrentExplosionRadius = new ArrayList<Tile>();
+  // void explodeTiles(){
+  //   ArrayList<Tile> tilesInCurrentExplosionRadius = new ArrayList<Tile>();
 
-    for(Tile tile : tilesInMaxExplosionRadius){
+  //   for(Tile tile : tilesInMaxExplosionRadius){
 
-      if(dist(position.x, position.y, tile.position.x, tile.position.y) < currentRadius){
-        tilesInCurrentExplosionRadius.add(tile);
-      }
+  //     if(dist(position.x, position.y, tile.position.x, tile.position.y) < currentRadius){
+  //       tilesInCurrentExplosionRadius.add(tile);
+  //     }
 
-    }
+  //   }
 
-    for(Tile tile : tilesInCurrentExplosionRadius){
+  //   for(Tile tile : tilesInCurrentExplosionRadius){
 
-      //only deal damage to tiles that can be destroyed
-      if(!tile.density) 
-      {
-        continue;
-      }
+  //     //only deal damage to tiles that can be destroyed
+  //     if(!tile.density) 
+  //     {
+  //       continue;
+  //     }
 
-      float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
+  //     float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
 
-      tile.takeDamage(dammage);
-    }
+  //     tile.takeDamage(dammage);
+  //   }
 
-    CameraShaker.induceStress(0.05f);
-  }
+  //   CameraShaker.induceStress(0.05f);
+  // }
 
   void explode(){
     ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
@@ -71,7 +71,7 @@ class Explosion extends BaseObject{
     for(BaseObject object : objectsInMaxRadius){
 
       if(dist(position.x, position.y, object.position.x, object.position.y) < currentRadius){
-        objectsInCurrentExplosionRadius.add(tile);
+        objectsInCurrentExplosionRadius.add(object);
       }
 
     }

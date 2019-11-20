@@ -229,12 +229,12 @@ void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
 }
 
 ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
-  ArrayList<Tile> objectsInRadius = new ArrayList<Tile>();
+  ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
 
   for (BaseObject object : objectList) {
 
     if(dist(pos.x, pos.y, object.position.x, object.position.y) < radius){
-      objectsInRadius.add(tile);
+      objectsInRadius.add(object);
     }
   }
 
