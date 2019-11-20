@@ -52,4 +52,8 @@ public class BaseParticle extends Movable {
     particleSystem.currentParticleAmount--;
     delete(this);
   }
+
+  void takeDamage(float damageTaken){
+    
+  }
 }

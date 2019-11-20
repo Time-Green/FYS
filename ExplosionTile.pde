@@ -1,6 +1,7 @@
 public class ExplosionTile extends Tile{
 
   private float explosionSize = 250;
+  private boolean hasExploded = false;
 
   public ExplosionTile(int x, int y){
     super(x, y); 
@@ -10,6 +11,17 @@ public class ExplosionTile extends Tile{
 
   void mine(){
     super.mine();
+    explode();
+  }
+
+  private void explode(){
+
+    if(hasExploded){
+      return;
+    }
+
+    hasExploded = true;
+    
     load(new Explosion(position, explosionSize));
   }
 

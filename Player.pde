@@ -13,8 +13,6 @@ class Player extends Mob {
     position = spawnPosition;
     setMaxHp(15);
 
-    isImmortal = false;
-
     setupLightSource(this, 600f, 1f);
   }
 

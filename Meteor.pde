@@ -21,6 +21,11 @@ class Meteor extends Movable{
   }
 
   void update(){
+
+    if(Globals.gamePaused){  
+      return;
+    }
+    
     super.update(); 
 
     if(isGrounded){
