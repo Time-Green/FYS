@@ -4,18 +4,20 @@ public class Controller {
     private Configuration config;
     private ControlDevice gpad;
 
-    public Controller () {
-        // Initialise the ControlIO
-        control = ControlIO.getInstance(FYS.this);
-        if (control != null) {
-            // Find a device that matches the configuration file
-            gpad = control.getMatchedDevice("Game_Controller");
-            if (gpad == null) {
-                println("No suitable device configured");
-                //System.exit(-1); // End the program NOW!
+    public Controller (boolean isDeguning) {
+        if (isDeguning == false) {
+            // Initialise the ControlIO
+            control = ControlIO.getInstance(FYS.this);
+            if (control != null) {
+                // Find a device that matches the configuration file
+                gpad = control.getMatchedDevice("Game_Controller");
+                if (gpad == null) {
+                    println("No suitable device configured");
+                    //System.exit(-1); // End the program NOW!
+                }
+            } else {
+                print("No controller found");
             }
-        } else {
-            print("No controller found");
         }
     }
 

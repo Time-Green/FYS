@@ -1,35 +1,51 @@
 public class UIController {
 
   //Colors
-  color titleColor = #FA3535;
-  color titleBackground = #FFA500;
+  private color titleColor = #FA3535;
+  private color titleBackground = #FFA500;
+  private color inventoryColor = #FBB65E;
 
   //Game HUD
+  private float hudTextStartX = 90;
+
   //Heart
-  float heartWidth = 50;
-  float heartHeight = 50;
-  float heartX = 10;
-  float heartY = 10;
-  float slotOffsetX = 40; 
-  float slotOffsetY = 40; 
-  float slotSize = 40;
+  private float heartWidth = 50;
+  private float heartHeight = 50;
+  private float heartX = 10;
+  private float heartY = 10;
+  
+  private float slotOffsetY = 40; 
+  private float slotSize = 60;
+  private float slotOffsetX = slotSize * 1.5f;
 
   private final boolean DRAWSTATS = true;
 
   //Inventory
-  float inventoryX = width * .8;
-  float inventoryY = height * .8;
-  float inventoryOffset = 50;
+  private final float INTENTORYSIZE = 50;
+  private float inventoryX = width * .8;
+  private float inventoryY = INTENTORYSIZE;
+  
+  private final int INVENTORYSLOTS = 3;
 
-  PImage heart;
-  PFont font;
-  float menuFontSize = 96;
+  private PImage heart;
+
+  //Text
+  private PFont titleFont;
+  private float titleFontSize = 96;
+
+  private PFont instructionFont;
+  private float instructionFontSize = titleFontSize / 2.2;
+
+  private PFont hudFont;
+  private float hudFontSize = 40;
 
   UIController(){
-    font = ResourceManager.getFont("MenuFont");
+    titleFont = ResourceManager.getFont("Brickyol");
+    instructionFont = ResourceManager.getFont("MenuFont");
+    hudFont = ResourceManager.getFont("BrickBold");
     heart = ResourceManager.getImage("Heart");
 
-    textFont(font);
+    
   }
 
   void draw() {
@@ -61,7 +77,7 @@ public class UIController {
     rectMode(CORNER);
     textAlign(LEFT);
 
-    drawInventory();
+    // drawInventory();
 
     if(DRAWSTATS){
       drawStats();
@@ -73,8 +89,10 @@ public class UIController {
     //background rect pos & size
     float rectXPos = width / 2;
     float rectYPos = (float)height / 4.15;
-    float rectWidth = width - menuFontSize * 4;
-    float rectHeight = menuFontSize * 2.5;
+    float rectWidth = width - titleFontSize * 4;
+    float rectHeight = titleFontSize * 2.5;
+
+    
 
     //title background
     fill(titleBackground);
@@ -82,11 +100,12 @@ public class UIController {
 
     //title
     fill(titleColor);
-    textSize(menuFontSize);
+    textSize(titleFontSize);
     text("Game Over", rectXPos, rectYPos, rectWidth, rectHeight);
     
     //sub text
-    textSize(menuFontSize / 2.2);
+    textFont(instructionFont);
+    textSize(instructionFontSize);
     text("Press Enter to restart", width / 2, height / 2 - 30);
   }
 
@@ -95,20 +114,23 @@ public class UIController {
     //background rect pos & size
     float rectXPos = width / 2;
     float rectYPos = (float)height / 4.15;
-    float rectWidth = width - menuFontSize * 4;
-    float rectHeight = menuFontSize * 2.5;
+    float rectWidth = width - titleFontSize * 4;
+    float rectHeight = titleFontSize * 2.5;
 
     //title background
+    textFont(titleFont);
     fill(titleBackground);
-    rect(rectXPos, rectYPos, rectWidth, rectHeight);
+    
+    //rect(rectXPos, rectYPos, rectWidth, rectHeight);
 
     //title
     fill(titleColor);
-    textSize(menuFontSize);
+    textSize(titleFontSize);
     text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
     //sub text
-    textSize(menuFontSize / 2);
+    textFont(instructionFont);
+    textSize(instructionFontSize);
     text("Press Enter to start", width / 2, height / 2 - 30);
   }
 
@@ -117,56 +139,64 @@ public class UIController {
       image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
     }
 
-    textAlign(LEFT);
-    fill(255);
-    textSize(20);
-    text("Score:" + player.score, 20, 80);
+    textFont(hudFont);
 
     textAlign(LEFT);
     fill(255);
-    textSize(20);
-    text("Depth:" + round((player.getDepth() / tileHeight) - 10), 20, 100);
+    textSize(hudFontSize);
+    text("Score: " + player.score, 20, hudTextStartX);
 
-    fill(0); 
-    rect(width - slotOffsetX, height - slotOffsetY, slotSize, slotSize); 
+    textAlign(LEFT);
+    fill(255);
+    textSize(hudFontSize);
+    text("Depth: " + round((player.getDepth() / tileHeight) - 10), 20, hudTextStartX + hudFontSize);
+
+    //Inventory
+    fill(inventoryColor);
+    for (int i = 0; i < INVENTORYSLOTS; i++) {
+      //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
+      rect((width - slotSize) - ((slotSize*INVENTORYSLOTS)-(slotOffsetX*i)) , inventoryY, slotSize, slotSize);
+    }
+    
   }
 
   void drawStats(){
     textAlign(RIGHT);
     fill(255);
     textSize(20);
-    text(round(frameRate) + " FPS", width - 10, 25);
-    text(objectList.size() + " objects", width - 10, 45);
-    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 65);
-    text(round(player.position.y) + " Player Y Pos", width - 10, 85);
-    text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, 105);
+    text(round(frameRate) + " FPS", width - 10, height - 100);
+    text(objectList.size() + " objects", width - 10, height - 80);
+    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 60);
+    text(round(player.position.y) + " Player Y Pos", width - 10, height - 40);
+    text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 20);
   }
 
   void pauseScreen(){
     //background rect pos & size
     float rectXPos = width / 2;
     float rectYPos = (float)height / 4.15;
-    float rectWidth = width - menuFontSize * 4;
-    float rectHeight = menuFontSize * 2.5;
+    float rectWidth = width - titleFontSize * 4;
+    float rectHeight = titleFontSize * 2.5;
 
     //title background
+    textFont(titleFont);
     fill(titleBackground);
     rect(rectXPos, rectYPos, rectWidth, rectHeight);
 
     //title
     fill(titleColor);
-    textSize(menuFontSize);
+    textSize(titleFontSize);
     text("Paused", rectXPos, rectYPos, rectWidth, rectHeight);
     
     //sub text
-    textSize(menuFontSize / 2.2);
+    textSize(instructionFontSize);
     text("Press Enter to continue", width / 2, height / 2 - 30);
     text("Press CTRL to restart", width / 2, height / 2 + 60);
   }
 
-  void drawInventory(){
-    for(Item item : player.inventory){
-      image(item.image, inventoryX + inventoryOffset * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
-    }
-  }
+  // void drawInventory(){
+  //   for(Item item : player.inventory){
+  //     image(item.image, inventoryX + INTENTORYSIZE * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
+  //   }
+  // }
 }

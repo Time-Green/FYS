@@ -37,7 +37,7 @@ void setup() {
 
   CameraShaker.setup(this);
 
-  controller = new Controller();
+  controller = new Controller(true);
 }
 
 void setupGame() {
