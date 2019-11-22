@@ -13,16 +13,27 @@
             <ColumnDefinition Width="260px"/>
         </Grid.ColumnDefinitions>
 
-        <Canvas x:Name="Canvas" Background="#2C2F33" Grid.Column="0" AllowDrop="True" Drop="Canvas_Drop"/>
+        <Canvas x:Name="Canvas" Background="#2C2F33" Grid.Column="0" AllowDrop="True" MouseDown="Canvas_OnMouseDown" MouseUp="Canvas_OnMouseUp" MouseMove="Canvas_OnMouseMove"/>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Background="#23272A">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*" MinHeight="50"/>
                 <RowDefinition Height="3*"/>
+                <RowDefinition Height="9*"/>
             </Grid.RowDefinitions>
 
-            <ListView x:Name="LayerView" Grid.Row="0" Background="#23272A"/>
-            <ScrollViewer Grid.Row="1" Background="#23272A">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="SaveButton" Content="Save" Grid.Column="0" Margin="5" Click="SaveButton_Click"/>
+                <Button x:Name="LoadButton" Content="Load" Grid.Column="1" Margin="5" Click="LoadButton_Click"/>
+            </Grid>
+
+            <ListView x:Name="LayerView" Grid.Row="1" SelectionChanged="LayerView_SelectionChanged"/>
+            <ScrollViewer Grid.Row="2">
                 <WrapPanel x:Name="SelectionPanel" Height="auto"/>
             </ScrollViewer>
         
