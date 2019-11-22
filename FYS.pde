@@ -16,7 +16,6 @@ WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
 Enemy[] enemies;
-Controller controller;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -28,6 +27,8 @@ int birdCount = 10;
 boolean firstTime = true;
 boolean firstStart = true;
 
+private String actionButton = "BOTTOM";
+
 void setup() {
   size(1280, 720, P2D);
   //fullScreen(P2D);
@@ -36,8 +37,6 @@ void setup() {
   ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
-
-  controller = new Controller(true);
 }
 
 void setupGame() {
@@ -147,20 +146,19 @@ void handleGameFlow() {
 
   switch (Globals.currentGameState) {
 
-    //not much happens yet if we are ingame..
-    case InGame:
+    case MainMenu:
 
-      if (InputHelper.isKeyDown('p') || controller.isButtonDown("START")) {
-        Globals.currentGameState = Globals.GameState.GamePaused;
+      //if we are in the main menu we start the game by pressing enter
+      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
+        startGame();
       }
 
     break;
 
-    case MainMenu:
+    case InGame:
 
-      //if we are in the main menu we start the game by pressing enter
-      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
-        startGame();
+      if (InputHelper.isKeyDown(Globals.ENTERKEY)) {
+        Globals.currentGameState = Globals.GameState.GamePaused;
       }
 
     break;
@@ -169,7 +167,7 @@ void handleGameFlow() {
       Globals.gamePaused = true;
 
       //if we died we restart the game by pressing enter
-      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
+      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
         startGame();
       }
 
@@ -179,13 +177,13 @@ void handleGameFlow() {
       Globals.gamePaused = true;
       
       //if the game has been paused the player can contineu the game
-      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
+      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
         Globals.gamePaused = false;
         Globals.currentGameState = Globals.GameState.InGame;
       }
       
       //Reset game
-      if (InputHelper.isKeyDown('o') || controller.isButtonDown("SELECT")){
+      if (InputHelper.isKeyDown(Globals.BACKKEY)){
         startGame();
     }
 

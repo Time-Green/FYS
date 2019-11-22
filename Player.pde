@@ -26,32 +26,34 @@ class Player extends Mob {
   
   void doPlayerMovement(){
 
-    if((InputHelper.isKeyDown(UP) || controller.isButtonDown("BOTTOM")) && isGrounded()){
+    if((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()){
       addForce(new PVector(0, -jumpForce));
     }
 
-    if(InputHelper.isKeyDown(DOWN) || controller.isSliderDown("YPAD", false)){
+    if(InputHelper.isKeyDown(Globals.DIGKEY)){
       isMiningDown = true;
     }else{
       isMiningDown = false;
     }
 
-    if(InputHelper.isKeyDown(LEFT) || controller.isSliderDown("XPAD", true)){
+    if(InputHelper.isKeyDown(Globals.LEFTKEY)){
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
     }else{
       isMiningLeft = false;
     }
 
-    if(InputHelper.isKeyDown(RIGHT) || controller.isSliderDown("XPAD", false)){
+    if(InputHelper.isKeyDown(Globals.RIGHTKEY)){
       addForce(new PVector(speed, 0));
       isMiningRight = true;
     }else{
       isMiningRight = false;
     }
+
     if(InputHelper.isKeyDown(' ')){ 
       useInventory();
     }
+
     if(InputHelper.isKeyDown('g')){ //for 'testing'
       load(new Dynamite(), new PVector(position.x + 100, position.y));
     }
