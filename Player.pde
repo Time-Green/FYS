@@ -1,92 +1,120 @@
 class Player extends Mob {
 
+  //AnimatedImage animatedImageLeft;
+  //AnimatedImage animatedImageDig;
+  //AnimatedImage animatedImageJump;
+
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
-  public Player(){
-    
+  public Player() {
+
     image = ResourceManager.getImage("Player");
     position = spawnPosition;
     setMaxHp(15);
 
-    setupLightSource(this, 600f, 1f);
+    //PImage[] frames1 = new PImage[3];
+    //PImage[] frames2 = new PImage[3];
+    //PImage[] frames3 = new PImage[3];
+
+    //for (int i = 0; i < 3; i++) {
+    //  frames1[i] = ResourceManager.getImage("PlayerLeft" + i);
+    //}
+
+    //for (int i = 0; i < 3; i++) {
+    //  frames2[i] = ResourceManager.getImage("PlayerDig" + i);
+    //}
+
+    //for (int i = 0; i < 3; i++) {
+    //  frames3[i] = ResourceManager.getImage("PlayerJump" + i);
+    //}
+
+    ////animation speed based on x velocity
+    //animatedImageLeft = new AnimatedImage(frames1, 20 - abs(velocity.x));
+    //animatedImageDig = new AnimatedImage(frames2, 20 - abs(velocity.x));
+    //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
+    //}
+
+  setupLightSource(this, 600f, 1f);
+}
+
+void update() {
+
+  if (Globals.gamePaused) {  
+    return;
   }
 
-  void update(){
+  super.update();
 
-    if(Globals.gamePaused){  
-      return;
-    }
-    
-    super.update();
-
-    doPlayerMovement();
-
-  }
+  doPlayerMovement();
+}
   
-  void doPlayerMovement(){
+void doPlayerMovement(){
 
-    if((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()){
+    if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()){
       addForce(new PVector(0, -jumpForce));
     }
 
-    if(InputHelper.isKeyDown(Globals.DIGKEY)){
+    if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-    }else{
+      //animatedImageDig.draw();
+    } else {
       isMiningDown = false;
     }
 
-    if(InputHelper.isKeyDown(Globals.LEFTKEY)){
+    if (InputHelper.isKeyDown(Globals.LEFTKEY)){
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
-    }else{
-      isMiningLeft = false;
+      isMiningRight = false;
+      flipSpriteHorizontal = false;
+   // animatedImageLeft.draw();
     }
 
-    if(InputHelper.isKeyDown(Globals.RIGHTKEY)){
+    if (InputHelper.isKeyDown(Globals.RIGHTKEY)){
       addForce(new PVector(speed, 0));
       isMiningRight = true;
-    }else{
-      isMiningRight = false;
-    }
+      isMiningLeft = false;
+      flipSpriteHorizontal = true;
+      //animatedImageLeft.draw();
+     }
 
-    if(InputHelper.isKeyDown(' ')){ 
+    if (InputHelper.isKeyDown(' ')){ 
       useInventory();
     }
 
-    if(InputHelper.isKeyDown('g')){ //for 'testing'
+    if (InputHelper.isKeyDown('g')){ //for 'testing'
       load(new Dynamite(), new PVector(position.x + 100, position.y));
     }
+}
+
+void addScore(int scoreToAdd) {
+  score += scoreToAdd;
+}
+
+public void takeDamage(int damageTaken) {
+
+  if (isImmortal) {
+
+    return;
   }
 
-  void addScore(int scoreToAdd){
-    score += scoreToAdd;
+  if (isHurt == false) {
+    // if the player has taken damage, add camera shake
+    CameraShaker.induceStress(0.6f);
   }
 
-  public void takeDamage(int damageTaken){
+  //needs to happan after camera shake because else 'isHurt' will be always true
+  super.takeDamage(damageTaken);
+}
 
-    if(isImmortal){
-    
-      return;         
-    }
+public void die() {
+  super.die();
 
-    if(isHurt == false){
-      // if the player has taken damage, add camera shake
-      CameraShaker.induceStress(0.6f);
-    }
+  Globals.gamePaused = true;
+  Globals.currentGameState = Globals.GameState.GameOver;
+}
 
-    //needs to happan after camera shake because else 'isHurt' will be always true
-    super.takeDamage(damageTaken);
-  }
-
-  public void die(){
-    super.die();
-
-    Globals.gamePaused = true;
-    Globals.currentGameState = Globals.GameState.GameOver;
-  }
-
-  boolean canPickUp(PickUp pickUp){
-    return true;
-  }
+boolean canPickUp(PickUp pickUp) {
+  return true;
+}
 }
