@@ -86,8 +86,6 @@ void doPlayerMovement() {
   if (InputHelper.isKeyDown('g')) { //for 'testing'
     load(new Dynamite(), new PVector(position.x + 100, position.y));
   }
-
-  if ()
 }
 
 void addScore(int scoreToAdd) {

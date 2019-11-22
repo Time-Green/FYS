@@ -206,7 +206,7 @@ class Movable extends BaseObject{
     ArrayList<BaseObject> colliders = new ArrayList<BaseObject>(); 
     ArrayList<BaseObject> potentialColliders = new ArrayList<BaseObject>();
 
-    potentialColliders.addAll(world.getSurroundingTiles(int(position.x), int(position.y), this));
+    potentialColliders.addAll(world.getSurroundingTiles(position.x, position.y, this));
     potentialColliders.addAll(movableList);
     
     for (BaseObject object : potentialColliders){

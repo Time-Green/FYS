@@ -1,9 +1,9 @@
 class Enemy extends Mob {
 
-  public Enemy() {
+  public Enemy(PVector spawnPos) {
     this.speed = 5f;
 
-    this.position.set(1000, 500);
+    this.position.set(spawnPos);
     this.velocity.set(-speed, 0);
     
     //set dragfactors to 1 so we dont slow down by drag

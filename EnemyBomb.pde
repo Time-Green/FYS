@@ -6,7 +6,9 @@ class EnemyBomb extends Enemy {
   private float explosionTimer = 90f;
   private float explosionSize = 500;
   
-  EnemyBomb() {
+  EnemyBomb(PVector spawnPos){
+    super(spawnPos);
+    
     image = ResourceManager.getImage("BombEnemy");
     this.speed = 2.5f;
   }

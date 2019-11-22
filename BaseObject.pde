@@ -1,6 +1,6 @@
 class BaseObject {
 
-  protected PVector position = new PVector(0,0);
+  protected PVector position = new PVector();
   protected final float OBJECTSIZE = 40f;
   protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
   protected boolean density = true;

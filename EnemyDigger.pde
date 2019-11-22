@@ -4,7 +4,9 @@ class EnemyDigger extends Enemy {
   private boolean chasePlayer;
   private float resetSpeed = 5f;
 
-  EnemyDigger() {
+  EnemyDigger(PVector spawnPos){
+    super(spawnPos);
+
     image = ResourceManager.getImage("DiggerEnemy");
     this.speed = resetSpeed;
     //1f = 1 tile

@@ -53,12 +53,10 @@ void setupGame() {
   int enemyLenght = 4;
   enemies = new Enemy[enemyLenght];
 
-  enemies[0] = new EnemyWalker();
-  enemies[1] = new EnemyDigger();
-  enemies[2] = new EnemyGhost();
-  enemies[3] = new EnemyBomb();
-
-  
+  enemies[0] = new EnemyWalker(new PVector(900, 500));
+  enemies[1] = new EnemyDigger(new PVector(950, 500));
+  enemies[2] = new EnemyGhost(new PVector(1000, 500));
+  enemies[3] = new EnemyBomb(new PVector(1050, 500));
 
   for (int i = 0; i < enemyLenght; i++) {
     load(enemies[i]);
@@ -77,6 +75,8 @@ void setupGame() {
   camera = new Camera(player);
 
   world.updateWorldDepth();
+
+  world.spawnStructure("UndergroundHouse", new PVector(0, 4));
 }
 
 void draw() {
@@ -232,7 +232,7 @@ void load(BaseObject newObject, PVector setPosition){
 }
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
-  destroyList.add(deletingObject); //queue for deletion
+  destroyList.add(deletingObject); //queue for deletion //<>//
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor){

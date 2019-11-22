@@ -10,7 +10,7 @@ public class ExplosionTile extends Tile{
   }
 
   void mine(){
-    super.mine();
+    super.mine(true);
     explode();
   }
 

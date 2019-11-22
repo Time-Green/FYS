@@ -30,7 +30,11 @@ class Tile extends BaseObject{
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
-    if(position.y > 1050 && noise(float(x) * world.currentBiome.caveSpawningNoiseScale, float(y) * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale){
+    //setupCave();
+  }
+
+  private void setupCave(){
+    if(position.y > 1050 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale){
       destroyed = true;
       density = false;
 
@@ -39,8 +43,6 @@ class Tile extends BaseObject{
       {
         load(new Torch(position));
       }
-
-      return;
     }
   }
 
@@ -91,7 +93,7 @@ class Tile extends BaseObject{
     hp -= damageTaken;
     
     if (hp <= 0) {
-      mine();
+      mine(true);
     }
   }
   
@@ -99,9 +101,9 @@ class Tile extends BaseObject{
     return density;
   }
 
-  public void mine(){
+  public void mine(boolean playBreakSound){
 
-    if(breakSound != null){
+    if(playBreakSound && breakSound != null){
       playBreakSound();
     }
 

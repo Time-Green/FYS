@@ -90,3 +90,5 @@ D:\GitProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesign
 D:\GitProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.pdb
 D:\GitProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\Newtonsoft.Json.dll
 D:\GitProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\Newtonsoft.Json.xml
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\Newtonsoft.Json.dll
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\Newtonsoft.Json.xml

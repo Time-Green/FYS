@@ -360,7 +360,7 @@ namespace StructureDesigner
                         var replacedFullSource = removedFileTitle.Replace("/", "\\");
                         var baseRemovedPath = replacedFullSource.Replace(_fysDataDirectory, string.Empty);
 
-                        currentLayer.Add(currentX + "|" + currentY + "|" + baseRemovedPath);
+                        currentLayer.Add((currentX - minXPos) + "|" + (currentY - minYPos) + "|" + baseRemovedPath);
                     }
                 }
 

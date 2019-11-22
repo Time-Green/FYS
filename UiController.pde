@@ -44,8 +44,6 @@ public class UIController {
     instructionFont = ResourceManager.getFont("MenuFont");
     hudFont = ResourceManager.getFont("BrickBold");
     heart = ResourceManager.getImage("Heart");
-
-    
   }
 
   void draw() {
@@ -164,9 +162,10 @@ public class UIController {
     textAlign(RIGHT);
     fill(255);
     textSize(20);
-    text(round(frameRate) + " FPS", width - 10, height - 100);
-    text(objectList.size() + " objects", width - 10, height - 80);
-    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 60);
+    text(round(frameRate) + " FPS", width - 10, height - 120);
+    text(objectList.size() + " objects", width - 10, height - 100);
+    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 80);
+    text(round(player.position.x) + " Player X Pos", width - 10, height - 60);
     text(round(player.position.y) + " Player Y Pos", width - 10, height - 40);
     text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 20);
   }
