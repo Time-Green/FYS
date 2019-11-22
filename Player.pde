@@ -13,7 +13,9 @@ class Player extends Mob {
     position = spawnPosition;
     setMaxHp(15);
 
-    //PImage[] frames = new PImage[3];
+    //PImage[] frames1 = new PImage[3];
+    //PImage[] frames2 = new PImage[3];
+    //PImage[] frames3 = new PImage[3];
 
     //for (int i = 0; i < 3; i++) {
     //  frames1[i] = ResourceManager.getImage("PlayerLeft" + i);
@@ -28,10 +30,10 @@ class Player extends Mob {
     //}
 
     ////animation speed based on x velocity
-    //animatedImageLeft = new AnimatedImage(frames1, 10 - abs(velocity.x), position, flipSpriteHorizontal);
-    //animatedImageDig = new AnimatedImage(frames2, 10 - abs(velocity.x), position, flipSpriteHorizontal);
-    //animatedImageJump = new AnimatedImage(frames3, 10 - abs(velocity.x), position, flipSpriteHorizontal);
-  //}
+    //animatedImageLeft = new AnimatedImage(frames1, 20 - abs(velocity.x));
+    //animatedImageDig = new AnimatedImage(frames2, 20 - abs(velocity.x));
+    //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
+    //}
 
   setupLightSource(this, 600f, 1f);
 }
@@ -51,10 +53,12 @@ void doPlayerMovement() {
 
   if ((InputHelper.isKeyDown(UP) || controller.isButtonDown("BOTTOM")) && isGrounded()) {
     addForce(new PVector(0, -jumpForce));
+    //animatedImageJump.draw();
   }
 
   if (InputHelper.isKeyDown(DOWN) || controller.isSliderDown("YPAD", false)) {
     isMiningDown = true;
+    //animatedImageDig.draw();
   } else {
     isMiningDown = false;
   }
@@ -62,6 +66,8 @@ void doPlayerMovement() {
   if (InputHelper.isKeyDown(LEFT) || controller.isSliderDown("XPAD", true)) {
     addForce(new PVector(-speed, 0));
     isMiningLeft = true;
+    flipSpriteHorizontal = false;
+   // animatedImageLeft.draw();
   } else {
     isMiningLeft = false;
   }
@@ -69,6 +75,8 @@ void doPlayerMovement() {
   if (InputHelper.isKeyDown(RIGHT) || controller.isSliderDown("XPAD", false)) {
     addForce(new PVector(speed, 0));
     isMiningRight = true;
+    flipSpriteHorizontal = true;
+    //animatedImageLeft.draw();
   } else {
     isMiningRight = false;
   }
@@ -78,6 +86,8 @@ void doPlayerMovement() {
   if (InputHelper.isKeyDown('g')) { //for 'testing'
     load(new Dynamite(), new PVector(position.x + 100, position.y));
   }
+
+  if ()
 }
 
 void addScore(int scoreToAdd) {
