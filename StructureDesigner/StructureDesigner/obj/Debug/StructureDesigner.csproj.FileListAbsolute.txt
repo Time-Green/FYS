@@ -1,0 +1,68 @@
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.exe.config
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.exe
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.pdb
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\ControlzEx.dll
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.dll
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\System.Windows.Interactivity.dll
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\ControlzEx.pdb
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.pdb
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.xml
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csprojAssemblyReference.cache
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\MainWindow.g.cs
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\App.g.cs
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner_MarkupCompile.cache
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner_MarkupCompile.lref
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\App.baml
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\MainWindow.baml
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.g.resources
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.Properties.Resources.resources
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.GenerateResource.cache
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.CopyComplete
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.exe
+D:\Visual Studio Projects\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.pdb
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.exe.config
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.exe
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.pdb
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\ControlzEx.dll
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.dll
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\System.Windows.Interactivity.dll
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\ControlzEx.pdb
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.pdb
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.xml
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csprojAssemblyReference.cache
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\MainWindow.g.cs
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\App.g.cs
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner_MarkupCompile.cache
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner_MarkupCompile.lref
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\App.baml
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\MainWindow.baml
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.g.resources
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.Properties.Resources.resources
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.GenerateResource.cache
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.CoreCompileInputs.cache
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.CopyComplete
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.exe
+E:\Google Drive\Projects\C#\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.pdb
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csprojAssemblyReference.cache
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\MainWindow.g.cs
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\App.g.cs
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner_MarkupCompile.cache
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner_MarkupCompile.lref
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.exe
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.pdb
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.exe.config
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.exe
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\StructureDesigner.pdb
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\ControlzEx.dll
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.dll
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\System.Windows.Interactivity.dll
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\ControlzEx.pdb
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.pdb
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\bin\Debug\MahApps.Metro.xml
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\App.baml
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\MainWindow.baml
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.g.resources
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.Properties.Resources.resources
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.GenerateResource.cache
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.CoreCompileInputs.cache
+E:\GitLabProjects\FYS\StructureDesigner\StructureDesigner\obj\Debug\StructureDesigner.csproj.CopyComplete

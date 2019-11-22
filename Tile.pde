@@ -30,7 +30,7 @@ class Tile extends BaseObject{
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
-    if(position.y > 1050 && noise(float(x) * world.CAVESPAWNINGNOICESCALE, float(y) * world.CAVESPAWNINGNOICESCALE) > world.CAVESPAWNINGPOSSIBILITYSCALE){
+    if(position.y > 1050 && noise(float(x) * world.currentBiome.caveSpawningNoiseScale, float(y) * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale){
       destroyed = true;
       density = false;
 

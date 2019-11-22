@@ -3,10 +3,6 @@ class Player extends Mob {
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
-  private ControlIO control;
-  private Configuration config;
-  private ControlDevice gpad;
-
   public Player(){
     
     image = ResourceManager.getImage("Player");
@@ -25,28 +21,29 @@ class Player extends Mob {
     super.update();
 
     doPlayerMovement();
+
   }
   
   void doPlayerMovement(){
 
-    if(InputHelper.isKeyDown(UP) && isGrounded()){
+    if((InputHelper.isKeyDown(UP) || controller.isButtonDown("BOTTOM")) && isGrounded()){
       addForce(new PVector(0, -jumpForce));
     }
 
-    if(InputHelper.isKeyDown(DOWN)){
+    if(InputHelper.isKeyDown(DOWN) || controller.isSliderDown("YPAD", false)){
       isMiningDown = true;
     }else{
       isMiningDown = false;
     }
 
-    if(InputHelper.isKeyDown(LEFT)){
+    if(InputHelper.isKeyDown(LEFT) || controller.isSliderDown("XPAD", true)){
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
     }else{
       isMiningLeft = false;
     }
 
-    if(InputHelper.isKeyDown(RIGHT)){
+    if(InputHelper.isKeyDown(RIGHT) || controller.isSliderDown("XPAD", false)){
       addForce(new PVector(speed, 0));
       isMiningRight = true;
     }else{
