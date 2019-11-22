@@ -35,43 +35,74 @@ class Player extends Mob {
     //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
     //}
 
-  setupLightSource(this, 600f, 1f);
-}
-
-void update() {
-
-  if (Globals.gamePaused) {  
-    return;
+    setupLightSource(this, 600f, 1f);
   }
 
-  super.update();
+  void update() {
 
-  doPlayerMovement();
-}
+    if (Globals.gamePaused) {  
+      return;
+    }
 
-void doPlayerMovement() {
+    super.update();
 
-  if ((InputHelper.isKeyDown(UP) || controller.isButtonDown("BOTTOM")) && isGrounded()) {
-    addForce(new PVector(0, -jumpForce));
-    //animatedImageJump.draw();
+    doPlayerMovement();
   }
 
-  if (InputHelper.isKeyDown(DOWN) || controller.isSliderDown("YPAD", false)) {
-    isMiningDown = true;
-    //animatedImageDig.draw();
-  } else {
-    isMiningDown = false;
+  void doPlayerMovement() {
+
+    if ((InputHelper.isKeyDown(Globals.DIGKEY)) && (InputHelper.isKeyDown(Globals.LEFTKEY))) {
+      isMiningDown = true;
+      isMiningLeft = true;
+      //animatedImageLeft.draw();
+    }
+
+    if ((InputHelper.isKeyDown(Globals.DIGKEY)) && (InputHelper.isKeyDown(Globals.RIGHTKEY))) {
+      isMiningDown = true;
+      isMiningRight = true;
+      flipSpriteHorizontal = true;
+      //animatedImageLeft.draw();
+    }
+
+    if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
+      addForce(new PVector(0, -jumpForce));
+    }  
+    if (InputHelper.isKeyDown(Globals.DIGKEY)) {
+      isMiningDown = true;
+      //animatedImageDig.draw();
+    } else {
+      isMiningDown = false;
+    } 
+    if (InputHelper.isKeyDown(Globals.LEFTKEY)) {
+      addForce(new PVector(-speed, 0));
+      isMiningLeft = true;
+      isMiningRight = false;
+      flipSpriteHorizontal = false;
+      // animatedImageLeft.draw();
+    }  
+    if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
+      addForce(new PVector(speed, 0));
+      isMiningRight = true;
+      isMiningLeft = false;
+      flipSpriteHorizontal = true;
+      //animatedImageLeft.draw();
+    } 
+
+
+    if (InputHelper.isKeyDown(' ')) { 
+      useInventory();
+    }
+
+    if (InputHelper.isKeyDown('g')) { //for 'testing'
+      load(new Dynamite(), new PVector(position.x + 100, position.y));
+    }
   }
 
-  if (InputHelper.isKeyDown(LEFT) || controller.isSliderDown("XPAD", true)) {
-    addForce(new PVector(-speed, 0));
-    isMiningLeft = true;
-    flipSpriteHorizontal = false;
-   // animatedImageLeft.draw();
-  } else {
-    isMiningLeft = false;
+  void addScore(int scoreToAdd) {
+    score += scoreToAdd;
   }
 
+<<<<<<< HEAD
   if (InputHelper.isKeyDown(RIGHT) || controller.isSliderDown("XPAD", false)) {
     addForce(new PVector(speed, 0));
     isMiningRight = true;
@@ -91,31 +122,32 @@ void doPlayerMovement() {
 void addScore(int scoreToAdd) {
   score += scoreToAdd;
 }
+=======
+  public void takeDamage(int damageTaken) {
+>>>>>>> 8f0fc725d850c27ee2249a920a3cf1385f948ab1
 
-public void takeDamage(int damageTaken) {
+    if (isImmortal) {
 
-  if (isImmortal) {
+      return;
+    }
 
-    return;
+    if (isHurt == false) {
+      // if the player has taken damage, add camera shake
+      CameraShaker.induceStress(0.6f);
+    }
+
+    //needs to happan after camera shake because else 'isHurt' will be always true
+    super.takeDamage(damageTaken);
   }
 
-  if (isHurt == false) {
-    // if the player has taken damage, add camera shake
-    CameraShaker.induceStress(0.6f);
+  public void die() {
+    super.die();
+
+    Globals.gamePaused = true;
+    Globals.currentGameState = Globals.GameState.GameOver;
   }
 
-  //needs to happan after camera shake because else 'isHurt' will be always true
-  super.takeDamage(damageTaken);
-}
-
-public void die() {
-  super.die();
-
-  Globals.gamePaused = true;
-  Globals.currentGameState = Globals.GameState.GameOver;
-}
-
-boolean canPickUp(PickUp pickUp) {
-  return true;
-}
+  boolean canPickUp(PickUp pickUp) {
+    return true;
+  }
 }

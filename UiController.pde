@@ -104,7 +104,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Enter to restart", width / 2, height / 2 - 30);
+    text("Press Space to restart", width / 2, height / 2 - 30);
   }
 
   void startMenu(){
@@ -129,7 +129,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Enter to start", width / 2, height / 2 - 30);
+    text("Press Space to start", width / 2, height / 2 - 30);
   }
 
   void gameHUD(){
@@ -189,8 +189,8 @@ public class UIController {
     
     //sub text
     textSize(instructionFontSize);
-    text("Press Enter to continue", width / 2, height / 2 - 30);
-    text("Press CTRL to restart", width / 2, height / 2 + 60);
+    text("Press Space to continue", width / 2, height / 2 - 30);
+    text("Press Backspace to restart", width / 2, height / 2 + 60);
   }
 
   // void drawInventory(){
