@@ -1,6 +1,6 @@
 public class World {
   ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
-  Tile voidTile = new Tile(0, 0); //return the void tile if there's no tile
+  //TODO: CLEANUP MAP ROWS AFTER ALL TILES IN THE ROW HAVE BEEN DELETED
 
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
   int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
@@ -24,6 +24,7 @@ public class World {
 
   public void draw(Camera camera){
     image(dayNightImage, 0, 0, wallWidth, 1080);
+    //println("map.size(): " + map.size());
   }
 
   //return tile you're currently on
@@ -31,7 +32,7 @@ public class World {
     ArrayList<Tile> subList = map.get(constrain(int(y) / tileHeight, 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
     if(subList.size() == 0){
-      return voidTile;
+      return new Tile(0, 0); //return void tile if there's no tile
     }
 
     return subList.get(constrain(int(x) / tileWidth, 0, subList.size() - 1));
