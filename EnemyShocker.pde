@@ -1,5 +1,0 @@
-class EnemyShocker extends Enemy{
-
-}
-
-

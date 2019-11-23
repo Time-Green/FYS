@@ -102,29 +102,7 @@ class Player extends Mob {
     score += scoreToAdd;
   }
 
-<<<<<<< HEAD
-  if (InputHelper.isKeyDown(RIGHT) || controller.isSliderDown("XPAD", false)) {
-    addForce(new PVector(speed, 0));
-    isMiningRight = true;
-    flipSpriteHorizontal = true;
-    //animatedImageLeft.draw();
-  } else {
-    isMiningRight = false;
-  }
-  if (InputHelper.isKeyDown(' ')) { 
-    useInventory();
-  }
-  if (InputHelper.isKeyDown('g')) { //for 'testing'
-    load(new Dynamite(), new PVector(position.x + 100, position.y));
-  }
-}
-
-void addScore(int scoreToAdd) {
-  score += scoreToAdd;
-}
-=======
   public void takeDamage(int damageTaken) {
->>>>>>> 8f0fc725d850c27ee2249a920a3cf1385f948ab1
 
     if (isImmortal) {
 
