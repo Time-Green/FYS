@@ -11,8 +11,6 @@ class Tile extends BaseObject{
   SoundFile breakSound;
   float dammageDiscolor = 50;
 
-  float distanceToPlayer = 0.0f;
-
   Tile(int x, int y) {
     loadInBack = true;
     movableCollision = true;
@@ -29,8 +27,6 @@ class Tile extends BaseObject{
     setMaxHp(2);
 
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
-
-    //setupCave();
   }
 
   private void setupCave(){
@@ -81,9 +77,13 @@ class Tile extends BaseObject{
       image(image, position.x, position.y, tileWidth, tileHeight);
       tint(255);
     }else{
-      tint(lightningAmount);
-      image(destroyedImage, position.x, position.y, tileWidth, tileHeight);
-      tint(255);
+
+      if(destroyedImage != null){
+        tint(lightningAmount);
+        image(destroyedImage, position.x, position.y, tileWidth, tileHeight);
+        tint(255);
+      }
+      
     }
   }
 
@@ -124,5 +124,13 @@ class Tile extends BaseObject{
   void setMaxHp(float hpToSet){
     maxHp = hpToSet;
     hp = hpToSet;
+  }
+
+  void replace(Tile replaceTile){
+    image = replaceTile.image;
+    destroyedImage = replaceTile.destroyedImage;
+    setMaxHp(replaceTile.maxHp);
+    density = replaceTile.density;
+    destroyed = replaceTile.destroyed;
   }
 }

@@ -34,5 +34,7 @@ public class Torch extends Movable{
 
   void takeDamage(float damageTaken){
     super.takeDamage(damageTaken);
+
+    delete(this);
   }
 }
