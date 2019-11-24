@@ -9,8 +9,9 @@ public class ExplosionTile extends Tile{
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
-  void mine(){
-    super.mine(true);
+  void mine(boolean playMineSound){
+    super.mine(playMineSound);
+    
     explode();
   }
 
