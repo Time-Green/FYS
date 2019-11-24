@@ -191,7 +191,7 @@ public class World {
   }
 
   private void replaceObject(PVector relaceAtGridPos, String newObjectName){
-    Tile tileToReplace = getTile(relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight); //<>//
+    Tile tileToReplace = getTile(relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight);
     //println("relaceAtGridPos: " + relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight);
     //println("tileToReplace: " + tileToReplace + ": " + tileToReplace.position.x + "|" + tileToReplace.position.y);
 
@@ -243,15 +243,21 @@ public class World {
     return new AirTile(int(spawnPos.x), int(spawnPos.y));
   }
 
-  private void spawnObjectByName(String stripedObjectName, PVector spawnPos){
+  private void spawnObjectByName(String stripedObjectName, PVector spawnAtGridPos){
+
+    PVector spawnWorldPos = new PVector();
+    spawnWorldPos.set(spawnAtGridPos);
+    spawnWorldPos.x *= tileWidth;
+    spawnWorldPos.y *= tileHeight;
+
     switch(stripedObjectName){
 
       case "Torch" :
-        load(new Torch(spawnPos));
+        load(new Torch(spawnWorldPos));
       break;
 
       case "BombEnemy" :
-        load(new EnemyBomb(spawnPos));
+        load(new EnemyBomb(spawnWorldPos));
       break;
 
       default :
