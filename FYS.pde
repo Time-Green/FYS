@@ -75,7 +75,7 @@ void setupGame() {
 
   world.updateWorldDepth();
 
-  world.spawnStructure("UndergroundHouse", new PVector(0, 4));
+  world.spawnStructure("UndergroundHouse", new PVector(10, 15));
 }
 
 void draw() {
