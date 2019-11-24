@@ -9,7 +9,7 @@ class Player extends Mob {
 
   public Player() {
 
-    image = ResourceManager.getImage("Player");
+    image = ResourceManager.getImage("PlayerIdle");
     position = spawnPosition;
     setMaxHp(15);
 
@@ -51,35 +51,25 @@ class Player extends Mob {
 
   void doPlayerMovement() {
 
-    if ((InputHelper.isKeyDown(Globals.DIGKEY)) && (InputHelper.isKeyDown(Globals.LEFTKEY))) {
-      isMiningDown = true;
-      isMiningLeft = true;
-      //animatedImageLeft.draw();
-    }
-
-    if ((InputHelper.isKeyDown(Globals.DIGKEY)) && (InputHelper.isKeyDown(Globals.RIGHTKEY))) {
-      isMiningDown = true;
-      isMiningRight = true;
-      flipSpriteHorizontal = true;
-      //animatedImageLeft.draw();
-    }
-
     if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
-    }  
+    }
+
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
       //animatedImageDig.draw();
     } else {
       isMiningDown = false;
-    } 
+    }
+
     if (InputHelper.isKeyDown(Globals.LEFTKEY)) {
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
       isMiningRight = false;
       flipSpriteHorizontal = false;
       // animatedImageLeft.draw();
-    }  
+    }
+
     if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
       addForce(new PVector(speed, 0));
       isMiningRight = true;
