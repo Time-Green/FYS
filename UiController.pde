@@ -21,11 +21,9 @@ public class UIController {
   private final boolean DRAWSTATS = true;
 
   //Inventory
-  private final float INTENTORYSIZE = 50;
-  private float inventoryX = width * .8;
-  private float inventoryY = INTENTORYSIZE;
-  
-  private final int INVENTORYSLOTS = 3;
+  private float inventorySize = 50;
+  private float inventoryX = width * .95;
+  private float inventoryY = height * .9;
 
   private PImage heart;
 
@@ -74,8 +72,6 @@ public class UIController {
     //reset rectMode
     rectMode(CORNER);
     textAlign(LEFT);
-
-    // drawInventory();
 
     if(DRAWSTATS){
       drawStats();
@@ -149,12 +145,7 @@ public class UIController {
     textSize(hudFontSize);
     text("Depth: " + round((player.getDepth() / tileHeight) - 10), 20, hudTextStartX + hudFontSize);
 
-    //Inventory
-    fill(inventoryColor);
-    for (int i = 0; i < INVENTORYSLOTS; i++) {
-      //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-      rect((width - slotSize) - ((slotSize*INVENTORYSLOTS)-(slotOffsetX*i)) , inventoryY, slotSize, slotSize);
-    }
+    drawInventory();
     
   }
 
@@ -193,9 +184,17 @@ public class UIController {
     text("Press Backspace to restart", width / 2, height / 2 + 60);
   }
 
-  // void drawInventory(){
-  //   for(Item item : player.inventory){
-  //     image(item.image, inventoryX + INTENTORYSIZE * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
-  //   }
-  // }
+  void drawInventory(){
+    fill(inventoryColor);
+    for (int i = 0; i < player.maxInventory; i++) {
+      //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
+      rect(inventoryX - inventorySize * i, inventoryY, inventorySize, inventorySize);
+    }
+
+    for(Item item : player.inventory){
+      imageMode(CENTER);
+      image(item.image, inventoryX - inventorySize * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
+      imageMode(CORNER);
+    }
+  }
 }
