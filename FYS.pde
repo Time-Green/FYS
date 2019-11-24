@@ -49,17 +49,17 @@ void setupGame() {
   player = new Player();
   load(player);
 
-  int enemyLenght = 4;
-  enemies = new Enemy[enemyLenght];
+  //int enemyLenght = 4;
+  //enemies = new Enemy[enemyLenght];
 
-  enemies[0] = new EnemyWalker(new PVector(900, 500));
-  enemies[1] = new EnemyDigger(new PVector(950, 500));
-  enemies[2] = new EnemyGhost(new PVector(1000, 500));
-  enemies[3] = new EnemyBomb(new PVector(1050, 500));
+  //enemies[0] = new EnemyWalker(new PVector(900, 500));
+  //enemies[1] = new EnemyDigger(new PVector(950, 500));
+  //enemies[2] = new EnemyGhost(new PVector(1000, 500));
+  //enemies[3] = new EnemyBomb(new PVector(1050, 500));
 
-  for (int i = 0; i < enemyLenght; i++) {
-    load(enemies[i]);
-  }
+  //for (int i = 0; i < enemyLenght; i++) {
+  //  load(enemies[i]);
+  //}
 
   for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
@@ -75,7 +75,7 @@ void setupGame() {
 
   world.updateWorldDepth();
 
-  world.spawnStructure("UndergroundHouse", new PVector(0, 4));
+  world.spawnStructure("UndergroundHouse", new PVector(10, 15));
 }
 
 void draw() {

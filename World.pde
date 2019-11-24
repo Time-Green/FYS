@@ -149,20 +149,16 @@ public class World {
 
   void spawnStructure(String structureName, PVector gridSpawnPos){
 
-    JSONArray layers = loadJSONArray(dataPath("Structures\\" + structureName + ".json")); //<>//
+    JSONArray layers = loadJSONArray(dataPath("Structures\\" + structureName + ".json"));
 
     for (int layerIndex = 0; layerIndex < layers.size(); layerIndex++){
     
-      //println("layerIndex: " + layerIndex);
-
       JSONArray tiles = layers.getJSONArray(layerIndex);
       String[] tileValues = tiles.getStringArray();
 
       for (String tileString : tileValues){
         
         String[] tileProperties = split(tileString, '|');
-
-        //println("tileProperties: " + tileProperties.length);
 
         if(tileProperties.length == 3){
           
@@ -183,25 +179,18 @@ public class World {
           }else{
             spawnObject(worldTilePosition, tileType);
           }
-
         }
-
       }
     }
   }
 
   private void replaceObject(PVector relaceAtGridPos, String newObjectName){
-    Tile tileToReplace = getTile(relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight); //<>//
-    //println("relaceAtGridPos: " + relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight);
-    //println("tileToReplace: " + tileToReplace + ": " + tileToReplace.position.x + "|" + tileToReplace.position.y);
-
-    delete(tileToReplace);
-    //tileList.remove(tileToReplace);
-    //objectList.remove(tileToReplace);
+    Tile tileToReplace = getTile(relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight);
 
     String stripedObjectName = stripName(newObjectName);
     Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos);
-    load(newTile);
+
+    tileToReplace.replace(newTile);
   }
 
   private void spawnObject(PVector spawnAtGridPos, String newObjectName){
@@ -243,15 +232,21 @@ public class World {
     return new AirTile(int(spawnPos.x), int(spawnPos.y));
   }
 
-  private void spawnObjectByName(String stripedObjectName, PVector spawnPos){
+  private void spawnObjectByName(String stripedObjectName, PVector spawnAtGridPos){
+
+    PVector spawnWorldPos = new PVector();
+    spawnWorldPos.set(spawnAtGridPos);
+    spawnWorldPos.x *= tileWidth;
+    spawnWorldPos.y *= tileHeight;
+
     switch(stripedObjectName){
 
       case "Torch" :
-        load(new Torch(spawnPos));
+        load(new Torch(spawnWorldPos));
       break;
 
       case "BombEnemy" :
-        load(new EnemyBomb(spawnPos));
+        load(new EnemyBomb(spawnWorldPos));
       break;
 
       default :
