@@ -86,6 +86,11 @@ class Player extends Mob {
     if (InputHelper.isKeyDown('g')) { //for 'testing'
       load(new Dynamite(), new PVector(position.x + 100, position.y));
     }
+
+    if(InputHelper.isKeyDown('h')) {
+      load(new Held(), new PVector(position.x + 100, position.y));
+    }
+
   }
 
   void addScore(int scoreToAdd) {

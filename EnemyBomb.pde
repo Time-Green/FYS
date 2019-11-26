@@ -27,7 +27,7 @@ class EnemyBomb extends Enemy {
         float distance = dist(this.position.x, this.position.y, player.position.x, player.position.y);
 
         if (distance <= explosionRange){
-            player.takeDamage(getAttackPower());
+            player.takeDamage(getAttackPower(true));
         }
 
         delete(this);
