@@ -35,7 +35,7 @@ class Player extends Mob {
     //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
     //}
 
-    setupLightSource(this, 600f, 1f);
+    setupLightSource(this, 400f, 1f);
   }
 
   void update() {
