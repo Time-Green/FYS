@@ -31,19 +31,25 @@ public class World {
   }
 
   public void draw(Camera camera){
-    image(dayNightImage, 0, 0, wallWidth, 1080);
+    image(dayNightImage, 0, -200, wallWidth, 1080);
     //println("map.size(): " + map.size());
   }
 
   //return tile you're currently on
   Tile getTile(float x, float y){
-    ArrayList<Tile> subList = map.get(constrain(floor(y / tileHeight), 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+    ArrayList<Tile> subList = map.get(floor(y / tileHeight)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
     if(subList.size() == 0){
-      return new Tile(0, 0); //return void tile if there's no tile
+      return null;
     }
 
-    return subList.get(constrain(floor(x / tileWidth), 0, subList.size() - 1));
+    int xGridPos = floor(x / tileWidth);
+
+    if(xGridPos < 0 || xGridPos >= subList.size()){
+      return null;
+    }
+
+    return subList.get(xGridPos);
   }
 
   void updateWorldDepth() {
@@ -80,16 +86,46 @@ public class World {
     float middleY = y + collider.size.y * 0.5f;
 
     //cardinals
-    surrounding.add(getTile(middleX, middleY - tileHeight));
-    surrounding.add(getTile(middleX, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY));
-    surrounding.add(getTile(middleX + tileWidth, middleY)); 
+    Tile topTile = getTile(middleX, middleY - tileHeight);
+    if(topTile != null){
+      surrounding.add(topTile);
+    }
+
+    Tile botTile = getTile(middleX, middleY + tileHeight);
+    if(botTile != null){
+      surrounding.add(botTile);
+    }
+
+    Tile leftTile = getTile(middleX - tileWidth, middleY);
+    if(leftTile != null){
+      surrounding.add(leftTile);
+    }
+
+    Tile rightTile = getTile(middleX + tileWidth, middleY);
+    if(rightTile != null){
+      surrounding.add(rightTile);
+    }
 
     //diagonals
-    surrounding.add(getTile(middleX + tileWidth, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY - tileHeight));
-    surrounding.add(getTile(middleX + tileWidth, middleY - tileHeight));
+    Tile botRightTile = getTile(middleX + tileWidth, middleY + tileHeight);
+    if(botRightTile != null){
+      surrounding.add(botRightTile);
+    }
+
+    Tile botLeftTile = getTile(middleX - tileWidth, middleY + tileHeight);
+    if(botLeftTile != null){
+      surrounding.add(botLeftTile);
+    }
+
+    Tile topLeftTile = getTile(middleX - tileWidth, middleY - tileHeight);
+    if(topLeftTile != null){
+      surrounding.add(topLeftTile);
+    }
+
+    Tile topRightTile = getTile(middleX + tileWidth, middleY - tileHeight);
+    if(topRightTile != null){
+      surrounding.add(topRightTile);
+    }
 
     return surrounding;
   }
