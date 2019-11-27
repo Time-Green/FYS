@@ -31,7 +31,7 @@ public class World {
   }
 
   public void draw(Camera camera){
-    image(dayNightImage, 0, 0, wallWidth, 1080);
+    image(dayNightImage, 0, -200, wallWidth, 1080);
     //println("map.size(): " + map.size());
   }
 
