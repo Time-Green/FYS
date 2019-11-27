@@ -60,10 +60,11 @@ public class World {
 
       for(int x = 0; x <= tilesHorizontal; x++){
         Tile tile = currentBiome.getTileToGenerate(x, y);
-        tile.setupCave();
-
+        
         subArray.add(tile);
         load(tile);
+
+        tile.setupCave(); //needs to be after load(tile) otherwise shit will get loaded anyway 
       }
 
       map.add(subArray);// add the empty tile-list to the bigger list
@@ -208,24 +209,25 @@ public class World {
   }
 
   private Tile convertNameToTile(String stripedObjectName, PVector spawnPos){
+
     switch(stripedObjectName){
 
       case "DestroyedBlock" :
-      Tile destroyedStoneTile = new StoneTile(int(spawnPos.x), int(spawnPos.y));
-      destroyedStoneTile.mine(false);
-      return destroyedStoneTile;
+        Tile destroyedStoneTile = new StoneTile(int(spawnPos.x), int(spawnPos.y));
+        destroyedStoneTile.mine(false);
+        return destroyedStoneTile;
 
       case "WoodPlank" :
-      return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y));
+        return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y));
 
       case "DoorTop" :
-      return new DoorTopTile(int(spawnPos.x), int(spawnPos.y));
+        return new DoorTopTile(int(spawnPos.x), int(spawnPos.y));
 
       case "DoorBot" :
-      return new DoorBotTile(int(spawnPos.x), int(spawnPos.y));
+        return new DoorBotTile(int(spawnPos.x), int(spawnPos.y));
 
       case "Glass" :
-      return new GlassTile(int(spawnPos.x), int(spawnPos.y));
+        return new GlassTile(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");
