@@ -1,6 +1,6 @@
 class EnemyBomb extends Enemy {
 
-  private float explosionRange = 80;
+  private float detectionRange = 80;
   
   private boolean isExploding = false;
   private float explosionTimer = 90f;
@@ -23,13 +23,7 @@ class EnemyBomb extends Enemy {
 
       if (explosionTimer <= 0) {
 
-        load(new Explosion(position, explosionSize));
-        float distance = dist(this.position.x, this.position.y, player.position.x, player.position.y);
-
-        if (distance <= explosionRange){
-            player.takeDamage(getAttackPower(true));
-        }
-
+        load(new Explosion(position, explosionSize, 15, true));
         delete(this);
       }
     }
@@ -38,7 +32,7 @@ class EnemyBomb extends Enemy {
   protected void handleCollision(){
     super.handleCollision();
 
-    if (CollisionHelper.rectRect(position, new PVector(size.x + explosionRange, size.y + explosionRange), player.position, player.size)){
+    if (CollisionHelper.rectRect(position, new PVector(size.x + detectionRange, size.y + detectionRange), player.position, player.size)){
       isExploding = true;
     }
   }
