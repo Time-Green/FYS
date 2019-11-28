@@ -86,8 +86,6 @@ public class UIController {
     float rectWidth = width - titleFontSize * 4;
     float rectHeight = titleFontSize * 2.5;
 
-    
-
     //title background
     fill(titleBackground);
     rect(rectXPos, rectYPos, rectWidth, rectHeight);
@@ -129,7 +127,7 @@ public class UIController {
   }
 
   void gameHUD(){
-    for (int i = 0; i < player.currentHealth; i++) {
+    for (int i = 0; i < ceil(player.currentHealth / 10); i++) {
       image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
     }
 

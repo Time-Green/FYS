@@ -25,8 +25,6 @@ public static class ResourceManager{
     
     File dataFolder = new File(dataPath);
 
-    println(dataFolder);
-
     searchInFolder(dataFolder);
   }
 

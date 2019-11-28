@@ -1,7 +1,7 @@
 class Mob extends Movable {
 
   //Health
-  float maxHealth = 3;
+  float maxHealth = 30;
   float currentHealth = maxHealth;
   boolean isImmortal = false;  
 
@@ -50,16 +50,18 @@ class Mob extends Movable {
     
     if(hasHeldItem()){
       Held held = getHeldItem();
+
       if(!held.canMine(object, this)){
         return;
       }
+
       held.onMine(object, this);
     }
     else{
       object.takeDamage(getAttackPower(false)); //FIST MINING
     }
+
     lastMine = millis();
-    
   }
 
   public void takeDamage(float damageTaken){

@@ -11,7 +11,7 @@ class Player extends Mob {
 
     image = ResourceManager.getImage("PlayerIdle");
     position = spawnPosition;
-    setMaxHp(15);
+    setMaxHp(100);
 
     //PImage[] frames1 = new PImage[3];
     //PImage[] frames2 = new PImage[3];
@@ -98,6 +98,8 @@ class Player extends Mob {
   }
 
   public void takeDamage(int damageTaken) {
+
+    println("player took " + damageTaken + " damage");
 
     if (isImmortal) {
 
