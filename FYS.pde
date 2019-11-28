@@ -231,7 +231,7 @@ void load(BaseObject newObject, PVector setPosition){
 
 void load(BaseObject newObject, boolean priority){ //load it RIGHT NOW. only use when you know what you're doing
   if(priority){
-    objectList.add(newObject);
+    newObject.specialAdd();
   }
   else{
     load(newObject);
