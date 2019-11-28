@@ -27,8 +27,6 @@ int birdCount = 10;
 boolean firstTime = true;
 boolean firstStart = true;
 
-private String actionButton = "BOTTOM";
-
 void setup() {
   size(1280, 720, P2D);
   //fullScreen(P2D);
@@ -48,18 +46,6 @@ void setupGame() {
 
   player = new Player();
   load(player);
-
-  //int enemyLenght = 4;
-  //enemies = new Enemy[enemyLenght];
-
-  //enemies[0] = new EnemyWalker(new PVector(900, 500));
-  //enemies[1] = new EnemyDigger(new PVector(950, 500));
-  //enemies[2] = new EnemyGhost(new PVector(1000, 500));
-  //enemies[3] = new EnemyBomb(new PVector(1050, 500));
-
-  //for (int i = 0; i < enemyLenght; i++) {
-  //  load(enemies[i]);
-  //}
 
   for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
@@ -231,7 +217,7 @@ void load(BaseObject newObject, PVector setPosition){
 
 void load(BaseObject newObject, boolean priority){ //load it RIGHT NOW. only use when you know what you're doing
   if(priority){
-    objectList.add(newObject);
+    newObject.specialAdd();
   }
   else{
     load(newObject);
@@ -267,8 +253,4 @@ void keyPressed(){
 
 void keyReleased(){
   InputHelper.onKeyReleased(keyCode, key);
-}
-
-void nullSpace(BaseObject baseObject){ //remove from the map without deleting 
-  baseObject.position.set(1, 9999999); //ssssh, dont tell anyone
 }

@@ -60,6 +60,13 @@ class Player extends Mob {
     doPlayerMovement();
   }
 
+void draw(){
+  super.draw();
+  for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
+    item.drawOnPlayer(this);
+  }
+}
+
   void doPlayerMovement() {
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
@@ -93,7 +100,7 @@ class Player extends Mob {
     } 
 
 
-    if (InputHelper.isKeyDown(' ')) { 
+    if (InputHelper.isKeyDown(ALT)) { 
       useInventory();
     }
 

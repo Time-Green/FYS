@@ -67,4 +67,8 @@ class Item extends PickUp{
   void takeDamage(float damageTaken){
     super.takeDamage(damageTaken);
   }
+
+  void drawOnPlayer(Player mob){
+
+  }
 }
