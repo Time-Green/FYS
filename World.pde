@@ -68,7 +68,7 @@ public class World {
         Tile tile = currentBiome.getTileToGenerate(x, y);
         
         subArray.add(tile);
-        load(tile);
+        load(tile, true);
 
         tile.setupCave(); //needs to be after load(tile) otherwise shit will get loaded anyway 
       }

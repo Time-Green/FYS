@@ -229,6 +229,15 @@ void load(BaseObject newObject, PVector setPosition){
   newObject.moveTo(setPosition);
 }
 
+void load(BaseObject newObject, boolean priority){ //load it RIGHT NOW. only use when you know what you're doing
+  if(priority){
+    objectList.add(newObject);
+  }
+  else{
+    load(newObject);
+  }
+}
+
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion //<>//
 }
