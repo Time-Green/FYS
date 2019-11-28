@@ -1,32 +1,39 @@
 class Player extends Mob {
 
-  //AnimatedImage animatedImageLeft;
-  //AnimatedImage animatedImageDig;
-  //AnimatedImage animatedImageJump;
+  AnimatedImage animatedImageWalk;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
   public Player() {
 
-    image = ResourceManager.getImage("PlayerIdle");
+      //image = ResourceManager.getImage("PlayerWalk0");
+  //image = ResourceManager.getImage("PlayerIdle");
+
     position = spawnPosition;
     setMaxHp(100);
 
-    //PImage[] frames1 = new PImage[3];
-    //PImage[] frames2 = new PImage[3];
-    //PImage[] frames3 = new PImage[3];
+      if(InputHelper.isKeyDown(Globals.LEFTKEY)) {
+      flipSpriteHorizontal = false;
+    }
+     if(InputHelper.isKeyDown(Globals.RIGHTKEY)) {
+         flipSpriteHorizontal = true;
+       }
+
+    PImage[] frames = new PImage[3];
+ 
+    for(int i = 0; i < 3; i++){
+      frames[i] = ResourceManager.getImage("PlayerWalk" + i); 
+    }
+    animatedImageWalk = new AnimatedImage(frames, 10 - abs(velocity.x), position, flipSpriteHorizontal);
+      
 
     //for (int i = 0; i < 3; i++) {
-    //  frames1[i] = ResourceManager.getImage("PlayerLeft" + i);
+    //  frames[i] = ResourceManager.getImage("PlayerDig" + i);
     //}
 
     //for (int i = 0; i < 3; i++) {
-    //  frames2[i] = ResourceManager.getImage("PlayerDig" + i);
-    //}
-
-    //for (int i = 0; i < 3; i++) {
-    //  frames3[i] = ResourceManager.getImage("PlayerJump" + i);
+    //  frames[i] = ResourceManager.getImage("PlayerJump" + i);
     //}
 
     ////animation speed based on x velocity
@@ -37,6 +44,10 @@ class Player extends Mob {
 
     setupLightSource(this, 400f, 1f);
   }
+
+  void draw(){
+      	animatedImageWalk.draw();
+    }
 
   void update() {
 
@@ -53,6 +64,7 @@ class Player extends Mob {
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
+      image = ResourceManager.getImage("PlayerIdle");
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
@@ -67,6 +79,7 @@ class Player extends Mob {
       isMiningLeft = true;
       isMiningRight = false;
       flipSpriteHorizontal = false;
+      image = ResourceManager.getImage("PlayerWalk0");
       // animatedImageLeft.draw();
     }
 
@@ -75,6 +88,7 @@ class Player extends Mob {
       isMiningRight = true;
       isMiningLeft = false;
       flipSpriteHorizontal = true;
+      image = ResourceManager.getImage("PlayerWalk0");
       //animatedImageLeft.draw();
     } 
 
@@ -126,3 +140,4 @@ class Player extends Mob {
     return true;
   }
 }
+
