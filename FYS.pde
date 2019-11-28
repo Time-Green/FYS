@@ -27,8 +27,6 @@ int birdCount = 10;
 boolean firstTime = true;
 boolean firstStart = true;
 
-private String actionButton = "BOTTOM";
-
 void setup() {
   size(1280, 720, P2D);
   //fullScreen(P2D);
