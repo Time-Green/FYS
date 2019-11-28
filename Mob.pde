@@ -108,7 +108,7 @@ class Mob extends Movable {
   }
 
   void addToInventory(Item item){
-    nullSpace(item);
+    item.suspended = true;
     inventory.add(item);
   }
 
@@ -116,6 +116,7 @@ class Mob extends Movable {
     if(lastUse + useCooldown < millis()  && inventory.size() != 0){
       Item item = inventory.get(inventory.size() - 1);
       item.onUse(this);
+      item.suspended = false;
       lastUse = millis();
     }
   }
