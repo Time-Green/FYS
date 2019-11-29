@@ -10,6 +10,8 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 //list of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
+DatabaseManager databaseManager = new DatabaseManager();
+
 World world;
 Player player;
 WallOfDeath wallOfDeath;
