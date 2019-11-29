@@ -32,7 +32,7 @@ public class AnimatedImage{
 
     popMatrix();
 
-    // is this animation is paused, return the function before it can increase the frame counter
+    // if this animation is paused, return the function before it can increase the frame counter
     if(isPaused){
       return;
     }
