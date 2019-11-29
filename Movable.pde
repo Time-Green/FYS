@@ -2,6 +2,7 @@ class Movable extends BaseObject{
   //Vectors
   protected PVector velocity = new PVector();
   protected PVector acceleration = new PVector();
+  protected PVector maxVelocity = new PVector(40, 40);
 
   //Movement
   protected float speed = 1f;
@@ -10,7 +11,7 @@ class Movable extends BaseObject{
   protected float groundedDragFactor = 0.95f;
   protected float aerialDragFactor = 0.95f;
   protected float breakForce = 0.99f;
-  protected float weight = 5f; //the higher, the more difficult it is too push
+  protected float pushCoefficient = 1; //the higher, the easier
 
   //Bools
   protected boolean isGrounded;
@@ -42,6 +43,9 @@ class Movable extends BaseObject{
 
   void update(){
     super.update();
+    if(suspended){
+      return;
+    }
 
     prepareMovement();
     doCollision();
@@ -131,7 +135,7 @@ class Movable extends BaseObject{
   }
 
   void draw(){
-    if(!inCameraView()){
+    if(!inCameraView() || suspended){
       return;
     }
     
@@ -168,6 +172,13 @@ class Movable extends BaseObject{
 
     velocity.add(acceleration);
     acceleration.mult(0);
+
+    if(velocity.x > maxVelocity.x){
+      velocity.x = maxVelocity.x;
+    }
+    if(velocity.y > maxVelocity.y){
+      velocity.y = maxVelocity.y;
+    }
 
     if(isGrounded()){
       velocity.x *= groundedDragFactor; //drag
@@ -241,7 +252,7 @@ class Movable extends BaseObject{
   }
 
   void pushed(Movable movable, float x, float y){ //use x and y, because whoever calls this needs fine controle over the directions that actually push, and this is easiest
-    velocity.add(x, y);
+    velocity.add(x * pushCoefficient, y * pushCoefficient);
   }
 
   boolean canCollideWith(BaseObject object){
@@ -250,5 +261,9 @@ class Movable extends BaseObject{
     }
     
     return movableCollision || object.movableCollision;
+  }
+
+  public boolean canPlayerInteract(){ //looks better than instanceof
+    return false;
   }
 }
