@@ -2,6 +2,7 @@ class Player extends Mob {
 
   AnimatedImage animatedImageWalk;
   AnimatedImage animatedImageIdle;
+  AnimatedImage animatedImageAir;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
@@ -13,6 +14,7 @@ class Player extends Mob {
 
     PImage[] walkFrames = new PImage[3];
     PImage[] idleFrames = new PImage[3];
+    PImage[] airFrames = new PImage[3];
  
     for(int i = 0; i < 3; i++){
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
@@ -24,18 +26,16 @@ class Player extends Mob {
     }
     animatedImageIdle = new AnimatedImage(idleFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
       
+       for(int i = 0; i < 3; i++){
+      airFrames[i] = ResourceManager.getImage("PlayerAir" + i); 
+    }
+    animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     //for (int i = 0; i < 3; i++) {
     //  frames[i] = ResourceManager.getImage("PlayerDig" + i);
     //}
 
-    //for (int i = 0; i < 3; i++) {
-    //  frames[i] = ResourceManager.getImage("PlayerJump" + i);
-    //}
 
-    //animatedImageDig = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
-    //animatedImageJump = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
-    //}
 
     setupLightSource(this, 400f, 1f);
   }
@@ -57,6 +57,11 @@ void draw(){
     animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
     animatedImageWalk.draw();
     println("walk");
+  }
+  else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {
+    animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
+    animatedImageAir.draw();
+    println("jump");
   }
   else {
     animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
