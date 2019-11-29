@@ -271,6 +271,12 @@ public class World {
 
       case "Glass" :
         return new GlassTile(int(spawnPos.x), int(spawnPos.y));
+      
+      case "Leaf" :
+        return new LeafTile(int(spawnPos.x), int(spawnPos.y));
+        
+      case "Wood" :
+        return new WoodTile(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");

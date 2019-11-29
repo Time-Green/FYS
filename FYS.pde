@@ -24,7 +24,7 @@ int tilesVertical = 50;
 int tileWidth = 50;
 int tileHeight = 50;
 
-int birdCount = 10;
+int birdCount = round(random(15, 25));
 
 boolean firstTime = true;
 boolean firstStart = true;
@@ -62,6 +62,8 @@ void setupGame() {
   camera = new Camera(player);
 
   world.updateWorldDepth();
+
+  world.spawnStructure("Tree", new PVector(10, 6)); 
 
   world.spawnStructure("UndergroundHouse", new PVector(10, 15));
 }
