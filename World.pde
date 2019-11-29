@@ -37,11 +37,11 @@ public class World {
 
   //return tile you're currently on
   Tile getTile(float x, float y){
-    ArrayList<Tile> subList = map.get(floor(y / tileHeight)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+    ArrayList<Tile> subList = map.get(constrain(floor(y / tileHeight), 0, 50)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
-    if(subList.size() == 0){
-      return null;
-    }
+    // if(subList.size() == 0){
+    //   return null;
+    // }
 
     int xGridPos = floor(x / tileWidth);
 

@@ -136,7 +136,7 @@ void handleGameFlow() {
 
       //if we are in the main menu we start the game by pressing enter
       if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
-        startGame();
+        enterOverWorld();
       }
 
     break;
@@ -177,7 +177,15 @@ void handleGameFlow() {
   }
 }
 
+void enterOverWorld(){
+
+  Globals.gamePaused = false;
+  Globals.currentGameState = Globals.GameState.OverWorld;
+   
+}
+
 void startGame() {
+  Globals.isInOverWorld = false;
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
@@ -249,6 +257,9 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 
 void keyPressed(){
   InputHelper.onKeyPressed(keyCode, key);
+  if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
+    startGame(); 
+  }
 }
 
 void keyReleased(){
