@@ -1,9 +1,0 @@
-Player controller
-YPAD	y axis	3	SLIDER	Y-as	0	1.0	0.0
-XPAD	x axos	3	SLIDER	X-as	0	1.0	0.0
-TOP	x button	1	BUTTON	Knop 0	0	0.0	0.0
-RIGHT	a button	1	BUTTON	Knop 1	0	0.0	0.0
-BOTTOM	b button	1	BUTTON	Knop 2	0	0.0	0.0
-LEFT	y button	1	BUTTON	Knop 3	0	0.0	0.0
-SELECT	select button	1	BUTTON	Knop 8	0	0.0	0.0
-START	start  button	1	BUTTON	Knop 9	0	0.0	0.0
