@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -19,19 +20,25 @@ namespace StructureDesigner
     {
         private const int TileSize = 50;
         private const int LayerAmount = 4;
-        private const int EditorGridWidth = 100;
+        private const int EditorGridWidth = 50;
         private const int EditorGridHeight = 100;
 
         private readonly List<Image[,]> _layers = new List<Image[,]>();
         private int _selectedLayer;
         private string _fysDataDirectory;
-        private bool isMouseDownOnCanvas;
+        private bool _isMouseDownOnCanvas;
 
-        private Image selectedImage;
+        private readonly ScaleTransform _scaleTransform = new ScaleTransform();
+
+        private Image _selectedImage;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Canvas.RenderTransform = _scaleTransform;
+            Canvas.Width = EditorGridWidth * TileSize;
+            Canvas.Height = EditorGridHeight * TileSize;
 
             AddLayers();
             AddGridLines();
@@ -52,11 +59,11 @@ namespace StructureDesigner
             {
                 if (i == 0)
                 {
-                    LayerView.Items.Add("Background");
+                    LayerView.Items.Add("Tiles");
                 }
                 else
                 {
-                    LayerView.Items.Add("Layer " + i);
+                    LayerView.Items.Add("Decoration " + i);
                 }
 
                 var layerArray = new Image[EditorGridWidth, EditorGridHeight];
@@ -64,7 +71,7 @@ namespace StructureDesigner
                 _layers.Add(layerArray);
             }
 
-            LayerView.SelectedItem = "Background";
+            LayerView.SelectedItem = "Tiles";
         }
 
         private void AddGridLines()
@@ -77,7 +84,7 @@ namespace StructureDesigner
                     X1 = i * TileSize,
                     X2 = i * TileSize,
                     Y1 = 0,
-                    Y2 = 10000,
+                    Y2 = EditorGridHeight * TileSize,
                     Stroke = Brushes.DarkRed,
                     StrokeThickness = 1
                 };
@@ -91,7 +98,7 @@ namespace StructureDesigner
                 var line = new Line
                 {
                     X1 = 0,
-                    X2 = 10000,
+                    X2 = EditorGridWidth * TileSize,
                     Y1 = i * TileSize,
                     Y2 = i * TileSize,
                     Stroke = Brushes.DarkRed,
@@ -147,43 +154,63 @@ namespace StructureDesigner
 
         private void ImageOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (selectedImage != null)
+            if (_selectedImage != null)
             {
-                selectedImage.Margin = new Thickness(5);
-                selectedImage.Width = 50;
-                selectedImage.Height = 50;
+                _selectedImage.Margin = new Thickness(5);
+                _selectedImage.Width = 50;
+                _selectedImage.Height = 50;
             }
 
-            selectedImage = (Image)sender;
-            selectedImage.Margin = new Thickness(1);
-            selectedImage.Width = 58;
-            selectedImage.Height = 58;
+            _selectedImage = (Image)sender;
+            _selectedImage.Margin = new Thickness(1);
+            _selectedImage.Width = 58;
+            _selectedImage.Height = 58;
         }
 
         private void Canvas_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            isMouseDownOnCanvas = true;
+            _isMouseDownOnCanvas = true;
 
-            var gridPoint = GetGridPos(e.GetPosition(Canvas));
-
-            AddTile(gridPoint, selectedImage.Source, _selectedLayer);
-        }
-
-        private void Canvas_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            isMouseDownOnCanvas = false;
-        }
-
-        private void Canvas_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            if (!isMouseDownOnCanvas)
+            if (_selectedImage == null)
             {
                 return;
             }
 
-            var gridPoint = GetGridPos(e.GetPosition(Canvas));
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var gridPoint = GetGridPos(e.GetPosition(Canvas));
 
-            AddTile(gridPoint, selectedImage.Source, _selectedLayer);
+                AddTile(gridPoint, _selectedImage.Source, _selectedLayer);
+            }
+        }
+
+        private void Canvas_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _isMouseDownOnCanvas = false;
+        }
+
+        private void Canvas_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_isMouseDownOnCanvas)
+            {
+                return;
+            }
+
+            if (_selectedImage == null)
+            {
+                return;
+            }
+
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var gridPoint = GetGridPos(e.GetPosition(Canvas));
+
+                AddTile(gridPoint, _selectedImage.Source, _selectedLayer);
+            }
+            else if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                
+            }
         }
 
         private void AddTile(Point gridPoint, ImageSource imageSource, int layer)
@@ -360,7 +387,7 @@ namespace StructureDesigner
                         var replacedFullSource = removedFileTitle.Replace("/", "\\");
                         var baseRemovedPath = replacedFullSource.Replace(_fysDataDirectory, string.Empty);
 
-                        currentLayer.Add(currentX + "|" + currentY + "|" + baseRemovedPath);
+                        currentLayer.Add((currentX - minXPos) + "|" + (currentY - minYPos) + "|" + baseRemovedPath);
                     }
                 }
 
@@ -370,6 +397,20 @@ namespace StructureDesigner
             var saveString = JsonConvert.SerializeObject(saveList, Formatting.Indented);
 
             File.WriteAllText(Path.Combine(_fysDataDirectory, "Structures", saveName + ".json"), saveString);
+        }
+
+        private void Canvas_OnMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                _scaleTransform.ScaleX *= 1.1f;
+                _scaleTransform.ScaleY *= 1.1f;
+            }
+            else
+            {
+                _scaleTransform.ScaleX /= 1.1f;
+                _scaleTransform.ScaleY /= 1.1f;
+            }
         }
     }
 }

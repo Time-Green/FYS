@@ -5,12 +5,14 @@ public class ExplosionTile extends Tile{
 
   public ExplosionTile(int x, int y){
     super(x, y); 
+
     image = ResourceManager.getImage("TNTBlock");
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
-  void mine(){
-    super.mine();
+  void mine(boolean playMineSound){
+    super.mine(playMineSound);
+    
     explode();
   }
 
@@ -22,7 +24,7 @@ public class ExplosionTile extends Tile{
 
     hasExploded = true;
     
-    load(new Explosion(position, explosionSize));
+    load(new Explosion(position, explosionSize, 5, false)); // do player damage??
   }
 
   void takeDamage(float damageTaken){

@@ -31,19 +31,25 @@ public class World {
   }
 
   public void draw(Camera camera){
-    image(dayNightImage, 0, 0, wallWidth, 1080);
+    image(dayNightImage, 0, -200, wallWidth, 1080);
     //println("map.size(): " + map.size());
   }
 
   //return tile you're currently on
   Tile getTile(float x, float y){
-    ArrayList<Tile> subList = map.get(constrain(int(y) / tileHeight, 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+    ArrayList<Tile> subList = map.get(floor(y / tileHeight)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
     if(subList.size() == 0){
-      return new Tile(0, 0); //return void tile if there's no tile
+      return null;
     }
 
-    return subList.get(constrain(int(x) / tileWidth, 0, subList.size() - 1));
+    int xGridPos = floor(x / tileWidth);
+
+    if(xGridPos < 0 || xGridPos >= subList.size()){
+      return null;
+    }
+
+    return subList.get(xGridPos);
   }
 
   void updateWorldDepth() {
@@ -60,9 +66,11 @@ public class World {
 
       for(int x = 0; x <= tilesHorizontal; x++){
         Tile tile = currentBiome.getTileToGenerate(x, y);
-
+        
         subArray.add(tile);
-        load(tile);
+        load(tile, true);
+
+        tile.setupCave(); //needs to be after load(tile) otherwise shit will get loaded anyway 
       }
 
       map.add(subArray);// add the empty tile-list to the bigger list
@@ -71,23 +79,53 @@ public class World {
 
 //returns an arraylist with the 8 tiles surrounding the coordinations. returns BaseObjects so that it can easily be joined with every object list
 //but it's still kinda weird I'll admit
-  ArrayList<BaseObject> getSurroundingTiles(int x, int y, Movable collider) { 
+  ArrayList<BaseObject> getSurroundingTiles(float x, float y, Movable collider) { 
     ArrayList<BaseObject> surrounding = new ArrayList<BaseObject>();
 
-    int middleX = int(x + collider.size.x * .5); //calculate from the middle, because it's the average of all our colliding corners
-    int middleY = int(y + collider.size.y * .5);
+    float middleX = x + collider.size.x * 0.5f; //calculate from the middle, because it's the average of all our colliding corners
+    float middleY = y + collider.size.y * 0.5f;
 
     //cardinals
-    surrounding.add(getTile(middleX, middleY - tileHeight));
-    surrounding.add(getTile(middleX, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY));
-    surrounding.add(getTile(middleX + tileWidth, middleY)); 
+    Tile topTile = getTile(middleX, middleY - tileHeight);
+    if(topTile != null){
+      surrounding.add(topTile);
+    }
+
+    Tile botTile = getTile(middleX, middleY + tileHeight);
+    if(botTile != null){
+      surrounding.add(botTile);
+    }
+
+    Tile leftTile = getTile(middleX - tileWidth, middleY);
+    if(leftTile != null){
+      surrounding.add(leftTile);
+    }
+
+    Tile rightTile = getTile(middleX + tileWidth, middleY);
+    if(rightTile != null){
+      surrounding.add(rightTile);
+    }
 
     //diagonals
-    surrounding.add(getTile(middleX + tileWidth, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY - tileHeight));
-    surrounding.add(getTile(middleX + tileWidth, middleY - tileHeight));
+    Tile botRightTile = getTile(middleX + tileWidth, middleY + tileHeight);
+    if(botRightTile != null){
+      surrounding.add(botRightTile);
+    }
+
+    Tile botLeftTile = getTile(middleX - tileWidth, middleY + tileHeight);
+    if(botLeftTile != null){
+      surrounding.add(botLeftTile);
+    }
+
+    Tile topLeftTile = getTile(middleX - tileWidth, middleY - tileHeight);
+    if(topLeftTile != null){
+      surrounding.add(topLeftTile);
+    }
+
+    Tile topRightTile = getTile(middleX + tileWidth, middleY - tileHeight);
+    if(topRightTile != null){
+      surrounding.add(topRightTile);
+    }
 
     return surrounding;
   }
@@ -143,6 +181,115 @@ public class World {
   void fillBiomeQueue(){
     for(int i = 0; i < 10; i++){
       biomeQueue.add(biomes[int(random(biomes.length))]);
+    }
+  }
+
+  void spawnStructure(String structureName, PVector gridSpawnPos){
+
+    JSONArray layers = loadJSONArray(dataPath("Structures\\" + structureName + ".json"));
+
+    for (int layerIndex = 0; layerIndex < layers.size(); layerIndex++){
+    
+      JSONArray tiles = layers.getJSONArray(layerIndex);
+      String[] tileValues = tiles.getStringArray();
+
+      for (String tileString : tileValues){
+        
+        String[] tileProperties = split(tileString, '|');
+
+        if(tileProperties.length == 3){
+          
+          String tileXPos = tileProperties[0];
+          String tileYPos = tileProperties[1];
+          String tileType = tileProperties[2];
+
+          PVector structureTilePosition = new PVector(int(tileXPos), int(tileYPos));
+
+          PVector worldTilePosition = new PVector();
+          worldTilePosition.add(gridSpawnPos);
+          worldTilePosition.add(structureTilePosition);
+
+          // if layerIndex == 0 (background) replace the existing tile
+          //else if layerIndex > 1, spawn on top of other tile (used for enemies, torch)
+          if(layerIndex == 0){
+            replaceObject(worldTilePosition, tileType);
+          }else{
+            spawnObject(worldTilePosition, tileType);
+          }
+        }
+      }
+    }
+  }
+
+  private void replaceObject(PVector relaceAtGridPos, String newObjectName){
+    Tile tileToReplace = getTile(relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight);
+
+    String stripedObjectName = stripName(newObjectName);
+    Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos);
+
+    tileToReplace.replace(newTile);
+  }
+
+  private void spawnObject(PVector spawnAtGridPos, String newObjectName){
+
+    String stripedObjectName = stripName(newObjectName);
+
+    spawnObjectByName(stripedObjectName, spawnAtGridPos);
+  }
+
+  private String stripName(String fullNamePath){
+    String[] objectPathSplit = split(fullNamePath, '\\');
+    String stripedObjectName = objectPathSplit[objectPathSplit.length - 1].replace(".png", "").replace(".jpg", "");
+
+    return stripedObjectName;
+  }
+
+  private Tile convertNameToTile(String stripedObjectName, PVector spawnPos){
+
+    switch(stripedObjectName){
+
+      case "DestroyedBlock" :
+        Tile destroyedStoneTile = new StoneTile(int(spawnPos.x), int(spawnPos.y));
+        destroyedStoneTile.mine(false);
+        return destroyedStoneTile;
+
+      case "WoodPlank" :
+        return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y));
+
+      case "DoorTop" :
+        return new DoorTopTile(int(spawnPos.x), int(spawnPos.y));
+
+      case "DoorBot" :
+        return new DoorBotTile(int(spawnPos.x), int(spawnPos.y));
+
+      case "Glass" :
+        return new GlassTile(int(spawnPos.x), int(spawnPos.y));
+    }
+
+    println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");
+    return new AirTile(int(spawnPos.x), int(spawnPos.y));
+  }
+
+  private void spawnObjectByName(String stripedObjectName, PVector spawnAtGridPos){
+
+    PVector spawnWorldPos = new PVector();
+    spawnWorldPos.set(spawnAtGridPos);
+    spawnWorldPos.x *= tileWidth;
+    spawnWorldPos.y *= tileHeight;
+
+    switch(stripedObjectName){
+
+      case "Torch" :
+        load(new Torch(spawnWorldPos));
+      break;
+
+      case "BombEnemy" :
+        load(new EnemyBomb(spawnWorldPos));
+      break;
+
+      default :
+        println("ERROR: structure object '" + stripedObjectName + "' not set up or not found!");
+      break;	
     }
   }
 }

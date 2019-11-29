@@ -13,12 +13,12 @@
             <ColumnDefinition Width="260px"/>
         </Grid.ColumnDefinitions>
 
-        <Canvas x:Name="Canvas" Background="#2C2F33" Grid.Column="0" AllowDrop="True" MouseDown="Canvas_OnMouseDown" MouseUp="Canvas_OnMouseUp" MouseMove="Canvas_OnMouseMove"/>
+        <Canvas x:Name="Canvas" Background="#2C2F33" Grid.Column="0" AllowDrop="True" MouseDown="Canvas_OnMouseDown" MouseUp="Canvas_OnMouseUp" MouseMove="Canvas_OnMouseMove" MouseWheel="Canvas_OnMouseWheel"/>
 
         <Grid Grid.Column="1" Background="#23272A">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" MinHeight="50"/>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="130"/>
                 <RowDefinition Height="9*"/>
             </Grid.RowDefinitions>
 

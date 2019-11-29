@@ -1,6 +1,8 @@
 class EnemyGhost extends Enemy {
 
-  EnemyGhost() {
+  EnemyGhost(PVector spawnPos){
+    super(spawnPos);
+
     image = ResourceManager.getImage("GhostEnemy");
     collisionEnabled = false;
     gravityForce = 0;

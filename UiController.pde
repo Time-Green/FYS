@@ -21,11 +21,9 @@ public class UIController {
   private final boolean DRAWSTATS = true;
 
   //Inventory
-  private final float INTENTORYSIZE = 50;
-  private float inventoryX = width * .8;
-  private float inventoryY = INTENTORYSIZE;
-  
-  private final int INVENTORYSLOTS = 3;
+  private float inventorySize = 50;
+  private float inventoryX = width * .95;
+  private float inventoryY = height * .9;
 
   private PImage heart;
 
@@ -44,8 +42,6 @@ public class UIController {
     instructionFont = ResourceManager.getFont("MenuFont");
     hudFont = ResourceManager.getFont("BrickBold");
     heart = ResourceManager.getImage("Heart");
-
-    
   }
 
   void draw() {
@@ -77,8 +73,6 @@ public class UIController {
     rectMode(CORNER);
     textAlign(LEFT);
 
-    // drawInventory();
-
     if(DRAWSTATS){
       drawStats();
     }
@@ -92,8 +86,6 @@ public class UIController {
     float rectWidth = width - titleFontSize * 4;
     float rectHeight = titleFontSize * 2.5;
 
-    
-
     //title background
     fill(titleBackground);
     rect(rectXPos, rectYPos, rectWidth, rectHeight);
@@ -106,7 +98,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Enter to restart", width / 2, height / 2 - 30);
+    text("Press Space to restart", width / 2, height / 2 - 30);
   }
 
   void startMenu(){
@@ -131,11 +123,11 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Enter to start", width / 2, height / 2 - 30);
+    text("Press Space to start", width / 2, height / 2 - 30);
   }
 
   void gameHUD(){
-    for (int i = 0; i < player.currentHealth; i++) {
+    for (int i = 0; i < ceil(player.currentHealth / 10); i++) {
       image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
     }
 
@@ -151,12 +143,7 @@ public class UIController {
     textSize(hudFontSize);
     text("Depth: " + round((player.getDepth() / tileHeight) - 10), 20, hudTextStartX + hudFontSize);
 
-    //Inventory
-    fill(inventoryColor);
-    for (int i = 0; i < INVENTORYSLOTS; i++) {
-      //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-      rect((width - slotSize) - ((slotSize*INVENTORYSLOTS)-(slotOffsetX*i)) , inventoryY, slotSize, slotSize);
-    }
+    drawInventory();
     
   }
 
@@ -164,9 +151,10 @@ public class UIController {
     textAlign(RIGHT);
     fill(255);
     textSize(20);
-    text(round(frameRate) + " FPS", width - 10, height - 100);
-    text(objectList.size() + " objects", width - 10, height - 80);
-    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 60);
+    text(round(frameRate) + " FPS", width - 10, height - 120);
+    text(objectList.size() + " objects", width - 10, height - 100);
+    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 80);
+    text(round(player.position.x) + " Player X Pos", width - 10, height - 60);
     text(round(player.position.y) + " Player Y Pos", width - 10, height - 40);
     text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 20);
   }
@@ -190,13 +178,21 @@ public class UIController {
     
     //sub text
     textSize(instructionFontSize);
-    text("Press Enter to continue", width / 2, height / 2 - 30);
-    text("Press CTRL to restart", width / 2, height / 2 + 60);
+    text("Press Space to continue", width / 2, height / 2 - 30);
+    text("Press Backspace to restart", width / 2, height / 2 + 60);
   }
 
-  // void drawInventory(){
-  //   for(Item item : player.inventory){
-  //     image(item.image, inventoryX + INTENTORYSIZE * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
-  //   }
-  // }
+  void drawInventory(){
+    fill(inventoryColor);
+    for (int i = 0; i < player.maxInventory; i++) {
+      //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
+      rect(inventoryX - inventorySize * i, inventoryY, inventorySize, inventorySize);
+    }
+
+    for(Item item : player.inventory){
+      imageMode(CENTER);
+      image(item.image, inventoryX - inventorySize * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
+      imageMode(CORNER);
+    }
+  }
 }

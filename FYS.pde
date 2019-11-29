@@ -16,7 +16,6 @@ WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
 Enemy[] enemies;
-Controller controller;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -36,8 +35,6 @@ void setup() {
   ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
-
-  controller = new Controller(true);
 }
 
 void setupGame() {
@@ -49,20 +46,6 @@ void setupGame() {
 
   player = new Player();
   load(player);
-
-  int enemyLenght = 4;
-  enemies = new Enemy[enemyLenght];
-
-  enemies[0] = new EnemyWalker();
-  enemies[1] = new EnemyDigger();
-  enemies[2] = new EnemyGhost();
-  enemies[3] = new EnemyBomb();
-
-  
-
-  for (int i = 0; i < enemyLenght; i++) {
-    load(enemies[i]);
-  }
 
   for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
@@ -77,6 +60,8 @@ void setupGame() {
   camera = new Camera(player);
 
   world.updateWorldDepth();
+
+  world.spawnStructure("UndergroundHouse", new PVector(10, 15));
 }
 
 void draw() {
@@ -147,20 +132,19 @@ void handleGameFlow() {
 
   switch (Globals.currentGameState) {
 
-    //not much happens yet if we are ingame..
-    case InGame:
+    case MainMenu:
 
-      if (InputHelper.isKeyDown('p') || controller.isButtonDown("START")) {
-        Globals.currentGameState = Globals.GameState.GamePaused;
+      //if we are in the main menu we start the game by pressing enter
+      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
+        startGame();
       }
 
     break;
 
-    case MainMenu:
+    case InGame:
 
-      //if we are in the main menu we start the game by pressing enter
-      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
-        startGame();
+      if (InputHelper.isKeyDown(Globals.ENTERKEY)) {
+        Globals.currentGameState = Globals.GameState.GamePaused;
       }
 
     break;
@@ -169,7 +153,7 @@ void handleGameFlow() {
       Globals.gamePaused = true;
 
       //if we died we restart the game by pressing enter
-      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
+      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
         startGame();
       }
 
@@ -179,13 +163,13 @@ void handleGameFlow() {
       Globals.gamePaused = true;
       
       //if the game has been paused the player can contineu the game
-      if (InputHelper.isKeyDown(ENTER) || controller.isButtonDown("BOTTOM")){
+      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
         Globals.gamePaused = false;
         Globals.currentGameState = Globals.GameState.InGame;
       }
       
       //Reset game
-      if (InputHelper.isKeyDown('o') || controller.isButtonDown("SELECT")){
+      if (InputHelper.isKeyDown(Globals.BACKKEY)){
         startGame();
     }
 
@@ -231,8 +215,17 @@ void load(BaseObject newObject, PVector setPosition){
   newObject.moveTo(setPosition);
 }
 
+void load(BaseObject newObject, boolean priority){ //load it RIGHT NOW. only use when you know what you're doing
+  if(priority){
+    newObject.specialAdd();
+  }
+  else{
+    load(newObject);
+  }
+}
+
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
-  destroyList.add(deletingObject); //queue for deletion
+  destroyList.add(deletingObject); //queue for deletion //<>//
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor){
@@ -260,8 +253,4 @@ void keyPressed(){
 
 void keyReleased(){
   InputHelper.onKeyReleased(keyCode, key);
-}
-
-void nullSpace(BaseObject baseObject){ //remove from the map without deleting 
-  baseObject.position.set(1, 9999999); //ssssh, dont tell anyone
 }

@@ -7,7 +7,7 @@ public PowerUpTile(int x, int y){
   }
 
   void mine(){
-    super.mine();
+    super.mine(true);
   }
 
 }

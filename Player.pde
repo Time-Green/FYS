@@ -9,11 +9,13 @@ class Player extends Mob {
 
   public Player() {
 
-    image = ResourceManager.getImage("Player");
+    image = ResourceManager.getImage("PlayerIdle");
     position = spawnPosition;
-    setMaxHp(15);
+    setMaxHp(100);
 
-    //PImage[] frames = new PImage[3];
+    //PImage[] frames1 = new PImage[3];
+    //PImage[] frames2 = new PImage[3];
+    //PImage[] frames3 = new PImage[3];
 
     //for (int i = 0; i < 3; i++) {
     //  frames1[i] = ResourceManager.getImage("PlayerLeft" + i);
@@ -28,86 +30,106 @@ class Player extends Mob {
     //}
 
     ////animation speed based on x velocity
-    //animatedImageLeft = new AnimatedImage(frames1, 10 - abs(velocity.x), position, flipSpriteHorizontal);
-    //animatedImageDig = new AnimatedImage(frames2, 10 - abs(velocity.x), position, flipSpriteHorizontal);
-    //animatedImageJump = new AnimatedImage(frames3, 10 - abs(velocity.x), position, flipSpriteHorizontal);
-  //}
+    //animatedImageLeft = new AnimatedImage(frames1, 20 - abs(velocity.x));
+    //animatedImageDig = new AnimatedImage(frames2, 20 - abs(velocity.x));
+    //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
+    //}
 
-  setupLightSource(this, 600f, 1f);
-}
-
-void update() {
-
-  if (Globals.gamePaused) {  
-    return;
+    setupLightSource(this, 400f, 1f);
   }
 
-  super.update();
+  void update() {
 
-  doPlayerMovement();
-}
+    if (Globals.gamePaused) {  
+      return;
+    }
 
-void doPlayerMovement() {
+    super.update();
 
-  if ((InputHelper.isKeyDown(UP) || controller.isButtonDown("BOTTOM")) && isGrounded()) {
-    addForce(new PVector(0, -jumpForce));
+    doPlayerMovement();
   }
 
-  if (InputHelper.isKeyDown(DOWN) || controller.isSliderDown("YPAD", false)) {
-    isMiningDown = true;
-  } else {
-    isMiningDown = false;
-  }
-
-  if (InputHelper.isKeyDown(LEFT) || controller.isSliderDown("XPAD", true)) {
-    addForce(new PVector(-speed, 0));
-    isMiningLeft = true;
-  } else {
-    isMiningLeft = false;
-  }
-
-  if (InputHelper.isKeyDown(RIGHT) || controller.isSliderDown("XPAD", false)) {
-    addForce(new PVector(speed, 0));
-    isMiningRight = true;
-  } else {
-    isMiningRight = false;
-  }
-  if (InputHelper.isKeyDown(' ')) { 
-    useInventory();
-  }
-  if (InputHelper.isKeyDown('g')) { //for 'testing'
-    load(new Dynamite(), new PVector(position.x + 100, position.y));
+void draw(){
+  super.draw();
+  for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
+    item.drawOnPlayer(this);
   }
 }
 
-void addScore(int scoreToAdd) {
-  score += scoreToAdd;
-}
+  void doPlayerMovement() {
 
-public void takeDamage(int damageTaken) {
+    if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
+      addForce(new PVector(0, -jumpForce));
+    }
 
-  if (isImmortal) {
+    if (InputHelper.isKeyDown(Globals.DIGKEY)) {
+      isMiningDown = true;
+      //animatedImageDig.draw();
+    } else {
+      isMiningDown = false;
+    }
 
-    return;
+    if (InputHelper.isKeyDown(Globals.LEFTKEY)) {
+      addForce(new PVector(-speed, 0));
+      isMiningLeft = true;
+      isMiningRight = false;
+      flipSpriteHorizontal = false;
+      // animatedImageLeft.draw();
+    }
+
+    if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
+      addForce(new PVector(speed, 0));
+      isMiningRight = true;
+      isMiningLeft = false;
+      flipSpriteHorizontal = true;
+      //animatedImageLeft.draw();
+    } 
+
+
+    if (InputHelper.isKeyDown(ALT)) { 
+      useInventory();
+    }
+
+    if (InputHelper.isKeyDown('g')) { //for 'testing'
+      load(new Dynamite(), new PVector(position.x + 100, position.y));
+    }
+
+    if(InputHelper.isKeyDown('h')) {
+      load(new Held(), new PVector(position.x + 100, position.y));
+    }
+
   }
 
-  if (isHurt == false) {
-    // if the player has taken damage, add camera shake
-    CameraShaker.induceStress(0.6f);
+  void addScore(int scoreToAdd) {
+    score += scoreToAdd;
   }
 
-  //needs to happan after camera shake because else 'isHurt' will be always true
-  super.takeDamage(damageTaken);
-}
+  public void takeDamage(int damageTaken) {
 
-public void die() {
-  super.die();
+    println("player took " + damageTaken + " damage");
 
-  Globals.gamePaused = true;
-  Globals.currentGameState = Globals.GameState.GameOver;
-}
+    if (isImmortal) {
 
-boolean canPickUp(PickUp pickUp) {
-  return true;
-}
+      return;
+    }
+
+    if (isHurt == false) {
+      // if the player has taken damage, add camera shake
+      CameraShaker.induceStress(0.6f);
+    }
+
+    //needs to happan after camera shake because else 'isHurt' will be always true
+    super.takeDamage(damageTaken);
+  }
+
+  public void die() {
+    super.die();
+
+    Globals.gamePaused = true;
+    Globals.currentGameState = Globals.GameState.GameOver;
+  }
+
+  boolean canPickUp(PickUp pickUp) {
+    return true;
+  }
 }
