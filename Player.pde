@@ -7,9 +7,6 @@ class Player extends Mob {
 
   public Player() {
 
-      //image = ResourceManager.getImage("PlayerWalk0");
-  //image = ResourceManager.getImage("PlayerIdle");
-
     position = spawnPosition;
     setMaxHp(100);
 
@@ -18,14 +15,14 @@ class Player extends Mob {
     }
      if(InputHelper.isKeyDown(Globals.RIGHTKEY)) {
          flipSpriteHorizontal = true;
-       }
+     }
 
     PImage[] frames = new PImage[3];
  
     for(int i = 0; i < 3; i++){
       frames[i] = ResourceManager.getImage("PlayerWalk" + i); 
     }
-    animatedImageWalk = new AnimatedImage(frames, 10 - abs(velocity.x), position, flipSpriteHorizontal);
+    animatedImageWalk = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
       
 
     //for (int i = 0; i < 3; i++) {
@@ -36,18 +33,12 @@ class Player extends Mob {
     //  frames[i] = ResourceManager.getImage("PlayerJump" + i);
     //}
 
-    ////animation speed based on x velocity
-    //animatedImageLeft = new AnimatedImage(frames1, 20 - abs(velocity.x));
-    //animatedImageDig = new AnimatedImage(frames2, 20 - abs(velocity.x));
-    //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
+    //animatedImageDig = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    //animatedImageJump = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
     //}
 
     setupLightSource(this, 400f, 1f);
   }
-
-  void draw(){
-      	animatedImageWalk.draw();
-    }
 
   void update() {
 
@@ -61,7 +52,8 @@ class Player extends Mob {
   }
 
 void draw(){
-  super.draw();
+  animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
+  animatedImageWalk.draw();
   for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
     item.drawOnPlayer(this);
   }
@@ -76,7 +68,6 @@ void draw(){
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-      //animatedImageDig.draw();
     } else {
       isMiningDown = false;
     }
@@ -87,7 +78,6 @@ void draw(){
       isMiningRight = false;
       flipSpriteHorizontal = false;
       image = ResourceManager.getImage("PlayerWalk0");
-      // animatedImageLeft.draw();
     }
 
     if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
@@ -96,7 +86,6 @@ void draw(){
       isMiningLeft = false;
       flipSpriteHorizontal = true;
       image = ResourceManager.getImage("PlayerWalk0");
-      //animatedImageLeft.draw();
     } 
 
 
