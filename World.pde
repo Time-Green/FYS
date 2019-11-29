@@ -11,7 +11,7 @@ public class World {
 
   float wallWidth;
 
-  Biome[] biomes = {new Biome(), new HollowBiome()};
+  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome()};
   Biome currentBiome;
   ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
   int switchDepth; //the depth at wich we switch to the next biome in the qeueu
@@ -24,7 +24,7 @@ public class World {
     biomeQueue.add(new Biome());
 
     fillBiomeQueue();
-    switchBiome();
+    switchBiome(0);
   }
 
   public void update(){
@@ -61,7 +61,7 @@ public class World {
       ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
 
       if(canBiomeSwitch(y)){
-        switchBiome();
+        switchBiome(y);
       }
 
       for(int x = 0; x <= tilesHorizontal; x++){
@@ -167,11 +167,12 @@ public class World {
     return depth > switchDepth;
   }
 
-  void switchBiome(){
+  void switchBiome(int depth){
     if(biomeQueue.size() != 0){
       currentBiome = biomeQueue.get(0);
       switchDepth += currentBiome.length;
       biomeQueue.remove(0);
+      currentBiome.startedAt = depth;
     }
     else{
       fillBiomeQueue();

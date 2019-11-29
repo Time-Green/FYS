@@ -4,7 +4,7 @@ class Biome{
 
     float caveSpawningNoiseScale = 0.1f;
     float caveSpawningPossibilityScale = 0.68f; //lower for more caves
-
+    int startedAt;
 
  Tile getTileToGenerate(int x, int depth){
 
