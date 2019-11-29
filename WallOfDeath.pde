@@ -89,10 +89,8 @@ class WallOfDeath extends Movable {
     }
 
     if(spawnTarget != null){
-
-      if(random(4) < 2){
+      
         spawnTargetedMeteor(spawnTarget.position.x);
-      }
     }
   }
 
