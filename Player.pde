@@ -13,6 +13,8 @@ class Player extends Mob {
     position = spawnPosition;
     setMaxHp(100);
 
+    baseDamage = 0.1; //low basedamage without pickaxe
+
     //PImage[] frames1 = new PImage[3];
     //PImage[] frames2 = new PImage[3];
     //PImage[] frames3 = new PImage[3];
@@ -95,8 +97,15 @@ void draw(){
     }
 
     if(InputHelper.isKeyDown('h')) {
-      load(new Held(), new PVector(position.x + 100, position.y));
+      load(new Chest(), new PVector(position.x + 100, position.y));
+      InputHelper.onKeyReleased(9999999, 'h'); //ssssh
     }
+
+    if (InputHelper.isKeyDown('z')) { 
+      switchInventory();
+      InputHelper.onKeyReleased(9999999, 'z'); //ssssh
+    }
+
 
   }
 
@@ -132,4 +141,9 @@ void draw(){
   boolean canPickUp(PickUp pickUp) {
     return true;
   }
+
+  public boolean canPlayerInteract(){
+    return true;
+  }
+
 }

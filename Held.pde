@@ -1,5 +1,5 @@
 class Held extends Item{
-    float damageCoefficient = .9;
+    float damageCoefficient = 1;
 
     boolean canMine(BaseObject object, Mob miner){ 
         return true;
@@ -10,9 +10,4 @@ class Held extends Item{
 
         object.takeDamage(miner.getAttackPower(true));
     }
-
-    void onUse(Mob mob){ //overwrite, because we wanna mine and not throw it against a rock. 
-        return;
-    }
-
 }

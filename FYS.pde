@@ -62,6 +62,7 @@ void setupGame() {
   world.updateWorldDepth();
 
   world.spawnStructure("UndergroundHouse", new PVector(10, 15));
+  world.spawnStructure("StarterChest", new PVector(10, 10));
 }
 
 void draw() {
@@ -206,22 +207,25 @@ void handleLoading() {
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
 }
 
-void load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
+BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
   loadList.add(newObject); //qeue for loading
+  return newObject;
 }
 
-void load(BaseObject newObject, PVector setPosition){
+BaseObject load(BaseObject newObject, PVector setPosition){
   loadList.add(newObject);
   newObject.moveTo(setPosition);
+  return newObject;
 }
 
-void load(BaseObject newObject, boolean priority){ //load it RIGHT NOW. only use when you know what you're doing
+BaseObject load(BaseObject newObject, boolean priority){ //load it RIGHT NOW. Only use in specially processed objects, like world
   if(priority){
     newObject.specialAdd();
   }
   else{
     load(newObject);
   }
+  return newObject;
 }
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world

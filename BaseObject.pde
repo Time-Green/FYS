@@ -86,6 +86,10 @@ class BaseObject {
     position.set(newPosition);
   }
 
+  public void moveTo(float x, float y){ //alt for just x and y
+    moveTo(new PVector(x, y));
+  }
+
   boolean canCollideWith(BaseObject object){ //return false for magically phasing through things. 
     return density;
   }
