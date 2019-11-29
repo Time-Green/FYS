@@ -1,6 +1,7 @@
 class Player extends Mob {
 
   AnimatedImage animatedImageWalk;
+  AnimatedImage animatedImageIdle;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
@@ -10,19 +11,17 @@ class Player extends Mob {
     position = spawnPosition;
     setMaxHp(100);
 
-      if(InputHelper.isKeyDown(Globals.LEFTKEY)) {
-      flipSpriteHorizontal = false;
-    }
-     if(InputHelper.isKeyDown(Globals.RIGHTKEY)) {
-         flipSpriteHorizontal = true;
-     }
-
     PImage[] frames = new PImage[3];
  
     for(int i = 0; i < 3; i++){
       frames[i] = ResourceManager.getImage("PlayerWalk" + i); 
     }
     animatedImageWalk = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+     for(int i = 0; i < 3; i++){
+      frames[i] = ResourceManager.getImage("PlayerIdle" + i); 
+    }
+    animatedImageIdle = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
       
 
     //for (int i = 0; i < 3; i++) {
@@ -53,7 +52,12 @@ class Player extends Mob {
 
 void draw(){
   animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
+  if(isMiningDown == true || isMiningLeft == true || isMiningRight == true) {
   animatedImageWalk.draw();
+  }
+  else {
+      animatedImageIdle.draw();
+  }
   for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
     item.drawOnPlayer(this);
   }
@@ -63,7 +67,6 @@ void draw(){
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
-      image = ResourceManager.getImage("PlayerIdle");
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
@@ -77,7 +80,6 @@ void draw(){
       isMiningLeft = true;
       isMiningRight = false;
       flipSpriteHorizontal = false;
-      image = ResourceManager.getImage("PlayerWalk0");
     }
 
     if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
@@ -85,7 +87,6 @@ void draw(){
       isMiningRight = true;
       isMiningLeft = false;
       flipSpriteHorizontal = true;
-      image = ResourceManager.getImage("PlayerWalk0");
     } 
 
 
