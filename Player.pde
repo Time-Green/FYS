@@ -11,17 +11,18 @@ class Player extends Mob {
     position = spawnPosition;
     setMaxHp(100);
 
-    PImage[] frames = new PImage[3];
+    PImage[] walkFrames = new PImage[3];
+    PImage[] idleFrames = new PImage[3];
  
     for(int i = 0; i < 3; i++){
-      frames[i] = ResourceManager.getImage("PlayerWalk" + i); 
+      walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
     }
-    animatedImageWalk = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    animatedImageWalk = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
      for(int i = 0; i < 3; i++){
-      frames[i] = ResourceManager.getImage("PlayerIdle" + i); 
+      idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
     }
-    animatedImageIdle = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    animatedImageIdle = new AnimatedImage(idleFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
       
 
     //for (int i = 0; i < 3; i++) {
@@ -51,13 +52,18 @@ class Player extends Mob {
   }
 
 void draw(){
-  animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
-  if(isMiningDown == true || isMiningLeft == true || isMiningRight == true) {
-  animatedImageWalk.draw();
+
+  if(InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY) || InputHelper.isKeyDown(Globals.DIGKEY)) {
+    animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
+    animatedImageWalk.draw();
+    println("walk");
   }
   else {
-      animatedImageIdle.draw();
+    animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
+    animatedImageIdle.draw();
+    println("idle");
   }
+
   for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
     item.drawOnPlayer(this);
   }
