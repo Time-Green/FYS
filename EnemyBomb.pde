@@ -4,12 +4,11 @@ class EnemyBomb extends Enemy {
   
   private boolean isExploding = false;
   private float explosionTimer = 90f;
-  private float explosionSize = 500;
+  private float explosionSize = 300;
   
   EnemyBomb(PVector spawnPos){
     super(spawnPos);
-    
-    tint(0, 153, 204, 126);
+
     image = ResourceManager.getImage("BombEnemy");
     this.speed = 2.5f;
   }
@@ -17,16 +16,16 @@ class EnemyBomb extends Enemy {
   void update() {
     super.update();
 
-    
-
+    tint(0, 153, 204, 126);
     if (isExploding) {
 
       this.speed = 0;
+      //Decrease the explosion timer
       explosionTimer--;
       
 
       if (explosionTimer <= 0) {
-
+        //Explode
         load(new Explosion(position, explosionSize, 15, true));
         delete(this);
       }
@@ -36,6 +35,7 @@ class EnemyBomb extends Enemy {
   protected void handleCollision(){
     super.handleCollision();
 
+    //Activate the explosion sequence when the player gets to close
     if (CollisionHelper.rectRect(position, new PVector(size.x + detectionRange, size.y + detectionRange), player.position, player.size)){
       isExploding = true;
     }
