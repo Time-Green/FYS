@@ -26,14 +26,15 @@ class WallOfDeath extends Movable {
   
   void update(){
 
-    if (Globals.gamePaused){
+    if (Globals.gamePaused || Globals.isInOverWorld){
       return;
     }
 
     super.update();
 
     if(frameCount % 25 == 0){ 
-      //spawnAstroid();  
+
+      spawnAstroid();  
     }
 
     //velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
@@ -91,12 +92,7 @@ class WallOfDeath extends Movable {
 
       if(random(4) < 2){
         spawnTargetedMeteor(spawnTarget.position.x);
-      }else{
-        spawnRandomTargetedMeteor();
       }
-
-    }else{
-      spawnRandomTargetedMeteor();
     }
   }
 
@@ -107,9 +103,9 @@ class WallOfDeath extends Movable {
     load(new Meteor(), new PVector(spawnPosX, position.y)); 
   }
 
-  private void spawnRandomTargetedMeteor(){
-    load(new Meteor(), new PVector(random(tilesHorizontal * tileWidth + tileWidth), position.y)); 
-  }
+  // private void spawnRandomTargetedMeteor(){
+  //   load(new Meteor(), new PVector(random(tilesHorizontal * tileWidth + tileWidth), position.y)); 
+  // }
 
   private void cleanUpObjects(){
 

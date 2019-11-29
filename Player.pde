@@ -1,38 +1,39 @@
 class Player extends Mob {
 
-  //AnimatedImage animatedImageLeft;
-  //AnimatedImage animatedImageDig;
-  //AnimatedImage animatedImageJump;
+  AnimatedImage animatedImageWalk;
+  AnimatedImage animatedImageIdle;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
   public Player() {
 
-    image = ResourceManager.getImage("PlayerIdle");
     position = spawnPosition;
     setMaxHp(100);
 
-    //PImage[] frames1 = new PImage[3];
-    //PImage[] frames2 = new PImage[3];
-    //PImage[] frames3 = new PImage[3];
+    PImage[] frames = new PImage[3];
+ 
+    for(int i = 0; i < 3; i++){
+      frames[i] = ResourceManager.getImage("PlayerWalk" + i); 
+    }
+    animatedImageWalk = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+     for(int i = 0; i < 3; i++){
+      frames[i] = ResourceManager.getImage("PlayerIdle" + i); 
+    }
+    animatedImageIdle = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+      
 
     //for (int i = 0; i < 3; i++) {
-    //  frames1[i] = ResourceManager.getImage("PlayerLeft" + i);
+    //  frames[i] = ResourceManager.getImage("PlayerDig" + i);
     //}
 
     //for (int i = 0; i < 3; i++) {
-    //  frames2[i] = ResourceManager.getImage("PlayerDig" + i);
+    //  frames[i] = ResourceManager.getImage("PlayerJump" + i);
     //}
 
-    //for (int i = 0; i < 3; i++) {
-    //  frames3[i] = ResourceManager.getImage("PlayerJump" + i);
-    //}
-
-    ////animation speed based on x velocity
-    //animatedImageLeft = new AnimatedImage(frames1, 20 - abs(velocity.x));
-    //animatedImageDig = new AnimatedImage(frames2, 20 - abs(velocity.x));
-    //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
+    //animatedImageDig = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    //animatedImageJump = new AnimatedImage(frames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
     //}
 
     setupLightSource(this, 400f, 1f);
@@ -50,7 +51,13 @@ class Player extends Mob {
   }
 
 void draw(){
-  super.draw();
+  animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
+  if(isMiningDown == true || isMiningLeft == true || isMiningRight == true) {
+  animatedImageWalk.draw();
+  }
+  else {
+      animatedImageIdle.draw();
+  }
   for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
     item.drawOnPlayer(this);
   }
@@ -64,7 +71,6 @@ void draw(){
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-      //animatedImageDig.draw();
     } else {
       isMiningDown = false;
     }
@@ -74,7 +80,6 @@ void draw(){
       isMiningLeft = true;
       isMiningRight = false;
       flipSpriteHorizontal = false;
-      // animatedImageLeft.draw();
     }
 
     if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
@@ -82,7 +87,6 @@ void draw(){
       isMiningRight = true;
       isMiningLeft = false;
       flipSpriteHorizontal = true;
-      //animatedImageLeft.draw();
     } 
 
 
@@ -133,3 +137,4 @@ void draw(){
     return true;
   }
 }
+

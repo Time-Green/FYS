@@ -31,17 +31,24 @@ public class World {
   }
 
   public void draw(Camera camera){
-    image(dayNightImage, 0, -200, wallWidth, 1080);
+    image(dayNightImage, 0, -200, wallWidth, width);
     //println("map.size(): " + map.size());
   }
 
   //return tile you're currently on
   Tile getTile(float x, float y){
-    ArrayList<Tile> subList = map.get(floor(y / tileHeight)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
-    if(subList.size() == 0){
+    int yGridPos = floor(y / tileWidth);
+
+    if(yGridPos < 0){
       return null;
     }
+
+    ArrayList<Tile> subList = map.get(yGridPos); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+
+    // if(subList.size() == 0){
+    //   return null;
+    // }
 
     int xGridPos = floor(x / tileWidth);
 
@@ -265,6 +272,12 @@ public class World {
 
       case "Glass" :
         return new GlassTile(int(spawnPos.x), int(spawnPos.y));
+      
+      case "Leaf" :
+        return new LeafTile(int(spawnPos.x), int(spawnPos.y));
+        
+      case "Wood" :
+        return new WoodTile(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");

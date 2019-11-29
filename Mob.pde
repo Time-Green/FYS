@@ -38,6 +38,11 @@ class Mob extends Movable {
 
   public void attemptMine(BaseObject object){
 
+    if(Globals.isInOverWorld){ // In the overworld we disable digging all together. 
+      return; 
+    } 
+    else
+    {
     //ask the tile if they wanna be mined first
     if(!object.canMine()){
       return;
@@ -62,6 +67,7 @@ class Mob extends Movable {
     }
 
     lastMine = millis();
+  }
   }
 
   public void takeDamage(float damageTaken){
