@@ -52,9 +52,15 @@ class Explosion extends BaseObject{
       }
 
       //damage falloff
-      float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
+      float damage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
 
-      object.takeDamage(dammage);
+      if(object instanceof Tile){
+        Tile tileToDamage = (Tile)object;
+
+        tileToDamage.takeDamage(damage, false);
+      }else{
+        object.takeDamage(damage);
+      }
     }
 
     CameraShaker.induceStress(0.05f);
