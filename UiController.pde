@@ -86,10 +86,6 @@ public class UIController {
     float rectWidth = width - titleFontSize * 4;
     float rectHeight = titleFontSize * 2.5;
 
-    //title background
-    fill(titleBackground);
-    rect(rectXPos, rectYPos, rectWidth, rectHeight);
-
     //title
     fill(titleColor);
     textSize(titleFontSize);
@@ -98,7 +94,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Space to restart", width / 2, height / 2 - 30);
+    text("Space: restart", width / 2, height / 2 - 30);
   }
 
   void startMenu(){
@@ -166,20 +162,17 @@ public class UIController {
     float rectWidth = width - titleFontSize * 4;
     float rectHeight = titleFontSize * 2.5;
 
-    //title background
-    textFont(titleFont);
-    fill(titleBackground);
-    rect(rectXPos, rectYPos, rectWidth, rectHeight);
-
     //title
+    textFont(titleFont);
     fill(titleColor);
     textSize(titleFontSize);
     text("Paused", rectXPos, rectYPos, rectWidth, rectHeight);
     
     //sub text
+    textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Space to continue", width / 2, height / 2 - 30);
-    text("Press Backspace to restart", width / 2, height / 2 + 60);
+    text("Space: continue", width / 2, height / 2 - 30);
+    text("Backspace: restart", width / 2, height / 2 + 60);
   }
 
   void drawInventory(){
