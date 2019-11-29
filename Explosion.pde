@@ -1,20 +1,21 @@
 class Explosion extends BaseObject{
 
   float maxRadius;
-  float maxDamage = 5;
+  float maxDamage = 100;
   float currentRadius = 0;
   float radiusIncrease = 35;
 
-  float fade = 0.75f;
-  float time = 180;
+  boolean dealDamageToPlayer;
 
   SoundFile explosionSound;
 
   ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
 
-  Explosion(PVector spawnPos, float radius){
+  Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer){
     position.set(spawnPos);
     maxRadius = radius;
+    this.maxDamage = maxDamage;
+    this.dealDamageToPlayer = dealDamageToPlayer;
 
     explosionSound = ResourceManager.getSound("Explosion");
     
@@ -46,10 +47,20 @@ class Explosion extends BaseObject{
 
     for(BaseObject object : objectsInCurrentExplosionRadius){
 
-      //damage falloff
-      float dammage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
+      if(!dealDamageToPlayer && object == player){
+        continue;
+      }
 
-      object.takeDamage(dammage);
+      //damage falloff
+      float damage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
+
+      if(object instanceof Tile){
+        Tile tileToDamage = (Tile)object;
+
+        tileToDamage.takeDamage(damage, false);
+      }else{
+        object.takeDamage(damage);
+      }
     }
 
     CameraShaker.induceStress(0.05f);

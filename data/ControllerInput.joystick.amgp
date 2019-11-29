@@ -34,7 +34,7 @@
                 <axisbutton index="2">
                     <slots>
                         <slot>
-                            <code>0x1000015</code>
+                            <code>0x20</code>
                             <mode>keyboard</mode>
                         </slot>
                     </slots>

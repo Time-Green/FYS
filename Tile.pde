@@ -87,6 +87,16 @@ class Tile extends BaseObject{
     }
   }
 
+  void takeDamage(float damageTaken, boolean playBreakSound) {
+    super.takeDamage(damageTaken);
+    
+    hp -= damageTaken;
+    
+    if (hp <= 0) {
+      mine(playBreakSound);
+    }
+  }
+
   void takeDamage(float damageTaken) {
     super.takeDamage(damageTaken);
     
@@ -127,10 +137,11 @@ class Tile extends BaseObject{
   }
 
   void replace(Tile replaceTile){
-    image = replaceTile.image;
-    destroyedImage = replaceTile.destroyedImage;
-    setMaxHp(replaceTile.maxHp);
-    density = replaceTile.density;
-    destroyed = replaceTile.destroyed;
+    int index = world.map.get(int(gridPosition.y)).indexOf(this);
+    world.map.get(int(gridPosition.y)).set(index, replaceTile);
+
+    delete(this);
+    load(replaceTile);
+    
   }
 }

@@ -10,6 +10,8 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 //list of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
+DatabaseManager databaseManager = new DatabaseManager();
+
 World world;
 Player player;
 WallOfDeath wallOfDeath;
@@ -22,12 +24,10 @@ int tilesVertical = 50;
 int tileWidth = 50;
 int tileHeight = 50;
 
-int birdCount = 10;
+int birdCount = round(random(15, 25));
 
 boolean firstTime = true;
 boolean firstStart = true;
-
-private String actionButton = "BOTTOM";
 
 void setup() {
   size(1280, 720, P2D);
@@ -49,18 +49,6 @@ void setupGame() {
   player = new Player();
   load(player);
 
-  //int enemyLenght = 4;
-  //enemies = new Enemy[enemyLenght];
-
-  //enemies[0] = new EnemyWalker(new PVector(900, 500));
-  //enemies[1] = new EnemyDigger(new PVector(950, 500));
-  //enemies[2] = new EnemyGhost(new PVector(1000, 500));
-  //enemies[3] = new EnemyBomb(new PVector(1050, 500));
-
-  //for (int i = 0; i < enemyLenght; i++) {
-  //  load(enemies[i]);
-  //}
-
   for (int i = 0; i < birdCount; i++) {
     Bird bird = new Bird(world);
 
@@ -74,6 +62,8 @@ void setupGame() {
   camera = new Camera(player);
 
   world.updateWorldDepth();
+
+  world.spawnStructure("Tree", new PVector(10, 6)); 
 
   world.spawnStructure("UndergroundHouse", new PVector(10, 15));
 }
@@ -150,7 +140,7 @@ void handleGameFlow() {
 
       //if we are in the main menu we start the game by pressing enter
       if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
-        startGame();
+        enterOverWorld();
       }
 
     break;
@@ -191,7 +181,15 @@ void handleGameFlow() {
   }
 }
 
+void enterOverWorld(){
+
+  Globals.gamePaused = false;
+  Globals.currentGameState = Globals.GameState.OverWorld;
+   
+}
+
 void startGame() {
+  Globals.isInOverWorld = false;
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
@@ -229,6 +227,15 @@ void load(BaseObject newObject, PVector setPosition){
   newObject.moveTo(setPosition);
 }
 
+void load(BaseObject newObject, boolean priority){ //load it RIGHT NOW. only use when you know what you're doing
+  if(priority){
+    newObject.specialAdd();
+  }
+  else{
+    load(newObject);
+  }
+}
+
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion //<>//
 }
@@ -254,12 +261,11 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 
 void keyPressed(){
   InputHelper.onKeyPressed(keyCode, key);
+  if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
+    startGame(); 
+  }
 }
 
 void keyReleased(){
   InputHelper.onKeyReleased(keyCode, key);
-}
-
-void nullSpace(BaseObject baseObject){ //remove from the map without deleting 
-  baseObject.position.set(1, 9999999); //ssssh, dont tell anyone
 }

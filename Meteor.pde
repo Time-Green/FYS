@@ -29,7 +29,7 @@ class Meteor extends Movable{
     super.update(); 
 
     if(isGrounded){
-      load(new Explosion(position, 200 * sizeModifier)); 
+    load(new Explosion(position, 100 * sizeModifier, 5, true)); 
       delete(this); 
     }else if(position.x < -size.x / 2 || position.x > world.getWidth() + size.x / 2){
       delete(this);

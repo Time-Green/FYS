@@ -8,6 +8,9 @@ public class UIController {
   //Game HUD
   private float hudTextStartX = 90;
 
+  //Achievement icon
+  private float iconFrameSize = 25; 
+
   //Heart
   private float heartWidth = 50;
   private float heartHeight = 50;
@@ -21,11 +24,7 @@ public class UIController {
   private final boolean DRAWSTATS = true;
 
   //Inventory
-  private final float INTENTORYSIZE = 50;
-  private float inventoryX = width * .8;
-  private float inventoryY = INTENTORYSIZE;
-  
-  private final int INVENTORYSLOTS = 3;
+  private float inventorySize = 50;
 
   private PImage heart;
 
@@ -68,14 +67,15 @@ public class UIController {
       break;
       case GamePaused :
         pauseScreen();
+      break;
+      case OverWorld :
+        //do nothing
       break;		
     }
 
     //reset rectMode
     rectMode(CORNER);
     textAlign(LEFT);
-
-    // drawInventory();
 
     if(DRAWSTATS){
       drawStats();
@@ -90,21 +90,16 @@ public class UIController {
     float rectWidth = width - titleFontSize * 4;
     float rectHeight = titleFontSize * 2.5;
 
-    
-
-    //title background
-    fill(titleBackground);
-    rect(rectXPos, rectYPos, rectWidth, rectHeight);
-
     //title
     fill(titleColor);
+    textFont(titleFont);
     textSize(titleFontSize);
     text("Game Over", rectXPos, rectYPos, rectWidth, rectHeight);
     
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Space to restart", width / 2, height / 2 - 30);
+    text("Space: restart", width / 2, height / 2 - 30);
   }
 
   void startMenu(){
@@ -123,6 +118,7 @@ public class UIController {
 
     //title
     fill(titleColor);
+    textFont(titleFont);
     textSize(titleFontSize);
     text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
@@ -133,7 +129,7 @@ public class UIController {
   }
 
   void gameHUD(){
-    for (int i = 0; i < player.currentHealth; i++) {
+    for (int i = 0; i < ceil(player.currentHealth / 10); i++) {
       image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
     }
 
@@ -149,25 +145,21 @@ public class UIController {
     textSize(hudFontSize);
     text("Depth: " + round((player.getDepth() / tileHeight) - 10), 20, hudTextStartX + hudFontSize);
 
-    //Inventory
-    fill(inventoryColor);
-    for (int i = 0; i < INVENTORYSLOTS; i++) {
-      //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-      rect((width - slotSize) - ((slotSize*INVENTORYSLOTS)-(slotOffsetX*i)) , inventoryY, slotSize, slotSize);
-    }
-    
+    drawInventory();
   }
 
   void drawStats(){
+    textFont(hudFont);
     textAlign(RIGHT);
     fill(255);
     textSize(20);
-    text(round(frameRate) + " FPS", width - 10, height - 120);
-    text(objectList.size() + " objects", width - 10, height - 100);
-    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 80);
-    text(round(player.position.x) + " Player X Pos", width - 10, height - 60);
-    text(round(player.position.y) + " Player Y Pos", width - 10, height - 40);
-    text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 20);
+
+    text(round(frameRate) + " FPS", width - 10, 120);
+    text(objectList.size() + " objects", width - 10, 100);
+    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 80);
+    text(round(player.position.x) + " Player X Pos", width - 10, 60);
+    text(round(player.position.y) + " Player Y Pos", width - 10, 40);
+    text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, 20);
   }
 
   void pauseScreen(){
@@ -177,25 +169,42 @@ public class UIController {
     float rectWidth = width - titleFontSize * 4;
     float rectHeight = titleFontSize * 2.5;
 
-    //title background
-    textFont(titleFont);
-    fill(titleBackground);
-    rect(rectXPos, rectYPos, rectWidth, rectHeight);
-
     //title
+    textFont(titleFont);
     fill(titleColor);
     textSize(titleFontSize);
     text("Paused", rectXPos, rectYPos, rectWidth, rectHeight);
     
     //sub text
+    textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Space to continue", width / 2, height / 2 - 30);
-    text("Press Backspace to restart", width / 2, height / 2 + 60);
+    text("Space: continue", width / 2, height / 2 - 30);
+    text("Backspace: restart", width / 2, height / 2 + 60);
   }
 
-  // void drawInventory(){
-  //   for(Item item : player.inventory){
-  //     image(item.image, inventoryX + INTENTORYSIZE * player.inventory.indexOf(item), inventoryY, item.size.x, item.size.y);
+  // void achievementGet(){
+
+  //   float maxTravelY = height - 20; 
+  //   float frameY = height + 20; 
+
+  //   while(frameY <= maxTravelY){
+  //     fill(0); 
+  //     rect(20, frameY, iconFrameSize, iconFrameSize);
+  //     frameY += 1; 
   //   }
   // }
+
+  void drawInventory(){
+    fill(inventoryColor);
+    for (int i = 0; i < player.maxInventory; i++) {
+      //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
+      rect(width * 0.95 - inventorySize * i, height * 0.9, inventorySize, inventorySize);
+    }
+
+    for(Item item : player.inventory){
+      imageMode(CENTER);
+      image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item), height * 0.9, item.size.x, item.size.y);
+      imageMode(CORNER);
+    }
+  }
 }

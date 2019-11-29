@@ -1,41 +1,43 @@
 class Player extends Mob {
 
-  //AnimatedImage animatedImageLeft;
-  //AnimatedImage animatedImageDig;
-  //AnimatedImage animatedImageJump;
+  AnimatedImage animatedImageWalk;
+  AnimatedImage animatedImageIdle;
+  AnimatedImage animatedImageAir;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
   public Player() {
 
-    image = ResourceManager.getImage("PlayerIdle");
     position = spawnPosition;
-    setMaxHp(15);
+    setMaxHp(100);
 
-    //PImage[] frames1 = new PImage[3];
-    //PImage[] frames2 = new PImage[3];
-    //PImage[] frames3 = new PImage[3];
+    PImage[] walkFrames = new PImage[3];
+    PImage[] idleFrames = new PImage[3];
+    PImage[] airFrames = new PImage[3];
+ 
+    for(int i = 0; i < 3; i++){
+      walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
+    }
+    animatedImageWalk = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+     for(int i = 0; i < 3; i++){
+      idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
+    }
+    animatedImageIdle = new AnimatedImage(idleFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+      
+       for(int i = 0; i < 3; i++){
+      airFrames[i] = ResourceManager.getImage("PlayerAir" + i); 
+    }
+    animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     //for (int i = 0; i < 3; i++) {
-    //  frames1[i] = ResourceManager.getImage("PlayerLeft" + i);
+    //  frames[i] = ResourceManager.getImage("PlayerDig" + i);
     //}
 
-    //for (int i = 0; i < 3; i++) {
-    //  frames2[i] = ResourceManager.getImage("PlayerDig" + i);
-    //}
 
-    //for (int i = 0; i < 3; i++) {
-    //  frames3[i] = ResourceManager.getImage("PlayerJump" + i);
-    //}
 
-    ////animation speed based on x velocity
-    //animatedImageLeft = new AnimatedImage(frames1, 20 - abs(velocity.x));
-    //animatedImageDig = new AnimatedImage(frames2, 20 - abs(velocity.x));
-    //animatedImageJump = new AnimatedImage(frames3, 20 - abs(velocity.x));
-    //}
-
-    setupLightSource(this, 600f, 1f);
+    setupLightSource(this, 400f, 1f);
   }
 
   void update() {
@@ -49,6 +51,29 @@ class Player extends Mob {
     doPlayerMovement();
   }
 
+void draw(){
+
+  if(InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY) || InputHelper.isKeyDown(Globals.DIGKEY)) {
+    animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
+    animatedImageWalk.draw();
+    //println("walk");
+  }
+  else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {
+    animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
+    animatedImageAir.draw();
+    //println("jump");
+  }
+  else {
+    animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
+    animatedImageIdle.draw();
+    //println("idle");
+  }
+
+  for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
+    item.drawOnPlayer(this);
+  }
+}
+
   void doPlayerMovement() {
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
@@ -57,7 +82,6 @@ class Player extends Mob {
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-      //animatedImageDig.draw();
     } else {
       isMiningDown = false;
     }
@@ -67,7 +91,6 @@ class Player extends Mob {
       isMiningLeft = true;
       isMiningRight = false;
       flipSpriteHorizontal = false;
-      // animatedImageLeft.draw();
     }
 
     if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
@@ -75,17 +98,21 @@ class Player extends Mob {
       isMiningRight = true;
       isMiningLeft = false;
       flipSpriteHorizontal = true;
-      //animatedImageLeft.draw();
     } 
 
 
-    if (InputHelper.isKeyDown(' ')) { 
+    if (InputHelper.isKeyDown(ALT)) { 
       useInventory();
     }
 
     if (InputHelper.isKeyDown('g')) { //for 'testing'
       load(new Dynamite(), new PVector(position.x + 100, position.y));
     }
+
+    if(InputHelper.isKeyDown('h')) {
+      load(new Held(), new PVector(position.x + 100, position.y));
+    }
+
   }
 
   void addScore(int scoreToAdd) {
@@ -93,6 +120,8 @@ class Player extends Mob {
   }
 
   public void takeDamage(int damageTaken) {
+
+    println("player took " + damageTaken + " damage");
 
     if (isImmortal) {
 
@@ -119,3 +148,4 @@ class Player extends Mob {
     return true;
   }
 }
+

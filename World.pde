@@ -11,7 +11,7 @@ public class World {
 
   float wallWidth;
 
-  Biome[] biomes = {new Biome(), new HollowBiome()};
+  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome()};
   Biome currentBiome;
   ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
   int switchDepth; //the depth at wich we switch to the next biome in the qeueu
@@ -24,26 +24,42 @@ public class World {
     biomeQueue.add(new Biome());
 
     fillBiomeQueue();
-    switchBiome();
+    switchBiome(0);
   }
 
   public void update(){
   }
 
   public void draw(Camera camera){
-    image(dayNightImage, 0, 0, wallWidth, 1080);
+    pushMatrix(); 
+    scale(1.1, 1.1);
+    image(dayNightImage, -camera.position.x - 1080 * 0.1 , -200, wallWidth, 1080);
+    popMatrix(); 
     //println("map.size(): " + map.size());
   }
 
   //return tile you're currently on
   Tile getTile(float x, float y){
-    ArrayList<Tile> subList = map.get(constrain(floor(y / tileHeight), 0, map.size() - 1)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
-    if(subList.size() == 0){
-      return new Tile(0, 0); //return void tile if there's no tile
+    int yGridPos = floor(y / tileWidth);
+
+    if(yGridPos < 0 || yGridPos > map.size() - 1){
+      return null;
     }
 
-    return subList.get(constrain(floor(x / tileWidth), 0, subList.size() - 1));
+    ArrayList<Tile> subList = map.get(yGridPos); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+
+    // if(subList.size() == 0){
+    //   return null;
+    // }
+
+    int xGridPos = floor(x / tileWidth);
+
+    if(xGridPos < 0 || xGridPos >= subList.size()){
+      return null;
+    }
+
+    return subList.get(xGridPos);
   }
 
   void updateWorldDepth() {
@@ -55,15 +71,16 @@ public class World {
       ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
 
       if(canBiomeSwitch(y)){
-        switchBiome();
+        switchBiome(y);
       }
 
       for(int x = 0; x <= tilesHorizontal; x++){
         Tile tile = currentBiome.getTileToGenerate(x, y);
-        tile.setupCave();
-
+        
         subArray.add(tile);
-        load(tile);
+        load(tile, true);
+
+        tile.setupCave(); //needs to be after load(tile) otherwise shit will get loaded anyway 
       }
 
       map.add(subArray);// add the empty tile-list to the bigger list
@@ -79,16 +96,46 @@ public class World {
     float middleY = y + collider.size.y * 0.5f;
 
     //cardinals
-    surrounding.add(getTile(middleX, middleY - tileHeight));
-    surrounding.add(getTile(middleX, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY));
-    surrounding.add(getTile(middleX + tileWidth, middleY)); 
+    Tile topTile = getTile(middleX, middleY - tileHeight);
+    if(topTile != null){
+      surrounding.add(topTile);
+    }
+
+    Tile botTile = getTile(middleX, middleY + tileHeight);
+    if(botTile != null){
+      surrounding.add(botTile);
+    }
+
+    Tile leftTile = getTile(middleX - tileWidth, middleY);
+    if(leftTile != null){
+      surrounding.add(leftTile);
+    }
+
+    Tile rightTile = getTile(middleX + tileWidth, middleY);
+    if(rightTile != null){
+      surrounding.add(rightTile);
+    }
 
     //diagonals
-    surrounding.add(getTile(middleX + tileWidth, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY + tileHeight));
-    surrounding.add(getTile(middleX - tileWidth, middleY - tileHeight));
-    surrounding.add(getTile(middleX + tileWidth, middleY - tileHeight));
+    Tile botRightTile = getTile(middleX + tileWidth, middleY + tileHeight);
+    if(botRightTile != null){
+      surrounding.add(botRightTile);
+    }
+
+    Tile botLeftTile = getTile(middleX - tileWidth, middleY + tileHeight);
+    if(botLeftTile != null){
+      surrounding.add(botLeftTile);
+    }
+
+    Tile topLeftTile = getTile(middleX - tileWidth, middleY - tileHeight);
+    if(topLeftTile != null){
+      surrounding.add(topLeftTile);
+    }
+
+    Tile topRightTile = getTile(middleX + tileWidth, middleY - tileHeight);
+    if(topRightTile != null){
+      surrounding.add(topRightTile);
+    }
 
     return surrounding;
   }
@@ -130,11 +177,12 @@ public class World {
     return depth > switchDepth;
   }
 
-  void switchBiome(){
+  void switchBiome(int depth){
     if(biomeQueue.size() != 0){
       currentBiome = biomeQueue.get(0);
       switchDepth += currentBiome.length;
       biomeQueue.remove(0);
+      currentBiome.startedAt = depth;
     }
     else{
       fillBiomeQueue();
@@ -208,24 +256,31 @@ public class World {
   }
 
   private Tile convertNameToTile(String stripedObjectName, PVector spawnPos){
+
     switch(stripedObjectName){
 
       case "DestroyedBlock" :
-      Tile destroyedStoneTile = new StoneTile(int(spawnPos.x), int(spawnPos.y));
-      destroyedStoneTile.mine(false);
-      return destroyedStoneTile;
+        Tile destroyedStoneTile = new StoneTile(int(spawnPos.x), int(spawnPos.y));
+        destroyedStoneTile.mine(false);
+        return destroyedStoneTile;
 
       case "WoodPlank" :
-      return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y));
+        return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y));
 
       case "DoorTop" :
-      return new DoorTopTile(int(spawnPos.x), int(spawnPos.y));
+        return new DoorTopTile(int(spawnPos.x), int(spawnPos.y));
 
       case "DoorBot" :
-      return new DoorBotTile(int(spawnPos.x), int(spawnPos.y));
+        return new DoorBotTile(int(spawnPos.x), int(spawnPos.y));
 
       case "Glass" :
-      return new GlassTile(int(spawnPos.x), int(spawnPos.y));
+        return new GlassTile(int(spawnPos.x), int(spawnPos.y));
+      
+      case "Leaf" :
+        return new LeafTile(int(spawnPos.x), int(spawnPos.y));
+        
+      case "Wood" :
+        return new WoodTile(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");
