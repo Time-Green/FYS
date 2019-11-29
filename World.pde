@@ -31,7 +31,10 @@ public class World {
   }
 
   public void draw(Camera camera){
-    image(dayNightImage, 0, -200, wallWidth, width);
+    pushMatrix(); 
+    scale(1.1, 1.1);
+    image(dayNightImage, -camera.position.x - 1080 * 0.1 , -200, wallWidth, 1080);
+    popMatrix(); 
     //println("map.size(): " + map.size());
   }
 
@@ -40,7 +43,7 @@ public class World {
 
     int yGridPos = floor(y / tileWidth);
 
-    if(yGridPos < 0){
+    if(yGridPos < 0 || yGridPos > map.size() - 1){
       return null;
     }
 
