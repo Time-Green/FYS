@@ -4,8 +4,11 @@ class BaseObject {
   protected final float OBJECTSIZE = 40f;
   protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
   protected boolean density = true;
+
   protected boolean loadInBack = false; //true to insert at the front of draw, so player doesn't get loaded behind tiles
   protected boolean movableCollision = false; //do we collide with movables themselves?
+
+  boolean suspended = false; //set to true to stop drawing and updating, practically 'suspending' it outside of the game
 
   float lightningAmount = 255.0f; // the amount this object is lit up (0-255)
   float lightEmitAmount = 0.0f; // the amount of light this object emits

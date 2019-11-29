@@ -9,6 +9,7 @@ class EnemyBomb extends Enemy {
   EnemyBomb(PVector spawnPos){
     super(spawnPos);
     
+    tint(0, 153, 204, 126);
     image = ResourceManager.getImage("BombEnemy");
     this.speed = 2.5f;
   }
@@ -16,10 +17,13 @@ class EnemyBomb extends Enemy {
   void update() {
     super.update();
 
+    
+
     if (isExploding) {
 
       this.speed = 0;
       explosionTimer--;
+      
 
       if (explosionTimer <= 0) {
 
