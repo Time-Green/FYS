@@ -43,7 +43,7 @@ public class World {
 
     int yGridPos = floor(y / tileWidth);
 
-    if(yGridPos < 0){
+    if(yGridPos < 0 || yGridPos > map.size() - 1){
       return null;
     }
 
