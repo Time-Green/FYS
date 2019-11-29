@@ -33,7 +33,7 @@ class WallOfDeath extends Movable {
     super.update();
 
     if(frameCount % 25 == 0){ 
-      //spawnAstroid();  
+      spawnAstroid();  
     }
 
     //velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
