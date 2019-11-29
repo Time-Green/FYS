@@ -8,6 +8,9 @@ public class UIController {
   //Game HUD
   private float hudTextStartX = 90;
 
+  //Achievement icon
+  private float iconFrameSize = 25; 
+
   //Heart
   private float heartWidth = 50;
   private float heartHeight = 50;
@@ -181,6 +184,18 @@ public class UIController {
     text("Press Space to continue", width / 2, height / 2 - 30);
     text("Press Backspace to restart", width / 2, height / 2 + 60);
   }
+
+  // void achievementGet(){
+
+  //   float maxTravelY = height - 20; 
+  //   float frameY = height + 20; 
+
+  //   while(frameY <= maxTravelY){
+  //     fill(0); 
+  //     rect(20, frameY, iconFrameSize, iconFrameSize);
+  //     frameY += 1; 
+  //   }
+  // }
 
   void drawInventory(){
     fill(inventoryColor);
