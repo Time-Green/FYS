@@ -39,30 +39,35 @@ class Mob extends Movable {
 
   public void attemptMine(BaseObject object){
 
-    //ask the tile if they wanna be mined first
-    if(!object.canMine()){
-      return;
-    }
-
-    //simple cooldown check
-    if(millis() < lastMine + miningCooldown){
-      return;
-    }
-    
-    if(hasHeldItem()){
-      Held held = getHeldItem();
-
-      if(!held.canMine(object, this)){
-        return;
+    if(Globals.isInOverWorld){ // In the overworld we disable digging all together. 
+      return; 
+    }else{
+      
+      //ask the tile if they wanna be mined first
+      if(!object.canMine()){
+       return;
       }
 
-      held.onMine(object, this);
-    }
-    else{
-      object.takeDamage(getAttackPower(false)); //FIST MINING
-    }
+      //simple cooldown check
+      if(millis() < lastMine + miningCooldown){
+       return;
+      }
+    
+      if(hasHeldItem()){
+        Held held = getHeldItem();
 
-    lastMine = millis();
+        if(!held.canMine(object, this)){
+          return;
+        }
+
+        held.onMine(object, this);
+      }
+      else{
+        object.takeDamage(getAttackPower(false)); //FIST MINING
+      }
+
+      lastMine = millis();
+    }
   }
 
   public void takeDamage(float damageTaken){

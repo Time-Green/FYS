@@ -11,7 +11,7 @@ public class World {
 
   float wallWidth;
 
-  Biome[] biomes = {new Biome(), new HollowBiome()};
+  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome()};
   Biome currentBiome;
   ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
   int switchDepth; //the depth at wich we switch to the next biome in the qeueu
@@ -24,24 +24,34 @@ public class World {
     biomeQueue.add(new Biome());
 
     fillBiomeQueue();
-    switchBiome();
+    switchBiome(0);
   }
 
   public void update(){
   }
 
   public void draw(Camera camera){
-    image(dayNightImage, 0, -200, wallWidth, 1080);
+    pushMatrix(); 
+    scale(1.1, 1.1);
+    image(dayNightImage, -camera.position.x - 1080 * 0.1 , -200, wallWidth, 1080);
+    popMatrix(); 
     //println("map.size(): " + map.size());
   }
 
   //return tile you're currently on
   Tile getTile(float x, float y){
-    ArrayList<Tile> subList = map.get(floor(y / tileHeight)); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
-    if(subList.size() == 0){
+    int yGridPos = floor(y / tileWidth);
+
+    if(yGridPos < 0 || yGridPos > map.size() - 1){
       return null;
     }
+
+    ArrayList<Tile> subList = map.get(yGridPos); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
+
+    // if(subList.size() == 0){
+    //   return null;
+    // }
 
     int xGridPos = floor(x / tileWidth);
 
@@ -61,7 +71,7 @@ public class World {
       ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
 
       if(canBiomeSwitch(y)){
-        switchBiome();
+        switchBiome(y);
       }
 
       for(int x = 0; x <= tilesHorizontal; x++){
@@ -167,11 +177,12 @@ public class World {
     return depth > switchDepth;
   }
 
-  void switchBiome(){
+  void switchBiome(int depth){
     if(biomeQueue.size() != 0){
       currentBiome = biomeQueue.get(0);
       switchDepth += currentBiome.length;
       biomeQueue.remove(0);
+      currentBiome.startedAt = depth;
     }
     else{
       fillBiomeQueue();
@@ -264,6 +275,12 @@ public class World {
 
       case "Glass" :
         return new GlassTile(int(spawnPos.x), int(spawnPos.y));
+      
+      case "Leaf" :
+        return new LeafTile(int(spawnPos.x), int(spawnPos.y));
+        
+      case "Wood" :
+        return new WoodTile(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");

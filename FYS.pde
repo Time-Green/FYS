@@ -10,6 +10,8 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 //list of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
+DatabaseManager databaseManager = new DatabaseManager();
+
 World world;
 Player player;
 WallOfDeath wallOfDeath;
@@ -22,7 +24,7 @@ int tilesVertical = 50;
 int tileWidth = 50;
 int tileHeight = 50;
 
-int birdCount = 10;
+int birdCount = round(random(15, 25));
 
 boolean firstTime = true;
 boolean firstStart = true;
@@ -60,6 +62,8 @@ void setupGame() {
   camera = new Camera(player);
 
   world.updateWorldDepth();
+
+  world.spawnStructure("Tree", new PVector(10, 6)); 
 
   world.spawnStructure("UndergroundHouse", new PVector(10, 15));
   world.spawnStructure("StarterChest", new PVector(10, 10));
@@ -137,7 +141,7 @@ void handleGameFlow() {
 
       //if we are in the main menu we start the game by pressing enter
       if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
-        startGame();
+        enterOverWorld();
       }
 
     break;
@@ -178,7 +182,15 @@ void handleGameFlow() {
   }
 }
 
+void enterOverWorld(){
+
+  Globals.gamePaused = false;
+  Globals.currentGameState = Globals.GameState.OverWorld;
+   
+}
+
 void startGame() {
+  Globals.isInOverWorld = false;
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
@@ -253,6 +265,9 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 
 void keyPressed(){
   InputHelper.onKeyPressed(keyCode, key);
+  if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
+    startGame(); 
+  }
 }
 
 void keyReleased(){

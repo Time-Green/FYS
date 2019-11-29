@@ -14,7 +14,7 @@ public class Bird extends Mob{
     }
 
     //set spawn position and velocity
-    position.set(random(0, world.getWidth()), random(150, 300));
+    position.set(random(0, world.getWidth()), random(100, 350));
     velocity.set(random(MINSPEED, MAXSPEED), 0);
 
     if(flyingLeft){
@@ -39,7 +39,7 @@ public class Bird extends Mob{
     }
 
     //animation speed based on x velocity
-    animatedImage = new AnimatedImage(frames, 10 - abs(velocity.x), position, flipSpriteHorizontal);
+    animatedImage = new AnimatedImage(frames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
   }
 
   void draw(){
@@ -54,9 +54,14 @@ public class Bird extends Mob{
     }else if(!flyingLeft && position.x > world.getWidth() + 100){
         position.x = -32;
     }
+
+    if(isGrounded){
+      delete(this); 
+    }
   }
 
   void takeDamage(float damageTaken){
     super.takeDamage(damageTaken);
+    gravityForce = 0.5f; 
   }
 }
