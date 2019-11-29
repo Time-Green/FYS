@@ -39,7 +39,7 @@ public class Bird extends Mob{
     }
 
     //animation speed based on x velocity
-    animatedImage = new AnimatedImage(frames, 10 - abs(velocity.x), position, flipSpriteHorizontal);
+    animatedImage = new AnimatedImage(frames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
   }
 
   void draw(){

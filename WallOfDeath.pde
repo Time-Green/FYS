@@ -32,7 +32,8 @@ class WallOfDeath extends Movable {
 
     super.update();
 
-    if(frameCount % 3 == 0){ 
+    if(frameCount % 25 == 0){ 
+
       spawnAstroid();  
     }
 
