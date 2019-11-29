@@ -56,12 +56,12 @@ void draw(){
   if(InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY) || InputHelper.isKeyDown(Globals.DIGKEY)) {
     animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
     animatedImageWalk.draw();
-    println("walk");
+    //println("walk");
   }
   else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {
     animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
     animatedImageAir.draw();
-    println("jump");
+    //println("jump");
   }
   else {
     animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
