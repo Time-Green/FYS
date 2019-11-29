@@ -11,14 +11,8 @@ class Player extends Mob {
 
     position = spawnPosition;
     setMaxHp(100);
-
-<<<<<<< HEAD
     baseDamage = 0.1; //low basedamage without pickaxe
 
-    //PImage[] frames1 = new PImage[3];
-    //PImage[] frames2 = new PImage[3];
-    //PImage[] frames3 = new PImage[3];
-=======
     PImage[] walkFrames = new PImage[3];
     PImage[] idleFrames = new PImage[3];
     PImage[] airFrames = new PImage[3];
@@ -27,7 +21,6 @@ class Player extends Mob {
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
     }
     animatedImageWalk = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
->>>>>>> b1abf6153a613354ed2594c8e78bf14735860953
 
      for(int i = 0; i < 3; i++){
       idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
