@@ -69,6 +69,9 @@ public class UIController {
       break;
       case GamePaused :
         pauseScreen();
+      break;
+      case OverWorld :
+        //do nothing
       break;		
     }
 
