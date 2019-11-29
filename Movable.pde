@@ -28,7 +28,7 @@ class Movable extends BaseObject{
   protected PImage image;
 
   Movable(){
-    super();
+    super(); 	
   }
 
   void specialAdd(){
@@ -171,6 +171,8 @@ class Movable extends BaseObject{
     acceleration.add(new PVector(0, gravityForce));
 
     velocity.add(acceleration);
+    velocity.limit(20);
+
     acceleration.mult(0);
 
     if(velocity.x > maxVelocity.x){
