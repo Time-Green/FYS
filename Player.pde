@@ -66,7 +66,7 @@ void draw(){
   else {
     animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
     animatedImageIdle.draw();
-    println("idle");
+    //println("idle");
   }
 
   for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
