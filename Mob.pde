@@ -38,7 +38,7 @@ class Mob extends Movable {
 
   public void attemptMine(BaseObject object){
 
-    println(Globals.isInOverWorld);
+    //println(Globals.isInOverWorld);
 
     if(Globals.isInOverWorld){ // In the overworld we disable digging all together. 
       return; 

@@ -32,7 +32,7 @@ class Enemy extends Mob {
     handleCollision();
 
     //Can you please stop removing this bool from this script please?
-    if(this.walkLeft){
+    if(this.walkLeft == true){
       this.velocity.set(-speed, 0);
       //Flip the image if we are on the ground
 
