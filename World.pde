@@ -304,6 +304,10 @@ public class World {
         load(new EnemyBomb(spawnWorldPos));
       break;
 
+      case "ChestStart" :
+        load(new StarterChest(), spawnWorldPos);
+      break;
+
       default :
         println("ERROR: structure object '" + stripedObjectName + "' not set up or not found!");
       break;	

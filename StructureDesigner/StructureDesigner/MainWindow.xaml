@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:StructureDesigner"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Structure Designer" Height="720" Width="1280">
+        Title="Structure Designer" Height="720" Width="1280" MouseWheel="MainWindow_OnMouseWheel" KeyDown="MetroWindow_KeyDown">
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="260px"/>
         </Grid.ColumnDefinitions>
 
-        <Canvas x:Name="Canvas" Background="#2C2F33" Grid.Column="0" AllowDrop="True" MouseDown="Canvas_OnMouseDown" MouseUp="Canvas_OnMouseUp" MouseMove="Canvas_OnMouseMove" MouseWheel="Canvas_OnMouseWheel"/>
+        <Canvas x:Name="Canvas" Background="#2C2F33" Grid.Column="0" AllowDrop="True" MouseDown="Canvas_OnMouseDown" MouseUp="Canvas_OnMouseUp" MouseMove="Canvas_OnMouseMove"/>
 
         <Grid Grid.Column="1" Background="#23272A">
             <Grid.RowDefinitions>

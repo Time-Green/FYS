@@ -1,10 +1,22 @@
 class Item extends PickUp{
   int throwSpeed = 50; //throw speed, for when you use it
+  Mob thrower; //whoever threw us, if we're even throwable
 
-  Mob thrower; //wheover threw us, if we're even throwable
+  float cooldown = 0;
+  float takeAfter = 300; //time till we can pick stuff up after throwing them
 
   Item(){
     image = ResourceManager.getImage("DiamondPickUp"); 
+  }
+
+  void update(){
+    super.update();
+
+    if(cooldown != 0 && cooldown < millis()){ //I dislike needing this, but there really isnt another way me thinks
+      canTake = true;
+      thrower = null;
+      cooldown = 0;
+    }
   }
 
   boolean canCollideWith(BaseObject baseObject){
@@ -61,6 +73,7 @@ class Item extends PickUp{
     }
 
     canTake = false;
+    canTakeAfter(takeAfter);
     thrower = mob;
   }
 
@@ -70,5 +83,9 @@ class Item extends PickUp{
 
   void drawOnPlayer(Player mob){
 
+  }
+
+  void canTakeAfter(float timer){
+    cooldown = millis() + timer;
   }
 }

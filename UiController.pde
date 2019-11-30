@@ -4,6 +4,7 @@ public class UIController {
   private color titleColor = #FA3535;
   private color titleBackground = #FFA500;
   private color inventoryColor = #FBB65E;
+  private color inventorySelectedColor = #56BACF;
 
   //Game HUD
   private float hudTextStartX = 90;
@@ -195,8 +196,14 @@ public class UIController {
   // }
 
   void drawInventory(){
-    fill(inventoryColor);
+    
     for (int i = 0; i < player.maxInventory; i++) {
+      if(i == player.selectedSlot - 1){
+        fill(inventorySelectedColor);
+      }
+      else{
+        fill(inventoryColor);
+      }
       //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
       rect(width * 0.95 - inventorySize * i, height * 0.9, inventorySize, inventorySize);
     }

@@ -13,11 +13,12 @@ class Mob extends Movable {
   //Mining
   int miningCooldown = 1; //cooldown in millis
   int lastMine;
-  int baseDamage = 1;
+  float baseDamage = 1;
 
   //Inventory
   ArrayList<Item> inventory = new ArrayList<Item>();
-  int maxInventory = 2;
+  int selectedSlot = 1; //the selected slot. we'll always use this one if we can
+  int maxInventory = 5;
   int lastUse;
   int useCooldown = 100;
 
@@ -38,38 +39,35 @@ class Mob extends Movable {
 
   public void attemptMine(BaseObject object){
 
-    //println(Globals.isInOverWorld);
-
     if(Globals.isInOverWorld){ // In the overworld we disable digging all together. 
       return; 
-    } 
-    else
-    {
-    //ask the tile if they wanna be mined first
-    if(!object.canMine()){
-      return;
-    }
-
-    //simple cooldown check
-    if(millis() < lastMine + miningCooldown){
-      return;
-    }
-    
-    if(hasHeldItem()){
-      Held held = getHeldItem();
-
-      if(!held.canMine(object, this)){
-        return;
+    }else{
+      
+      //ask the tile if they wanna be mined first
+      if(!object.canMine()){
+       return;
       }
 
-      held.onMine(object, this);
-    }
-    else{
-      object.takeDamage(getAttackPower(false)); //FIST MINING
-    }
+      //simple cooldown check
+      if(millis() < lastMine + miningCooldown){
+       return;
+      }
+    
+      if(hasHeldItem()){
+        Held held = getHeldItem();
 
-    lastMine = millis();
-  }
+        if(!held.canMine(object, this)){
+          return;
+        }
+
+        held.onMine(object, this);
+      }
+      else{
+        object.takeDamage(getAttackPower(false)); //FIST MINING
+      }
+
+      lastMine = millis();
+    }
   }
 
   public void takeDamage(float damageTaken){
@@ -112,6 +110,9 @@ class Mob extends Movable {
   }
 
   boolean canAddToInventory(Item item){
+    if(inventory.contains(item)){
+      return false;
+    }
     return inventory.size() < maxInventory;
   }
 
@@ -129,6 +130,13 @@ class Mob extends Movable {
     }
   }
 
+  void switchInventory(){
+    selectedSlot++;
+    if(selectedSlot > maxInventory){
+      selectedSlot = 1;
+    }
+  }
+
   void removeFromInventory(Item item){
     inventory.remove(item);
   }
@@ -142,6 +150,13 @@ class Mob extends Movable {
   }
 
   Held getHeldItem(){
+    if(inventory.size() >= selectedSlot){
+      Item item = inventory.get(selectedSlot - 1);
+      if(item instanceof Held){
+        return (Held) inventory.get(selectedSlot - 1);
+      }
+    }
+
     for(Item item : inventory){
       if(item instanceof Held){
         return (Held)item;
