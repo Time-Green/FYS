@@ -64,8 +64,6 @@ void setupGame() {
   world.updateWorldDepth();
 
   world.spawnStructure("Tree", new PVector(10, 6)); 
-
-  world.spawnStructure("UndergroundHouse", new PVector(10, 15));
   world.spawnStructure("StarterChest", new PVector(10, 10));
 }
 
