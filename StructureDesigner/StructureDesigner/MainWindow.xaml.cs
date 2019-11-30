@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -23,10 +22,14 @@ namespace StructureDesigner
         private const int EditorGridWidth = 50;
         private const int EditorGridHeight = 100;
 
-        private readonly List<Image[,]> _layers = new List<Image[,]>();
+        private int _undoIndex;
+        private readonly List<UndoAction> _undoActions = new List<UndoAction>();
+
+        private List<Image[,]> _layers = new List<Image[,]>();
         private int _selectedLayer;
         private string _fysDataDirectory;
         private bool _isMouseDownOnCanvas;
+        private string _currentProjectName;
 
         private readonly ScaleTransform _scaleTransform = new ScaleTransform();
 
@@ -40,30 +43,38 @@ namespace StructureDesigner
             Canvas.Width = EditorGridWidth * TileSize;
             Canvas.Height = EditorGridHeight * TileSize;
 
-            AddLayers();
+            AddLayers(true);
             AddGridLines();
             LoadTiles();
+
+            SaveUndoAction(false);
         }
 
-        private void AddLayers()
+        private void AddLayers(bool updateLayerView)
         {
-            var gridView = new GridView();
-            LayerView.View = gridView;
-
-            gridView.Columns.Add(new GridViewColumn
+            if (updateLayerView)
             {
-                Header = "Layer"
-            });
+                var gridView = new GridView();
+                LayerView.View = gridView;
+
+                gridView.Columns.Add(new GridViewColumn
+                {
+                    Header = "Layer"
+                });
+            }
 
             for (var i = 0; i < LayerAmount; i++)
             {
-                if (i == 0)
+                if (updateLayerView)
                 {
-                    LayerView.Items.Add("Tiles");
-                }
-                else
-                {
-                    LayerView.Items.Add("Decoration " + i);
+                    if (i == 0)
+                    {
+                        LayerView.Items.Add("Tiles");
+                    }
+                    else
+                    {
+                        LayerView.Items.Add("Decoration " + i);
+                    }
                 }
 
                 var layerArray = new Image[EditorGridWidth, EditorGridHeight];
@@ -187,6 +198,8 @@ namespace StructureDesigner
         private void Canvas_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             _isMouseDownOnCanvas = false;
+
+            SaveUndoAction(true);
         }
 
         private void Canvas_OnMouseMove(object sender, MouseEventArgs e)
@@ -209,7 +222,7 @@ namespace StructureDesigner
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
-                
+                //TODO: dragging
             }
         }
 
@@ -237,15 +250,15 @@ namespace StructureDesigner
 
             Canvas.Children.Add(img);
 
-            AddToGrid(img, gridPoint);
+            AddToGrid(img, gridPoint, layer);
         }
 
-        private void AddToGrid(Image img, Point gridPoint)
+        private void AddToGrid(Image img, Point gridPoint, int layer)
         {
             Canvas.SetLeft(img, gridPoint.X);
             Canvas.SetTop(img, gridPoint.Y);
 
-            _layers[_selectedLayer][(int)gridPoint.X / TileSize, (int)gridPoint.Y / TileSize] = img;
+            _layers[layer][(int)gridPoint.X / TileSize, (int)gridPoint.Y / TileSize] = img;
         }
 
         private static Point GetGridPos(Point dropPoint)
@@ -272,16 +285,35 @@ namespace StructureDesigner
             _selectedLayer = LayerView.SelectedIndex;
         }
 
-        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = await this.ShowInputAsync("Enter name", "Enter a name to save the structure as");
+            DoSave();
+        }
+
+        private async void DoSave()
+        {
+            //if we are working on an existing structure, don't ask for a name again
+            if (!string.IsNullOrWhiteSpace(_currentProjectName))
+            {
+                Save(_currentProjectName);
+                MessageBox.Show("Structure saved as: " + _currentProjectName, "Saved");
+                return;
+            }
+
+            var result = await this.ShowInputAsync("Enter name", "Enter a name for your amazing structure");
 
             if (!string.IsNullOrWhiteSpace(result))
             {
                 Save(result);
             }
         }
+
         private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            DoLoad();
+        }
+
+        private void DoLoad()
         {
             var fileDialog = new OpenFileDialog
             {
@@ -301,6 +333,8 @@ namespace StructureDesigner
             var structure = JsonConvert.DeserializeObject<List<List<string>>>(data);
 
             var layerIndex = 0;
+
+            ClearAllTiles();
 
             foreach (var layer in structure)
             {
@@ -324,6 +358,17 @@ namespace StructureDesigner
 
                 layerIndex++;
             }
+
+            _currentProjectName = Path.GetFileNameWithoutExtension(fileDialog.FileName);
+            Title = $"Structure Designer - {_currentProjectName}";
+        }
+
+        private void ClearAllTiles()
+        {
+            Canvas.Children.Clear();
+            _layers.Clear();
+            AddLayers(false);
+            AddGridLines();
         }
 
         private void Save(string saveName)
@@ -397,9 +442,62 @@ namespace StructureDesigner
             var saveString = JsonConvert.SerializeObject(saveList, Formatting.Indented);
 
             File.WriteAllText(Path.Combine(_fysDataDirectory, "Structures", saveName + ".json"), saveString);
+
+            Title = $"Structure Designer - {_currentProjectName}";
         }
 
-        private void Canvas_OnMouseWheel(object sender, MouseWheelEventArgs e)
+        private void SaveUndoAction(bool checkForSelectedImage)
+        {
+            if (checkForSelectedImage && _selectedImage == null)
+            {
+                return;
+            }
+
+            var undoAction = new UndoAction(TileSize, EditorGridWidth, EditorGridHeight, _layers);
+
+            _undoActions.Add(undoAction);
+
+            _undoIndex++;
+        }
+
+        private void Undo()
+        {
+            if (_undoActions.Count <= 1)
+            {
+                return;
+            }
+
+            _undoIndex--;
+
+            var undoAction = _undoActions[_undoIndex - 1];
+
+            ClearAllTiles();
+
+            var layerCount = 0;
+
+            foreach (var layer in undoAction.Layers)
+            {
+                for (var y = 0; y < EditorGridHeight; y++)
+                {
+                    for (var x = 0; x < EditorGridWidth; x++)
+                    {
+                        if (layer[x, y] != null)
+                        {
+                            AddTile(new Point(x * TileSize, y * TileSize), layer[x, y].Source, layerCount);
+                        }
+                    }
+                }
+
+                layerCount++;
+            }
+
+            _undoActions.RemoveAt(_undoActions.IndexOf(undoAction) + 1);
+
+            //_layers = undoAction.Layers;
+            //_undoIndex = _undoActions.Count;
+        }
+
+        private void MainWindow_OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
             {
@@ -410,6 +508,22 @@ namespace StructureDesigner
             {
                 _scaleTransform.ScaleX /= 1.1f;
                 _scaleTransform.ScaleY /= 1.1f;
+            }
+        }
+
+        private void MetroWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z)
+            {
+                Undo();
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                DoSave();
+            }
+            else if(Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.L)
+            {
+                DoLoad();
             }
         }
     }
