@@ -23,9 +23,9 @@ namespace StructureDesigner
         private const int EditorGridHeight = 100;
 
         private int _undoIndex;
-        private readonly List<UndoAction> _undoActions = new List<UndoAction>();
+        private readonly List<State> _states = new List<State>();
 
-        private List<Image[,]> _layers = new List<Image[,]>();
+        private readonly List<Image[,]> _layers = new List<Image[,]>();
         private int _selectedLayer;
         private string _fysDataDirectory;
         private bool _isMouseDownOnCanvas;
@@ -47,7 +47,7 @@ namespace StructureDesigner
             AddGridLines();
             LoadTiles();
 
-            SaveUndoAction(false);
+            SaveState(false);
         }
 
         private void AddLayers(bool updateLayerView)
@@ -199,7 +199,7 @@ namespace StructureDesigner
         {
             _isMouseDownOnCanvas = false;
 
-            SaveUndoAction(true);
+            SaveState(true);
         }
 
         private void Canvas_OnMouseMove(object sender, MouseEventArgs e)
@@ -446,36 +446,57 @@ namespace StructureDesigner
             Title = $"Structure Designer - {_currentProjectName}";
         }
 
-        private void SaveUndoAction(bool checkForSelectedImage)
+        private void SaveState(bool checkForSelectedImage)
         {
             if (checkForSelectedImage && _selectedImage == null)
             {
                 return;
             }
 
-            var undoAction = new UndoAction(TileSize, EditorGridWidth, EditorGridHeight, _layers);
+            var undoAction = new State(TileSize, EditorGridWidth, EditorGridHeight, _layers);
 
-            _undoActions.Add(undoAction);
+            var amountToRemove = _states.Count - _undoIndex;
+            _states.RemoveRange(_undoIndex, amountToRemove);
+            _states.Add(undoAction);
 
             _undoIndex++;
         }
 
         private void Undo()
         {
-            if (_undoActions.Count <= 1)
+            if (_states.Count <= 1)
             {
                 return;
             }
 
             _undoIndex--;
 
-            var undoAction = _undoActions[_undoIndex - 1];
+            var stateToSet = _states[_undoIndex - 1];
 
+            SetState(stateToSet);
+        }
+
+        private void Redo()
+        {
+            if (_undoIndex >= _states.Count)
+            {
+                return;
+            }
+
+            var stateToSet = _states[_undoIndex];
+
+            SetState(stateToSet);
+
+            _undoIndex++;
+        }
+
+        private void SetState(State state)
+        {
             ClearAllTiles();
 
             var layerCount = 0;
 
-            foreach (var layer in undoAction.Layers)
+            foreach (var layer in state.Layers)
             {
                 for (var y = 0; y < EditorGridHeight; y++)
                 {
@@ -490,11 +511,6 @@ namespace StructureDesigner
 
                 layerCount++;
             }
-
-            _undoActions.RemoveAt(_undoActions.IndexOf(undoAction) + 1);
-
-            //_layers = undoAction.Layers;
-            //_undoIndex = _undoActions.Count;
         }
 
         private void MainWindow_OnMouseWheel(object sender, MouseWheelEventArgs e)
@@ -516,6 +532,10 @@ namespace StructureDesigner
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z)
             {
                 Undo();
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Y)
+            {
+                Redo();
             }
             else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
             {

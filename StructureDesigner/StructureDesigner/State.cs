@@ -3,11 +3,11 @@ using System.Windows.Controls;
 
 namespace StructureDesigner
 {
-    public class UndoAction
+    public class State
     {
         public readonly List<Image[,]> Layers = new List<Image[,]>();
 
-        public UndoAction(int tileSize, int editorGridWidth, int editorGridHeight, List<Image[,]> layers)
+        public State(int tileSize, int editorGridWidth, int editorGridHeight, List<Image[,]> layers)
         {
             //copy data
             foreach (var layer in layers)
