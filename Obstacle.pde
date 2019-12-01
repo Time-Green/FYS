@@ -5,7 +5,4 @@ class Obstacle extends Movable{
     anchored = false;
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

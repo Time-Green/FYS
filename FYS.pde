@@ -265,7 +265,7 @@ void keyPressed(){
   InputHelper.onKeyPressed(keyCode, key);
   if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
     startGame(); 
-    load(new EnemyBomb(new PVector(1000, 500)));
+    //load(new EnemyShocker(new PVector(1000, 500)));
   }
 }
 

@@ -241,10 +241,6 @@ class Movable extends BaseObject{
     return colliders;
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
-
   float getDepth(){
     return position.y;
   }

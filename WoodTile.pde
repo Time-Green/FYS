@@ -9,7 +9,4 @@ public class WoodTile extends Tile{
       destroyedImage = null;  
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

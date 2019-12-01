@@ -12,15 +12,4 @@ public class ScorePickUp extends PickUp{
     super.pickedUp(mob);
   }
 
-  void draw(){
-    super.draw();
-  }
-
-  void update(){
-    super.update();
-  }
-
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

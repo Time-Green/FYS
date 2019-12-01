@@ -9,7 +9,4 @@ public class GrassTile extends Tile{
     setupLightSource(this, 600f, 0.03f);
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

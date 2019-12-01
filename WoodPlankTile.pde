@@ -7,7 +7,4 @@ public class WoodPlankTile extends Tile{
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5))); // replace this!!
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

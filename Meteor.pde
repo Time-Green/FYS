@@ -36,7 +36,4 @@ class Meteor extends Movable{
     }
   }
 
-  void draw(){
-    super.draw(); 
-  }
 }

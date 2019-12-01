@@ -6,12 +6,4 @@ public class MysteryTile extends PowerUpTile {
     image = ResourceManager.getImage("MysteryBlock");
   }
 
-  void mine(){
-    super.mine(); 
-  }
-
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
-
 }

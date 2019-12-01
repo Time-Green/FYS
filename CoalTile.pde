@@ -10,7 +10,4 @@ public class CoalTile extends ResourceTile{
     pickUpImage = ResourceManager.getImage("CoalPickUp");
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

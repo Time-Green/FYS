@@ -64,7 +64,4 @@ class Enemy extends Mob {
     }
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

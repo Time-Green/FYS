@@ -5,13 +5,6 @@ public class PickUp extends Movable{
   PickUp(){
     size.set(30, 30);
   }
-  void draw(){
-    super.draw();
-  }
-
-  void update(){
-    super.update();
-  }
 
   void pickedUp(Mob mob){
     delete(this);
@@ -36,7 +29,4 @@ public class PickUp extends Movable{
     return super.canCollideWith(object);
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

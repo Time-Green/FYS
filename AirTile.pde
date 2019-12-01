@@ -6,8 +6,4 @@ class AirTile extends Tile{
     density = false;
     destroyedImage = null;
   }
-
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

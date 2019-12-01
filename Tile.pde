@@ -55,10 +55,6 @@ class Tile extends BaseObject{
     tileList.remove(this);
   }
 
-  void update(){
-    super.update();
-  }
-
   void draw(){
     if(!inCameraView()){
       return;

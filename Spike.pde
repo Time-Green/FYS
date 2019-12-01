@@ -13,7 +13,4 @@ class Spike extends Obstacle{
     }
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

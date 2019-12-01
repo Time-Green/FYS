@@ -16,20 +16,12 @@ public class Torch extends Movable{
     setupLightSource(this, startingBrightness, 1f);
   }
 
-  public void draw(){
-    super.draw();
-  }
-
   public void update(){
     super.update();
 
     //light flikker
     lightEmitAmount += random(-5f, 5f);
     lightEmitAmount = constrain(lightEmitAmount, minBrightness, maxBrightness);
-  }
-
-  void destroyed(){
-    super.destroyed();
   }
 
   void takeDamage(float damageTaken){

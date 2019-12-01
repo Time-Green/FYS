@@ -10,7 +10,4 @@ class EnemyGhost extends Enemy {
     setupLightSource(this, 125f, 1f);
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

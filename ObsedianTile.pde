@@ -9,10 +9,6 @@ public class ObsedianTile extends Tile{
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
-  void update(){
-    super.update();
-  }
-
   void takeDamage(float damageTaken){
     super.takeDamage(damageTaken);
     

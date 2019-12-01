@@ -42,7 +42,9 @@ class EnemyBomb extends Enemy {
   }
 
   void draw() {
+    //Normal animation
     if (!isExploding) super.draw();
+    //Explode animation
     else explosionSequence.draw();
   }
 
@@ -56,7 +58,4 @@ class EnemyBomb extends Enemy {
     }
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

@@ -5,6 +5,7 @@ class EnemyShocker extends Enemy{
 
     image = ResourceManager.getImage("ShockEnemy");
   }
+
 }
 
 

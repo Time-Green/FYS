@@ -123,7 +123,5 @@ class WallOfDeath extends Movable {
     }
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
+
 }

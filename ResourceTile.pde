@@ -8,9 +8,7 @@ public class ResourceTile extends Tile{
 		super(x, y);
 	}
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
+
 
   void mine(){
     super.mine(true);

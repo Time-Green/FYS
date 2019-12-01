@@ -52,7 +52,4 @@ class EnemyDigger extends Enemy {
     }
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

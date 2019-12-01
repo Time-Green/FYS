@@ -10,7 +10,4 @@ public class IronTile extends ResourceTile{
     pickUpImage = ResourceManager.getImage("IronPickUp");
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

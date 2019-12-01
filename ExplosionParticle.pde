@@ -18,10 +18,6 @@ public class ExplosionParticle extends BaseParticle{
     updateSize();
   }
 
-  void draw(){
-    super.draw();
-  }
-
   private void updateSize(){
     size -= sizeDegrade;
     

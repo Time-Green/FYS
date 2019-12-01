@@ -9,7 +9,4 @@ public class LeafTile extends Tile{
       destroyedImage = null;  
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

@@ -8,8 +8,5 @@ public class DirtTile extends Tile{
     image = ResourceManager.getImage("DirtBlock");
     breakSound = ResourceManager.getSound("DirtBreak"); 
   }
-  
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
+
 }

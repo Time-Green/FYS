@@ -10,7 +10,4 @@ public class DiamondTile extends ResourceTile{
     pickUpImage = ResourceManager.getImage("DiamondPickUp");
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }

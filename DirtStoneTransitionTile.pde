@@ -6,8 +6,5 @@ public class DirtStoneTransitionTile extends Tile{
     image = ResourceManager.getImage("MossBlock");
     breakSound = ResourceManager.getSound("DirtBreak");
   }
-  
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
+
 }

@@ -15,13 +15,5 @@ public class ExplosionParticleSystem extends BaseParticleSystem {
         load(particle);
     }
   }
-  
-  void update(){
-    super.update();
-  }
-
-  void draw(){
-    super.draw();
-  }
 
 }

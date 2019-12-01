@@ -10,7 +10,4 @@ public class IceTile extends ResourceTile{
     pickUpImage = ResourceManager.getImage("GoldPickUp");
   }
 
-  void takeDamage(float damageTaken){
-    super.takeDamage(damageTaken);
-  }
 }
