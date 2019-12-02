@@ -96,6 +96,7 @@ void draw() {
       item.drawOnPlayer(this);
     }
   }
+}
 
   void doPlayerMovement() {
 
