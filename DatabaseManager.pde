@@ -39,24 +39,26 @@ public class DatabaseManager{
     if(userExists(userName)){
       return getUser(userName);
     }else{
-      return createUser(userName);
+      return createUser(userName, false);
     }
   }
 
-  public DbUser createUser(String userName){
+  public DbUser createUser(String userName, boolean checkForUserExists){
 
-    if(userExists(userName)){
-      println("ERROR: user '" + userName + "' already exists in the database!");
-      return null;
+    if(checkForUserExists){
+      if(userExists(userName)){
+        println("ERROR: user '" + userName + "' already exists in the database!");
+        return null;
+      }
     }
 
     final String NEW_ID_COLUMN = "id";
 
-    JSONArray result = doDatabaseRequest("INSERT INTO User (`username`) VALUES ('" + userName + "');SELECT LAST_INSERT_ID() AS " + NEW_ID_COLUMN + ";");
+    JSONArray result = doDatabaseRequest("INSERT INTO User (%60username%60) VALUES ('" + userName + "')");
 
     if(result.size() == 1){
 
-      int newId = result.getJSONObject(0).getInt(NEW_ID_COLUMN);
+      int newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
 
       return getUser(newId);
     }else{
@@ -77,7 +79,7 @@ public class DatabaseManager{
 
   public DbUser getUser(String userName){
 
-    JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE username = " + userName);
+    JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE username = '" + userName + "'");
 
     if(result.size() == 1){
       return buildUser(result.getJSONObject(0));
