@@ -3,6 +3,7 @@ class Player extends Mob {
   AnimatedImage animatedImageWalk;
   AnimatedImage animatedImageIdle;
   AnimatedImage animatedImageAir;
+  AnimatedImage animatedImageMine;
   UIController ui;
 
   PVector spawnPosition = new PVector(1200, 500);
@@ -17,6 +18,7 @@ class Player extends Mob {
     PImage[] walkFrames = new PImage[3];
     PImage[] idleFrames = new PImage[3];
     PImage[] airFrames = new PImage[3];
+    PImage[] mineFrames = new PImage[3];
  
     for(int i = 0; i < 3; i++){
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
@@ -33,11 +35,10 @@ class Player extends Mob {
     }
     animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    //for (int i = 0; i < 3; i++) {
-    //  frames[i] = ResourceManager.getImage("PlayerDig" + i);
-    //}
-
-
+    for(int i = 0; i < 3; i++){
+      mineFrames[i] = ResourceManager.getImage("PlayerMine" + i); 
+    }
+    animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, 400f, 1f);
   }
@@ -55,10 +56,15 @@ class Player extends Mob {
 
 void draw(){
 
-  if(InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY) || InputHelper.isKeyDown(Globals.DIGKEY)) {
+  if(InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) {
     animatedImageWalk.flipSpriteHorizontal = flipSpriteHorizontal;
     animatedImageWalk.draw();
     //println("walk");
+  }
+  else if(InputHelper.isKeyDown(Globals.DIGKEY)) {
+    animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
+    animatedImageMine.draw();
+    //println("mine");
   }
   else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {
     animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;

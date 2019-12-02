@@ -28,7 +28,6 @@ class Chest extends Obstacle {
         switch(randomKey){
             case 1:
                 newContents.add(load(new Pickaxe(), new PVector(200, 200)));
-                break;
             case 2:
                 newContents.add(load(new RelicShard(), new PVector(200, 200)));
                 break;
