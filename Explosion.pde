@@ -31,7 +31,7 @@ class Explosion extends BaseObject{
 
     //play sound
     explosionSound.stop();
-    //explosionSound.play();
+    explosionSound.play();
   }
 
   void explode(){

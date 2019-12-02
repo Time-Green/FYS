@@ -124,7 +124,7 @@ class Tile extends BaseObject{
 
   private void playBreakSound(){
     breakSound.stop();
-    //breakSound.play();
+    breakSound.play();
   }
 
   void setMaxHp(float hpToSet){
