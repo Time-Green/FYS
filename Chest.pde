@@ -19,15 +19,17 @@ class Chest extends Obstacle {
     void populateContents(){ //only load childtypes of Movable
         ArrayList<BaseObject> newContents = new ArrayList<BaseObject>();
 
-        int randomKey = int(random(0));
+        int randomKey = int(random(1, 2));
 
         if(forcedKey >= 0){
             randomKey = forcedKey;
         }
 
         switch(randomKey){
-            case 0:
+            case 1:
                 newContents.add(load(new Pickaxe(), new PVector(200, 200)));
+            case 2:
+                newContents.add(load(new RelicShard(), new PVector(200, 200)));
                 break;
         }
 
