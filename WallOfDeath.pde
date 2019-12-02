@@ -8,13 +8,15 @@ class WallOfDeath extends Movable {
 
   private color wallColor = #FF8C33;
 
+  private float bufferZone; 
+
   private final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
 
   WallOfDeath(float wallWidth){
 
     //velocity.set(0, moveSpeed);
     size.set(wallWidth, tileHeight * 2);
-    position.set(0, -size.y - wallYOffset);
+    position.set(0, player.position.y + -size.y - wallYOffset); // Clean-up wall is at a fixed position relative to the player (saves frames)
 
     //for debug only, Remove this line of code when puplishing
     collisionEnabled = false;
@@ -26,14 +28,21 @@ class WallOfDeath extends Movable {
   
   void update(){
 
-    if (Globals.gamePaused || Globals.isInOverWorld){
+    if (Globals.gamePaused || Globals.isInOverWorld)
+    {
       return;
     }
 
     super.update();
 
-    if(frameCount % 25 == 0) { 
+    if(!Globals.isInOverWorld && player != null)
+    {
+      bufferZone = player.position.y - position.y; 
+      println(bufferZone); 
+    }
 
+    if(random(50 + bufferZone * 0.01) > 50)
+    {       
       spawnAstroid();  
     }
 
@@ -44,9 +53,9 @@ class WallOfDeath extends Movable {
   }
 
   void draw(){
-    fill(wallColor);
-    rect(position.x, position.y, size.x, size.y);
-    fill(255);
+    // fill(wallColor);
+    // rect(position.x, position.y, size.x, size.y);
+    // fill(255);
   }
 
   // If the WoD hits the player, the game is paused. 

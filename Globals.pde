@@ -15,7 +15,7 @@ static class Globals{
 
   //Gamestate
   static boolean gamePaused = true;
-  static boolean isInOverWorld = true; 
+  static boolean isInOverWorld = true;  
   static GameState currentGameState = GameState.MainMenu;
 
   static enum GameState{
