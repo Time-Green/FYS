@@ -89,7 +89,14 @@ class Tile extends BaseObject{
     hp -= damageTaken;
     
     if (hp <= 0) {
-      mine(playBreakSound);
+      if(this instanceof ResourceTile){
+
+        ResourceTile thisTile = (ResourceTile) this;
+
+        thisTile.mine(playBreakSound, false);
+      }else{
+        mine(playBreakSound);
+      } 
     }
   }
 
