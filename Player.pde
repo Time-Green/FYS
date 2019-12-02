@@ -10,7 +10,7 @@ class Player extends Mob {
   private AnimatedImage shockedCycle;
   private final int SHOCKFRAMES = 2;
   AnimatedImage animatedImageMine;
-  
+
   //Status effects
   public float stunTimer;
 
@@ -30,25 +30,25 @@ class Player extends Mob {
     PImage[] airFrames = new PImage[AIRFRAMES];
     PImage[] mineFrames = new PImage[3];
     PImage[] shockFrames = new PImage[SHOCKFRAMES];
- 
-    for(int i = 0; i < WALKFRAMES; i++)
+
+    for (int i = 0; i < WALKFRAMES; i++)
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
     walkCycle = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    for(int i = 0; i < IDLEFRAMES; i++)
+    for (int i = 0; i < IDLEFRAMES; i++)
       idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
     animatedImageIdle = new AnimatedImage(idleFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
-      
-    for(int i = 0; i < AIRFRAMES; i++)
+
+    for (int i = 0; i < AIRFRAMES; i++)
       airFrames[i] = ResourceManager.getImage("PlayerAir" + i); 
     animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
-    
-    for(int i = 0; i < SHOCKFRAMES; i++)
+
+    for (int i = 0; i < SHOCKFRAMES; i++)
       shockFrames[i] = ResourceManager.getImage("PlayerShock" + i); 
     shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    for(int i = 0; i < 3; i++){
-      mineFrames[i] = ResourceManager.getImage("PlayerMine" + i); 
+    for (int i = 0; i < 3; i++) {
+      mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
     }
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
@@ -68,7 +68,7 @@ class Player extends Mob {
       doPlayerMovement();
   }
 
-void draw(){
+void draw() {
 
   //Animation
   if (stunTimer > 0f) {//Am I stunned?
@@ -91,13 +91,11 @@ void draw(){
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
     }
-  
-  }
 
-  for(Item item : inventory){ //player only, because we'll never bother adding a holding sprite for every mob 
-    item.drawOnPlayer(this);
+    for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
+      item.drawOnPlayer(this);
+    }
   }
-}
 
   void doPlayerMovement() {
 
@@ -134,7 +132,7 @@ void draw(){
       load(new Dynamite(), new PVector(position.x + 100, position.y));
     }
 
-    if(InputHelper.isKeyDown('h')) {
+    if (InputHelper.isKeyDown('h')) {
       load(new Chest(), new PVector(position.x + 100, position.y));
       InputHelper.onKeyReleased(9999999, 'h'); //ssssh
     }
@@ -143,8 +141,6 @@ void draw(){
       switchInventory();
       InputHelper.onKeyReleased(9999999, 'z'); //ssssh
     }
-
-
   }
 
   void addScore(int scoreToAdd) {
@@ -184,9 +180,7 @@ void draw(){
     return true;
   }
 
-  public boolean canPlayerInteract(){
+  public boolean canPlayerInteract() {
     return true;
   }
-
 }
-
