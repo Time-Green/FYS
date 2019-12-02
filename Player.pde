@@ -3,6 +3,7 @@ class Player extends Mob {
   AnimatedImage animatedImageWalk;
   AnimatedImage animatedImageIdle;
   AnimatedImage animatedImageAir;
+  UIController ui;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
@@ -127,7 +128,7 @@ void draw(){
     score += scoreToAdd;
   }
 
-  public void takeDamage(int damageTaken) {
+  public void takeDamage(float damageTaken) {
 
     println("player took " + damageTaken + " damage");
 
@@ -141,7 +142,7 @@ void draw(){
       CameraShaker.induceStress(0.6f);
     }
 
-    //needs to happan after camera shake because else 'isHurt' will be always true
+    //needs to happen after camera shake because else 'isHurt' will be always true
     super.takeDamage(damageTaken);
   }
 
