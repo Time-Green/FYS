@@ -38,10 +38,10 @@ class WallOfDeath extends Movable {
     if(!Globals.isInOverWorld && player != null)
     {
       bufferZone = player.position.y - position.y; 
-      println(bufferZone); 
+      //println(bufferZone); 
     }
 
-    if(random(50 + bufferZone * 0.01) > 50)
+    if(random(1 + (bufferZone + player.getDepth() * 0.1) * 0.0001) > 1)
     {       
       spawnAstroid();  
     }
