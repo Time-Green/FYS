@@ -31,6 +31,14 @@
             </axis>
             <axis index="2">
                 <throttle>normal</throttle>
+                <axisbutton index="1">
+                    <slots>
+                        <slot>
+                            <code>0x20</code>
+                            <mode>keyboard</mode>
+                        </slot>
+                    </slots>
+                </axisbutton>
                 <axisbutton index="2">
                     <slots>
                         <slot>

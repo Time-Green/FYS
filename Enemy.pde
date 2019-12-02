@@ -1,5 +1,7 @@
 class Enemy extends Mob {
 
+  protected float playerDamage = 5;
+
   public Enemy(PVector spawnPos) {
     this.speed = 5f;
 
@@ -60,7 +62,7 @@ class Enemy extends Mob {
   protected void handleCollision(){
     
     if (CollisionHelper.rectRect(position, size, player.position, player.size)){
-      player.takeDamage(getAttackPower(true));
+      player.takeDamage(playerDamage);
     }
   }
 
