@@ -31,6 +31,14 @@
             </axis>
             <axis index="2">
                 <throttle>normal</throttle>
+                <axisbutton index="1">
+                    <slots>
+                        <slot>
+                            <code>0x20</code>
+                            <mode>keyboard</mode>
+                        </slot>
+                    </slots>
+                </axisbutton>
                 <axisbutton index="2">
                     <slots>
                         <slot>
@@ -40,6 +48,22 @@
                     </slots>
                 </axisbutton>
             </axis>
+            <button index="1">
+                <slots>
+                    <slot>
+                        <code>0x5a</code>
+                        <mode>keyboard</mode>
+                    </slot>
+                </slots>
+            </button>
+            <button index="2">
+                <slots>
+                    <slot>
+                        <code>0x1000023</code>
+                        <mode>keyboard</mode>
+                    </slot>
+                </slots>
+            </button>
             <button index="3">
                 <slots>
                     <slot>
