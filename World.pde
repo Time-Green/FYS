@@ -305,7 +305,7 @@ public class World {
       break;
 
       case "ChestStart" :
-        load(new StarterChest(), spawnWorldPos);
+        load(new Chest(), spawnWorldPos);
       break;
 
       default :

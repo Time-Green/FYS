@@ -36,6 +36,7 @@ public class DatabaseManager{
   }
 
   public DbUser getOrCreateUser(String userName){
+    
     if(userExists(userName)){
       return getUser(userName);
     }else{
@@ -89,6 +90,7 @@ public class DatabaseManager{
   }
 
   private DbUser buildUser(JSONObject jsonUser){
+
     DbUser user = new DbUser();
 
     user.id = jsonUser.getInt("id");
@@ -110,8 +112,8 @@ public class DatabaseManager{
 
     String result = get.getContent();
 
-    println("request: " + request);
-    println("result: " + result);
+    //println("request: " + request);
+    //println("result: " + result);
 
     return parseJSONArray(result);
   }

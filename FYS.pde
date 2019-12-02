@@ -44,10 +44,18 @@ void setup() {
 }
 
 void login(){
-  String[] lines = loadStrings("DbUser.txt");
-  String currentUserName = lines[0];
+  
+  try{
+    String[] lines = loadStrings("DbUser.txt");
+    String currentUserName = lines[0];
 
-  dbUser = databaseManager.getOrCreateUser(currentUserName);
+    dbUser = databaseManager.getOrCreateUser(currentUserName);
+  }catch(Exception e){
+    dbUser = new DbUser();
+    dbUser.userName = "TempUser";
+
+    println("ERROR: Unable to connect to database, using temporary user");
+  }
 
   println("Logged in as: " + dbUser.userName);
 }
@@ -77,7 +85,10 @@ void setupGame() {
   world.updateWorldDepth();
 
   world.spawnStructure("Tree", new PVector(10, 6)); 
-  world.spawnStructure("StarterChest", new PVector(10, 10));
+
+  Chest startChest = new Chest();
+  startChest.forcedKey = 1;
+  load(startChest, new PVector(500, 500));
 }
 
 void draw() {
