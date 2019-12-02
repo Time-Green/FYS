@@ -22,6 +22,48 @@ public class DatabaseManager{
     return returnList;
   }
 
+  public boolean userExists(String userName){
+
+    final String COUNT_COLUMN_NAME = "Count";
+
+    JSONArray result = doDatabaseRequest("SELECT COUNT(*) AS " + COUNT_COLUMN_NAME +" FROM User WHERE username = '" + userName + "'");
+
+    if(result.size() == 1){
+      return result.getJSONObject(0).getInt(COUNT_COLUMN_NAME) == 1;
+    }else{
+      return false;
+    }
+  }
+
+  public DbUser getOrCreateUser(String userName){
+    if(userExists(userName)){
+      return getUser(userName);
+    }else{
+      return createUser(userName);
+    }
+  }
+
+  public DbUser createUser(String userName){
+
+    if(userExists(userName)){
+      println("ERROR: user '" + userName + "' already exists in the database!");
+      return null;
+    }
+
+    final String NEW_ID_COLUMN = "id";
+
+    JSONArray result = doDatabaseRequest("INSERT INTO User (`username`) VALUES ('" + userName + "');SELECT LAST_INSERT_ID() AS " + NEW_ID_COLUMN + ";");
+
+    if(result.size() == 1){
+
+      int newId = result.getJSONObject(0).getInt(NEW_ID_COLUMN);
+
+      return getUser(newId);
+    }else{
+      return null;
+    }
+  }
+
   public DbUser getUser(int id){
 
     JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE id = " + id);
@@ -33,9 +75,9 @@ public class DatabaseManager{
     }
   }
 
-  public DbUser getUser(String name){
+  public DbUser getUser(String userName){
 
-    JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE username = " + name);
+    JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE username = " + userName);
 
     if(result.size() == 1){
       return buildUser(result.getJSONObject(0));
