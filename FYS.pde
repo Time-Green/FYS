@@ -10,7 +10,9 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 //list of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
+//database variables
 DatabaseManager databaseManager = new DatabaseManager();
+DbUser dbUser;
 
 World world;
 Player player;
@@ -33,18 +35,21 @@ void setup() {
   size(1280, 720, P2D);
   //fullScreen(P2D);
 
+  login();
+
   ResourceManager.setup(this);
   ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
+}
 
-  DbUser user = databaseManager.getUser(0);
-  if(user != null){
-    println("user.userName: " + user.userName);
-  }else{
-    println("user is null");
-  }
-  
+void login(){
+  String[] lines = loadStrings("DbUser.txt");
+  String currentUserName = lines[0];
+
+  dbUser = databaseManager.getOrCreateUser(currentUserName);
+
+  println("Logged in as: " + dbUser.userName);
 }
 
 void setupGame() {
