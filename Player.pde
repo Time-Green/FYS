@@ -84,7 +84,7 @@ void draw() {
     else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {//Jumping
       animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
       animatedImageAir.draw();
-    } else if(InputHelper.isKeyDown(Globals.DIGKEY) && isGrounded()) {//Digging
+    } else if(InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
     animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
     animatedImageMine.draw();
     } else {//Idle
