@@ -2,7 +2,7 @@ public class PickUp extends Movable{
 
   boolean canTake = true; //in-case we need an override to stop people picking stuff up, like thrown dynamite
 
-  PickUp(){
+  PickUp(){ 
     size.set(30, 30);
   }
 

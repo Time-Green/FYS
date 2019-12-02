@@ -122,6 +122,8 @@ namespace StructureDesigner
 
         private void LoadTiles()
         {
+            AddDeleteTile();
+
             var currentDirectory = Directory.GetCurrentDirectory();
             var fysDirectory = currentDirectory.Split(new[] {"FYS"}, StringSplitOptions.None)[0];
             _fysDataDirectory = Path.Combine(fysDirectory, "FYS", "data");
@@ -163,6 +165,23 @@ namespace StructureDesigner
             }
         }
 
+        private void AddDeleteTile()
+        {
+            var image = new Image
+            {
+                Source = new BitmapImage(new Uri(@"delete.png", UriKind.RelativeOrAbsolute)),
+                Width = TileSize,
+                Height = TileSize,
+                Margin = new Thickness(5),
+                ToolTip = "Delete",
+                Name = "Delete"
+            };
+
+            image.PreviewMouseDown += ImageOnPreviewMouseDown;
+
+            SelectionPanel.Children.Add(image);
+        }
+
         private void ImageOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_selectedImage != null)
@@ -191,7 +210,14 @@ namespace StructureDesigner
             {
                 var gridPoint = GetGridPos(e.GetPosition(Canvas));
 
-                AddTile(gridPoint, _selectedImage.Source, _selectedLayer);
+                if (_selectedImage.Name == "Delete")
+                {
+                    RemoveTile(gridPoint);
+                }
+                else
+                {
+                    AddTile(gridPoint, _selectedImage.Source, _selectedLayer);
+                }
             }
         }
 
@@ -218,12 +244,32 @@ namespace StructureDesigner
             {
                 var gridPoint = GetGridPos(e.GetPosition(Canvas));
 
-                AddTile(gridPoint, _selectedImage.Source, _selectedLayer);
+                if (_selectedImage.Name == "Delete")
+                {
+                    RemoveTile(gridPoint);
+                }
+                else
+                {
+                    AddTile(gridPoint, _selectedImage.Source, _selectedLayer);
+                }
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
                 //TODO: dragging
             }
+        }
+
+        private void RemoveTile(Point gridPoint)
+        {
+            var existingImageOnGridPoint = _layers[_selectedLayer][(int)gridPoint.X / TileSize, (int)gridPoint.Y / TileSize];
+
+            if (existingImageOnGridPoint == null)
+            {
+                return;
+            }
+
+            Canvas.Children.Remove(existingImageOnGridPoint);
+            _layers[_selectedLayer][(int) gridPoint.X / TileSize, (int) gridPoint.Y / TileSize] = null;
         }
 
         private void AddTile(Point gridPoint, ImageSource imageSource, int layer)

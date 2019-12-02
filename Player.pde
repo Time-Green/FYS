@@ -10,9 +10,10 @@ class Player extends Mob {
   private AnimatedImage shockedCycle;
   private final int SHOCKFRAMES = 2;
   
-  
   //Status effects
   public float stunTimer;
+
+  UIController ui;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
@@ -150,6 +151,7 @@ void draw(){
   }
 
   public void takeDamage(int damageTaken) {
+
     // println("player took " + damageTaken + " damage");
 
     if (isImmortal) {
@@ -161,7 +163,7 @@ void draw(){
       CameraShaker.induceStress(0.6f);
     }
 
-    //needs to happan after camera shake because else 'isHurt' will be always true
+    //needs to happen after camera shake because else 'isHurt' will be always true
     super.takeDamage(damageTaken);
   }
 

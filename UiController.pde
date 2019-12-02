@@ -12,11 +12,12 @@ public class UIController {
   //Achievement icon
   private float iconFrameSize = 25; 
 
-  //Heart
-  private float heartWidth = 50;
-  private float heartHeight = 50;
-  private float heartX = 10;
-  private float heartY = 10;
+  //Health
+  private float healthBarHeight = 25; 
+  private float healthBarWidth = 200; 
+
+  private float barX = 10;
+  private float barY = 10;
   
   private float slotOffsetY = 40; 
   private float slotSize = 60;
@@ -27,7 +28,7 @@ public class UIController {
   //Inventory
   private float inventorySize = 50;
 
-  private PImage heart;
+  private PImage healthBarImage;
 
   //Text
   private PFont titleFont;
@@ -43,7 +44,7 @@ public class UIController {
     titleFont = ResourceManager.getFont("Brickyol");
     instructionFont = ResourceManager.getFont("MenuFont");
     hudFont = ResourceManager.getFont("BrickBold");
-    heart = ResourceManager.getImage("Heart");
+    healthBarImage = ResourceManager.getImage("health-bar"); 
   }
 
   void draw() {
@@ -130,10 +131,13 @@ public class UIController {
   }
 
   void gameHUD(){
-    for (int i = 0; i < ceil(player.currentHealth / 10); i++) {
-      image(heart, heartX + i * heartWidth, heartY, heartWidth, heartHeight);
-    }
 
+    rectMode(CORNER); 
+    fill(255, 0, 0);
+    rect(barX, barY, healthBarWidth, healthBarHeight); 
+    fill(0, 255, 0);
+    rect(barX, barY, map(player.currentHealth, 0, 100, 0, 200), healthBarHeight);    
+  
     textFont(hudFont);
 
     textAlign(LEFT);

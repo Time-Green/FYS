@@ -5,6 +5,8 @@ public class IceTile extends ResourceTile{
 
     value = 500;
     
+    slipperiness = 1.1;
+    
     image = ResourceManager.getImage("IceBlock");
     breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     pickUpImage = ResourceManager.getImage("GoldPickUp");

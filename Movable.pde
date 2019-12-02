@@ -8,7 +8,8 @@ class Movable extends BaseObject{
   protected float speed = 1f;
   protected float jumpForce = 18f;
   protected float gravityForce = 1f;
-  protected float groundedDragFactor = 0.95f;
+  protected float groundedDragFactor = 0.90f;
+  protected float slipperiness = 1; //stolen from tile to get slipperiness. set to 1 after being used
   protected float aerialDragFactor = 0.95f;
   protected float breakForce = 0.99f;
   protected float pushCoefficient = 1; //the higher, the easier
@@ -86,6 +87,11 @@ class Movable extends BaseObject{
 
         if(isMiningDown){
           attemptMine(object);
+        }
+
+        if(object instanceof Tile){
+          Tile tile = (Tile) object;
+          slipperiness = tile.slipperiness;
         }
 
       }
@@ -183,10 +189,11 @@ class Movable extends BaseObject{
     }
 
     if(isGrounded()){
-      velocity.x *= groundedDragFactor; //drag
+      velocity.x *= min(groundedDragFactor * slipperiness, 1); //drag
     }else{
       velocity.x *= aerialDragFactor; //drag but in the air
     }
+    slipperiness = 1;
   }
 
   private void handleMovement(World world){

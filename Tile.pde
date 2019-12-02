@@ -3,6 +3,8 @@ class Tile extends BaseObject{
 
   boolean destroyed;
 
+  float slipperiness = 1; //how much people slip on it. lower is slipperier
+
   private float maxHp, hp;
 
   PImage image;
@@ -89,7 +91,14 @@ class Tile extends BaseObject{
     hp -= damageTaken;
     
     if (hp <= 0) {
-      mine(playBreakSound);
+      if(this instanceof ResourceTile){
+
+        ResourceTile thisTile = (ResourceTile) this;
+
+        thisTile.mine(playBreakSound, false);
+      }else{
+        mine(playBreakSound);
+      } 
     }
   }
 
