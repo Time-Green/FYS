@@ -188,7 +188,7 @@ void enterOverWorld(){
 }
 
 void startGame() {
-  Globals.isInOverWorld = false;
+
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
@@ -196,6 +196,7 @@ void startGame() {
     firstStart = false;
   }else{
     setupGame();
+    
   }
 }
 
@@ -264,6 +265,7 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 void keyPressed(){
   InputHelper.onKeyPressed(keyCode, key);
   if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
+    Globals.isInOverWorld = false;
     startGame(); 
     //load(new EnemyShocker(new PVector(1000, 500)));
   }

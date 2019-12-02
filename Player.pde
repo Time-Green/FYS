@@ -130,7 +130,7 @@ void draw(){
 
   public void takeDamage(float damageTaken) {
 
-    println("player took " + damageTaken + " damage");
+    //println("player took " + damageTaken + " damage");
 
     if (isImmortal) {
 
