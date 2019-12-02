@@ -3,6 +3,8 @@ class Tile extends BaseObject{
 
   boolean destroyed;
 
+  float slipperiness = 1; //how much people slip on it. lower is slipperier
+
   private float maxHp, hp;
 
   PImage image;
