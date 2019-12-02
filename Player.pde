@@ -76,23 +76,20 @@ void draw(){
     shockedCycle.draw();
   } else {//Play the other animations when we are not
     //PLayer input
-    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {
+    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY))
+    && isGrounded()) {//Walking
       walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
       walkCycle.draw();
-      //println("walk");
     }
-    
-    else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {
+    else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {//Jumping
       animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
       animatedImageAir.draw();
-      //println("jump");
-    } else if(InputHelper.isKeyDown(Globals.DIGKEY)) {
+    } else if(InputHelper.isKeyDown(Globals.DIGKEY) && isGrounded()) {//Digging
     animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
     animatedImageMine.draw();
-    } else {//No input
+    } else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
-      //println("idle");
     }
   
   }
