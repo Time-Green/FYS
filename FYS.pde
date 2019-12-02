@@ -37,6 +37,14 @@ void setup() {
   ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
+
+  DbUser user = databaseManager.getUser(0);
+  if(user != null){
+    println("user.userName: " + user.userName);
+  }else{
+    println("user is null");
+  }
+  
 }
 
 void setupGame() {
