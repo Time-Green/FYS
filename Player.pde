@@ -9,7 +9,8 @@ class Player extends Mob {
   private final int AIRFRAMES = 3;
   private AnimatedImage shockedCycle;
   private final int SHOCKFRAMES = 2;
-  AnimatedImage animatedImageMine;
+  private AnimatedImage animatedImageMine;
+  private final int MINEFRAMES = 3;
 
   //Status effects
   public float stunTimer;
@@ -28,7 +29,7 @@ class Player extends Mob {
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
     PImage[] airFrames = new PImage[AIRFRAMES];
-    PImage[] mineFrames = new PImage[3];
+    PImage[] mineFrames = new PImage[MINEFRAMES];
     PImage[] shockFrames = new PImage[SHOCKFRAMES];
 
     for (int i = 0; i < WALKFRAMES; i++)
@@ -47,7 +48,7 @@ class Player extends Mob {
       shockFrames[i] = ResourceManager.getImage("PlayerShock" + i); 
     shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < MINEFRAMES; i++) {
       mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
     }
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
