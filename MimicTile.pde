@@ -6,7 +6,6 @@ public class MimicTile extends Tile{
         super(x, y); 
 
         image = ResourceManager.getImage("MimicTile");
-        breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     }
 
     void mine(boolean playMineSound){

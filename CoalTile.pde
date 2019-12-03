@@ -6,7 +6,6 @@ public class CoalTile extends ResourceTile{
     value = 50;
 
     image = ResourceManager.getImage("CoalBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     pickUpImage = ResourceManager.getImage("CoalPickUp");
   }
 

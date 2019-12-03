@@ -7,7 +7,6 @@ public class ShadowSandTile extends Tile{
     slipperiness = 0.5;
     
     image = ResourceManager.getImage("ShadowSandBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
 }

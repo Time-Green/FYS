@@ -31,6 +31,7 @@ int birdCount = round(random(15, 25));
 
 boolean firstTime = true;
 boolean firstStart = true;
+boolean hasCalledAfterResourceLoadSetup = false;
 
 void setup() {
   size(1280, 720, P2D);
@@ -38,10 +39,22 @@ void setup() {
 
   beginLogin();
 
+  AudioManager.setup(this);
+
   ResourceManager.setup(this);
   ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
+}
+
+// gets called when all resources are loaded
+void afterResouceLoadingSetup(){
+  AudioManager.setMaxAudioVolume("Explosion", 0.7f);
+  AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
+
+  for (int i = 1; i < 5; i++) {
+    AudioManager.setMaxAudioVolume("StoneBreak" + i, 0.5f);
+  }
 }
 
 void beginLogin(){
@@ -126,8 +139,16 @@ void draw() {
     return;
   }
 
+  if(!hasCalledAfterResourceLoadSetup){
+    hasCalledAfterResourceLoadSetup = true;
+
+    afterResouceLoadingSetup();
+  }
+
   //wait until we are logged in
   if(dbUser == null){
+    handleLoggingInWaiting();
+
     return;
   }
 
@@ -276,6 +297,15 @@ void handleLoading() {
   textSize(30);
   textAlign(CENTER);
   text("Loaded: " + lastLoadedResource, width / 2, height - 10);
+}
+
+void handleLoggingInWaiting(){
+  background(0);
+
+  fill(255);
+  textSize(30);
+  textAlign(CENTER);
+  text("Logging in...", width / 2, height - 10);
 }
 
 BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch

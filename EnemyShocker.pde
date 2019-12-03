@@ -23,5 +23,3 @@ class EnemyShocker extends Enemy{
 
   }
 }
-
-
