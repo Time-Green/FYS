@@ -70,6 +70,8 @@ class Player extends Mob {
 
 void draw() {
 
+  if (Globals.gamePaused) return;
+  
   //Animation
   if (stunTimer > 0f) {//Am I stunned?
     shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;

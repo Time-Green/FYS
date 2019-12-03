@@ -36,12 +36,38 @@ class Tile extends BaseObject{
       destroyed = true;
       density = false;
 
+      //have a 2 in 10 change to spawn a enemy
+      // float enemySpawnRate = random(10);
+      // if (enemySpawnRate >= 8) 
+
       //5% change to spawn torch
-      if(random(100) < 5)
-      {
+      if(random(100) < 5) {
         load(new Torch(position));
       }
+      if(random(100) < 3) {
+        spawnEnemy();
+      }
     }
+  }
+
+  private void spawnEnemy() {
+    boolean hasSpawnedEnemy = false;
+
+    if(hasSpawnedEnemy) return;
+
+
+    float spawner = random(100);
+    //Common enemies
+    if (spawner > 0 && spawner < 45) load(new EnemyWalker(position));
+    //Uncommon enemies
+    else if (spawner > 45 && spawner < 60)  load(new EnemyGhost(position));
+    else if (spawner > 60 && spawner < 75)  load(new EnemyBomb(position));
+    else if (spawner > 75 && spawner < 90)  load(new EnemyDigger(position));
+    //Rare enemies
+    else if (spawner > 90 && spawner < 95)  load(new EnemyShocker(position));
+    else if (spawner > 95) load(new EnemyMimic(position));
+
+    hasSpawnedEnemy = true;
   }
 
   void specialAdd(){
