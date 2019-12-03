@@ -3,7 +3,10 @@ class FireBiome extends Biome{
     FireBiome(){
         structureChance = 0.1;
         caveSpawningPossibilityScale = 0.51f;
+
         destroyedImage = ResourceManager.getImage("DestroyedVulcanic");
+
+        minimumDepth = 200;
     }
 
     Tile getTileToGenerate(int x, int depth){
