@@ -58,6 +58,8 @@ class Chest extends Obstacle {
 
   void openChest(){
 
+    AudioManager.playSoundEffect("ChestOpen");
+
     for(Movable movable : contents){
       movable.moveTo(position.x, position.y - tileHeight);
       movable.suspended = false;
