@@ -129,16 +129,7 @@ namespace StructureDesigner
             _fysDataDirectory = Path.Combine(fysDirectory, "FYS", "data");
 
             var allFiles = new List<string>();
-
-            var categoriesToUse = new List<string>
-            {
-                "Blocks",
-                "Enemies",
-                "Cave",
-                "House",
-                "Landscape",
-                "Structures"
-            };
+            var categoriesToUse = File.ReadAllLines(Path.Combine(currentDirectory, "FoldersToInclude.txt"));
 
             foreach (var category in categoriesToUse)
             {
