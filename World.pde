@@ -210,7 +210,7 @@ public class World {
       ArrayList<Biome> possibleBiomes = new ArrayList<Biome>();
 
       for(Biome biome : biomes){
-        if(biome.minumumDepth > depth || biome.maximumDepth < depth){
+        if(biome.minimumDepth > depth || biome.maximumDepth < depth){
           continue;
         }
         possibleBiomes.add(biome);

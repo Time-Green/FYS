@@ -5,7 +5,7 @@ class Biome{
     float structureChance = 0.0; //chance of a structure spawning between 0 and 1 for every row of tiles
     float enemyChance = 0.01; //chance of enemy spawning on an open tile
 
-    int minumumDepth = 0;
+    int minimumDepth = 0;
     int maximumDepth = 999999;
 
     float caveSpawningNoiseScale = 0.1f;

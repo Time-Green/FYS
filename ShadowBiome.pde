@@ -2,7 +2,7 @@
    
    ShadowBiome(){
      enemyChance = 0.1;
-     minumumDepth = 200;
+     minimumDepth = 200;
    }
  
     Tile getTileToGenerate(int x, int depth){
