@@ -127,7 +127,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Space to start", width / 2, height / 2 - 30);
+    text("Press Enter to start", width / 2, height / 2 - 30);
   }
 
   void gameHUD(){

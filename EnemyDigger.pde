@@ -2,13 +2,14 @@ class EnemyDigger extends Enemy {
 
   private float chaseDistance;
   private boolean chasePlayer;
-  private float resetSpeed = 5f;
+  private final float CHASESPEED = 4f;
+  private final float NORMALSPEED = 2f;
 
   EnemyDigger(PVector spawnPos){
     super(spawnPos);
 
     image = ResourceManager.getImage("DiggerEnemy");
-    this.speed = resetSpeed;
+    this.speed = NORMALSPEED;
     //1f = 1 tile
     float tileDistance = 10f;
     chaseDistance = OBJECTSIZE * tileDistance;
@@ -21,7 +22,7 @@ class EnemyDigger extends Enemy {
     if (distanceToPlayer <= chaseDistance) {
 
       //Chase the player
-      this.speed = resetSpeed;
+      this.speed = CHASESPEED;
 
       if (player.position.x < this.position.x) this.walkLeft = true;
       else this.walkLeft = false;
@@ -46,7 +47,7 @@ class EnemyDigger extends Enemy {
 
     } else {
       //Don't chase the player
-      this.speed = 0;
+      this.speed = NORMALSPEED;
       this.isMiningDown = false;
       this.gravityForce = 1;
     }
