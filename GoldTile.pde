@@ -8,5 +8,4 @@ public class GoldTile extends ResourceTile{
     image = ResourceManager.getImage("IronBlock");
     pickUpImage = ResourceManager.getImage("GoldPickUp");
   }
-
 }

@@ -12,7 +12,7 @@ public class World {
 
   float wallWidth;
 
-  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome(), new ShadowBiome()};
+  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
   Biome currentBiome;
   ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
   int switchDepth; //the depth at wich we switch to the next biome in the qeueu
@@ -21,7 +21,8 @@ public class World {
     this.wallWidth = wallWidth;
     dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, 8)));
 
-    //Specially queued biomes, for sanity sake
+    //Specially queued biomes, for cinematic effect
+    biomeQueue.add(new OverworldBiome());
     biomeQueue.add(new Biome());
 
     fillBiomeQueue(0);
@@ -86,6 +87,7 @@ public class World {
 
       for(int x = 0; x <= tilesHorizontal; x++){
         Tile tile = currentBiome.getTileToGenerate(x, y);
+        tile.destroyedImage = currentBiome.destroyedImage;
         
         subArray.add(tile);
         load(tile, true);
@@ -316,6 +318,12 @@ public class World {
         
       case "Wood" :
         return new WoodTile(int(spawnPos.x), int(spawnPos.y));
+
+      case "MagmaTile" :
+        return new MagmaRock(int(spawnPos.x), int(spawnPos.y));
+
+      case "ObsedianBlock" :
+        return new ObsedianTile(int(spawnPos.x), int(spawnPos.y)); //obsedian
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");

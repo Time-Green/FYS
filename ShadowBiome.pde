@@ -1,4 +1,9 @@
  class ShadowBiome extends Biome{
+   
+   ShadowBiome(){
+     enemyChance = 0.1;
+     minumumDepth = 200;
+   }
  
     Tile getTileToGenerate(int x, int depth){
       float orechance = random(100);
@@ -16,5 +21,9 @@
 
        return new ShadowTile(x, depth);
         
+    }
+
+    void spawnEnemy(PVector position){
+      load(new EnemyGhost(position));
     }
  }

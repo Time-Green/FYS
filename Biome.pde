@@ -3,6 +3,7 @@ class Biome{
     int length = 50; //after how many tiles do we tell world to get another biome?
 
     float structureChance = 0.0; //chance of a structure spawning between 0 and 1 for every row of tiles
+    float enemyChance = 0.01; //chance of enemy spawning on an open tile
 
     int minumumDepth = 0;
     int maximumDepth = 999999;
@@ -10,6 +11,8 @@ class Biome{
     float caveSpawningNoiseScale = 0.1f;
     float caveSpawningPossibilityScale = 0.68f; //lower for more caves
     int startedAt;
+
+    PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
   Tile getTileToGenerate(int x, int depth){
 
@@ -74,10 +77,30 @@ class Biome{
   }
 
   void placeStructure(int depth){
-    world.safeSpawnStructure(getStructureName(), new PVector(int(random(tilesHorizontal)), depth));
+    world.safeSpawnStructure(getStructureName(), new PVector(int(random(tilesHorizontal * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
   }
 
-  String getStructureName(){
+  String getStructureName(){ //a function so we can give some different probabilities
     return "Tree";
   }
+
+  void spawnEnemy(PVector position){
+    float spawner = random(100);
+
+    if (spawner < 30) {
+      load(new EnemyWalker(position));
+    }
+    else if(spawner < 60) {
+      load(new EnemyBomb(position));
+    }
+    else if (spawner < 90){
+      load(new EnemyDigger(position));
+    }
+    else{ 
+      load(new EnemyMimic(position));
+    }
+  }
 }
+
+    // else if (spawner > 90 && spawner < 95)  load(new EnemyShocker(position));
+    // else if (spawner > 95) load(new EnemyMimic(position));
