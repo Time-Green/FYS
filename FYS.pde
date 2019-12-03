@@ -281,7 +281,7 @@ void startGame() {
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
-  AudioManager.playMusic("BackgroundMusic");
+  AudioManager.loopMusic("BackgroundMusic");
 
   if(firstStart){
     firstStart = false;
