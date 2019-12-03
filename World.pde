@@ -12,7 +12,7 @@ public class World {
 
   float wallWidth;
 
-  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome()};
+  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome(), new ShadowBiome()};
   Biome currentBiome;
   ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
   int switchDepth; //the depth at wich we switch to the next biome in the qeueu

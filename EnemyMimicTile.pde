@@ -1,8 +1,8 @@
-public class MimicTile extends Tile{
+public class EnemyMimicTile extends Tile{
 
     private boolean hasSpawnedMimic;
 
-    public MimicTile(int x, int y){
+    public EnemyMimicTile(int x, int y){
         super(x, y); 
 
         image = ResourceManager.getImage("MimicTile");
@@ -12,14 +12,13 @@ public class MimicTile extends Tile{
     void mine(boolean playMineSound){
         super.mine(playMineSound);
 
-        if(hasSpawnedMimic){
+        //Stop this function from creating more than one mimic
+        if(hasSpawnedMimic)
             return;
-        }
         
         hasSpawnedMimic = true;
         
         load(new EnemyMimic(new PVector(this.position.x, this.position.y)));
-        // delete(this);
     }
 
 }

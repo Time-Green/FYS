@@ -70,6 +70,8 @@ class Player extends Mob {
 
 void draw() {
 
+  if (Globals.gamePaused) return;
+  
   //Animation
   if (stunTimer > 0f) {//Am I stunned?
     shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
@@ -125,22 +127,24 @@ void draw() {
     } 
 
 
-    if (InputHelper.isKeyDown(ALT)) { 
+    if (InputHelper.isKeyDown(Globals.INVENTORYKEY)) { 
       useInventory();
+      InputHelper.onKeyReleased(Globals.INVENTORYKEY); 
     }
 
     if (InputHelper.isKeyDown('g')) { //for 'testing'
       load(new Dynamite(), new PVector(position.x + 100, position.y));
+      InputHelper.onKeyReleased('g');
     }
 
     if (InputHelper.isKeyDown('h')) {
       load(new Chest(), new PVector(position.x + 100, position.y));
-      InputHelper.onKeyReleased(9999999, 'h'); //ssssh
+      InputHelper.onKeyReleased('h'); //ssssh
     }
 
-    if (InputHelper.isKeyDown('z')) { 
+    if (InputHelper.isKeyDown(Globals.ITEMKEY)) { 
       switchInventory();
-      InputHelper.onKeyReleased(9999999, 'z'); //ssssh
+      InputHelper.onKeyReleased(Globals.ITEMKEY); //ssssh
     }
   }
 

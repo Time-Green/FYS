@@ -1,6 +1,7 @@
 class RelicShard extends PickUp {
 
-  int healthBoost = 10;
+  int healthBoost = 20;
+  int damageBoost = 20;
   float relicChance = 100f;
   int amountRequired = 3;
   int currentShard0 = 0;
@@ -19,13 +20,14 @@ class RelicShard extends PickUp {
     }
   }
 
-  //void apply0() {
-  //  if (currentShard0 == amountRequired) {
-  //  }
-  //}
+  // void apply() {
+  //   if (currentShard0 == amountRequired) {
+  //     Player.maxHealth += healthBoost;
+  //   }
+  //     if (currentShard1 == amountRequired) {
+  //      Player.baseDamage += damageBoost;
+  //   }
+  // }
 
-  //void apply1() {
-  //  if (currentShard1 == amountRequired) {
-  //  }
-  //}
+
 }
