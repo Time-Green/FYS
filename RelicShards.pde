@@ -10,7 +10,7 @@ class RelicShard extends PickUp {
 
   RelicShard() {
     type = int(random(2));
-    println(type);
+    //println(type);
     if (type == 0) {
       //this is a mine boost
       image =  ResourceManager.getImage("RelicShard0");

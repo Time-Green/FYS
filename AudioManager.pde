@@ -10,7 +10,6 @@ public static class AudioManager{
   private static HashMap<String, SoundFile> musicMap = new HashMap<String, SoundFile>();
   private static HashMap<String, SoundFile[]> soundEffectMap = new HashMap<String, SoundFile[]>();
   private static IntDict soundEffectMapIndex = new IntDict();
-
   private static FloatDict maxAudioVolumes = new FloatDict();
   
   public static void setup(FYS game){
@@ -92,9 +91,7 @@ public static class AudioManager{
 
     volumeBasedOnDistance /= AUDIO_DISTSANCE_FALLOFF;
     volumeBasedOnDistance = 1 - volumeBasedOnDistance;
-    volumeBasedOnDistance = constrain(volumeBasedOnDistance, 0, 1);
-
-    println(volumeBasedOnDistance);
+    volumeBasedOnDistance = constrain(volumeBasedOnDistance, 0f, 1f);
 
     if(volumeBasedOnDistance > 0){
       soundToPlay.stop();

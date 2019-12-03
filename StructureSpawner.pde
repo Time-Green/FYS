@@ -24,11 +24,11 @@ class StructureSpawner extends Movable{
                 String[] tileProperties = split(tileString, '|');
                 if(tileProperties.length == 3){
                     if(int(tileProperties[0]) > structureSize.x){
-                        println("x", int(tileProperties[0]));
+                        //println("x", int(tileProperties[0]));
                         structureSize.x = int(tileProperties[0]);
                     }
                     if(int(tileProperties[1]) > structureSize.y){
-                        println("y", int(tileProperties[1]));
+                        //println("y", int(tileProperties[1]));
                         structureSize.y = int(tileProperties[1]);
                     }
                 }
@@ -39,7 +39,7 @@ class StructureSpawner extends Movable{
         for(int x = 0; x <= structureSize.x; x++){
             for(int y = 0; y <= structureSize.y; y++){
                 Tile tile = world.getTile((spawnAt.x + x) * tileWidth, (spawnAt.y + y) * tileHeight);
-                println(spawnAt.x + x, spawnAt.y + y);
+                //println(spawnAt.x + x, spawnAt.y + y);
                 if(tile == null){
                     return;
                 }
