@@ -194,7 +194,7 @@ void handleGameFlow() {
     case MainMenu:
 
       //if we are in the main menu we start the game by pressing enter
-      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
+      if (InputHelper.isKeyDown(Globals.STARTKEY)){
         enterOverWorld();
       }
 
@@ -202,8 +202,10 @@ void handleGameFlow() {
 
     case InGame:
 
-      if (InputHelper.isKeyDown(Globals.ENTERKEY)) {
+      //Pauze the game
+      if (InputHelper.isKeyDown(Globals.STARTKEY)) {
         Globals.currentGameState = Globals.GameState.GamePaused;
+        InputHelper.onKeyReleased(Globals.STARTKEY); 
       }
 
     break;
@@ -212,8 +214,9 @@ void handleGameFlow() {
       Globals.gamePaused = true;
 
       //if we died we restart the game by pressing enter
-      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
+      if (InputHelper.isKeyDown(Globals.STARTKEY)){
         startGame();
+        InputHelper.onKeyReleased(Globals.STARTKEY); 
       }
 
     break;
@@ -222,9 +225,10 @@ void handleGameFlow() {
       Globals.gamePaused = true;
       
       //if the game has been paused the player can contineu the game
-      if (InputHelper.isKeyDown(Globals.CONFIRMKEY)){
+      if (InputHelper.isKeyDown(Globals.STARTKEY)){
         Globals.gamePaused = false;
         Globals.currentGameState = Globals.GameState.InGame;
+        InputHelper.onKeyReleased(Globals.STARTKEY); 
       }
       
       //Reset game
@@ -319,7 +323,8 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 }
 
 void keyPressed(){
-  InputHelper.onKeyPressed(keyCode, key);
+  InputHelper.onKeyPressed(keyCode);
+  InputHelper.onKeyPressed(key);
   if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
     Globals.isInOverWorld = false;
     startGame(); 
@@ -328,5 +333,6 @@ void keyPressed(){
 }
 
 void keyReleased(){
-  InputHelper.onKeyReleased(keyCode, key);
+  InputHelper.onKeyReleased(keyCode);
+  InputHelper.onKeyReleased(key);
 }

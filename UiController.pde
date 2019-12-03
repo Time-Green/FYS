@@ -101,7 +101,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Space: restart", width / 2, height / 2 - 30);
+    text("Enter: restart", width / 2, height / 2 - 30);
   }
 
   void startMenu(){
@@ -184,7 +184,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Space: continue", width / 2, height / 2 - 30);
+    text("Enter: continue", width / 2, height / 2 - 30);
     text("Backspace: restart", width / 2, height / 2 + 60);
   }
 
