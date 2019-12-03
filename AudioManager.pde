@@ -113,19 +113,6 @@ public static class AudioManager{
     soundToPlay.play();
   }
 
-  public static void loopMusic(String name){
-    SoundFile soundToPlay = musicMap.get(name);
-
-    if(soundToPlay == null){
-      println("SoundFile '" + name + "' not found!");
-      return;
-    }
-
-    soundToPlay.stop();
-    soundToPlay.amp(maxAudioVolumes.get(name));
-    soundToPlay.loop();
-  }
-
   public static void stopMusic(String name){
     SoundFile soundToStop = musicMap.get(name);
 
