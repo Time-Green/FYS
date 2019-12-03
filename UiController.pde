@@ -148,7 +148,7 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + round((player.getDepth() / tileHeight) - 10), 20, hudTextStartX + hudFontSize);
+    text("Depth: " + (player.getDepth() - 10), 20, hudTextStartX + hudFontSize); //-10 because we dont truly start at 0 depth, but at 10 depth
 
     drawInventory();
   }

@@ -2,6 +2,11 @@ class Biome{
 
     int length = 50; //after how many tiles do we tell world to get another biome?
 
+    float structureChance = 0.05; //chance of a structure spawning between 0 and 1 for every row of tiles
+
+    int minumumDepth = 0;
+    int maximumDepth = 999999;
+
     float caveSpawningNoiseScale = 0.1f;
     float caveSpawningPossibilityScale = 0.68f; //lower for more caves
     int startedAt;
@@ -62,5 +67,17 @@ class Biome{
     
     //if no special tile was selected, spawn stone
     return new StoneTile(x, depth);
+  }
+
+  int getLength(){
+    return length;
+  }
+
+  void placeStructure(int depth){
+    world.safeSpawnStructure(getStructureName(), new PVector(int(random(tilesHorizontal)), depth));
+  }
+
+  String getStructureName(){
+    return "Tree";
   }
 }

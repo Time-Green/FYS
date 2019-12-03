@@ -1,5 +1,6 @@
 public class World {
   ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
+  ArrayList<StructureSpawner> queuedStructures = new ArrayList<StructureSpawner>();
   //TODO: CLEANUP MAP ROWS AFTER ALL TILES IN THE ROW HAVE BEEN DELETED
 
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
@@ -23,7 +24,7 @@ public class World {
     //Specially queued biomes, for sanity sake
     biomeQueue.add(new Biome());
 
-    fillBiomeQueue();
+    fillBiomeQueue(0);
     switchBiome(0);
   }
 
@@ -70,12 +71,17 @@ public class World {
 
     int mapDepth = map.size();
     
-    for(int y = mapDepth; y <= int((player.getDepth() - 10 * tileHeight) / tileHeight) + generateOffset; y++){
-      
+
+    for(int y = mapDepth; y <= player.getDepth() + generateOffset; y++){
+
       ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
 
       if(canBiomeSwitch(y)){
         switchBiome(y);
+      }
+
+      if(currentBiome.structureChance > random(1)){
+        currentBiome.placeStructure(y);
       }
 
       for(int x = 0; x <= tilesHorizontal; x++){
@@ -86,8 +92,12 @@ public class World {
 
         tile.setupCave(); //needs to be after load(tile) otherwise shit will get loaded anyway 
       }
-
+      
       map.add(subArray);// add the empty tile-list to the bigger list
+    }
+
+    for(StructureSpawner spawner : queuedStructures){
+      spawner.trySpawn();
     }
   }
 
@@ -189,14 +199,36 @@ public class World {
       currentBiome.startedAt = depth;
     }
     else{
-      fillBiomeQueue();
+      fillBiomeQueue(depth);
     }
   }
 
-  void fillBiomeQueue(){
+  void fillBiomeQueue(int depth){
     for(int i = 0; i < 10; i++){
-      biomeQueue.add(biomes[int(random(biomes.length))]);
+      ArrayList<Biome> possibleBiomes = new ArrayList<Biome>();
+
+      for(Biome biome : biomes){
+        if(biome.minumumDepth > depth || biome.maximumDepth < depth){
+          continue;
+        }
+        possibleBiomes.add(biome);
+      }
+
+      Biome biome;
+      if(possibleBiomes.size() > 0){
+        biome = possibleBiomes.get(int(random(possibleBiomes.size())));
+      }
+      else{
+        biome = biomes[int(random(biomes.length))]; //plan B just grab a random one
+      }
+
+      depth += biome.getLength();
+      biomeQueue.add(biome);
     }
+  }
+
+  void safeSpawnStructure(String structureName, PVector gridSpawnPos){
+    load(new StructureSpawner(structureName, gridSpawnPos), gridSpawnPos.mult(tileWidth));
   }
 
   void spawnStructure(String structureName, PVector gridSpawnPos){
@@ -238,10 +270,9 @@ public class World {
 
   private void replaceObject(PVector relaceAtGridPos, String newObjectName){
     Tile tileToReplace = getTile(relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight);
-
+    
     String stripedObjectName = stripName(newObjectName);
     Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos);
-
     tileToReplace.replace(newTile);
   }
 

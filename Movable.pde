@@ -248,8 +248,8 @@ class Movable extends BaseObject{
     return colliders;
   }
 
-  float getDepth(){
-    return position.y;
+  int getDepth(){
+    return int(position.y / tileHeight);
   }
 
   void attemptMine(BaseObject object){
