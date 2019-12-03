@@ -26,7 +26,8 @@ class Explosion extends BaseObject{
     load(particleSystem);
 
     //play sound
-    AudioManager.playSoundEffect("Explosion", position);
+    String explosionSound = "Explosion" + floor(random(1, 5));
+    AudioManager.playSoundEffect(explosionSound, position);
   }
 
   void explode(){

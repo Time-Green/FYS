@@ -8,6 +8,7 @@ public class IceTile2 extends ResourceTile{
     
     image = ResourceManager.getImage("IceBlock2");
     pickUpImage = ResourceManager.getImage("GoldPickUp");
+    breakSound = "GlassBreak" + floor(random(1, 4));
   }
 
 }

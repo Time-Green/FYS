@@ -49,11 +49,19 @@ void setup() {
 
 // gets called when all resources are loaded
 void afterResouceLoadingSetup(){
-  AudioManager.setMaxAudioVolume("Explosion", 0.7f);
+  //AudioManager.setMaxAudioVolume("Explosion", 0.7f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
 
   for (int i = 1; i < 5; i++) {
+    AudioManager.setMaxAudioVolume("Explosion" + i, 0.2f);
+  }
+
+  for (int i = 1; i < 5; i++) {
     AudioManager.setMaxAudioVolume("StoneBreak" + i, 0.5f);
+  }
+
+  for (int i = 1; i < 4; i++) {
+    AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
 }
 
