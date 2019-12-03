@@ -33,7 +33,11 @@ public class World {
   public void draw(Camera camera){
     pushMatrix(); 
     scale(1.1, 1.1);
-    image(dayNightImage, -camera.position.x - 1080 * 0.1 , -200, wallWidth, 1080);
+
+    float xPos = -camera.position.x - 1080 * 0.1;
+    float yPos = -camera.position.y * 0.5 - 200;
+
+    image(dayNightImage, xPos, yPos, wallWidth, 1080);
     popMatrix(); 
     //println("map.size(): " + map.size());
   }
