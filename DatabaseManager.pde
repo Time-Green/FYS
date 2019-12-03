@@ -1,4 +1,6 @@
 import http.requests.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DatabaseManager{
 
@@ -35,33 +37,60 @@ public class DatabaseManager{
     }
   }
 
+  //used for logging in
   public DbUser getOrCreateUser(String userName){
+    
+    DbUser user;
+
     if(userExists(userName)){
-      return getUser(userName);
+      user = getUser(userName);
     }else{
-      return createUser(userName);
+      user = createUser(userName, false);
     }
+
+    registerLogin(user);
+
+    return user;
   }
 
-  public DbUser createUser(String userName){
+  public DbUser createUser(String userName, boolean checkForUserExists){
 
-    if(userExists(userName)){
-      println("ERROR: user '" + userName + "' already exists in the database!");
-      return null;
+    if(checkForUserExists){
+      if(userExists(userName)){
+        println("ERROR: user '" + userName + "' already exists in the database!");
+        return null;
+      }
     }
 
     final String NEW_ID_COLUMN = "id";
 
-    JSONArray result = doDatabaseRequest("INSERT INTO User (`username`) VALUES ('" + userName + "');SELECT LAST_INSERT_ID() AS " + NEW_ID_COLUMN + ";");
+    JSONArray result = doDatabaseRequest("INSERT INTO User (`username`) VALUES ('" + userName + "')");
 
     if(result.size() == 1){
 
-      int newId = result.getJSONObject(0).getInt(NEW_ID_COLUMN);
+      int newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
 
       return getUser(newId);
     }else{
       return null;
     }
+  }
+
+  public boolean registerLogin(DbUser loggedInUser){
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date date = new Date();
+
+    JSONArray result = doDatabaseRequest("INSERT INTO Login (`userid`, `datetime`) VALUES ('" + loggedInUser.id + "', '" + formatter.format(date) + "')");
+
+    int newId = -1;
+
+    if(result.size() == 1){
+
+      newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+    }
+
+    return newId >= 0;
   }
 
   public DbUser getUser(int id){
@@ -87,6 +116,7 @@ public class DatabaseManager{
   }
 
   private DbUser buildUser(JSONObject jsonUser){
+
     DbUser user = new DbUser();
 
     user.id = jsonUser.getInt("id");
@@ -99,7 +129,9 @@ public class DatabaseManager{
 
     String url = BASE_URL + request;
 
-    url = url.replace(' ', '+'); //encode
+    //encode
+    url = url.replace(' ', '+');
+    url = url.replace("`", "%60");
 
     GetRequest get = new GetRequest(url);
 
@@ -108,8 +140,8 @@ public class DatabaseManager{
 
     String result = get.getContent();
 
-    println("request: " + request);
-    println("result: " + result);
+    //println("request: " + request);
+    //println("result: " + result);
 
     return parseJSONArray(result);
   }

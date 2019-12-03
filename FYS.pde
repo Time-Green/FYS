@@ -13,6 +13,7 @@ ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 //database variables
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
+int loginStartTime;
 
 World world;
 Player player;
@@ -35,7 +36,7 @@ void setup() {
   size(1280, 720, P2D);
   //fullScreen(P2D);
 
-  login();
+  beginLogin();
 
   ResourceManager.setup(this);
   ResourceManager.prepareResourceLoading();
@@ -43,13 +44,38 @@ void setup() {
   CameraShaker.setup(this);
 }
 
+void beginLogin(){
+  loginStartTime = millis();
+  thread("login");
+}
+
+//used to log in using its own thread
 void login(){
-  String[] lines = loadStrings("DbUser.txt");
-  String currentUserName = lines[0];
+  
+  try{
+    String[] lines = loadStrings("DbUser.txt");
 
-  dbUser = databaseManager.getOrCreateUser(currentUserName);
+    if(lines.length != 1){
+      println("ERROR: DbUser.txt file not corretly set up, using temporary user");
+      setTempUser();
+    }else{
+      String currentUserName = lines[0];
+      println("Logging in as '" + currentUserName + "'");
+      dbUser = databaseManager.getOrCreateUser(currentUserName);
+    }
 
-  println("Logged in as: " + dbUser.userName);
+  }catch(Exception e){
+    setTempUser();
+
+    println("ERROR: Unable to connect to database or DbUser.txt file not found, using temporary user");
+  }
+
+  println("Successfully logged in as '" + dbUser.userName + "', took " + (millis() - loginStartTime) + " ms");
+}
+
+void setTempUser(){
+  dbUser = new DbUser();
+  dbUser.userName = "TempUser";
 }
 
 void setupGame() {
@@ -62,11 +88,7 @@ void setupGame() {
   player = new Player();
   load(player);
 
-  for (int i = 0; i < birdCount; i++) {
-    Bird bird = new Bird(world);
-
-    load(bird);
-  }
+  spawnBirds();
 
   wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
   load(wallOfDeath);
@@ -77,7 +99,23 @@ void setupGame() {
   world.updateWorldDepth();
 
   world.spawnStructure("Tree", new PVector(10, 6)); 
-  world.spawnStructure("StarterChest", new PVector(10, 10));
+
+  spawnStarterChest();
+}
+
+void spawnBirds(){
+  for (int i = 0; i < birdCount; i++) {
+    Bird bird = new Bird();
+
+    load(bird);
+  }
+}
+
+void spawnStarterChest(){
+  Chest startChest = new Chest();
+  startChest.forcedKey = 1;
+
+  load(startChest, new PVector(500, 500));
 }
 
 void draw() {
@@ -85,6 +123,11 @@ void draw() {
   if (!ResourceManager.isLoaded()) {
     handleLoading();
 
+    return;
+  }
+
+  //wait until we are logged in
+  if(dbUser == null){
     return;
   }
 

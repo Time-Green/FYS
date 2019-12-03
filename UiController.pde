@@ -159,12 +159,13 @@ public class UIController {
     fill(255);
     textSize(20);
 
-    text(round(frameRate) + " FPS", width - 10, 120);
-    text(objectList.size() + " objects", width - 10, 100);
-    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 80);
-    text(round(player.position.x) + " Player X Pos", width - 10, 60);
-    text(round(player.position.y) + " Player Y Pos", width - 10, 40);
-    text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, 20);
+    text(round(frameRate) + " FPS", width - 10, 140);
+    text(objectList.size() + " objects", width - 10, 120);
+    text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 100);
+    text(round(player.position.x) + " Player X Pos", width - 10, 80);
+    text(round(player.position.y) + " Player Y Pos", width - 10, 60);
+    text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, 40);
+    text("Logged in as " + dbUser.userName, width - 10, 20);
   }
 
   void pauseScreen(){

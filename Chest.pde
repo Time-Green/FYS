@@ -64,12 +64,3 @@ class Chest extends Obstacle {
         image = openState;
     }
 }
-
-class StarterChest extends Chest{ //dont tell jordy I put it in the same file
-
-    StarterChest(){
-        forcedKey = 1;
-    }
-
-
-}
