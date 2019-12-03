@@ -10,7 +10,6 @@ public static class AudioManager{
   private static HashMap<String, SoundFile> musicMap = new HashMap<String, SoundFile>();
   private static HashMap<String, SoundFile[]> soundEffectMap = new HashMap<String, SoundFile[]>();
   private static IntDict soundEffectMapIndex = new IntDict();
-
   private static FloatDict maxAudioVolumes = new FloatDict();
   
   public static void setup(FYS game){
@@ -92,9 +91,7 @@ public static class AudioManager{
 
     volumeBasedOnDistance /= AUDIO_DISTSANCE_FALLOFF;
     volumeBasedOnDistance = 1 - volumeBasedOnDistance;
-    volumeBasedOnDistance = constrain(volumeBasedOnDistance, 0, 1);
-
-    println(volumeBasedOnDistance);
+    volumeBasedOnDistance = constrain(volumeBasedOnDistance, 0f, 1f);
 
     if(volumeBasedOnDistance > 0){
       soundToPlay.stop();
@@ -114,6 +111,30 @@ public static class AudioManager{
     soundToPlay.stop();
     soundToPlay.amp(maxAudioVolumes.get(name));
     soundToPlay.play();
+  }
+
+  public static void loopMusic(String name){
+    SoundFile soundToPlay = musicMap.get(name);
+
+    if(soundToPlay == null){
+      println("SoundFile '" + name + "' not found!");
+      return;
+    }
+
+    soundToPlay.stop();
+    soundToPlay.amp(maxAudioVolumes.get(name));
+    soundToPlay.loop();
+  }
+
+  public static void stopMusic(String name){
+    SoundFile soundToStop = musicMap.get(name);
+
+    if(soundToStop == null){
+      println("SoundFile '" + name + "' not found!");
+      return;
+    }
+
+    soundToStop.stop();
   }
 
   public static void loopMusic(String name){
