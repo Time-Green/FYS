@@ -1,12 +1,15 @@
 class EnemyBomb extends Enemy {
 
-  AnimatedImage explosionSequence;
-  final int NUMBEROFSPRITES = 9;
-  private float detectionRange = 80;
-  
+  //Animation
+  private AnimatedImage explosionSequence;
+  private final int NUMBEROFSPRITES = 9;
+
+  //Explosion vars
+  private float detectionRange = 90f;
   private boolean isExploding = false;
-  private float explosionTimer = 90f;
-  private float explosionSize = 300;
+  private float explosionTimer = 1.5f * 60f;
+  private float explosionSize = 325f;
+  private final float MAXEXPLOSIONDAMAGE = 15f;
   
   EnemyBomb(PVector spawnPos){
     super(spawnPos);
@@ -14,13 +17,11 @@ class EnemyBomb extends Enemy {
     image = ResourceManager.getImage("BombEnemy0");
     this.speed = 2.5f;
 
-    PImage[] frames = new PImage[NUMBEROFSPRITES];
-
-    for(int i = 0; i < NUMBEROFSPRITES; i++) {
-      frames[i] = ResourceManager.getImage("BombEnemy" + i);
-    }
-
-    explosionSequence = new AnimatedImage(frames, explosionTimer / NUMBEROFSPRITES, position, size.x, !walkLeft);
+    //Get all the animation frames and put them in the explosionSequence animation
+    PImage[] explosionFrames = new PImage[NUMBEROFSPRITES];
+    for(int i = 0; i < NUMBEROFSPRITES; i++) 
+      explosionFrames[i] = ResourceManager.getImage("BombEnemy" + i);
+    explosionSequence = new AnimatedImage(explosionFrames, explosionTimer / NUMBEROFSPRITES, position, size.x, !walkLeft);
     
   }
 
@@ -31,17 +32,19 @@ class EnemyBomb extends Enemy {
 
       this.speed = 0;
       //Decrease the explosion timer
-      explosionTimer--;
+      this.explosionTimer--;
 
-      if (explosionTimer <= 0) {
+      if (this.explosionTimer <= 0) {
         //Explode
-        load(new Explosion(position, explosionSize, 15, true));
+        load(new Explosion(this.position, this.explosionSize, this.MAXEXPLOSIONDAMAGE, true));
         delete(this);
       }
     }
   }
 
   void draw() {
+    //Do nothing while paused
+    if (Globals.gamePaused) return;
     //Normal animation
     if (!isExploding) super.draw();
     //Explode animation
@@ -51,10 +54,11 @@ class EnemyBomb extends Enemy {
   protected void handleCollision(){
     super.handleCollision();
 
-    //Activate the explosion sequence when the player gets to close
+    //Activate the explosion sequence when the player gets too close
     if (CollisionHelper.rectRect(position, new PVector(size.x + detectionRange, size.y + detectionRange), player.position, player.size) && isExploding == false){
-      isExploding = true;
-      explosionSequence.flipSpriteHorizontal = flipSpriteHorizontal;
+      this.isExploding = true;
+      //Flip the explosion animation if need be
+      this.explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
     }
   }
 

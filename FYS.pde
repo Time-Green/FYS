@@ -358,7 +358,11 @@ void keyPressed(){
   if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
     Globals.isInOverWorld = false;
     startGame(); 
-    //load(new EnemyShocker(new PVector(1000, 500)));
+    
+  }
+
+  if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
+  load(new EnemyShocker(new PVector(1000, 500)));
   }
 }
 

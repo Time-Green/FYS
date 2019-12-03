@@ -127,7 +127,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Space to start", width / 2, height / 2 - 30);
+    text("Press Enter to start", width / 2, height / 2 - 30);
   }
 
   void gameHUD(){
@@ -148,7 +148,7 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + round((player.getDepth() / tileHeight) - 10), 20, hudTextStartX + hudFontSize);
+    text("Depth: " + (player.getDepth() - 10), 20, hudTextStartX + hudFontSize); //-10 because we dont truly start at 0 depth, but at 10 depth
 
     drawInventory();
   }
