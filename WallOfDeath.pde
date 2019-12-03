@@ -37,16 +37,16 @@ class WallOfDeath extends Movable {
     if(!Globals.isInOverWorld && player != null)
     {
       bufferZone = player.position.y - position.y; 
-      println(bufferZone); 
+      //println(bufferZone); 
 
       //wod movement per frame
       position.y += bufferZone / 225;
 
       if(bufferZone < minDistanceFromPlayer){
-        println("WOD TO LOW");
+        //println("WOD TO LOW");
         position.y = player.position.y - minDistanceFromPlayer;
       }else if(bufferZone > maxDistanceFromPlayer){
-        println("WOD TO HIGH");
+        //println("WOD TO HIGH");
         position.y = player.position.y - maxDistanceFromPlayer;
       }
 
