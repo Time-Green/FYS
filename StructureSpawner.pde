@@ -7,7 +7,7 @@ class StructureSpawner extends Movable{
     
     StructureSpawner(String name, PVector target){
         anchored = true;
-        image = ResourceManager.getImage("MysteryBlock");
+        image = ResourceManager.getImage("Invisible");
 
         spawnAt.set(target);
 
