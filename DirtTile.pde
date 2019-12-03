@@ -6,7 +6,7 @@ public class DirtTile extends Tile{
     setMaxHp(2);
 
     image = ResourceManager.getImage("DirtBlock");
-    breakSound = ResourceManager.getSound("DirtBreak"); 
+    breakSound = "DirtBreak"; 
   }
 
 }

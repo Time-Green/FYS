@@ -4,9 +4,8 @@ public class WoodTile extends Tile{
     super(x, y);
 
     image = ResourceManager.getImage("Wood");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
-      this.density = false; 
-      destroyedImage = null;  
+    this.density = false; 
+    destroyedImage = null;  
   }
 
 }

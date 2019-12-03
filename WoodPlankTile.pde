@@ -4,7 +4,6 @@ public class WoodPlankTile extends Tile{
     super(x, y);
 
     image = ResourceManager.getImage("WoodPlank");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5))); // replace this!!
   }
 
 }

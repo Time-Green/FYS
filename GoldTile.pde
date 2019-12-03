@@ -6,7 +6,6 @@ public class GoldTile extends ResourceTile{
     value = 500;
     
     image = ResourceManager.getImage("IronBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     pickUpImage = ResourceManager.getImage("GoldPickUp");
   }
 

@@ -1,5 +1,3 @@
-import processing.sound.*;
-
 public static class ResourceManager{
 
   private static PApplet game;
@@ -10,7 +8,6 @@ public static class ResourceManager{
   private static int totalResourcesToLoad = 0;
 
   private static HashMap<String, PImage> imageMap = new HashMap<String, PImage>();
-  private static HashMap<String, SoundFile> soundMap = new HashMap<String, SoundFile>();
   private static HashMap<String, PFont> fontMap = new HashMap<String, PFont>();
 
   public static void setup(PApplet game){
@@ -101,17 +98,14 @@ public static class ResourceManager{
   }
 
   private static void loadSoundFile(String name, String fileName){
-    SoundFile sound = new SoundFile(game, fileName);
-
-    if(sound == null){
-      println("Could not load sound: " + fileName);
-      return;
+    if(fileName.contains("music")){
+      AudioManager.loadMusic(name, fileName);
+    }else{
+      AudioManager.loadSoundEffect(name, fileName);
     }
-
-    soundMap.put(name, sound);
   }
 
-  private static void loadFont(String name, String fileName) {
+  private static void loadFont(String name, String fileName){
     PFont font = game.createFont(fileName, 32);
 
     if(font == null){
@@ -131,17 +125,6 @@ public static class ResourceManager{
     }
 
     return image;
-  }
-
-  public static SoundFile getSound(String name){
-    SoundFile sound = soundMap.get(name);
-
-    if(sound == null){
-      println("SoundFile '" + name + "' not found!");
-      return null;
-    }
-
-    return sound;
   }
 
   public static PFont getFont(String name){

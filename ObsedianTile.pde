@@ -6,7 +6,6 @@ public class ObsedianTile extends Tile{
     setMaxHp(2);
       
     image = ResourceManager.getImage("ObsedianBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
   void takeDamage(float damageTaken){

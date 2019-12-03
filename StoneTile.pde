@@ -4,7 +4,6 @@ public class StoneTile extends Tile{
     super(x, y);
 
     image = ResourceManager.getImage("StoneBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
 }

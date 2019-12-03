@@ -7,7 +7,6 @@ public class ExplosionTile extends Tile{
     super(x, y); 
 
     image = ResourceManager.getImage("TNTBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
   void mine(boolean playMineSound){

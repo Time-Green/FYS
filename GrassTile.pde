@@ -4,7 +4,7 @@ public class GrassTile extends Tile{
     super(x, y);
 
     image = ResourceManager.getImage("GrassBlock");
-    breakSound = ResourceManager.getSound("DirtBreak");
+    breakSound = "DirtBreak";
 
     setupLightSource(this, 600f, 0.03f);
   }

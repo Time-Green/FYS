@@ -8,7 +8,6 @@ public class RedIceTile extends ResourceTile{
     slipperiness = 1.1;
     
     image = ResourceManager.getImage("RedIceBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     pickUpImage = ResourceManager.getImage("GoldPickUp");
   }
 

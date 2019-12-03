@@ -7,8 +7,6 @@ class Explosion extends BaseObject{
 
   boolean dealDamageToPlayer;
 
-  SoundFile explosionSound;
-
   ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
 
   Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer){
@@ -16,8 +14,6 @@ class Explosion extends BaseObject{
     maxRadius = radius;
     this.maxDamage = maxDamage;
     this.dealDamageToPlayer = dealDamageToPlayer;
-
-    explosionSound = ResourceManager.getSound("Explosion");
     
     //flash
     setupLightSource(this, radius, 1f);
@@ -30,8 +26,7 @@ class Explosion extends BaseObject{
     load(particleSystem);
 
     //play sound
-    explosionSound.stop();
-    //explosionSound.play();
+    AudioManager.playSoundEffect("Explosion", position);
   }
 
   void explode(){

@@ -6,7 +6,6 @@ public class DiamondTile extends ResourceTile{
     value = 1000;
 
     image = ResourceManager.getImage("DiamondBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
     pickUpImage = ResourceManager.getImage("DiamondPickUp");
   }
 

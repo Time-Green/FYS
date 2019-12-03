@@ -10,7 +10,7 @@ class Tile extends BaseObject{
   PImage image;
   PImage destroyedImage;
 
-  SoundFile breakSound;
+  String breakSound;
   float dammageDiscolor = 50;
 
   Tile(int x, int y) {
@@ -28,6 +28,7 @@ class Tile extends BaseObject{
 
     setMaxHp(2);
 
+    breakSound = "StoneBreak" + floor(random(1, 5));
     destroyedImage = ResourceManager.getImage("DestroyedBlock");
   }
 
@@ -158,8 +159,7 @@ class Tile extends BaseObject{
   }
 
   private void playBreakSound(){
-    breakSound.stop();
-    //breakSound.play();
+    AudioManager.playSoundEffect(breakSound);
   }
 
   void setMaxHp(float hpToSet){

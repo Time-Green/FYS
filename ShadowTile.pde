@@ -5,7 +5,6 @@ public class ShadowTile extends Tile{
     
     
     image = ResourceManager.getImage("ShadowBlock");
-    breakSound = ResourceManager.getSound("StoneBreak" + floor(random(1, 5)));
   }
 
 }
