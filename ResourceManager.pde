@@ -59,7 +59,13 @@ public static class ResourceManager{
     load(currentResourceName, currentResourceFileName);
     currentLoadIndex++;
 
-    return currentResourceFileName;
+    if(currentLoadIndex + 1 < resourcesToLoadFileNames.size()){
+      String nextResourceToLoad = resourcesToLoadFileNames.get(currentLoadIndex + 1);
+
+      return nextResourceToLoad;
+    }else{
+      return "";
+    }
   }
 
   public static boolean isLoaded(){
@@ -98,7 +104,7 @@ public static class ResourceManager{
   }
 
   private static void loadSoundFile(String name, String fileName){
-    if(fileName.contains("music")){
+    if(fileName.contains("Music")){
       AudioManager.loadMusic(name, fileName);
     }else{
       AudioManager.loadSoundEffect(name, fileName);

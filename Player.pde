@@ -180,6 +180,7 @@ void draw() {
 
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.GameState.GameOver;
+    AudioManager.stopMusic("BackgroundMusic");
   }
 
   boolean canPickUp(PickUp pickUp) {

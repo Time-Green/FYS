@@ -49,7 +49,7 @@ void setup() {
 
 // gets called when all resources are loaded
 void afterResouceLoadingSetup(){
-  //AudioManager.setMaxAudioVolume("Explosion", 0.7f);
+  AudioManager.setMaxAudioVolume("BackgroundMusic", 0.7f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
 
   for (int i = 1; i < 5; i++) {
@@ -273,7 +273,7 @@ void enterOverWorld(){
 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.OverWorld;
-   
+
 }
 
 void startGame() {
@@ -281,18 +281,19 @@ void startGame() {
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
+  AudioManager.playMusic("BackgroundMusic");
+
   if(firstStart){
     firstStart = false;
   }else{
     setupGame();
-    
   }
 }
 
 void handleLoading() {
   background(0);
 
-  String lastLoadedResource = ResourceManager.loadNext();
+  String currentLoadingResource = ResourceManager.loadNext();
 
   float loadingBarWidth = float(ResourceManager.getCurrentLoadIndex()) / float(ResourceManager.getTotalResourcesToLoad());
 
@@ -304,7 +305,7 @@ void handleLoading() {
   fill(255);
   textSize(30);
   textAlign(CENTER);
-  text("Loaded: " + lastLoadedResource, width / 2, height - 10);
+  text("Loading: " + currentLoadingResource, width / 2, height - 10);
 }
 
 void handleLoggingInWaiting(){
