@@ -6,7 +6,7 @@ public class Bird extends Mob{
   final float MINSPEED = 2.0f;
   final float MAXSPEED = 5.0f;
 
-  public Bird(World world){
+  public Bird(){
 
     //some birds will fly right
     if(random(0, 2) < 1){

@@ -1,4 +1,6 @@
 import http.requests.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DatabaseManager{
 
@@ -35,13 +37,20 @@ public class DatabaseManager{
     }
   }
 
+  //used for logging in
   public DbUser getOrCreateUser(String userName){
     
+    DbUser user;
+
     if(userExists(userName)){
-      return getUser(userName);
+      user = getUser(userName);
     }else{
-      return createUser(userName, false);
+      user = createUser(userName, false);
     }
+
+    registerLogin(user);
+
+    return user;
   }
 
   public DbUser createUser(String userName, boolean checkForUserExists){
@@ -55,7 +64,7 @@ public class DatabaseManager{
 
     final String NEW_ID_COLUMN = "id";
 
-    JSONArray result = doDatabaseRequest("INSERT INTO User (%60username%60) VALUES ('" + userName + "')");
+    JSONArray result = doDatabaseRequest("INSERT INTO User (`username`) VALUES ('" + userName + "')");
 
     if(result.size() == 1){
 
@@ -65,6 +74,23 @@ public class DatabaseManager{
     }else{
       return null;
     }
+  }
+
+  public boolean registerLogin(DbUser loggedInUser){
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date date = new Date();
+
+    JSONArray result = doDatabaseRequest("INSERT INTO Login (`userid`, `datetime`) VALUES ('" + loggedInUser.id + "', '" + formatter.format(date) + "')");
+
+    int newId = -1;
+
+    if(result.size() == 1){
+
+      newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+    }
+
+    return newId >= 0;
   }
 
   public DbUser getUser(int id){
@@ -103,7 +129,9 @@ public class DatabaseManager{
 
     String url = BASE_URL + request;
 
-    url = url.replace(' ', '+'); //encode
+    //encode
+    url = url.replace(' ', '+');
+    url = url.replace("`", "%60");
 
     GetRequest get = new GetRequest(url);
 
