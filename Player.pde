@@ -12,6 +12,8 @@ class Player extends Mob {
   private AnimatedImage animatedImageMine;
   private final int MINEFRAMES = 3;
 
+  private final float VIEW_AMOUNT = 600;
+
   //Status effects
   public float stunTimer;
 
@@ -53,7 +55,7 @@ class Player extends Mob {
     }
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    setupLightSource(this, 400f, 1f);
+    setupLightSource(this, VIEW_AMOUNT, 1f);
   }
 
   void update() {

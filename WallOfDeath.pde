@@ -1,7 +1,7 @@
 class WallOfDeath extends Movable {
 
-  //private float moveSpeed = 1f;
-  private float wallYOffset = 600;
+  private float minDistanceFromPlayer = 650f;
+  private float maxDistanceFromPlayer = 1250f;
   private int currentDepthCheck = 0; 
 
   private final int MAX_DEPTH_CHECK = 25; 
@@ -14,9 +14,8 @@ class WallOfDeath extends Movable {
 
   WallOfDeath(float wallWidth){
 
-    //velocity.set(0, moveSpeed);
     size.set(wallWidth, tileHeight * 2);
-    position.set(0, player.position.y + -size.y - wallYOffset); // Clean-up wall is at a fixed position relative to the player (saves frames)
+    position.y = player.position.y - maxDistanceFromPlayer;
 
     //for debug only, Remove this line of code when puplishing
     collisionEnabled = false;
@@ -38,18 +37,26 @@ class WallOfDeath extends Movable {
     if(!Globals.isInOverWorld && player != null)
     {
       bufferZone = player.position.y - position.y; 
-      //println(bufferZone); 
-    }
+      println(bufferZone); 
 
-    if(random(1 + (bufferZone + player.getDepth() * 0.1) * 0.0001) > 1)
-    {       
-      spawnAstroid();  
-    }
+      //wod movement per frame
+      position.y += bufferZone / 225;
 
-    //velocity.y = player.getDepth() / 1000; // velocity of the WoD increases as the player digs deeper (temporary)
-    position.y = currentDepthCheck * tileHeight - size.y - wallYOffset;
-    
-    cleanUpObjects();
+      if(bufferZone < minDistanceFromPlayer){
+        println("WOD TO LOW");
+        position.y = player.position.y - minDistanceFromPlayer;
+      }else if(bufferZone > maxDistanceFromPlayer){
+        println("WOD TO HIGH");
+        position.y = player.position.y - maxDistanceFromPlayer;
+      }
+
+      if(random(1 + (bufferZone + player.getDepth() * 0.1) * 0.0002) > 1)
+      {       
+        spawnAstroid();  
+      }
+      
+      cleanUpObjects();
+    }
   }
 
   void draw(){
@@ -98,8 +105,7 @@ class WallOfDeath extends Movable {
     }
 
     if(spawnTarget != null){
-      
-        spawnTargetedMeteor(spawnTarget.position.x);
+      spawnTargetedMeteor(spawnTarget.position.x);
     }
   }
 
@@ -131,6 +137,4 @@ class WallOfDeath extends Movable {
       }
     }
   }
-
-
 }
