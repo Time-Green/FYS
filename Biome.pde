@@ -2,7 +2,7 @@ class Biome{
 
     int length = 50; //after how many tiles do we tell world to get another biome?
 
-    float structureChance = 0.05; //chance of a structure spawning between 0 and 1 for every row of tiles
+    float structureChance = 0.0; //chance of a structure spawning between 0 and 1 for every row of tiles
 
     int minumumDepth = 0;
     int maximumDepth = 999999;
