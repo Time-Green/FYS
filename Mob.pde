@@ -117,8 +117,10 @@ class Mob extends Movable {
   }
 
   void addToInventory(Item item){
+    rectMode(CENTER);
     item.suspended = true;
     inventory.add(item);
+    rectMode(CORNER);
   }
 
   void useInventory(){

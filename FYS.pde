@@ -34,6 +34,7 @@ int birdCount = round(random(15, 25));
 boolean firstTime = true;
 boolean firstStart = true;
 boolean hasCalledAfterResourceLoadSetup = false;
+boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
 
 void setup() {
   dh = new DisposeHandler(this);
@@ -123,7 +124,8 @@ void setupGame() {
 
   world.updateWorldDepth();
 
-  world.spawnStructure("Tree", new PVector(10, 6)); 
+  world.spawnStructure("Tree", new PVector(20, 6)); 
+  world.spawnStructure("ButtonAltar", new PVector(40, 8));
 
   spawnStarterChest();
 }
@@ -140,7 +142,7 @@ void spawnStarterChest(){
   Chest startChest = new Chest();
   startChest.forcedKey = 1;
 
-  load(startChest, new PVector(500, 500));
+  load(startChest, new PVector(30 * tileWidth, 9 * tileHeight));
 }
 
 void draw() {
@@ -212,6 +214,15 @@ void updateObjects() {
   for (BaseObject object : objectList) {
     object.update();
   }
+
+  if(startGame){
+    startGame = false;
+    Globals.isInOverWorld = false;
+
+    startGame();
+
+  }
+
 }
 
 void drawObjects() {
@@ -281,7 +292,11 @@ void enterOverWorld(){
 
 }
 
-void startGame(boolean playMusic) {
+void startGameSoon(){
+  startGame = true;
+}
+
+void startGame() {
 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
@@ -371,11 +386,6 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 void keyPressed(){
   InputHelper.onKeyPressed(keyCode);
   InputHelper.onKeyPressed(key);
-
-  if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
-    Globals.isInOverWorld = false;
-    startGame(true); 
-  }
 
   if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
     load(new EnemyShocker(new PVector(1000, 500)));
