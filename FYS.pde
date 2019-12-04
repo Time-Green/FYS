@@ -248,6 +248,7 @@ void handleGameFlow() {
 
       //if we died we restart the game by pressing enter
       if (InputHelper.isKeyDown(Globals.STARTKEY)){
+        startGame(false);  
         enterOverWorld();
         InputHelper.onKeyReleased(Globals.STARTKEY); 
       }
@@ -280,12 +281,14 @@ void enterOverWorld(){
 
 }
 
-void startGame() {
+void startGame(boolean playMusic) {
 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
-  AudioManager.loopMusic("BackgroundMusic");
+  if(playMusic){
+    AudioManager.loopMusic("BackgroundMusic");
+  }
 
   if(firstStart){
     firstStart = false;
@@ -371,7 +374,7 @@ void keyPressed(){
 
   if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
     Globals.isInOverWorld = false;
-    startGame(); 
+    startGame(true); 
   }
 
   if(key == 'E' || key == 'e'){ // TEMPORARY (duh)

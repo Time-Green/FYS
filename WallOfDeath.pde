@@ -3,14 +3,18 @@ class WallOfDeath extends Movable {
   private float minDistanceFromPlayer = 650f;
   private float maxDistanceFromPlayer = 1250f;
   private int currentDepthCheck = 0; 
-
+  boolean isInBeginfase = true;
   private final int MAX_DEPTH_CHECK = 25; 
 
   private color wallColor = #FF8C33;
+  
+  private float gameStartSpawnMult = 0; 
 
   private float bufferZone; 
 
   private final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
+
+  private final float BEGINFASE_SAFEZONE = 750; 
 
   WallOfDeath(float wallWidth){
 
@@ -36,6 +40,18 @@ class WallOfDeath extends Movable {
 
     if(!Globals.isInOverWorld && player != null)
     {
+      if(gameStartSpawnMult < 1)
+      {
+        gameStartSpawnMult += 1f / 900f; 
+
+        if(gameStartSpawnMult >= 1)
+        {
+          gameStartSpawnMult = 1; 
+          isInBeginfase = false; 
+        }
+
+      }
+
       bufferZone = player.position.y - position.y; 
       //println(bufferZone); 
 
@@ -50,12 +66,14 @@ class WallOfDeath extends Movable {
         position.y = player.position.y - maxDistanceFromPlayer;
       }
 
-      float maxAsteroidSpawnChange = 1 + (bufferZone + player.position.y * 0.1f) * 0.0001f;
+      float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.1f) * 0.0001f) * gameStartSpawnMult;
 
-      //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
+      //maxAsteroidSpawnChange *= gameStartSpawnMult; 
+
+      println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
 
       if(random(maxAsteroidSpawnChange) > 1)
-      {       
+      {     
         spawnAstroid();  
       }
       
@@ -74,49 +92,63 @@ class WallOfDeath extends Movable {
   }
 
   void spawnAstroid(){
-
-    //max depth we are going to scan
-    int scanDepth = currentDepthCheck + MAX_DEPTH_CHECK;
     
-    Tile spawnTarget = null;
-    
-    for(int i = currentDepthCheck; i < scanDepth; i++){
+    if(isInBeginfase)
+    {
+      spawnRandomTargetedMeteor(); 
+    }
+    else{
+      //max depth we are going to scan
+      int scanDepth = currentDepthCheck + MAX_DEPTH_CHECK;
+      
+      Tile spawnTarget = null;
+      
+      for(int i = currentDepthCheck; i < scanDepth; i++){
 
-      ArrayList<Tile> tileRow = world.getLayer(i);
-      ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>();
+        ArrayList<Tile> tileRow = world.getLayer(i);
+        ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>();
 
-      for(Tile tile : tileRow){
+        for(Tile tile : tileRow){
 
-        if(tile.density){
-          destructibleTilesInRow.add(tile);
+          if(tile.density){
+            destructibleTilesInRow.add(tile);
+          }
+        }
+
+        if(destructibleTilesInRow.size() > 0){
+          
+          spawnTarget = destructibleTilesInRow.get(int(random(destructibleTilesInRow.size())));
+          break;
+
+        }else{
+          currentDepthCheck++;
         }
       }
 
-      if(destructibleTilesInRow.size() > 0){
-        
-        spawnTarget = destructibleTilesInRow.get(int(random(destructibleTilesInRow.size())));
-        break;
-
-      }else{
-        currentDepthCheck++;
+      if(spawnTarget != null){
+        spawnTargetedMeteor(spawnTarget.position.x);
       }
-    }
-
-    if(spawnTarget != null){
-      spawnTargetedMeteor(spawnTarget.position.x);
     }
   }
 
   private void spawnTargetedMeteor(float targetPosX){
-
+    
     float spawnPosX = targetPosX + random(-tileWidth * 2, tileWidth * 2);
 
     load(new Meteor(), new PVector(spawnPosX, position.y)); 
   }
 
-  // private void spawnRandomTargetedMeteor(){
-  //   load(new Meteor(), new PVector(random(tilesHorizontal * tileWidth + tileWidth), position.y)); 
-  // }
+  private void spawnRandomTargetedMeteor(){
+
+    float spawnX = random(tilesHorizontal * tileWidth + tileWidth); 
+
+    while(abs(player.position.x - spawnX) < BEGINFASE_SAFEZONE)
+    {
+      spawnX = random(tilesHorizontal * tileWidth + tileWidth); 
+    }
+
+    load(new Meteor(), new PVector(spawnX, position.y)); 
+  }
 
   private void cleanUpObjects(){
 

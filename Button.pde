@@ -18,6 +18,6 @@ class Button extends Obstacle{
 
     void buttonPressed(Mob movable){
         Globals.isInOverWorld = false;
-        startGame(); 
+        startGame(true); 
     }
 }
