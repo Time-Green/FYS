@@ -50,7 +50,7 @@ class WallOfDeath extends Movable {
         position.y = player.position.y - maxDistanceFromPlayer;
       }
 
-      float maxAsteroidSpawnChange = 1 + (bufferZone + player.position.y * 0.1f) * 0.00015f;
+      float maxAsteroidSpawnChange = 1 + (bufferZone + player.position.y * 0.1f) * 0.0001f;
 
       //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
 
