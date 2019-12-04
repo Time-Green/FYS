@@ -384,11 +384,6 @@ void keyPressed(){
   InputHelper.onKeyPressed(keyCode);
   InputHelper.onKeyPressed(key);
 
-  if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
-    Globals.isInOverWorld = false;
-    startGame(); 
-  }
-
   if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
     load(new EnemyShocker(new PVector(1000, 500)));
   }
