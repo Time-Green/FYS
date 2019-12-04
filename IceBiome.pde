@@ -1,5 +1,11 @@
  class IceBiome extends Biome{
- 
+
+    IceBiome(){
+
+     destroyedImage = ResourceManager.getImage("DestroyedIce");
+
+   }
+
     Tile getTileToGenerate(int x, int depth){
       float orechance = random(100);
       caveSpawningPossibilityScale = .60;

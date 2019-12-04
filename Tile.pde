@@ -33,7 +33,9 @@ class Tile extends BaseObject{
   }
 
   private void setupCave(){
-    if(position.y > 1050 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale){
+
+    //11 is grass layer + transition layer
+    if(gridPosition.y > world.safeZone + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale){
       destroyed = true;
       density = false;
 

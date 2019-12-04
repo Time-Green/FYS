@@ -3,6 +3,9 @@
    ShadowBiome(){
      enemyChance = 0.1;
      minimumDepth = 200;
+     
+     destroyedImage = ResourceManager.getImage("DestroyedShadow");
+
    }
  
     Tile getTileToGenerate(int x, int depth){
