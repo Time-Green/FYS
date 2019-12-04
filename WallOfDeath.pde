@@ -50,19 +50,17 @@ class WallOfDeath extends Movable {
         position.y = player.position.y - maxDistanceFromPlayer;
       }
 
-      if(random(1 + (bufferZone + player.getDepth() * 0.1) * 0.0002) > 1)
+      float maxAsteroidSpawnChange = 1 + (bufferZone + player.position.y * 0.1f) * 0.0001f;
+
+      //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
+
+      if(random(maxAsteroidSpawnChange) > 1)
       {       
         spawnAstroid();  
       }
       
       cleanUpObjects();
     }
-  }
-
-  void draw(){
-    // fill(wallColor);
-    // rect(position.x, position.y, size.x, size.y);
-    // fill(255);
   }
 
   // If the WoD hits the player, the game is paused. 
