@@ -248,7 +248,7 @@ void handleGameFlow() {
 
       //if we died we restart the game by pressing enter
       if (InputHelper.isKeyDown(Globals.STARTKEY)){
-        startGame();
+        enterOverWorld();
         InputHelper.onKeyReleased(Globals.STARTKEY); 
       }
 
