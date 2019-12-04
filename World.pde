@@ -12,7 +12,7 @@ public class World {
 
   float wallWidth;
 
-  Biome[] biomes = {new Biome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
+  Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
   Biome currentBiome;
   ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
   int switchDepth; //the depth at wich we switch to the next biome in the qeueu
@@ -23,7 +23,7 @@ public class World {
 
     //Specially queued biomes, for cinematic effect
     biomeQueue.add(new OverworldBiome());
-    biomeQueue.add(new Biome());
+    biomeQueue.add(new NormalBiome());
 
     fillBiomeQueue(0);
     switchBiome(0);

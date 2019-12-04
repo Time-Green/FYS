@@ -219,7 +219,7 @@ void updateObjects() {
     startGame = false;
     Globals.isInOverWorld = false;
 
-    startGame();
+    startGame(true);
 
   }
 
@@ -296,7 +296,7 @@ void startGameSoon(){
   startGame = true;
 }
 
-void startGame() {
+void startGame(boolean playMusic) {
 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
