@@ -15,6 +15,8 @@ DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
 int loginStartTime;
 
+DisposeHandler dh;
+
 World world;
 Player player;
 WallOfDeath wallOfDeath;
@@ -34,6 +36,8 @@ boolean firstStart = true;
 boolean hasCalledAfterResourceLoadSetup = false;
 
 void setup() {
+  dh = new DisposeHandler(this);
+
   size(1280, 720, P2D);
   //fullScreen(P2D);
 
@@ -364,18 +368,32 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 void keyPressed(){
   InputHelper.onKeyPressed(keyCode);
   InputHelper.onKeyPressed(key);
+
   if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
     Globals.isInOverWorld = false;
     startGame(); 
-    
   }
 
   if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
-  load(new EnemyShocker(new PVector(1000, 500)));
+    load(new EnemyShocker(new PVector(1000, 500)));
   }
 }
 
 void keyReleased(){
   InputHelper.onKeyReleased(keyCode);
   InputHelper.onKeyReleased(key);
+}
+
+public class DisposeHandler {
+   
+  DisposeHandler(PApplet pa)
+  {
+    pa.registerMethod("dispose", this);
+  }
+   
+  public void dispose()
+  {
+    // We can use this to check how long the game has been running
+    println("Closing sketch after " + (millis() / 1000) + " (" + millis() + " ms) seconds");
+  }
 }
