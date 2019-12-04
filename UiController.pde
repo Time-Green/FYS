@@ -71,7 +71,7 @@ public class UIController {
         pauseScreen();
       break;
       case OverWorld :
-        //do nothing
+        startMenu(); 
       break;		
     }
 
@@ -125,9 +125,11 @@ public class UIController {
     text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
     //sub text
-    textFont(instructionFont);
-    textSize(instructionFontSize);
-    text("Press Enter to start", width / 2, height / 2 + (titleFontSize/2));
+    if(Globals.currentGameState == Globals.GameState.MainMenu){
+      textFont(instructionFont);
+      textSize(instructionFontSize);
+      text("Press Enter to start", width / 2, height / 2 + (titleFontSize/2));
+    }
   }
 
   void gameHUD(){
