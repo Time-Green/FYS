@@ -3,7 +3,7 @@ public class RedIceTile extends ResourceTile{
   public RedIceTile(int x, int y){
     super(x, y);
 
-    value = 500;
+    value = 300;
 
     slipperiness = 1.1;
     
