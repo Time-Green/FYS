@@ -88,7 +88,7 @@ public class DatabaseManager{
     if(result.size() == 1){
 
       currentSessionId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
-      println("currentSessionId: " + currentSessionId);
+      //println("currentSessionId: " + currentSessionId);
     }
 
     return currentSessionId >= 0;
