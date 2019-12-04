@@ -29,7 +29,14 @@ class Tile extends BaseObject{
     setMaxHp(2);
 
     breakSound = "StoneBreak" + floor(random(1, 5));
-    destroyedImage = ResourceManager.getImage("DestroyedBlock");
+
+    if(y > world.safeZone){
+      destroyedImage = ResourceManager.getImage("DestroyedBlock");
+    }else{
+      density = false; 
+      destroyedImage = null;  
+    }
+    
   }
 
   private void setupCave(){

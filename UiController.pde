@@ -70,8 +70,8 @@ public class UIController {
       case GamePaused :
         pauseScreen();
       break;
-      case OverWorld :
-        startMenu(); 
+      case Overworld :
+        // draw nothing
       break;		
     }
 
@@ -101,7 +101,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Enter: restart", width / 2, height / 2 + instructionFontSize);
+    text("Score: " + player.score + "\nDepth: " + player.getDepth() + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
   }
 
   void startMenu(){
@@ -125,11 +125,9 @@ public class UIController {
     text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
     //sub text
-    if(Globals.currentGameState == Globals.GameState.MainMenu){
-      textFont(instructionFont);
-      textSize(instructionFontSize);
-      text("Press Enter to start", width / 2, height / 2 + (titleFontSize/2));
-    }
+    textFont(instructionFont);
+    textSize(instructionFontSize);
+    text("Press Enter to start", width / 2, height / 2 + (titleFontSize/2));
   }
 
   void gameHUD(){
@@ -205,20 +203,23 @@ public class UIController {
   void drawInventory(){
     
     for (int i = 0; i < player.maxInventory; i++) {
+
       if(i == player.selectedSlot - 1){
         fill(inventorySelectedColor);
       } else{
         fill(inventoryColor);
       }
+      
       //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
       rect(width * 0.95 - inventorySize * i, barX, inventorySize, inventorySize);
     }
+    
+    //imageMode(CENTER);
 
     for(Item item : player.inventory){
-      // imageMode(CENTER);
-      image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item),
-      barX, item.size.x, item.size.y);
-      // imageMode(CORNER);
+      image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item), barX, item.size.x, item.size.y);
     }
+
+    //imageMode(CORNER);
   }
 }

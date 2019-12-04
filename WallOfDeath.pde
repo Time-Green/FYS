@@ -31,15 +31,15 @@ class WallOfDeath extends Movable {
   
   void update(){
 
-    if (Globals.gamePaused || Globals.isInOverWorld)
+    if (Globals.gamePaused || Globals.currentGameState == Globals.GameState.Overworld)
     {
       return;
     }
 
     super.update();
 
-    if(!Globals.isInOverWorld && player != null)
-    {
+    //if(player != null)
+    //{
       if(gameStartSpawnMult < 1)
       {
         gameStartSpawnMult += 1f / 900f; 
@@ -70,7 +70,7 @@ class WallOfDeath extends Movable {
 
       //maxAsteroidSpawnChange *= gameStartSpawnMult; 
 
-      println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
+      //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
 
       if(random(maxAsteroidSpawnChange) > 1)
       {     
@@ -78,7 +78,7 @@ class WallOfDeath extends Movable {
       }
       
       cleanUpObjects();
-    }
+    //}
   }
 
   // If the WoD hits the player, the game is paused. 

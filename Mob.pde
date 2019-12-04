@@ -39,7 +39,7 @@ class Mob extends Movable {
 
   public void attemptMine(BaseObject object){
 
-    if(Globals.isInOverWorld){ // In the overworld we disable digging all together. 
+    if(Globals.currentGameState == Globals.GameState.Overworld){ // In the overworld we disable digging all together. 
       return; 
     }else{
       

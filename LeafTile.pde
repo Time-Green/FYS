@@ -4,8 +4,6 @@ public class LeafTile extends Tile{
     super(x, y);
 
     image = ResourceManager.getImage("Leaf");
-    this.density = false; 
-    destroyedImage = null;  
   }
 
 }

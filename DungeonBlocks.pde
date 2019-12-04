@@ -3,41 +3,55 @@ class DungeonBlock0 extends Tile{
     DungeonBlock0(int x, int y){
         super(x, y);
         image = ResourceManager.getImage("DungeonBlock0");
-        setMaxHp(99999);
+
+        density = true;
+
+        //setMaxHp(99999);
     }
 }
+
 class DungeonBlock1 extends Tile{
 
     DungeonBlock1(int x, int y){
         super(x, y);
         image = ResourceManager.getImage("DungeonBlock1");
-        setMaxHp(99999);
+
+        density = true;
+
+        //setMaxHp(99999);
     }
 }
+
 class DungeonBlock2 extends Tile{
 
     DungeonBlock2(int x, int y){
         super(x, y);
         image = ResourceManager.getImage("DungeonBlock2");
-        setMaxHp(99999);
+
+        density = true;
+
+        //setMaxHp(99999);
     }
 }
+
 class DungeonStairL extends Tile{
 
     DungeonStairL(int x, int y){
         super(x, y);
         image = ResourceManager.getImage("DungeonStairL");
-        setMaxHp(99999);
+        //setMaxHp(99999);
     }
 }
+
 class DungeonStairR extends Tile{
 
     DungeonStairR(int x, int y){
         super(x, y);
         image = ResourceManager.getImage("DungeonStairR");
-        setMaxHp(99999);
+        //setMaxHp(99999);
     }
 }
+
 class Art0 extends Obstacle{
 
     Art0(){
@@ -45,6 +59,7 @@ class Art0 extends Obstacle{
         image = ResourceManager.getImage("Art0");
     }
 }
+
 class Art1 extends Obstacle{
 
     Art1(){
@@ -52,6 +67,7 @@ class Art1 extends Obstacle{
         image = ResourceManager.getImage("Art1");
     }
 }
+
 class Banner extends Obstacle{
 
     Banner(){
@@ -59,6 +75,7 @@ class Banner extends Obstacle{
         image = ResourceManager.getImage("Banner");
     }
 }
+
 class ChairL extends Obstacle{
 
     ChairL(){
@@ -66,6 +83,7 @@ class ChairL extends Obstacle{
         image = ResourceManager.getImage("ChairL");
     }
 }
+
 class ChairR extends Obstacle{
 
     ChairR(){
@@ -105,6 +123,7 @@ class Skull extends Obstacle{
         image = ResourceManager.getImage("Skull");
     }
 }
+
 class SkullTorch extends Obstacle{
 
     SkullTorch(){
