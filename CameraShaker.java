@@ -7,11 +7,11 @@ public class CameraShaker
 
     private static PVector currentShakeOffset = new PVector();
 
-    private static float maxTraumaIntensity = 1.25f;
+    private static float maxTraumaIntensity = 1f;
 
     // Maximum distance in each direction the transform
     // with translate during shaking.
-    private static PVector maximumShakeAmount = new PVector(20, 20);
+    private static PVector maximumShakeAmount = new PVector(10, 10);
 
     // Frequency of the Perlin noise function. Higher values
     // will result in faster shaking.
