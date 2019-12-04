@@ -375,6 +375,10 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 
   for (BaseObject object : objectList) {
 
+    if(object.suspended){
+      continue;
+    }
+
     if(dist(pos.x, pos.y, object.position.x, object.position.y) < radius){
       objectsInRadius.add(object);
     }
