@@ -42,11 +42,9 @@ public class DatabaseManager{
   //used for logging in
   public DbUser getOrCreateUser(String userName){
     
-    DbUser user;
+    DbUser user = getUser(userName);
 
-    if(userExists(userName)){
-      user = getUser(userName);
-    }else{
+    if(user == null){
       user = createUser(userName, false);
     }
 
