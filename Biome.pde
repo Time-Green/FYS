@@ -2,7 +2,7 @@ class Biome{
 
     int length = 50; //after how many tiles do we tell world to get another biome?
 
-    float structureChance = 0.0; //chance of a structure spawning between 0 and 1 for every row of tiles
+    float structureChance = 0.02; //chance of a structure spawning between 0 and 1 for every row of tiles
     float enemyChance = 0.01; //chance of enemy spawning on an open tile
 
     int minimumDepth = 0;
@@ -81,6 +81,9 @@ class Biome{
   }
 
   void placeStructure(int depth){
+    if(random(1) < 1) { //change to 0.1 if anymore structeres.
+      world.safeSpawnStructure(("Dungeon1"), new PVector(int(random(40)), depth));
+    }
     world.safeSpawnStructure(getStructureName(), new PVector(int(random(tilesHorizontal * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
   }
 
