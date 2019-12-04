@@ -7,7 +7,7 @@ public class GreenIceTile extends ResourceTile{
     slipperiness = 1.1;
     
     image = ResourceManager.getImage("GreenIceBlock");
-    pickUpImage = ResourceManager.getImage("GoldPickUp");
+    pickUpImage = ResourceManager.getImage("EmeraldPickup");
   }
 
 }

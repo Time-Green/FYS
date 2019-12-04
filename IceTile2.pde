@@ -7,7 +7,7 @@ public class IceTile2 extends ResourceTile{
     slipperiness = 1.1;
     
     image = ResourceManager.getImage("IceBlock2");
-    pickUpImage = ResourceManager.getImage("GoldPickUp");
+    pickUpImage = ResourceManager.getImage("SaphirePickup");
     breakSound = "GlassBreak" + floor(random(1, 4));
   }
 
