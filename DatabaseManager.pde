@@ -162,8 +162,8 @@ public class DatabaseManager{
 
     String result = get.getContent();
 
-    println("request: " + request);
-    println("result: " + result);
+    //println("request: " + request);
+    //println("result: " + result);
 
     return parseJSONArray(result);
   }
