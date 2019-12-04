@@ -266,7 +266,7 @@ void handleGameFlow() {
       
       //Reset game
       if (InputHelper.isKeyDown(Globals.BACKKEY)){
-        startGame();
+        enterOverWorld();
     }
 
     break;

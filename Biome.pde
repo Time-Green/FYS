@@ -45,11 +45,15 @@ class Biome{
       {
         return new IronTile(x, depth);
       }
-      else if(orechance > 98 && orechance <= 100){
+      else if(orechance > 98 && orechance <= 100)
+      {
         //return new MysteryTile(x, depth);
-        return new ExplosionTile(x, depth);
+        //if(random(1) > 0.5){
+          return new ExplosionTile(x, depth);
+        // }else{
+        //   return new HealthTile(x, depth); 
+        // }
       }
-
     }
     else if(depth > 500){
 
