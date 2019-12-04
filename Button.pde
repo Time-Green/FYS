@@ -7,17 +7,21 @@ class Button extends Obstacle{
         image = ResourceManager.getImage("Button");
     }
 
-    void pushed(Mob mob, PVector otherPosition){
+    void collidedWith(BaseObject object){
+        if(!(object instanceof Movable)){
+            anchored = true; //lock into place once we found a floor
+            return;
+        }
+        Movable presser = (Movable) object;
 
-        if(otherPosition.y > 0){ //someone jumped on us
+        if(canBePressed && presser.velocity.y > 1){ //someone jumped on us
             image = pressedImage;
             canBePressed = false;
-            buttonPressed(mob);
+            buttonPressed(presser);
         }
     }
 
-    void buttonPressed(Mob movable){
-        Globals.isInOverWorld = false;
-        startGame(); 
+    void buttonPressed(Movable presser){
+        startGameSoon();
     }
 }

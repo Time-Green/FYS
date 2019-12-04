@@ -141,7 +141,7 @@ void draw() {
     }
 
     if (InputHelper.isKeyDown('h')) {
-      load(new Chest(), new PVector(position.x + 100, position.y));
+      load(new Spike(), new PVector(position.x + 100, position.y));
       InputHelper.onKeyReleased('h'); //ssssh
     }
 

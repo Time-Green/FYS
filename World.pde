@@ -324,6 +324,8 @@ public class World {
 
       case "ObsedianBlock" :
         return new ObsedianTile(int(spawnPos.x), int(spawnPos.y)); //obsedian
+      case "DungeonBlock1" :
+        return new DungeonBlock1(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");
@@ -349,6 +351,10 @@ public class World {
 
       case "ChestStart" :
         load(new Chest(), spawnWorldPos);
+      break;
+
+      case "Button" :
+        load(new Button(), spawnWorldPos);
       break;
 
       default :
