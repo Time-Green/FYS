@@ -1,7 +1,7 @@
 public class UIController {
 
   //Colors
-  private color titleColor = #FA3535;
+  private color titleColor = #9d0b0b;
   private color titleBackground = #FFA500;
   private color inventoryColor = #FBB65E;
   private color inventorySelectedColor = #56BACF;
@@ -23,7 +23,7 @@ public class UIController {
   private float slotSize = 60;
   private float slotOffsetX = slotSize * 1.5f;
 
-  private final boolean DRAWSTATS = true;
+  private final boolean DRAWSTATS = false;
 
   //Inventory
   private float inventorySize = 50;
@@ -32,17 +32,17 @@ public class UIController {
 
   //Text
   private PFont titleFont;
-  private float titleFontSize = 96;
+  private float titleFontSize = 120;
 
   private PFont instructionFont;
-  private float instructionFontSize = titleFontSize / 2.2;
+  private float instructionFontSize = 40;
 
   private PFont hudFont;
   private float hudFontSize = 40;
 
   UIController(){
     titleFont = ResourceManager.getFont("Brickyol");
-    instructionFont = ResourceManager.getFont("MenuFont");
+    instructionFont = ResourceManager.getFont("Block Stock");
     hudFont = ResourceManager.getFont("BrickBold");
     healthBarImage = ResourceManager.getImage("health-bar"); 
   }
@@ -101,7 +101,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Enter: restart", width / 2, height / 2 - 30);
+    text("Enter: restart", width / 2, height / 2 + instructionFontSize);
   }
 
   void startMenu(){
@@ -127,7 +127,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Press Enter to start", width / 2, height / 2 - 30);
+    text("Press Enter to start", width / 2, height / 2 + (titleFontSize/2));
   }
 
   void gameHUD(){
@@ -205,18 +205,18 @@ public class UIController {
     for (int i = 0; i < player.maxInventory; i++) {
       if(i == player.selectedSlot - 1){
         fill(inventorySelectedColor);
-      }
-      else{
+      } else{
         fill(inventoryColor);
       }
       //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-      rect(width * 0.95 - inventorySize * i, height * 0.9, inventorySize, inventorySize);
+      rect(width * 0.95 - inventorySize * i, barX, inventorySize, inventorySize);
     }
 
     for(Item item : player.inventory){
-      imageMode(CENTER);
-      image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item), height * 0.9, item.size.x, item.size.y);
-      imageMode(CORNER);
+      // imageMode(CENTER);
+      image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item),
+      barX, item.size.x, item.size.y);
+      // imageMode(CORNER);
     }
   }
 }

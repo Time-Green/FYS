@@ -91,7 +91,7 @@
             <button index="6">
                 <slots>
                     <slot>
-                        <code>0x45</code>
+                        <code>0x47</code>
                         <mode>keyboard</mode>
                     </slot>
                 </slots>
