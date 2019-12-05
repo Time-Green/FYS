@@ -373,39 +373,39 @@ public class World {
       break;
 
     case "Art0" :
-      load(new Banner(), spawnWorldPos);
+      load(new Art0(), spawnWorldPos);
       break;
 
     case "Art1" :
-      load(new Banner(), spawnWorldPos);
+      load(new Art1(), spawnWorldPos);
       break;
 
     case "ChairL" :
-      load(new Banner(), spawnWorldPos);
+      load(new ChairL(), spawnWorldPos);
       break;
 
     case "ChairR" :
-      load(new Banner(), spawnWorldPos);
+      load(new ChairR(), spawnWorldPos);
       break;
 
     case "Skull" :
-      load(new Banner(), spawnWorldPos);
+      load(new Skull(), spawnWorldPos);
       break;
 
     case "SkullTorch" :
-      load(new Banner(), spawnWorldPos);
+      load(new SkullTorch(), spawnWorldPos);
       break;
 
     case "Cobweb" :
-      load(new Banner(), spawnWorldPos);
+      load(new Cobweb(), spawnWorldPos);
       break;
 
     case "Shelf0" :
-      load(new Banner(), spawnWorldPos);
+      load(new Shelf0(), spawnWorldPos);
       break;
 
     case "Shelf1" :
-      load(new Banner(), spawnWorldPos);
+      load(new Shelf1(), spawnWorldPos);
       break;
 
     default :
