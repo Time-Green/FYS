@@ -197,6 +197,7 @@ public class DatabaseManager{
 
   void setTempUser(){
     dbUser = new DbUser();
+    dbUser.id = -1;
     dbUser.userName = "TempUser";
   }
 

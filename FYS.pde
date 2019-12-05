@@ -140,17 +140,17 @@ void draw() {
     return;
   }
 
-  if(!hasCalledAfterResourceLoadSetup){
-    hasCalledAfterResourceLoadSetup = true;
-
-    afterResouceLoadingSetup();
-  }
-
   //wait until we are logged in
   if(dbUser == null){
     handleLoggingInWaiting();
 
     return;
+  }
+
+  if(!hasCalledAfterResourceLoadSetup){
+    hasCalledAfterResourceLoadSetup = true;
+
+    afterResouceLoadingSetup();
   }
 
   //push and pop are needed so the hud can be correctly drawn

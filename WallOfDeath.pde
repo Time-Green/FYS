@@ -48,8 +48,9 @@ class WallOfDeath extends Movable {
         isInBeginfase = false;
         ui.drawWarningOverlay = false;
       }
-
     }
+
+    doStartingCameraShake();
 
     bufferZone = player.position.y - position.y; 
     //println(bufferZone); 
@@ -77,6 +78,13 @@ class WallOfDeath extends Movable {
     }
     
     cleanUpObjects();
+  }
+
+  private void doStartingCameraShake(){
+
+    if(Globals.currentGameState == Globals.GameState.InGame && isInBeginfase){
+      CameraShaker.induceStress(1f - gameStartSpawnMult * 1.5f);
+    }
   }
 
   // If the WoD hits the player, the game is paused. 

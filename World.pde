@@ -29,7 +29,7 @@ public class World {
     switchBiome(0);
   }
 
-  public void update() {
+  public void update(){
   }
 
   public void draw(Camera camera) {
