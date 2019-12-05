@@ -12,7 +12,9 @@ class Player extends Mob {
   private AnimatedImage animatedImageMine;
   private final int MINEFRAMES = 3;
 
-  private final float VIEW_AMOUNT = 600;
+  private float VIEW_AMOUNT = 500;
+  private float viewTarget;
+  private float easing = 0.025f;
 
   //Status effects
   public float stunTimer;
@@ -23,10 +25,10 @@ class Player extends Mob {
   int score = 0;
 
   public Player() {
-
     position = spawnPosition;
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
+    viewTarget = VIEW_AMOUNT;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -66,15 +68,35 @@ class Player extends Mob {
 
     super.update();
 
+    setVisibilityBasedOnCurrentBiome();
+
     statusEffects();
-    if (stunTimer <= 0) 
+    if(stunTimer <= 0){
       doPlayerMovement();
+    }
   }
 
-void draw() {
+  void setVisibilityBasedOnCurrentBiome(){
 
-  if (Globals.gamePaused) return;
-  
+    if(getDepth() > world.currentBiome.startedAt){
+
+      if(world.currentBiome.playerVisibility > 0){
+        viewTarget = world.currentBiome.playerVisibility;
+      }else{
+        viewTarget = VIEW_AMOUNT;
+      }
+    }
+
+    float dy = viewTarget - lightEmitAmount;
+    lightEmitAmount += dy * easing;
+  }
+
+  void draw(){
+
+  if (Globals.gamePaused){
+    return;
+  }
+
   //Animation
   if (stunTimer > 0f) {//Am I stunned?
     shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
@@ -173,7 +195,9 @@ void draw() {
 
   private void statusEffects() {
     //Decrease stun timer
-    if (stunTimer > 0f) stunTimer--;
+    if(stunTimer > 0f){
+      stunTimer--;
+    } 
   }
 
   public void die() {

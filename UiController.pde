@@ -26,7 +26,7 @@ public class UIController {
   //arrows
   float arrowYTarget = 0;
   float arrowYOffset = 0;
-  float easing = 0.05;
+  float easing = 0.05f;
 
   //overlay
   boolean drawWarningOverlay = false;
