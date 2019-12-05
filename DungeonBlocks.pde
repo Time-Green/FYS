@@ -7,6 +7,7 @@ class DungeonBlock0 extends Tile{
         image = ResourceManager.getImage("DungeonBlock0");
         density = true;
         setMaxHp(100);
+        destroyedImage = ResourceManager.getImage("DestroyedBlock");
     }
 
     boolean canMine() {
@@ -21,6 +22,7 @@ class DungeonBlock1 extends Tile{
         image = ResourceManager.getImage("DungeonBlock1");
         density = true;
         setMaxHp(100);
+        destroyedImage = ResourceManager.getImage("DestroyedBlock");
     }
     boolean canMine() {
     return false;
@@ -34,6 +36,7 @@ class DungeonBlock2 extends Tile{
         image = ResourceManager.getImage("DungeonBlock2");
         density = false;
         setMaxHp(100);
+        destroyedImage = ResourceManager.getImage("DestroyedBlock");
     }
     boolean canMine() {
     return false;
@@ -46,6 +49,7 @@ class DungeonStairL extends Tile{
         super(x, y);
         image = ResourceManager.getImage("DungeonStairL");
         setMaxHp(100);
+        destroyedImage = ResourceManager.getImage("DestroyedBlock");
     }
     boolean canMine() {
     return false;
@@ -58,6 +62,7 @@ class DungeonStairR extends Tile{
         super(x, y);
         image = ResourceManager.getImage("DungeonStairR");
         setMaxHp(100);
+        destroyedImage = ResourceManager.getImage("DestroyedBlock");
     }
     boolean canMine() {
     return false;
