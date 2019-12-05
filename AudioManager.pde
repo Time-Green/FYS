@@ -4,7 +4,7 @@ public static class AudioManager{
 
   private static FYS game;
 
-  private final static int AUDIO_AMOUNT = 3;
+  private final static int AUDIO_AMOUNT = 1;
   private final static float AUDIO_DISTSANCE_FALLOFF = 1500;
 
   private static HashMap<String, SoundFile> musicMap = new HashMap<String, SoundFile>();
