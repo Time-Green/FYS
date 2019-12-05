@@ -78,14 +78,12 @@ public class UIController {
         gameOver();
       break;
       case InGame :
+      case Overworld :
         gameHUD();
       break;
       case GamePaused :
         pauseScreen();
       break;
-      case Overworld :
-        // draw nothing
-      break;		
     }
 
     //reset rectMode
