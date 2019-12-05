@@ -36,8 +36,8 @@ boolean startGame = false; //start the game on next tick. needed to avoid concur
 void setup() {
   dh = new DisposeHandler(this);
 
-  size(1280, 720, P2D);
-  //fullScreen(P2D);
+  //size(1280, 720, P2D);
+  fullScreen(P2D);
 
   databaseManager.beginLogin();
 
