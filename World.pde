@@ -408,6 +408,11 @@ public class World {
       load(new Shelf1(), spawnWorldPos);
       break;
 
+    case "Table" :
+      load(new Table(), spawnWorldPos);
+      break;
+
+
     default :
       println("ERROR: structure object '" + stripedObjectName + "' not set up or not found!");
       break;

@@ -67,6 +67,7 @@ class DungeonStairR extends Tile{
 class Art0 extends Obstacle{
 
     Art0(){
+        anchored = true;
         image = ResourceManager.getImage("Art0");
         size.set(100, 50);
         density = false;
@@ -76,6 +77,7 @@ class Art0 extends Obstacle{
 class Art1 extends Obstacle{
 
     Art1(){
+        anchored = true;
         image = ResourceManager.getImage("Art1");
         density = false;
     }
@@ -84,6 +86,7 @@ class Art1 extends Obstacle{
 class Banner extends Obstacle{
 
     Banner(){
+        anchored = true;
         image = ResourceManager.getImage("Banner");
         size.set(50, 100);
         density = false;
@@ -130,6 +133,7 @@ class Shelf1 extends Obstacle{
         anchored = true;
         image = ResourceManager.getImage("Shelf1");
         density = false;
+        
     }
 }
 
@@ -154,7 +158,9 @@ class SkullTorch extends Obstacle{
 class Cobweb extends Obstacle{
 
     Cobweb(){
+        anchored = true;
         image = ResourceManager.getImage("Cobweb");
         density = false;
+        
     }
 }
