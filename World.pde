@@ -47,7 +47,7 @@ public class World {
   //return tile you're currently on
   Tile getTile(float x, float y) {
 
-    int yGridPos = floor(y / tileWidth);
+    int yGridPos = floor(y / tileSize);
 
     if (yGridPos < 0 || yGridPos > map.size() - 1) {
       return null;
@@ -59,7 +59,7 @@ public class World {
     //   return null;
     // }
 
-    int xGridPos = floor(x / tileWidth);
+    int xGridPos = floor(x / tileSize);
 
     if (xGridPos < 0 || xGridPos >= subList.size()) {
       return null;
@@ -112,43 +112,43 @@ public class World {
     float middleY = y + collider.size.y * 0.5f;
 
     //cardinals
-    Tile topTile = getTile(middleX, middleY - tileHeight);
+    Tile topTile = getTile(middleX, middleY - tileSize);
     if (topTile != null) {
       surrounding.add(topTile);
     }
 
-    Tile botTile = getTile(middleX, middleY + tileHeight);
+    Tile botTile = getTile(middleX, middleY + tileSize);
     if (botTile != null) {
       surrounding.add(botTile);
     }
 
-    Tile leftTile = getTile(middleX - tileWidth, middleY);
+    Tile leftTile = getTile(middleX - tileSize, middleY);
     if (leftTile != null) {
       surrounding.add(leftTile);
     }
 
-    Tile rightTile = getTile(middleX + tileWidth, middleY);
+    Tile rightTile = getTile(middleX + tileSize, middleY);
     if (rightTile != null) {
       surrounding.add(rightTile);
     }
 
     //diagonals
-    Tile botRightTile = getTile(middleX + tileWidth, middleY + tileHeight);
+    Tile botRightTile = getTile(middleX + tileSize, middleY + tileSize);
     if (botRightTile != null) {
       surrounding.add(botRightTile);
     }
 
-    Tile botLeftTile = getTile(middleX - tileWidth, middleY + tileHeight);
+    Tile botLeftTile = getTile(middleX - tileSize, middleY + tileSize);
     if (botLeftTile != null) {
       surrounding.add(botLeftTile);
     }
 
-    Tile topLeftTile = getTile(middleX - tileWidth, middleY - tileHeight);
+    Tile topLeftTile = getTile(middleX - tileSize, middleY - tileSize);
     if (topLeftTile != null) {
       surrounding.add(topLeftTile);
     }
 
-    Tile topRightTile = getTile(middleX + tileWidth, middleY - tileHeight);
+    Tile topRightTile = getTile(middleX + tileSize, middleY - tileSize);
     if (topRightTile != null) {
       surrounding.add(topRightTile);
     }
@@ -182,11 +182,11 @@ public class World {
   }
 
   PVector getGridPosition(Movable movable) {//return the X and Y in tiles
-    return new PVector(floor(movable.position.x / tileWidth), floor(movable.position.y / tileHeight));
+    return new PVector(floor(movable.position.x / tileSize), floor(movable.position.y / tileSize));
   }
 
   float getWidth() {
-    return tilesHorizontal * tileWidth;
+    return tilesHorizontal * tileSize;
   }
 
   boolean canBiomeSwitch(int depth) {
@@ -228,7 +228,7 @@ public class World {
   }
 
   void safeSpawnStructure(String structureName, PVector gridSpawnPos) {
-    load(new StructureSpawner(structureName, gridSpawnPos), gridSpawnPos.mult(tileWidth));
+    load(new StructureSpawner(structureName, gridSpawnPos), gridSpawnPos.mult(tileSize));
   }
 
   void spawnStructure(String structureName, PVector gridSpawnPos) {
@@ -269,7 +269,7 @@ public class World {
   }
 
   private void replaceObject(PVector relaceAtGridPos, String newObjectName) {
-    Tile tileToReplace = getTile(relaceAtGridPos.x * tileWidth, relaceAtGridPos.y * tileHeight);
+    Tile tileToReplace = getTile(relaceAtGridPos.x * tileSize, relaceAtGridPos.y * tileSize);
 
     String stripedObjectName = stripName(newObjectName);
     Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos);
@@ -347,8 +347,8 @@ public class World {
 
     PVector spawnWorldPos = new PVector();
     spawnWorldPos.set(spawnAtGridPos);
-    spawnWorldPos.x *= tileWidth;
-    spawnWorldPos.y *= tileHeight;
+    spawnWorldPos.x *= tileSize;
+    spawnWorldPos.y *= tileSize;
 
     switch(stripedObjectName) {
 

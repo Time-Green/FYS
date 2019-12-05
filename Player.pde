@@ -81,20 +81,19 @@ void draw() {
     shockedCycle.draw();
   } else {//Play the other animations when we are not
     //PLayer input
-    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY))
-    && isGrounded()) {//Walking
+    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
       walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
       walkCycle.draw();
     }
-    else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {//Jumping
+    else if((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
       animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
       animatedImageAir.draw();
-    } else if(InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
-    animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
-    animatedImageMine.draw();
-    } else {//Idle
-        animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
-        animatedImageIdle.draw();
+    }else if(InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
+      animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
+      animatedImageMine.draw();
+    }else{//Idle
+      animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
+      animatedImageIdle.draw();
     }
 
     for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
@@ -105,7 +104,7 @@ void draw() {
 
   void doPlayerMovement() {
 
-    if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
+    if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
     }
 
@@ -182,6 +181,7 @@ void draw() {
 
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.GameState.GameOver;
+    ui.drawWarningOverlay = false;
     AudioManager.stopMusic("BackgroundMusic");
   }
 

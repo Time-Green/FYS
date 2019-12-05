@@ -19,7 +19,7 @@ class Button extends Obstacle{
     textAlign(CENTER);
     textSize(20);
 
-    text("Caution\nDo NOT press", position.x + 20, position.y - 65);
+    text("Caution\nDo NOT press!!!", position.x + 20, position.y - 65);
 
     textAlign(LEFT);
   }

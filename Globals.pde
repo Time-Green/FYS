@@ -5,7 +5,8 @@ static class Globals{
   static final int LEFTKEY = LEFT;
   static final int RIGHTKEY = RIGHT;
   static final int DIGKEY = DOWN;
-  static final int JUMPKEY = 32; //Spacebar, why is SPACEBAR not a thing in prosessing?
+  static final int JUMPKEY1 = 32; //Spacebar, why is SPACEBAR not a thing in prosessing?
+  static final int JUMPKEY2 = UP;
   
   //inventory
   static final int INVENTORYKEY = ALT;

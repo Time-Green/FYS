@@ -67,7 +67,7 @@ class Chest extends Obstacle {
     AudioManager.playSoundEffect("ChestOpen");
 
     for(Movable movable : contents){
-      movable.moveTo(position.x, position.y - tileHeight);
+      movable.moveTo(position.x, position.y - tileSize);
       movable.suspended = false;
 
       movable.velocity.y = random(jumpiness / 2, jumpiness);

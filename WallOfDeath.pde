@@ -18,7 +18,7 @@ class WallOfDeath extends Movable {
 
   WallOfDeath(float wallWidth){
 
-    size.set(wallWidth, tileHeight * 2);
+    size.set(wallWidth, tileSize * 2);
     position.y = player.position.y - maxDistanceFromPlayer;
 
     //for debug only, Remove this line of code when puplishing
@@ -38,47 +38,45 @@ class WallOfDeath extends Movable {
 
     super.update();
 
-    //if(player != null)
-    //{
-      if(gameStartSpawnMult < 1)
+    if(gameStartSpawnMult < 1)
+    {
+      gameStartSpawnMult += 1f / 900f; 
+
+      if(gameStartSpawnMult >= 1)
       {
-        gameStartSpawnMult += 1f / 900f; 
-
-        if(gameStartSpawnMult >= 1)
-        {
-          gameStartSpawnMult = 1; 
-          isInBeginfase = false; 
-        }
-
+        gameStartSpawnMult = 1; 
+        isInBeginfase = false;
+        ui.drawWarningOverlay = false;
       }
 
-      bufferZone = player.position.y - position.y; 
-      //println(bufferZone); 
+    }
 
-      //wod movement per frame
-      position.y += bufferZone / 225;
+    bufferZone = player.position.y - position.y; 
+    //println(bufferZone); 
 
-      if(bufferZone < minDistanceFromPlayer){
-        //println("WOD TO LOW");
-        position.y = player.position.y - minDistanceFromPlayer;
-      }else if(bufferZone > maxDistanceFromPlayer){
-        //println("WOD TO HIGH");
-        position.y = player.position.y - maxDistanceFromPlayer;
-      }
+    //wod movement per frame
+    position.y += bufferZone / 225;
 
-      float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.1f) * 0.0001f) * gameStartSpawnMult;
+    if(bufferZone < minDistanceFromPlayer){
+      //println("WOD TO LOW");
+      position.y = player.position.y - minDistanceFromPlayer;
+    }else if(bufferZone > maxDistanceFromPlayer){
+      //println("WOD TO HIGH");
+      position.y = player.position.y - maxDistanceFromPlayer;
+    }
 
-      //maxAsteroidSpawnChange *= gameStartSpawnMult; 
+    float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.1f) * 0.0001f) * gameStartSpawnMult;
 
-      //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
+    //maxAsteroidSpawnChange *= gameStartSpawnMult; 
 
-      if(random(maxAsteroidSpawnChange) > 1)
-      {     
-        spawnAstroid();  
-      }
-      
-      cleanUpObjects();
-    //}
+    //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
+
+    if(random(maxAsteroidSpawnChange) > 1)
+    {     
+      spawnAstroid();  
+    }
+    
+    cleanUpObjects();
   }
 
   // If the WoD hits the player, the game is paused. 
@@ -133,18 +131,18 @@ class WallOfDeath extends Movable {
 
   private void spawnTargetedMeteor(float targetPosX){
     
-    float spawnPosX = targetPosX + random(-tileWidth * 2, tileWidth * 2);
+    float spawnPosX = targetPosX + random(-tileSize * 2, tileSize * 2);
 
     load(new Meteor(), new PVector(spawnPosX, position.y)); 
   }
 
   private void spawnRandomTargetedMeteor(){
 
-    float spawnX = random(tilesHorizontal * tileWidth + tileWidth); 
+    float spawnX = random(tilesHorizontal * tileSize + tileSize); 
 
     while(abs(player.position.x - spawnX) < BEGINFASE_SAFEZONE)
     {
-      spawnX = random(tilesHorizontal * tileWidth + tileWidth); 
+      spawnX = random(tilesHorizontal * tileSize + tileSize); 
     }
 
     load(new Meteor(), new PVector(spawnX, position.y)); 
@@ -155,7 +153,7 @@ class WallOfDeath extends Movable {
     for (BaseObject object : objectList) {
       
       //is the object above the wall of death..
-      if(object.position.y < position.y - DESTROYTILESAFTER * tileHeight){
+      if(object.position.y < position.y - DESTROYTILESAFTER * tileSize){
 
         //..and its not the player..
         if(object instanceof Player){

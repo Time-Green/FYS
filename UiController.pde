@@ -23,12 +23,24 @@ public class UIController {
   private float slotSize = 60;
   private float slotOffsetX = slotSize * 1.5f;
 
+  //arrows
+  float arrowYTarget = 0;
+  float arrowYOffset = 0;
+  float easing = 0.05;
+
+  //overlay
+  boolean drawWarningOverlay = false;
+  final float MAXFILL = 25f;
+  float currentFill = 0;
+  boolean isIncreasing = true;
+
   private final boolean DRAWSTATS = false;
 
   //Inventory
   private float inventorySize = 50;
 
   private PImage healthBarImage;
+  private PImage arrowImage;
 
   //Text
   private PFont titleFont;
@@ -44,7 +56,8 @@ public class UIController {
     titleFont = ResourceManager.getFont("Brickyol");
     instructionFont = ResourceManager.getFont("Block Stock");
     hudFont = ResourceManager.getFont("BrickBold");
-    healthBarImage = ResourceManager.getImage("health-bar"); 
+    healthBarImage = ResourceManager.getImage("health-bar");
+    arrowImage = ResourceManager.getImage("RedArrow");
   }
 
   void draw() {
@@ -79,9 +92,67 @@ public class UIController {
     rectMode(CORNER);
     textAlign(LEFT);
 
+    if(drawWarningOverlay){
+      drawWarningOverlay();
+    }
+
     if(DRAWSTATS){
       drawStats();
     }
+  }
+
+  void drawWarningOverlay(){
+    if(isIncreasing){
+      currentFill += 0.5f;
+
+      if(currentFill > MAXFILL){
+        currentFill = MAXFILL;
+        isIncreasing = false;
+      }
+    }else{
+      currentFill -= 0.5f;
+
+      if(currentFill < 0){
+        currentFill = 0;
+        isIncreasing = true;
+      }
+    }
+
+    fill(255, 0, 0, currentFill);
+    rect(0, 0, width, height);
+    fill(255);
+  }
+
+  void drawArrows(){
+    
+    if(frameCount % 30 == 0){
+
+      if(arrowYTarget == 0){
+        arrowYTarget = tileSize;
+      }else{
+        arrowYTarget = 0;
+      }
+    }
+
+    float dy = arrowYTarget - arrowYOffset;
+    arrowYOffset += dy * easing;
+
+    tint(255, 127);
+    fill(255, 0, 0);
+    textFont(instructionFont);
+    textSize(instructionFontSize / 2);
+
+    for (int i = 0; i < tilesHorizontal + 1; i++){
+
+      if(i % 2 == 0){
+        continue;
+      }
+
+      text("Dig!", i * tileSize, world.safeZone * tileSize + arrowYOffset - 15);
+      image(arrowImage, i * tileSize, world.safeZone * tileSize + arrowYOffset);
+    }
+
+    tint(255);
   }
 
   void gameOver(){

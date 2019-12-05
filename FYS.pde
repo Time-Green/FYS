@@ -26,8 +26,7 @@ Enemy[] enemies;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
-int tileWidth = 50;
-int tileHeight = 50;
+int tileSize = 50;
 
 int birdCount = round(random(15, 25));
 
@@ -56,6 +55,7 @@ void login(){
 
 // gets called when all resources are loaded
 void afterResouceLoadingSetup(){
+  AudioManager.setMaxAudioVolume("Siren", 0.7f);
   AudioManager.setMaxAudioVolume("BackgroundMusic", 0.7f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
 
@@ -80,14 +80,14 @@ void setupGame() {
 
   ui = new UIController();
 
-  world = new World(tilesHorizontal * tileWidth + tileWidth);
+  world = new World(tilesHorizontal * tileSize + tileSize);
 
   player = new Player();
   load(player);
 
   spawnBirds();
 
-  wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
+  wallOfDeath = new WallOfDeath(tilesHorizontal * tileSize + tileSize);
   load(wallOfDeath);
 
   CameraShaker.reset();
@@ -132,7 +132,7 @@ void spawnStarterChest(){
   Chest startChest = new Chest();
   startChest.forcedKey = 1;
 
-  load(startChest, new PVector(30 * tileWidth, 10 * tileHeight));
+  load(startChest, new PVector(30 * tileSize, 10 * tileSize));
 }
 
 void draw() {
@@ -169,6 +169,10 @@ void draw() {
   drawObjects();
 
   world.updateDepth();
+
+  if(Globals.currentGameState == Globals.GameState.InGame && player.position.y < (world.safeZone + 2) * tileSize){
+    ui.drawArrows();
+  }
 
   popMatrix();
   //draw hud below popMatrix();
@@ -287,6 +291,9 @@ void startAsteroidRain() {
   Globals.currentGameState = Globals.GameState.InGame;
 
   AudioManager.loopMusic("BackgroundMusic");
+
+  ui.drawWarningOverlay = true;
+  AudioManager.playSoundEffect("Siren");
 }
 
 void handleLoading() {
