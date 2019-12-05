@@ -141,7 +141,7 @@ public class UIController {
     arrowYOffset += dy * easing;
 
     tint(255, 127);
-    fill(255, 0, 0);
+    fill(titleColor);
     textFont(instructionFont);
     textSize(instructionFontSize / 2);
 
@@ -175,7 +175,6 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Enter: restart", width / 2, (height / 2) + (titleFontSize/2));
     text("Score: " + player.score + "\nDepth: " + player.getDepth() + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
   }
 

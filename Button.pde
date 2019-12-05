@@ -18,6 +18,7 @@ class Button extends Obstacle{
   void drawText(){
     textAlign(CENTER);
     textSize(20);
+    fill(#ffa259);
 
     text("Caution\nDo NOT press!!!", position.x + 20, position.y - 65);
 
