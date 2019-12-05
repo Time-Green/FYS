@@ -9,7 +9,10 @@ class Chest extends Obstacle {
 
   ArrayList<Movable> contents = new ArrayList<Movable>();
 
-  Chest(){
+  Chest(int forcedKey){
+    if(forcedKey > 0){
+      this.forcedKey = forcedKey;
+    }
     populateContents();
     anchored = false;
 
@@ -19,7 +22,7 @@ class Chest extends Obstacle {
   void populateContents(){ //only load childtypes of Movable
     ArrayList<BaseObject> newContents = new ArrayList<BaseObject>();
 
-    int randomKey = int(random(1, 2));
+    int randomKey = int(random(1, 3));
 
     if(forcedKey >= 0){
       randomKey = forcedKey;
@@ -27,15 +30,15 @@ class Chest extends Obstacle {
 
     switch(randomKey){
       case 1:
-        newContents.add(load(new Pickaxe(), new PVector(200, 200)));
-        break;
-      case 2:
         newContents.add(load(new RelicShard(), new PVector(200, 200)));
         break;
-      case 3:
+      case 2:
         newContents.add(load(new Dynamite(), new PVector(200, 200)));
         newContents.add(load(new Dynamite(), new PVector(200, 200)));
         newContents.add(load(new Dynamite(), new PVector(200, 200)));
+        break;
+      case 69:
+        newContents.add(load(new Pickaxe(), new PVector(200, 200)));
         break;
     }
 

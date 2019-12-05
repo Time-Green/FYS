@@ -361,7 +361,7 @@ public class World {
       break;
 
     case "ChestStart" :
-      load(new Chest(), spawnWorldPos);
+      load(new Chest(0), spawnWorldPos);
       break;
 
     case "Button" :
