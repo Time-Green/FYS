@@ -9,8 +9,8 @@ class Chest extends Obstacle {
 
   ArrayList<Movable> contents = new ArrayList<Movable>();
 
-  Chest(int forcedKey){
-    if(forcedKey > 0){
+  Chest(int forcedKey) {
+    if (forcedKey > 0) {
       this.forcedKey = forcedKey;
     }
     populateContents();
@@ -19,57 +19,57 @@ class Chest extends Obstacle {
     image = ResourceManager.getImage("Chest");
   }
 
-  void populateContents(){ //only load childtypes of Movable
+  void populateContents() { //only load childtypes of Movable
     ArrayList<BaseObject> newContents = new ArrayList<BaseObject>();
 
     int randomKey = int(random(1, 3));
 
-    if(forcedKey >= 0){
+    if (forcedKey >= 0) {
       randomKey = forcedKey;
     }
 
-    switch(randomKey){
-      case 1:
-        newContents.add(load(new RelicShard(), new PVector(200, 200)));
-        break;
-      case 2:
-        newContents.add(load(new Dynamite(), new PVector(200, 200)));
-        newContents.add(load(new Dynamite(), new PVector(200, 200)));
-        newContents.add(load(new Dynamite(), new PVector(200, 200)));
-        break;
-      case 69:
-        newContents.add(load(new Pickaxe(), new PVector(200, 200)));
-        break;
+    switch(randomKey) {
+    case 1:
+      newContents.add(load(new RelicShard(), new PVector(200, 200)));
+      break;
+    case 2:
+      newContents.add(load(new Dynamite(), new PVector(200, 200)));
+      newContents.add(load(new Dynamite(), new PVector(200, 200)));
+      newContents.add(load(new Dynamite(), new PVector(200, 200)));
+      break;
+    case 69:
+      newContents.add(load(new Pickaxe(), new PVector(200, 200)));
+      break;
     }
 
-    for(BaseObject object : newContents){//I dont want to force every new content thingy to Movable seperately, so do it here
+    for (BaseObject object : newContents) {//I dont want to force every new content thingy to Movable seperately, so do it here
       contents.add((Movable) object);
     }
 
-    for(Movable movable : contents){
+    for (Movable movable : contents) {
       movable.suspended = true;
     }
   }
 
-  void pushed(Movable movable, float x, float y){
+  void pushed(Movable movable, float x, float y) {
     super.pushed(movable, x, y);
 
-    if(!opened && movable.canPlayerInteract()){
+    if (!opened && movable.canPlayerInteract()) {
       openChest();
     }
   }
 
-  void takeDamage(float damageTaken){
+  void takeDamage(float damageTaken) {
     super.takeDamage(damageTaken);
 
     delete(this);
   }
 
-  void openChest(){
+  void openChest() {
 
     AudioManager.playSoundEffect("ChestOpen");
 
-    for(Movable movable : contents){
+    for (Movable movable : contents) {
       movable.moveTo(position.x, position.y - tileSize);
       movable.suspended = false;
 

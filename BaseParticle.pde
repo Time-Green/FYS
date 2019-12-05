@@ -11,7 +11,7 @@ public class BaseParticle extends Movable {
 
   color particleColor = color(255);
 
-  public BaseParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc){
+  public BaseParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc) {
     super();
 
     gravityForce = 0.0f;
@@ -29,31 +29,30 @@ public class BaseParticle extends Movable {
     spawnTime = millis();
   }
 
-  void update(){
+  void update() {
     super.update();
 
     //if the particle is to old..
-    if(millis() > spawnTime + maxLifeTime){
+    if (millis() > spawnTime + maxLifeTime) {
       cleanup();
     }
   }
 
-  void draw(){
-    if(!inCameraView()){
+  void draw() {
+    if (!inCameraView()) {
       return;
     }
-    
+
     fill(particleColor);
     rect(position.x - size / 2, position.y - size / 2, size, size);
     fill(255);
   }
 
-  void cleanup(){
+  void cleanup() {
     particleSystem.currentParticleAmount--;
     delete(this);
   }
 
-  void takeDamage(float damageTaken){
-    
+  void takeDamage(float damageTaken) {
   }
 }

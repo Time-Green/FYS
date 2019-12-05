@@ -29,7 +29,7 @@ public class World {
     switchBiome(0);
   }
 
-  public void update(){
+  public void update() {
   }
 
   public void draw(Camera camera) {
@@ -316,6 +316,9 @@ public class World {
 
     case "Wood" :
       return new WoodTile(int(spawnPos.x), int(spawnPos.y));
+
+    case "WoodBirch" :
+      return new WoodBirchTile(int(spawnPos.x), int(spawnPos.y));
 
     case "MagmaTile" :
       return new MagmaRock(int(spawnPos.x), int(spawnPos.y));

@@ -1,16 +1,16 @@
-class Held extends Item{
-    float damageCoefficient = 1;
+class Held extends Item {
+  float damageCoefficient = 1;
 
-    boolean canMine(BaseObject object, Mob miner){ 
-        return true;
-    }
+  boolean canMine(BaseObject object, Mob miner) { 
+    return true;
+  }
 
-    void onMine(BaseObject object, Mob miner){ 
-        //load(new Explosion(miner.position, 500));
+  void onMine(BaseObject object, Mob miner) { 
+    //load(new Explosion(miner.position, 500));
 
-        object.takeDamage(miner.getAttackPower(true));
-    }
+    object.takeDamage(miner.getAttackPower(true));
+  }
 
-    void destroyed(){
-    }
+  void destroyed() {
+  }
 }

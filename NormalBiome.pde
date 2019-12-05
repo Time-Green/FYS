@@ -1,6 +1,6 @@
-class NormalBiome extends Biome{ //the default biome, almost identical to the Biome class itself
+class NormalBiome extends Biome { //the default biome, almost identical to the Biome class itself
 
-  NormalBiome(){
+  NormalBiome() {
     structureChance = 0.001;
   }
 

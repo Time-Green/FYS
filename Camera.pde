@@ -1,23 +1,23 @@
-public class Camera{
+public class Camera {
 
   private PVector position;
   private BaseObject target;
 
-  public Camera(BaseObject targetObject){
+  public Camera(BaseObject targetObject) {
     position = new PVector();
 
     setTarget(targetObject);
     update();
   }
 
-  public void setTarget(BaseObject targetObject){
+  public void setTarget(BaseObject targetObject) {
     target = targetObject;
   }
 
-  public void update(){
+  public void update() {
 
     // if we dont have a target, do nothing
-    if(target == null){
+    if (target == null) {
       return;
     }
 
@@ -35,8 +35,7 @@ public class Camera{
     translate(position.x, position.y);
   }
 
-  public PVector getPosition(){
+  public PVector getPosition() {
     return position;
   }
-
 }

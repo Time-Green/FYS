@@ -7,7 +7,7 @@ class WallOfDeath extends Movable {
   private final int MAX_DEPTH_CHECK = 25; 
 
   private color wallColor = #FF8C33;
-  
+
   private float gameStartSpawnMult = 0; 
 
   private float bufferZone; 
@@ -16,7 +16,7 @@ class WallOfDeath extends Movable {
 
   private final float BEGINFASE_SAFEZONE = 750; 
 
-  WallOfDeath(float wallWidth){
+  WallOfDeath(float wallWidth) {
 
     size.set(wallWidth, tileSize * 2);
     position.y = player.position.y - maxDistanceFromPlayer;
@@ -28,8 +28,8 @@ class WallOfDeath extends Movable {
     gravityForce = 0f;
     groundedDragFactor = 1f;
   }
-  
-  void update(){
+
+  void update() {
 
     if (Globals.gamePaused || Globals.currentGameState == Globals.GameState.Overworld)
     {
@@ -38,11 +38,11 @@ class WallOfDeath extends Movable {
 
     super.update();
 
-    if(gameStartSpawnMult < 1)
+    if (gameStartSpawnMult < 1)
     {
       gameStartSpawnMult += 1f / 900f; 
 
-      if(gameStartSpawnMult >= 1)
+      if (gameStartSpawnMult >= 1)
       {
         gameStartSpawnMult = 1; 
         isInBeginfase = false;
@@ -58,10 +58,10 @@ class WallOfDeath extends Movable {
     //wod movement per frame
     position.y += bufferZone / 225;
 
-    if(bufferZone < minDistanceFromPlayer){
+    if (bufferZone < minDistanceFromPlayer) {
       //println("WOD TO LOW");
       position.y = player.position.y - minDistanceFromPlayer;
-    }else if(bufferZone > maxDistanceFromPlayer){
+    } else if (bufferZone > maxDistanceFromPlayer) {
       //println("WOD TO HIGH");
       position.y = player.position.y - maxDistanceFromPlayer;
     }
@@ -72,111 +72,108 @@ class WallOfDeath extends Movable {
 
     //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
 
-    if(random(maxAsteroidSpawnChange) > 1)
+    if (random(maxAsteroidSpawnChange) > 1)
     {     
-      spawnAstroid();  
+      spawnAstroid();
     }
-    
+
     cleanUpObjects();
   }
 
-  private void doStartingCameraShake(){
+  private void doStartingCameraShake() {
 
-    if(Globals.currentGameState == Globals.GameState.InGame && isInBeginfase){
+    if (Globals.currentGameState == Globals.GameState.InGame && isInBeginfase) {
       CameraShaker.induceStress(1f - gameStartSpawnMult * 1.5f);
     }
   }
 
   // If the WoD hits the player, the game is paused. 
-  private void checkPlayerCollision(){
+  private void checkPlayerCollision() {
 
-    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
+    if (CollisionHelper.rectRect(position, size, player.position, player.size)) {
       Globals.gamePaused = true;
       Globals.currentGameState = Globals.GameState.GameOver;
     }
-
   }
 
-  void spawnAstroid(){
-    
-    if(isInBeginfase)
-    {
-      spawnRandomTargetedMeteor(); 
-    }
-    else{
+  void spawnAstroid() {
 
-      if(random(1f) < 0.2f){
+    if (isInBeginfase)
+    {
+      spawnRandomTargetedMeteor();
+    } else {
+
+      if (random(1f) < 0.2f) {
         spawnMeteorAbovePlayer();
-      }else{
+      } else {
         //max depth we are going to scan
         int scanDepth = currentDepthCheck + MAX_DEPTH_CHECK;
-        
+
         Tile spawnTarget = null;
-        
-        for(int i = currentDepthCheck; i < scanDepth; i++){
+
+        for (int i = currentDepthCheck; i < scanDepth; i++) {
 
           ArrayList<Tile> tileRow = world.getLayer(i);
           ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>();
 
-          for(Tile tile : tileRow){
+          for (Tile tile : tileRow) {
 
-            if(tile.density){
+            if (tile.density) {
               destructibleTilesInRow.add(tile);
             }
           }
 
-          if(destructibleTilesInRow.size() > 0){
-            
+          if (destructibleTilesInRow.size() > 0) {
+
             spawnTarget = destructibleTilesInRow.get(int(random(destructibleTilesInRow.size())));
             break;
-
-          }else{
+          } else {
             currentDepthCheck++;
           }
         }
 
-        if(spawnTarget != null){
+        if (spawnTarget != null) {
           spawnTargetedMeteor(spawnTarget.position.x);
         }
       }
     }
   }
 
-  private void spawnTargetedMeteor(float targetPosX){
-    
+  private void spawnTargetedMeteor(float targetPosX) {
+
     float spawnPosX = targetPosX + random(-tileSize * 2, tileSize * 2);
 
-    load(new Meteor(), new PVector(spawnPosX, position.y)); 
+    load(new Meteor(), new PVector(spawnPosX, position.y));
   }
 
-  private void spawnMeteorAbovePlayer(){
-    
+  private void spawnMeteorAbovePlayer() {
+
     float spawnPosX = player.position.x + random(-tileSize * 2, tileSize * 2);
 
-    load(new Meteor(), new PVector(spawnPosX, position.y)); 
+    load(new Meteor(), new PVector(spawnPosX, position.y));
   }
 
-  private void spawnRandomTargetedMeteor(){
+  private void spawnRandomTargetedMeteor() {
 
     float spawnX = random(tilesHorizontal * tileSize + tileSize); 
 
-    while(abs(player.position.x - spawnX) < BEGINFASE_SAFEZONE)
+    while (abs(player.position.x - spawnX) < BEGINFASE_SAFEZONE)
     {
-      spawnX = random(tilesHorizontal * tileSize + tileSize); 
+      spawnX = random(tilesHorizontal * tileSize + tileSize);
     }
 
-    load(new Meteor(), new PVector(spawnX, position.y)); 
+    load(new Meteor(), new PVector(spawnX, position.y));
   }
 
-  private void cleanUpObjects(){
+  private void cleanUpObjects() {
 
     for (BaseObject object : objectList) {
-      
+
       //is the object above the wall of death..
-      if(object.position.y < position.y - DESTROYTILESAFTER * tileSize){
+      if (object.position.y < position.y - DESTROYTILESAFTER * tileSize) {
 
         //..and its not the player..
-        if(object instanceof Player){
+        if (object instanceof Player) {
           continue;
         }
 

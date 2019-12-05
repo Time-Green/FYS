@@ -1,4 +1,4 @@
-class Tile extends BaseObject{
+class Tile extends BaseObject {
   PVector gridPosition = new PVector(); //same as position, but complete tiles instead of pixels
 
   boolean destroyed;
@@ -30,19 +30,18 @@ class Tile extends BaseObject{
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 
-    if(y > world.safeZone){
+    if (y > world.safeZone) {
       destroyedImage = ResourceManager.getImage("DestroyedBlock");
-    }else{
+    } else {
       density = false; 
-      destroyedImage = null;  
+      destroyedImage = null;
     }
-    
   }
 
-  private void setupCave(){
+  private void setupCave() {
 
     //11 is grass layer + transition layer
-    if(gridPosition.y > world.safeZone + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale){
+    if (gridPosition.y > world.safeZone + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
       destroyed = true;
       density = false;
 
@@ -51,89 +50,88 @@ class Tile extends BaseObject{
       // if (enemySpawnRate >= 8) 
 
       //1% change to spawn torch
-      if(random(100) < 1) {
+      if (random(100) < 1) {
         load(new Torch(position));
       }
-      if(random(1) < world.currentBiome.enemyChance)
+      if (random(1) < world.currentBiome.enemyChance)
         world.currentBiome.spawnEnemy(position);
     }
   }
 
-  void specialAdd(){
+  void specialAdd() {
     super.specialAdd();
 
     tileList.add(this);
   }
 
-  void destroyed(){
+  void destroyed() {
     super.destroyed();
 
     world.map.get(int(gridPosition.y)).remove(this);
     tileList.remove(this);
   }
 
-  void draw(){
-    if(!inCameraView()){
+  void draw() {
+    if (!inCameraView()) {
       return;
     }
 
     super.draw();
 
-    if (!destroyed){
+    if (!destroyed) {
 
       //if we dont have an image, we cant draw anything
-      if (image == null){
+      if (image == null) {
         return;
       }
-      
+
       tint(lightningAmount - dammageDiscolor * (maxHp - hp));
       image(image, position.x, position.y, tileSize, tileSize);
       tint(255);
-    }else{
+    } else {
 
-      if(destroyedImage != null){
+      if (destroyedImage != null) {
         tint(lightningAmount);
         image(destroyedImage, position.x, position.y, tileSize, tileSize);
         tint(255);
       }
-      
     }
   }
 
   void takeDamage(float damageTaken, boolean playBreakSound) {
     super.takeDamage(damageTaken);
-    
+
     hp -= damageTaken;
-    
+
     if (hp <= 0) {
-      if(this instanceof ResourceTile){
+      if (this instanceof ResourceTile) {
 
         ResourceTile thisTile = (ResourceTile) this;
 
         thisTile.mine(playBreakSound, false);
-      }else{
+      } else {
         mine(playBreakSound);
-      } 
+      }
     }
   }
 
   void takeDamage(float damageTaken) {
     super.takeDamage(damageTaken);
-    
+
     hp -= damageTaken;
-    
+
     if (hp <= 0) {
       mine(true);
     }
   }
-  
-  boolean canMine(){
+
+  boolean canMine() {
     return density;
   }
 
-  public void mine(boolean playBreakSound){
+  public void mine(boolean playBreakSound) {
 
-    if(playBreakSound && breakSound != null){
+    if (playBreakSound && breakSound != null) {
       playBreakSound();
     }
 
@@ -141,26 +139,25 @@ class Tile extends BaseObject{
     density = false;
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
-    if(lightSources.contains(this)){
+    if (lightSources.contains(this)) {
       lightSources.remove(this);
     }
   }
 
-  private void playBreakSound(){
+  private void playBreakSound() {
     AudioManager.playSoundEffect(breakSound);
   }
 
-  void setMaxHp(float hpToSet){
+  void setMaxHp(float hpToSet) {
     maxHp = hpToSet;
     hp = hpToSet;
   }
 
-  void replace(Tile replaceTile){
+  void replace(Tile replaceTile) {
     int index = world.map.get(int(gridPosition.y)).indexOf(this);
     world.map.get(int(gridPosition.y)).set(index, replaceTile);
 
     delete(this);
     load(replaceTile);
-    
   }
 }

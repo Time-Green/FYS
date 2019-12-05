@@ -17,7 +17,7 @@ public class UIController {
   private float healthBarWidth = 500; 
   private float barX = 10;
   private float barY = 10;
-  
+
   private float slotOffsetY = 40; 
   private float slotSize = 60;
   private float slotOffsetX = slotSize * 1.5f;
@@ -51,7 +51,7 @@ public class UIController {
   private PFont hudFont;
   private float hudFontSize = 30;
 
-  UIController(){
+  UIController() {
     //titleFont = ResourceManager.getFont("Brickyol");
     titleFont = ResourceManager.getFont("Block Stock");
     instructionFont = ResourceManager.getFont("Block Stock");
@@ -68,21 +68,21 @@ public class UIController {
 
     // draw hud based on current gamestate
     switch (Globals.currentGameState) {
-      default :
-        //println("Something went wrong with the game state");
+    default :
+      //println("Something went wrong with the game state");
       break;
-      case MainMenu:
-        startMenu();
+    case MainMenu:
+      startMenu();
       break;	
-      case GameOver:
-        gameOver();
+    case GameOver:
+      gameOver();
       break;
-      case InGame :
+    case InGame :
       //case Overworld :
-        gameHUD();
+      gameHUD();
       break;
-      case GamePaused :
-        pauseScreen();
+    case GamePaused :
+      pauseScreen();
       break;
     }
 
@@ -92,32 +92,32 @@ public class UIController {
 
     drawWarningOverlay();
 
-    if(DRAWSTATS){
+    if (DRAWSTATS) {
       drawStats();
     }
   }
 
-  void drawWarningOverlay(){
-    if(drawWarningOverlay && isIncreasing){
+  void drawWarningOverlay() {
+    if (drawWarningOverlay && isIncreasing) {
       currentOverlayFill += 0.5f;
 
-      if(currentOverlayFill > MAX_OVERLAY_FILL){
+      if (currentOverlayFill > MAX_OVERLAY_FILL) {
         currentOverlayFill = MAX_OVERLAY_FILL;
         isIncreasing = false;
       }
-    }else{
+    } else {
       currentOverlayFill -= 0.5f;
 
-      if(currentOverlayFill < 0){
+      if (currentOverlayFill < 0) {
         currentOverlayFill = 0;
 
-        if(drawWarningOverlay){
+        if (drawWarningOverlay) {
           isIncreasing = true;
         }
       }
     }
 
-    if(currentOverlayFill == 0){
+    if (currentOverlayFill == 0) {
       return;
     }
 
@@ -126,13 +126,13 @@ public class UIController {
     fill(255);
   }
 
-  void drawArrows(){
-    
-    if(frameCount % 30 == 0){
+  void drawArrows() {
 
-      if(arrowYTarget == 0){
+    if (frameCount % 30 == 0) {
+
+      if (arrowYTarget == 0) {
         arrowYTarget = tileSize;
-      }else{
+      } else {
         arrowYTarget = 0;
       }
     }
@@ -145,9 +145,9 @@ public class UIController {
     textFont(instructionFont);
     textSize(instructionFontSize / 2);
 
-    for (int i = 0; i < tilesHorizontal + 1; i++){
+    for (int i = 0; i < tilesHorizontal + 1; i++) {
 
-      if(i % 2 == 0){
+      if (i % 2 == 0) {
         continue;
       }
 
@@ -158,7 +158,7 @@ public class UIController {
     tint(255);
   }
 
-  void gameOver(){
+  void gameOver() {
 
     //background rect pos & size
     float rectXPos = width / 2;
@@ -171,15 +171,15 @@ public class UIController {
     textFont(titleFont);
     textSize(titleFontSize);
     text("Game Over", rectXPos, rectYPos, rectWidth, rectHeight);
-    
+
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
     text("Score: " + player.score + "\nDepth: " + player.getDepth() + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
   }
 
-  void startMenu(){
-    
+  void startMenu() {
+
     //background rect pos & size
     float rectXPos = width / 2;
     float rectYPos = (float)height / 4.15;
@@ -189,7 +189,7 @@ public class UIController {
     //title background
     textFont(titleFont);
     fill(titleBackground);
-    
+
     //rect(rectXPos, rectYPos, rectWidth, rectHeight);
 
     //title
@@ -199,27 +199,27 @@ public class UIController {
     text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
     //sub text
-    if(Globals.currentGameState == Globals.GameState.MainMenu){
+    if (Globals.currentGameState == Globals.GameState.MainMenu) {
       textFont(instructionFont);
       textSize(instructionFontSize);
       text("Press Start to start", width / 2, (height / 2) + (titleFontSize/2));
     }
   }
 
-  void gameHUD(){
+  void gameHUD() {
 
     rectMode(CORNER); 
     fill(255, 0, 0);
     rect(barX, barY, healthBarWidth, healthBarHeight); 
     fill(0, 255, 0);
     rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
-  
+
     textFont(hudFont);
 
     textAlign(CENTER);
     fill(255);
     textSize(hudFontSize / 2);
-    text("Health", barX , barY + 7, healthBarWidth, healthBarHeight);
+    text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
 
     textAlign(LEFT);
     fill(255);
@@ -234,7 +234,7 @@ public class UIController {
     drawInventory();
   }
 
-  void drawStats(){
+  void drawStats() {
     textFont(hudFont);
     textAlign(RIGHT);
     fill(255);
@@ -249,7 +249,7 @@ public class UIController {
     text("Logged in as " + dbUser.userName, width - 10, 20);
   }
 
-  void pauseScreen(){
+  void pauseScreen() {
     //background rect pos & size
     float rectXPos = width / 2;
     float rectYPos = (float)height / 4.15;
@@ -261,7 +261,7 @@ public class UIController {
     fill(titleColor);
     textSize(titleFontSize);
     text("Paused", rectXPos, rectYPos, rectWidth, rectHeight);
-    
+
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
@@ -281,23 +281,23 @@ public class UIController {
   //   }
   // }
 
-  void drawInventory(){
-    
+  void drawInventory() {
+
     for (int i = 0; i < player.maxInventory; i++) {
 
-      if(i == player.selectedSlot - 1){
+      if (i == player.selectedSlot - 1) {
         fill(inventorySelectedColor);
-      } else{
+      } else {
         fill(inventoryColor);
       }
-      
+
       //Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
       rect(width * 0.95 - inventorySize * i, barX, inventorySize, inventorySize);
     }
-    
+
     //imageMode(CENTER);
 
-    for(Item item : player.inventory){
+    for (Item item : player.inventory) {
       image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item), barX, item.size.x, item.size.y);
     }
 

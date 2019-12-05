@@ -1,10 +1,10 @@
 public class DisposeHandler {
-   
+
   DisposeHandler(PApplet pa)
   {
     pa.registerMethod("dispose", this);
   }
-   
+
   public void dispose()
   {
     // We can use this to check how long the game has been running

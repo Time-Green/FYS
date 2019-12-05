@@ -1,7 +1,7 @@
-class Pickaxe extends Held{
+class Pickaxe extends Held {
 
-    Pickaxe(){
-        image =  ResourceManager.getImage("IronPickaxe");
-        damageCoefficient = 10;
-    }
+  Pickaxe() {
+    image =  ResourceManager.getImage("IronPickaxe");
+    damageCoefficient = 10;
+  }
 }

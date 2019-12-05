@@ -1,4 +1,4 @@
-class Explosion extends BaseObject{
+class Explosion extends BaseObject {
 
   float maxRadius;
   float maxDamage = 100;
@@ -9,12 +9,12 @@ class Explosion extends BaseObject{
 
   ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
 
-  Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer){
+  Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer) {
     position.set(spawnPos);
     maxRadius = radius;
     this.maxDamage = maxDamage;
     this.dealDamageToPlayer = dealDamageToPlayer;
-    
+
     //flash
     setupLightSource(this, radius, 1f);
 
@@ -30,31 +30,30 @@ class Explosion extends BaseObject{
     AudioManager.playSoundEffect(explosionSound, position);
   }
 
-  void explode(){
+  void explode() {
     ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
 
-    for(BaseObject object : objectsInMaxRadius){
+    for (BaseObject object : objectsInMaxRadius) {
 
-      if(dist(position.x, position.y, object.position.x, object.position.y) < currentRadius){
+      if (dist(position.x, position.y, object.position.x, object.position.y) < currentRadius) {
         objectsInCurrentExplosionRadius.add(object);
       }
-
     }
 
-    for(BaseObject object : objectsInCurrentExplosionRadius){
+    for (BaseObject object : objectsInCurrentExplosionRadius) {
 
-      if(!dealDamageToPlayer && object == player){
+      if (!dealDamageToPlayer && object == player) {
         continue;
       }
 
       //damage falloff
       float damage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
 
-      if(object instanceof Tile){
+      if (object instanceof Tile) {
         Tile tileToDamage = (Tile)object;
 
         tileToDamage.takeDamage(damage, false);
-      }else{
+      } else {
         object.takeDamage(damage);
       }
     }
@@ -62,28 +61,25 @@ class Explosion extends BaseObject{
     CameraShaker.induceStress(0.05f);
   }
 
-  void update(){
+  void update() {
     super.update();
 
-    if(currentRadius < maxRadius) {
+    if (currentRadius < maxRadius) {
       currentRadius += radiusIncrease;
 
-      if(currentRadius > maxRadius){
+      if (currentRadius > maxRadius) {
         currentRadius = maxRadius;
       }
 
       explode();
-    }
-    else{
+    } else {
       delete(this);
     }
   }
 
-  void draw(){
-
+  void draw() {
   }
 
-  void fade(){
-
+  void fade() {
   }
 }

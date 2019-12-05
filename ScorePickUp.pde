@@ -1,4 +1,4 @@
-public class ScorePickUp extends PickUp{
+public class ScorePickUp extends PickUp {
   int score;
 
   public ScorePickUp(ResourceTile tile) {
@@ -6,10 +6,9 @@ public class ScorePickUp extends PickUp{
     image = tile.pickUpImage;
   }
 
-  void pickedUp(Mob mob){
+  void pickedUp(Mob mob) {
     player.addScore(score);
 
     super.pickedUp(mob);
   }
-
 }

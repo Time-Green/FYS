@@ -1,6 +1,6 @@
-public class DiamondTile extends ResourceTile{
+public class DiamondTile extends ResourceTile {
 
-  public DiamondTile(int x, int y){
+  public DiamondTile(int x, int y) {
     super(x, y);
 
     value = 1000;
@@ -8,5 +8,4 @@ public class DiamondTile extends ResourceTile{
     image = ResourceManager.getImage("DiamondBlock");
     pickUpImage = ResourceManager.getImage("DiamondPickUp");
   }
-
 }

@@ -1,8 +1,7 @@
-class Obstacle extends Movable{
+class Obstacle extends Movable {
 
-  Obstacle(){
+  Obstacle() {
     movableCollision = true;
     anchored = false;
   }
-
 }

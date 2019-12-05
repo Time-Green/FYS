@@ -14,20 +14,19 @@ class BaseObject {
   float lightEmitAmount = 0.0f; // the amount of light this object emits
   float distanceDimFactor = 1;
 
-  void update(){
+  void update() {
     updateLightning();
   }
 
-  void draw(){
-
+  void draw() {
   }
 
-  private void updateLightning(){
+  private void updateLightning() {
 
     lightningAmount = 0;
 
-    for (BaseObject lightSource : lightSources){
-      
+    for (BaseObject lightSource : lightSources) {
+
       float distanceToLightSource = dist(position.x, position.y, lightSource.position.x, lightSource.position.y);
 
       //make sure we dont add to much light or remove brightness
@@ -52,50 +51,45 @@ class BaseObject {
     return false;
   }
 
-  void destroyed(){ //this is what you make a child proc from in-case you want to do something special on deletion
-      objectList.remove(this);
+  void destroyed() { //this is what you make a child proc from in-case you want to do something special on deletion
+    objectList.remove(this);
 
-      return;
+    return;
   }
 
-  void specialAdd(){ //add to certain lists
+  void specialAdd() { //add to certain lists
 
-    if(loadInBack){
+    if (loadInBack) {
       //println("adding: " + name);
       objectList.add(0, this);
-    }
-    else{
+    } else {
       //println("adding: " + name);
-      objectList.add(this); 
+      objectList.add(this);
     }
   }
 
-  boolean canMine(){ //could be useful for attacking
+  boolean canMine() { //could be useful for attacking
     return false;
   }
 
-  void takeDamage(float damageTaken){
-
+  void takeDamage(float damageTaken) {
   }
 
-  void pushed(Movable movable, float x, float y){ //we got pushed by an movable
-    
+  void pushed(Movable movable, float x, float y) { //we got pushed by an movable
   }
 
-  public void moveTo(PVector newPosition){ //for moving to specific coords, but made so we could add some extra checks to it later if we need to
+  public void moveTo(PVector newPosition) { //for moving to specific coords, but made so we could add some extra checks to it later if we need to
     position.set(newPosition);
   }
 
-  public void moveTo(float x, float y){ //alt for just x and y
+  public void moveTo(float x, float y) { //alt for just x and y
     moveTo(new PVector(x, y));
   }
 
-  boolean canCollideWith(BaseObject object){ //return false for magically phasing through things. 
+  boolean canCollideWith(BaseObject object) { //return false for magically phasing through things. 
     return density;
   }
 
-  void collidedWith(BaseObject object){
-    
+  void collidedWith(BaseObject object) {
   }
-
 }

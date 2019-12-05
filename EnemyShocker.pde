@@ -1,9 +1,9 @@
-class EnemyShocker extends Enemy{
+class EnemyShocker extends Enemy {
 
   //Normal time times 60 seconds
   private float stunTime = 0.5f * 60;
 
-  EnemyShocker(PVector spawnPos){
+  EnemyShocker(PVector spawnPos) {
     super(spawnPos);
 
     image = ResourceManager.getImage("ShockEnemy");
@@ -12,14 +12,13 @@ class EnemyShocker extends Enemy{
   }
 
   //Completely over the handleCollision function
-  protected void handleCollision(){
-    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
+  protected void handleCollision() {
+    if (CollisionHelper.rectRect(position, size, player.position, player.size)) {
       player.takeDamage(playerDamage);
       //Stun the player
       player.stunTimer = stunTime;
       //Delete this enemy so that the player won't get stick in a endless loop
       delete(this);
     }
-
   }
 }

@@ -71,29 +71,29 @@ class Player extends Mob {
     checkHealthLow();
 
     statusEffects();
-    if(stunTimer <= 0){
+    if (stunTimer <= 0) {
       doPlayerMovement();
     }
   }
 
-  void checkHealthLow(){
-    if(currentHealth < maxHealth / 5f){ // if lower than 20% health, show low health overlay
-      
+  void checkHealthLow() {
+    if (currentHealth < maxHealth / 5f) { // if lower than 20% health, show low health overlay
+
       ui.drawWarningOverlay = true;
 
-      if(frameCount % 60 == 0){
+      if (frameCount % 60 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
     }
   }
 
-  void setVisibilityBasedOnCurrentBiome(){
+  void setVisibilityBasedOnCurrentBiome() {
 
-    if(getDepth() > world.currentBiome.startedAt){
+    if (getDepth() > world.currentBiome.startedAt) {
 
-      if(world.currentBiome.playerVisibility > 0){
+      if (world.currentBiome.playerVisibility > 0) {
         viewTarget = world.currentBiome.playerVisibility;
-      }else{
+      } else {
         viewTarget = VIEW_AMOUNT;
       }
     }
@@ -102,38 +102,37 @@ class Player extends Mob {
     lightEmitAmount += dy * easing;
   }
 
-  void draw(){
+  void draw() {
 
-  if (Globals.gamePaused){
-    return;
+    if (Globals.gamePaused) {
+      return;
+    }
+
+    //Animation
+    if (stunTimer > 0f) {//Am I stunned?
+      shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
+      shockedCycle.draw();
+    } else {//Play the other animations when we are not
+      //PLayer input
+      if ((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
+        walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
+        walkCycle.draw();
+      } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
+        animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageAir.draw();
+      } else if (InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
+        animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageMine.draw();
+      } else {//Idle
+        animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageIdle.draw();
+      }
+
+      for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
+        item.drawOnPlayer(this);
+      }
+    }
   }
-
-  //Animation
-  if (stunTimer > 0f) {//Am I stunned?
-    shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
-    shockedCycle.draw();
-  } else {//Play the other animations when we are not
-    //PLayer input
-    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
-      walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
-      walkCycle.draw();
-    }
-    else if((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
-      animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
-      animatedImageAir.draw();
-    }else if(InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
-      animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
-      animatedImageMine.draw();
-    }else{//Idle
-      animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
-      animatedImageIdle.draw();
-    }
-
-    for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
-      item.drawOnPlayer(this);
-    }
-  }
-}
 
   void doPlayerMovement() {
 
@@ -164,7 +163,7 @@ class Player extends Mob {
 
     if (InputHelper.isKeyDown(Globals.INVENTORYKEY)) { 
       useInventory();
-      InputHelper.onKeyReleased(Globals.INVENTORYKEY); 
+      InputHelper.onKeyReleased(Globals.INVENTORYKEY);
     }
 
     if (InputHelper.isKeyDown('g')) { //for 'testing'
@@ -206,9 +205,9 @@ class Player extends Mob {
 
   private void statusEffects() {
     //Decrease stun timer
-    if(stunTimer > 0f){
+    if (stunTimer > 0f) {
       stunTimer--;
-    } 
+    }
   }
 
   public void die() {

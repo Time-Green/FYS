@@ -2,7 +2,7 @@ class EnemyMimic extends Enemy {
 
   private boolean detected;
 
-  EnemyMimic(PVector spawnPos){
+  EnemyMimic(PVector spawnPos) {
     //Start off pretending we are a block
     super(spawnPos);
     image = ResourceManager.getImage("MimicTile");
@@ -23,13 +23,11 @@ class EnemyMimic extends Enemy {
     }
   }
 
-  protected void handleCollision(){
+  protected void handleCollision() {
     super.handleCollision();
-    
-    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
+
+    if (CollisionHelper.rectRect(position, size, player.position, player.size)) {
       detected = true;
     }
-
   }
-
 }

@@ -1,6 +1,6 @@
-public class IronTile extends ResourceTile{
+public class IronTile extends ResourceTile {
 
-  public IronTile(int x, int y){
+  public IronTile(int x, int y) {
     super(x, y);
 
     value = 100;
@@ -8,5 +8,4 @@ public class IronTile extends ResourceTile{
     image = ResourceManager.getImage("IronBlock");
     pickUpImage = ResourceManager.getImage("IronPickUp");
   }
-
 }

@@ -1,6 +1,5 @@
-public class DbUser{
+public class DbUser {
 
-    public int id;
-    public String userName;
-
+  public int id;
+  public String userName;
 }

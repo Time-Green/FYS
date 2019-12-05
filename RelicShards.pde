@@ -28,6 +28,4 @@ class RelicShard extends PickUp {
   //      Player.baseDamage += damageBoost;
   //   }
   // }
-
-
 }
