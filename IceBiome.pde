@@ -9,7 +9,7 @@
     Tile getTileToGenerate(int x, int depth){
       float orechance = random(100);
       caveSpawningPossibilityScale = .60;
-      enemyChance = 0.06;
+      enemyChance = 0.03;
 
       if(depth-startedAt<50 ){
         if(orechance <=4){
