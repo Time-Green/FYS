@@ -69,7 +69,7 @@ public class UIController {
     // draw hud based on current gamestate
     switch (Globals.currentGameState) {
       default :
-        println("Something went wrong with the game state");
+        //println("Something went wrong with the game state");
       break;
       case MainMenu:
         startMenu();
@@ -78,7 +78,7 @@ public class UIController {
         gameOver();
       break;
       case InGame :
-      case Overworld :
+      //case Overworld :
         gameHUD();
       break;
       case GamePaused :

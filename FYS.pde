@@ -36,8 +36,8 @@ boolean startGame = false; //start the game on next tick. needed to avoid concur
 void setup() {
   dh = new DisposeHandler(this);
 
-  //size(1280, 720, P2D);
-  fullScreen(P2D);
+  size(1280, 720, P2D);
+  //fullScreen(P2D);
 
   databaseManager.beginLogin();
 
@@ -106,7 +106,7 @@ void spawnOverworldStructures(){
   int lastSpawnX = 0;
   final int MIN_DISTANCE = 4;
 
-  for(int i = 0; i < tilesHorizontal - 12; i++){
+  for(int i = 0; i < tilesHorizontal - 13; i++){
 
     if(i > lastSpawnX + MIN_DISTANCE){
 
@@ -276,6 +276,7 @@ void enterOverWorld(boolean reloadGame){
 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
+  AudioManager.loopMusic("ForestAmbianceMusic");
 }
 
 void startGameSoon(){
@@ -287,6 +288,7 @@ void startAsteroidRain() {
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
+  AudioManager.stopMusic("ForestAmbianceMusic");
   AudioManager.loopMusic("BackgroundMusic");
 
   ui.drawWarningOverlay = true;
