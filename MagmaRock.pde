@@ -5,7 +5,7 @@ class MagmaRock extends Tile{
         super(x, y);
 
         setupLightSource(this, 300, 1f);
-        image = ResourceManager.getImage("MagmaTile");
+        image = ResourceManager.getImage("LavaBlock");
 
         slipperiness = 0.1;
         setMaxHp(50);

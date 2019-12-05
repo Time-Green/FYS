@@ -376,6 +376,7 @@ void keyPressed(){
 
   if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
     load(new EnemyShocker(new PVector(1000, 500)));
+    load(new EnemyGhost(new PVector(1100, 500)));
   }
 }
 

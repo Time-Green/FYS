@@ -3,7 +3,7 @@ class Biome{
     int length = 50; //after how many tiles do we tell world to get another biome?
 
     float structureChance = 0.0; //chance of a structure spawning between 0 and 1 for every row of tiles
-    float enemyChance = 0.01; //chance of enemy spawning on an open tile
+    float enemyChance = 0.015; //chance of enemy spawning on an open tile
 
     int minimumDepth = 0;
     int maximumDepth = 999999;
@@ -89,7 +89,7 @@ class Biome{
   }
 
   void spawnEnemy(PVector position){
-    float spawner = random(100);
+    float spawner = random(120);
 
     if (spawner < 30) {
       load(new EnemyWalker(position));
@@ -100,8 +100,13 @@ class Biome{
     else if (spawner < 90){
       load(new EnemyDigger(position));
     }
-    else{ 
+    else if (spawner < 100){ 
       load(new EnemyMimic(position));
+    }
+    else if (spawner < 110){ 
+      load(new EnemyGhost(position));
+    } else { 
+      load(new EnemyShocker(position));
     }
   }
 }

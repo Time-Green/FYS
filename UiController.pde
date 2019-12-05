@@ -1,7 +1,7 @@
 public class UIController {
 
   //Colors
-  private color titleColor = #9d0b0b;
+  private color titleColor = #ffa259;
   private color titleBackground = #FFA500;
   private color inventoryColor = #FBB65E;
   private color inventorySelectedColor = #56BACF;
@@ -101,7 +101,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Enter: restart", width / 2, height / 2 + instructionFontSize);
+    text("Enter: restart", width / 2, (height / 2) + (titleFontSize/2));
   }
 
   void startMenu(){
@@ -128,7 +128,7 @@ public class UIController {
     if(Globals.currentGameState == Globals.GameState.MainMenu){
       textFont(instructionFont);
       textSize(instructionFontSize);
-      text("Press Enter to start", width / 2, height / 2 + (titleFontSize/2));
+      text("Press Enter to start", width / 2, (height / 2) + (titleFontSize/2));
     }
   }
 

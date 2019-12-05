@@ -3,6 +3,7 @@ class FireBiome extends Biome{
     FireBiome(){
         structureChance = 0.1;
         caveSpawningPossibilityScale = 0.51f;
+        enemyChance = 0.01;
 
         destroyedImage = ResourceManager.getImage("DestroyedVulcanic");
 
