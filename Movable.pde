@@ -23,6 +23,7 @@ class Movable extends BaseObject{
   protected boolean flipSpriteHorizontal;
   protected boolean flipSpriteVertical;
   protected boolean anchored = false; //true if we are completely immovable
+  protected boolean anchoredHorizontaly = false;
 
   //Tiles
   protected int miningcolor = #DC143C;
@@ -198,7 +199,13 @@ class Movable extends BaseObject{
 
   private void handleMovement(World world){
     if(!anchored){
-      position.add(velocity);
+
+      if(!anchoredHorizontaly){
+        position.add(velocity);
+      }else{
+        position.add(new PVector(0, velocity.y));
+      }
+      
     }
 
     if(worldBorderCheck){
@@ -249,7 +256,7 @@ class Movable extends BaseObject{
   }
 
   int getDepth(){
-    return int(position.y / tileHeight);
+    return int(position.y / tileSize);
   }
 
   void attemptMine(BaseObject object){

@@ -18,7 +18,7 @@ class Mob extends Movable {
   //Inventory
   ArrayList<Item> inventory = new ArrayList<Item>();
   int selectedSlot = 1; //the selected slot. we'll always use this one if we can
-  int maxInventory = 5;
+  int maxInventory = 3;
   int lastUse;
   int useCooldown = 100;
 
@@ -39,7 +39,7 @@ class Mob extends Movable {
 
   public void attemptMine(BaseObject object){
 
-    if(Globals.isInOverWorld){ // In the overworld we disable digging all together. 
+    if(Globals.currentGameState == Globals.GameState.Overworld){ // In the overworld we disable digging all together. 
       return; 
     }else{
       
@@ -125,10 +125,12 @@ class Mob extends Movable {
 
   void useInventory(){
     if(lastUse + useCooldown < millis()  && inventory.size() != 0){
-      Item item = inventory.get(inventory.size() - 1);
-      item.onUse(this);
-      item.suspended = false;
-      lastUse = millis();
+      if(selectedSlot <= inventory.size()){
+        Item item = inventory.get(selectedSlot - 1);
+        item.onUse(this);
+        item.suspended = false;
+        lastUse = millis();
+      }
     }
   }
 

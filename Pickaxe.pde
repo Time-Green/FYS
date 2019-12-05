@@ -4,5 +4,4 @@ class Pickaxe extends Held{
         image =  ResourceManager.getImage("IronPickaxe");
         damageCoefficient = 10;
     }
-
 }

@@ -17,11 +17,11 @@ class Tile extends BaseObject{
     loadInBack = true;
     movableCollision = true;
 
-    position.x = x * tileWidth;
-    position.y = y * tileHeight;
+    position.x = x * tileSize;
+    position.y = y * tileSize;
 
-    size.x = tileWidth;
-    size.y = tileHeight;
+    size.x = tileSize;
+    size.y = tileSize;
 
     gridPosition.x = x;
     gridPosition.y = y;
@@ -29,7 +29,14 @@ class Tile extends BaseObject{
     setMaxHp(2);
 
     breakSound = "StoneBreak" + floor(random(1, 5));
-    destroyedImage = ResourceManager.getImage("DestroyedBlock");
+
+    if(y > world.safeZone){
+      destroyedImage = ResourceManager.getImage("DestroyedBlock");
+    }else{
+      density = false; 
+      destroyedImage = null;  
+    }
+    
   }
 
   private void setupCave(){
@@ -80,13 +87,13 @@ class Tile extends BaseObject{
       }
       
       tint(lightningAmount - dammageDiscolor * (maxHp - hp));
-      image(image, position.x, position.y, tileWidth, tileHeight);
+      image(image, position.x, position.y, tileSize, tileSize);
       tint(255);
     }else{
 
       if(destroyedImage != null){
         tint(lightningAmount);
-        image(destroyedImage, position.x, position.y, tileWidth, tileHeight);
+        image(destroyedImage, position.x, position.y, tileSize, tileSize);
         tint(255);
       }
       

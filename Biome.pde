@@ -1,18 +1,21 @@
 class Biome{
 
-    int length = 50; //after how many tiles do we tell world to get another biome?
+  int length = 50; //after how many tiles do we tell world to get another biome?
 
-    float structureChance = 0.0; //chance of a structure spawning between 0 and 1 for every row of tiles
-    float enemyChance = 0.015; //chance of enemy spawning on an open tile
+  float structureChance = 0.0; //chance of a structure spawning between 0 and 1 for every row of tiles
+  float enemyChance = 0.015; //chance of enemy spawning on an open tile
 
-    int minimumDepth = 0;
-    int maximumDepth = 999999;
+  int minimumDepth = 0;
+  int maximumDepth = 999999;
 
-    float caveSpawningNoiseScale = 0.1f;
-    float caveSpawningPossibilityScale = 0.68f; //lower for more caves
-    int startedAt;
+  float caveSpawningNoiseScale = 0.1f;
+  float caveSpawningPossibilityScale = 0.68f; //lower for more caves
+  int startedAt;
 
-    PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
+  //-1 is standard player view
+  float playerVisibility = -1;
+
+  PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
   Tile getTileToGenerate(int x, int depth){
 

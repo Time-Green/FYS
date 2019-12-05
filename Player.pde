@@ -12,21 +12,21 @@ class Player extends Mob {
   private AnimatedImage animatedImageMine;
   private final int MINEFRAMES = 3;
 
-  private final float VIEW_AMOUNT = 600;
+  private float VIEW_AMOUNT = 500;
+  private float viewTarget;
+  private float easing = 0.025f;
 
   //Status effects
   public float stunTimer;
-
-  UIController ui;
 
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
   public Player() {
-
     position = spawnPosition;
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
+    viewTarget = VIEW_AMOUNT;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -66,35 +66,67 @@ class Player extends Mob {
 
     super.update();
 
+    setVisibilityBasedOnCurrentBiome();
+
+    checkHealthLow();
+
     statusEffects();
-    if (stunTimer <= 0) 
+    if(stunTimer <= 0){
       doPlayerMovement();
+    }
   }
 
-void draw() {
+  void checkHealthLow(){
+    if(currentHealth < maxHealth / 5f){ // if lower than 20% health, show low health overlay
+      
+      ui.drawWarningOverlay = true;
 
-  if (Globals.gamePaused) return;
-  
+      if(frameCount % 60 == 0){
+        AudioManager.playSoundEffect("LowHealth");
+      }
+    }
+  }
+
+  void setVisibilityBasedOnCurrentBiome(){
+
+    if(getDepth() > world.currentBiome.startedAt){
+
+      if(world.currentBiome.playerVisibility > 0){
+        viewTarget = world.currentBiome.playerVisibility;
+      }else{
+        viewTarget = VIEW_AMOUNT;
+      }
+    }
+
+    float dy = viewTarget - lightEmitAmount;
+    lightEmitAmount += dy * easing;
+  }
+
+  void draw(){
+
+  if (Globals.gamePaused){
+    return;
+  }
+
   //Animation
   if (stunTimer > 0f) {//Am I stunned?
     shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
     shockedCycle.draw();
   } else {//Play the other animations when we are not
     //PLayer input
-    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY))
-    && isGrounded()) {//Walking
+    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
       walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
       walkCycle.draw();
     }
-    else if(InputHelper.isKeyDown(Globals.JUMPKEY)) {//Jumping
+    else if((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
       animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
       animatedImageAir.draw();
-    } else if(InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
-    animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
-    animatedImageMine.draw();
-    } else {//Idle
-        animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
-        animatedImageIdle.draw();
+    }else if(InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
+      animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
+      animatedImageMine.draw();
+    }else{//Idle
+      animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
+      animatedImageIdle.draw();
     }
 
     for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
@@ -105,7 +137,7 @@ void draw() {
 
   void doPlayerMovement() {
 
-    if ((InputHelper.isKeyDown(Globals.JUMPKEY)) && isGrounded()) {
+    if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
     }
 
@@ -141,7 +173,7 @@ void draw() {
     }
 
     if (InputHelper.isKeyDown('h')) {
-      load(new Chest(), new PVector(position.x + 100, position.y));
+      load(new Spike(), new PVector(position.x + 100, position.y));
       InputHelper.onKeyReleased('h'); //ssssh
     }
 
@@ -157,7 +189,7 @@ void draw() {
 
   public void takeDamage(int damageTaken) {
 
-    // println("player took " + damageTaken + " damage");
+    //println("player took " + damageTaken + " damage");
 
     if (isImmortal) {
       return;
@@ -174,7 +206,9 @@ void draw() {
 
   private void statusEffects() {
     //Decrease stun timer
-    if (stunTimer > 0f) stunTimer--;
+    if(stunTimer > 0f){
+      stunTimer--;
+    } 
   }
 
   public void die() {
@@ -182,6 +216,8 @@ void draw() {
 
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.GameState.GameOver;
+
+    ui.drawWarningOverlay = false;
     AudioManager.stopMusic("BackgroundMusic");
   }
 

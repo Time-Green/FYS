@@ -166,4 +166,38 @@ public class DatabaseManager{
     return parseJSONArray(result);
   }
 
+  void beginLogin(){
+    loginStartTime = millis();
+    thread("login");
+  }
+
+  //used to log in using its own thread
+  void login(){
+    
+    try{
+      String[] lines = loadStrings("DbUser.txt");
+
+      if(lines.length != 1){
+        println("ERROR: DbUser.txt file not corretly set up, using temporary user");
+        setTempUser();
+      }else{
+        String currentUserName = lines[0];
+        println("Logging in as '" + currentUserName + "'");
+        dbUser = databaseManager.getOrCreateUser(currentUserName);
+      }
+
+    }catch(Exception e){
+      setTempUser();
+
+      println("ERROR: Unable to connect to database or DbUser.txt file not found, using temporary user");
+    }
+
+    println("Successfully logged in as '" + dbUser.userName + "', took " + (millis() - loginStartTime) + " ms");
+  }
+
+  void setTempUser(){
+    dbUser = new DbUser();
+    dbUser.userName = "TempUser";
+  }
+
 }

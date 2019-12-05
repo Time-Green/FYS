@@ -28,8 +28,14 @@ class Chest extends Obstacle {
     switch(randomKey){
       case 1:
         newContents.add(load(new Pickaxe(), new PVector(200, 200)));
+        break;
       case 2:
         newContents.add(load(new RelicShard(), new PVector(200, 200)));
+        break;
+      case 3:
+        newContents.add(load(new Dynamite(), new PVector(200, 200)));
+        newContents.add(load(new Dynamite(), new PVector(200, 200)));
+        newContents.add(load(new Dynamite(), new PVector(200, 200)));
         break;
     }
 
@@ -61,7 +67,7 @@ class Chest extends Obstacle {
     AudioManager.playSoundEffect("ChestOpen");
 
     for(Movable movable : contents){
-      movable.moveTo(position.x, position.y - tileHeight);
+      movable.moveTo(position.x, position.y - tileSize);
       movable.suspended = false;
 
       movable.velocity.y = random(jumpiness / 2, jumpiness);

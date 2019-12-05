@@ -42,9 +42,9 @@ class BaseObject {
   boolean inCameraView() {
     PVector camPos = camera.getPosition();
 
-    if (position.y > -camPos.y - tileHeight
+    if (position.y > -camPos.y - tileSize
       && position.y < -camPos.y + height
-      && position.x > -camPos.x - tileWidth
+      && position.x > -camPos.x - tileSize
       && position.x < -camPos.x + width) {
       return true;
     }

@@ -26,22 +26,20 @@ Enemy[] enemies;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
-int tileWidth = 50;
-int tileHeight = 50;
+int tileSize = 50;
 
-int birdCount = round(random(15, 25));
+int birdCount = round(random(10, 15));
 
-boolean firstTime = true;
-boolean firstStart = true;
 boolean hasCalledAfterResourceLoadSetup = false;
+boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
 
 void setup() {
   dh = new DisposeHandler(this);
 
-  size(1280, 720, P2D);
-  //fullScreen(P2D);
+  //size(1280, 720, P2D);
+  fullScreen(P2D);
 
-  beginLogin();
+  databaseManager.beginLogin();
 
   AudioManager.setup(this);
 
@@ -51,9 +49,14 @@ void setup() {
   CameraShaker.setup(this);
 }
 
+void login(){
+  databaseManager.login();
+}
+
 // gets called when all resources are loaded
 void afterResouceLoadingSetup(){
-  AudioManager.setMaxAudioVolume("BackgroundMusic", 0.7f);
+  AudioManager.setMaxAudioVolume("Siren", 0.6f);
+  AudioManager.setMaxAudioVolume("BackgroundMusic", 0.75f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
 
   for (int i = 1; i < 5; i++) {
@@ -67,40 +70,9 @@ void afterResouceLoadingSetup(){
   for (int i = 1; i < 4; i++) {
     AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
-}
 
-void beginLogin(){
-  loginStartTime = millis();
-  thread("login");
-}
-
-//used to log in using its own thread
-void login(){
-  
-  try{
-    String[] lines = loadStrings("DbUser.txt");
-
-    if(lines.length != 1){
-      println("ERROR: DbUser.txt file not corretly set up, using temporary user");
-      setTempUser();
-    }else{
-      String currentUserName = lines[0];
-      println("Logging in as '" + currentUserName + "'");
-      dbUser = databaseManager.getOrCreateUser(currentUserName);
-    }
-
-  }catch(Exception e){
-    setTempUser();
-
-    println("ERROR: Unable to connect to database or DbUser.txt file not found, using temporary user");
-  }
-
-  println("Successfully logged in as '" + dbUser.userName + "', took " + (millis() - loginStartTime) + " ms");
-}
-
-void setTempUser(){
-  dbUser = new DbUser();
-  dbUser.userName = "TempUser";
+  //setup game and show title screen
+  setupGame();
 }
 
 void setupGame() {
@@ -108,14 +80,14 @@ void setupGame() {
 
   ui = new UIController();
 
-  world = new World(tilesHorizontal * tileWidth + tileWidth);
+  world = new World(tilesHorizontal * tileSize + tileSize);
 
   player = new Player();
   load(player);
 
   spawnBirds();
 
-  wallOfDeath = new WallOfDeath(tilesHorizontal * tileWidth + tileWidth);
+  wallOfDeath = new WallOfDeath(tilesHorizontal * tileSize + tileSize);
   load(wallOfDeath);
 
   CameraShaker.reset();
@@ -123,9 +95,29 @@ void setupGame() {
 
   world.updateWorldDepth();
 
-  world.spawnStructure("Tree", new PVector(10, 6)); 
-
+  spawnOverworldStructures();
   spawnStarterChest();
+}
+
+void spawnOverworldStructures(){
+
+  world.spawnStructure("Tree", new PVector(1, 6)); 
+
+  int lastSpawnX = 0;
+  final int MIN_DISTANCE = 4;
+
+  for(int i = 0; i < tilesHorizontal - 12; i++){
+
+    if(i > lastSpawnX + MIN_DISTANCE){
+
+      if(random(1) < 0.35f){
+        lastSpawnX = i;
+        world.spawnStructure("Tree", new PVector(i, 6));
+      }
+    }
+  }
+
+  world.spawnStructure("ButtonAltar", new PVector(40, 8));
 }
 
 void spawnBirds(){
@@ -140,7 +132,7 @@ void spawnStarterChest(){
   Chest startChest = new Chest();
   startChest.forcedKey = 1;
 
-  load(startChest, new PVector(500, 500));
+  load(startChest, new PVector(30 * tileSize, 10 * tileSize));
 }
 
 void draw() {
@@ -164,12 +156,6 @@ void draw() {
     return;
   }
 
-  //setup game after loading
-  if (firstTime) {
-    firstTime = false;
-    setupGame();
-  }
-
   //push and pop are needed so the hud can be correctly drawn
   pushMatrix();
 
@@ -183,6 +169,10 @@ void draw() {
   drawObjects();
 
   world.updateDepth();
+
+  if(Globals.currentGameState == Globals.GameState.InGame && player.position.y < (world.safeZone + 5) * tileSize){
+    ui.drawArrows();
+  }
 
   popMatrix();
   //draw hud below popMatrix();
@@ -212,6 +202,13 @@ void updateObjects() {
   for (BaseObject object : objectList) {
     object.update();
   }
+
+  //used to start the game with the button
+  if(startGame){
+    startGame = false;
+    startAsteroidRain();
+  }
+
 }
 
 void drawObjects() {
@@ -228,7 +225,7 @@ void handleGameFlow() {
 
       //if we are in the main menu we start the game by pressing enter
       if (InputHelper.isKeyDown(Globals.STARTKEY)){
-        enterOverWorld();
+        enterOverWorld(false);
       }
 
     break;
@@ -247,8 +244,8 @@ void handleGameFlow() {
       Globals.gamePaused = true;
 
       //if we died we restart the game by pressing enter
-      if (InputHelper.isKeyDown(Globals.STARTKEY)){
-        enterOverWorld();
+      if (InputHelper.isKeyDown(Globals.STARTKEY)){ 
+        enterOverWorld(true);
         InputHelper.onKeyReleased(Globals.STARTKEY); 
       }
 
@@ -264,34 +261,39 @@ void handleGameFlow() {
         InputHelper.onKeyReleased(Globals.STARTKEY); 
       }
       
-      //Reset game
+      //Reset game to over world
       if (InputHelper.isKeyDown(Globals.BACKKEY)){
-        enterOverWorld();
-    }
+        enterOverWorld(true);
+      }
 
     break;
   }
 }
 
-void enterOverWorld(){
+//used to start a new game
+void enterOverWorld(boolean reloadGame){
+
+  if(reloadGame){
+    setupGame();
+  }
 
   Globals.gamePaused = false;
-  Globals.currentGameState = Globals.GameState.OverWorld;
-
+  Globals.currentGameState = Globals.GameState.Overworld;
 }
 
-void startGame() {
+void startGameSoon(){
+  startGame = true;
+}
+
+void startAsteroidRain() {
 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
   AudioManager.loopMusic("BackgroundMusic");
 
-  if(firstStart){
-    firstStart = false;
-  }else{
-    setupGame();
-  }
+  ui.drawWarningOverlay = true;
+  AudioManager.playSoundEffect("Siren");
 }
 
 void handleLoading() {
@@ -305,11 +307,13 @@ void handleLoading() {
   fill(lerpColor(color(255, 0, 0), color(0, 255, 0), loadingBarWidth));
   rect(0, height - 40, loadingBarWidth * width, 40);
 
-  //loading display
-  fill(255);
-  textSize(30);
-  textAlign(CENTER);
-  text("Loading: " + currentLoadingResource, width / 2, height - 10);
+  if(currentLoadingResource != ""){
+    //loading display
+    fill(255);
+    textSize(30);
+    textAlign(CENTER);
+    text("Loading: " + currentLoadingResource, width / 2, height - 10);
+  }
 }
 
 void handleLoggingInWaiting(){
@@ -357,6 +361,10 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius){
 
   for (BaseObject object : objectList) {
 
+    if(object.suspended){
+      continue;
+    }
+
     if(dist(pos.x, pos.y, object.position.x, object.position.y) < radius){
       objectsInRadius.add(object);
     }
@@ -369,11 +377,6 @@ void keyPressed(){
   InputHelper.onKeyPressed(keyCode);
   InputHelper.onKeyPressed(key);
 
-  if(key == 'A' || key == 'a'){ // TEMPORARY (duh)
-    Globals.isInOverWorld = false;
-    startGame(); 
-  }
-
   if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
     load(new EnemyShocker(new PVector(1000, 500)));
     load(new EnemyGhost(new PVector(1100, 500)));
@@ -383,19 +386,4 @@ void keyPressed(){
 void keyReleased(){
   InputHelper.onKeyReleased(keyCode);
   InputHelper.onKeyReleased(key);
-}
-
-public class DisposeHandler {
-   
-  DisposeHandler(PApplet pa)
-  {
-    pa.registerMethod("dispose", this);
-  }
-   
-  public void dispose()
-  {
-    // We can use this to check how long the game has been running
-    databaseManager.registerSessionEnd();
-    println("Closing sketch after " + (millis() / 1000) + " (" + millis() + " ms) seconds");
-  }
 }
