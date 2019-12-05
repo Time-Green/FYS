@@ -202,7 +202,7 @@ public class UIController {
     if(Globals.currentGameState == Globals.GameState.MainMenu){
       textFont(instructionFont);
       textSize(instructionFontSize);
-      text("Press Enter to start", width / 2, (height / 2) + (titleFontSize/2));
+      text("Press Start to start", width / 2, (height / 2) + (titleFontSize/2));
     }
   }
 
@@ -265,8 +265,8 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Enter: continue", width / 2, height / 2 - 30);
-    text("Backspace: restart", width / 2, height / 2 + 60);
+    text("Start: continue", width / 2, height / 2 - 30);
+    text("Select: restart", width / 2, height / 2 + 60);
   }
 
   // void achievementGet(){

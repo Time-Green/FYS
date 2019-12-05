@@ -10,4 +10,7 @@ class Held extends Item{
 
         object.takeDamage(miner.getAttackPower(true));
     }
+
+    void destroyed(){
+    }
 }
