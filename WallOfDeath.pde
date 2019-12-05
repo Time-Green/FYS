@@ -65,7 +65,7 @@ class WallOfDeath extends Movable {
       position.y = player.position.y - maxDistanceFromPlayer;
     }
 
-    float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.1f) * 0.0001f) * gameStartSpawnMult;
+    float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.1f) * 0.000125f) * gameStartSpawnMult;
 
     //maxAsteroidSpawnChange *= gameStartSpawnMult; 
 
@@ -96,35 +96,40 @@ class WallOfDeath extends Movable {
       spawnRandomTargetedMeteor(); 
     }
     else{
-      //max depth we are going to scan
-      int scanDepth = currentDepthCheck + MAX_DEPTH_CHECK;
-      
-      Tile spawnTarget = null;
-      
-      for(int i = currentDepthCheck; i < scanDepth; i++){
 
-        ArrayList<Tile> tileRow = world.getLayer(i);
-        ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>();
+      if(random(1f) < 0.2f){
+        spawnMeteorAbovePlayer();
+      }else{
+        //max depth we are going to scan
+        int scanDepth = currentDepthCheck + MAX_DEPTH_CHECK;
+        
+        Tile spawnTarget = null;
+        
+        for(int i = currentDepthCheck; i < scanDepth; i++){
 
-        for(Tile tile : tileRow){
+          ArrayList<Tile> tileRow = world.getLayer(i);
+          ArrayList<Tile> destructibleTilesInRow = new ArrayList<Tile>();
 
-          if(tile.density){
-            destructibleTilesInRow.add(tile);
+          for(Tile tile : tileRow){
+
+            if(tile.density){
+              destructibleTilesInRow.add(tile);
+            }
+          }
+
+          if(destructibleTilesInRow.size() > 0){
+            
+            spawnTarget = destructibleTilesInRow.get(int(random(destructibleTilesInRow.size())));
+            break;
+
+          }else{
+            currentDepthCheck++;
           }
         }
 
-        if(destructibleTilesInRow.size() > 0){
-          
-          spawnTarget = destructibleTilesInRow.get(int(random(destructibleTilesInRow.size())));
-          break;
-
-        }else{
-          currentDepthCheck++;
+        if(spawnTarget != null){
+          spawnTargetedMeteor(spawnTarget.position.x);
         }
-      }
-
-      if(spawnTarget != null){
-        spawnTargetedMeteor(spawnTarget.position.x);
       }
     }
   }
@@ -132,6 +137,13 @@ class WallOfDeath extends Movable {
   private void spawnTargetedMeteor(float targetPosX){
     
     float spawnPosX = targetPosX + random(-tileSize * 2, tileSize * 2);
+
+    load(new Meteor(), new PVector(spawnPosX, position.y)); 
+  }
+
+  private void spawnMeteorAbovePlayer(){
+    
+    float spawnPosX = player.position.x + random(-tileSize * 2, tileSize * 2);
 
     load(new Meteor(), new PVector(spawnPosX, position.y)); 
   }

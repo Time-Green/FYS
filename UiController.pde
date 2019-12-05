@@ -13,9 +13,8 @@ public class UIController {
   private float iconFrameSize = 25; 
 
   //Health
-  private float healthBarHeight = 25; 
-  private float healthBarWidth = 200; 
-
+  private float healthBarHeight = 30; 
+  private float healthBarWidth = 500; 
   private float barX = 10;
   private float barY = 10;
   
@@ -30,8 +29,8 @@ public class UIController {
 
   //overlay
   boolean drawWarningOverlay = false;
-  final float MAXFILL = 25f;
-  float currentFill = 0;
+  final float MAX_OVERLAY_FILL = 30f;
+  float currentOverlayFill = 0;
   boolean isIncreasing = true;
 
   private final boolean DRAWSTATS = false;
@@ -50,12 +49,13 @@ public class UIController {
   private float instructionFontSize = 40;
 
   private PFont hudFont;
-  private float hudFontSize = 40;
+  private float hudFontSize = 30;
 
   UIController(){
-    titleFont = ResourceManager.getFont("Brickyol");
+    //titleFont = ResourceManager.getFont("Brickyol");
+    titleFont = ResourceManager.getFont("Block Stock");
     instructionFont = ResourceManager.getFont("Block Stock");
-    hudFont = ResourceManager.getFont("BrickBold");
+    hudFont = ResourceManager.getFont("Block Stock");
     healthBarImage = ResourceManager.getImage("health-bar");
     arrowImage = ResourceManager.getImage("RedArrow");
   }
@@ -92,9 +92,7 @@ public class UIController {
     rectMode(CORNER);
     textAlign(LEFT);
 
-    if(drawWarningOverlay){
-      drawWarningOverlay();
-    }
+    drawWarningOverlay();
 
     if(DRAWSTATS){
       drawStats();
@@ -102,23 +100,30 @@ public class UIController {
   }
 
   void drawWarningOverlay(){
-    if(isIncreasing){
-      currentFill += 0.5f;
+    if(drawWarningOverlay && isIncreasing){
+      currentOverlayFill += 0.5f;
 
-      if(currentFill > MAXFILL){
-        currentFill = MAXFILL;
+      if(currentOverlayFill > MAX_OVERLAY_FILL){
+        currentOverlayFill = MAX_OVERLAY_FILL;
         isIncreasing = false;
       }
     }else{
-      currentFill -= 0.5f;
+      currentOverlayFill -= 0.5f;
 
-      if(currentFill < 0){
-        currentFill = 0;
-        isIncreasing = true;
+      if(currentOverlayFill < 0){
+        currentOverlayFill = 0;
+
+        if(drawWarningOverlay){
+          isIncreasing = true;
+        }
       }
     }
 
-    fill(255, 0, 0, currentFill);
+    if(currentOverlayFill == 0){
+      return;
+    }
+
+    fill(255, 0, 0, currentOverlayFill);
     rect(0, 0, width, height);
     fill(255);
   }
@@ -207,19 +212,24 @@ public class UIController {
     fill(255, 0, 0);
     rect(barX, barY, healthBarWidth, healthBarHeight); 
     fill(0, 255, 0);
-    rect(barX, barY, map(player.currentHealth, 0, 100, 0, 200), healthBarHeight);    
+    rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
   
     textFont(hudFont);
 
-    textAlign(LEFT);
+    textAlign(CENTER);
     fill(255);
-    textSize(hudFontSize);
-    text("Score: " + player.score, 20, hudTextStartX);
+    textSize(hudFontSize / 2);
+    text("Health", barX , barY + 7, healthBarWidth, healthBarHeight);
 
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + (player.getDepth() - 10), 20, hudTextStartX + hudFontSize); //-10 because we dont truly start at 0 depth, but at 10 depth
+    text("Score: " + player.score, 10, hudTextStartX);
+
+    textAlign(LEFT);
+    fill(255);
+    textSize(hudFontSize);
+    text("Depth: " + (player.getDepth() - 10), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
 
     drawInventory();
   }

@@ -19,8 +19,6 @@ class Player extends Mob {
   //Status effects
   public float stunTimer;
 
-  UIController ui;
-
   PVector spawnPosition = new PVector(1200, 500);
   int score = 0;
 
@@ -70,9 +68,22 @@ class Player extends Mob {
 
     setVisibilityBasedOnCurrentBiome();
 
+    checkHealthLow();
+
     statusEffects();
     if(stunTimer <= 0){
       doPlayerMovement();
+    }
+  }
+
+  void checkHealthLow(){
+    if(currentHealth < maxHealth / 5f){ // if lower than 20% health, show low health overlay
+      
+      ui.drawWarningOverlay = true;
+
+      if(frameCount % 60 == 0){
+        AudioManager.playSoundEffect("LowHealth");
+      }
     }
   }
 
@@ -178,7 +189,7 @@ class Player extends Mob {
 
   public void takeDamage(int damageTaken) {
 
-    // println("player took " + damageTaken + " damage");
+    //println("player took " + damageTaken + " damage");
 
     if (isImmortal) {
       return;
@@ -205,6 +216,7 @@ class Player extends Mob {
 
     Globals.gamePaused = true;
     Globals.currentGameState = Globals.GameState.GameOver;
+
     ui.drawWarningOverlay = false;
     AudioManager.stopMusic("BackgroundMusic");
   }

@@ -28,7 +28,7 @@ int tilesHorizontal = 50;
 int tilesVertical = 50;
 int tileSize = 50;
 
-int birdCount = round(random(15, 25));
+int birdCount = round(random(10, 15));
 
 boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
@@ -55,8 +55,8 @@ void login(){
 
 // gets called when all resources are loaded
 void afterResouceLoadingSetup(){
-  AudioManager.setMaxAudioVolume("Siren", 0.7f);
-  AudioManager.setMaxAudioVolume("BackgroundMusic", 0.7f);
+  AudioManager.setMaxAudioVolume("Siren", 0.6f);
+  AudioManager.setMaxAudioVolume("BackgroundMusic", 0.75f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
 
   for (int i = 1; i < 5; i++) {
@@ -170,7 +170,7 @@ void draw() {
 
   world.updateDepth();
 
-  if(Globals.currentGameState == Globals.GameState.InGame && player.position.y < (world.safeZone + 2) * tileSize){
+  if(Globals.currentGameState == Globals.GameState.InGame && player.position.y < (world.safeZone + 5) * tileSize){
     ui.drawArrows();
   }
 
