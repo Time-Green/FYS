@@ -129,10 +129,7 @@ void spawnBirds(){
 }
 
 void spawnStarterChest(){
-  Chest startChest = new Chest();
-  startChest.forcedKey = 1;
-
-  load(startChest, new PVector(30 * tileSize, 10 * tileSize));
+  load(new Chest(69), new PVector(30 * tileSize, 10 * tileSize)); //69 is the forcedKey for an always pickaxe spawn
 }
 
 void draw() {
