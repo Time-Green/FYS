@@ -150,12 +150,30 @@ class Skull extends Obstacle {
   }
 }
 
-class SkullTorch extends Obstacle {
+class SkullTorch extends Movable {
+  private float startingBrightness = 100;
+  private float minBrightness = 50;
+  private float maxBrightness = 150;
 
   SkullTorch() {
+
     image = ResourceManager.getImage("SkullTorch");
     size.set(20, 20);
     density = false;
+    setupLightSource(this, startingBrightness, 1f);
+  }
+  public void update() {
+    super.update();
+
+    //light flikker
+    lightEmitAmount += random(-5f, 5f);
+    lightEmitAmount = constrain(lightEmitAmount, minBrightness, maxBrightness);
+  }
+
+  void takeDamage(float damageTaken) {
+    super.takeDamage(damageTaken);
+
+    delete(this);
   }
 }
 
