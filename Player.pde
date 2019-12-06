@@ -50,9 +50,8 @@ class Player extends Mob {
       shockFrames[i] = ResourceManager.getImage("PlayerShock" + i); 
     shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    for (int i = 0; i < MINEFRAMES; i++) {
+    for (int i = 0; i < MINEFRAMES; i++) 
       mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
-    }
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, VIEW_AMOUNT, 1f);
