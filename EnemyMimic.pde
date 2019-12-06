@@ -16,7 +16,7 @@ class EnemyMimic extends Enemy {
     //The jig is up
     if (detected) {
       //Act like a normal enemy
-      final float NORMALSPEED = 4f;
+      final float NORMALSPEED = 6f;
       this.speed = NORMALSPEED;
       gravityForce = 1;
       image = ResourceManager.getImage("MimicEnemy");

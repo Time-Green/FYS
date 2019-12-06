@@ -16,6 +16,8 @@ class Player extends Mob {
   private float viewTarget;
   private float easing = 0.025f;
 
+  private int heal = 10;
+
   //Status effects
   public float stunTimer;
 
@@ -67,6 +69,8 @@ class Player extends Mob {
 
     setVisibilityBasedOnCurrentBiome();
 
+    regenaration();
+
     checkHealthLow();
 
     statusEffects();
@@ -83,6 +87,18 @@ class Player extends Mob {
       if (frameCount % 60 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
+    }
+  }
+
+// every 2 seconds the player gains 10hp back but still work in progress
+  void regenaration() {
+    if(currentHealth <= maxHealth) {
+      for(int i = 0; i < 120; i++) {
+      if(i == 120) {
+        currentHealth += heal;
+      }
+      }
+      
     }
   }
 
