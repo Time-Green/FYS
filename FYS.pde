@@ -36,8 +36,8 @@ boolean startGame = false; //start the game on next tick. needed to avoid concur
 void setup() {
   dh = new DisposeHandler(this);
 
-  size(1280, 720, P2D);
-  //fullScreen(P2D);
+  //size(1280, 720, P2D);
+  fullScreen(P2D);
 
   databaseManager.beginLogin();
 
@@ -47,6 +47,8 @@ void setup() {
   ResourceManager.prepareResourceLoading();
 
   CameraShaker.setup(this);
+
+  ResourceManager.loadAll();
 }
 
 void login() {
@@ -134,8 +136,8 @@ void spawnStarterChest() {
 
 void draw() {
 
-  if (!ResourceManager.isLoaded()) {
-    handleLoading();
+  if (!ResourceManager.isAllLoaded()) {
+    handleMultiThreadedLoading();
 
     return;
   }
@@ -294,24 +296,38 @@ void startAsteroidRain() {
   AudioManager.playSoundEffect("Siren");
 }
 
-void handleLoading() {
+void handleMultiThreadedLoading(){
   background(0);
 
-  String currentLoadingResource = ResourceManager.loadNext();
-
-  float loadingBarWidth = float(ResourceManager.getCurrentLoadIndex()) / float(ResourceManager.getTotalResourcesToLoad());
+  float loadingBarWidth = ResourceManager.getLoadingAllProgress();
 
   //loading bar
   fill(lerpColor(color(255, 0, 0), color(0, 255, 0), loadingBarWidth));
   rect(0, height - 40, loadingBarWidth * width, 40);
 
-  if (currentLoadingResource != "") {
-    //loading display
-    fill(255);
-    textSize(30);
-    textAlign(CENTER);
-    text("Loading: " + currentLoadingResource, width / 2, height - 10);
+  //loading display
+  fill(255);
+  textSize(30);
+  textAlign(CENTER);
+  text("Loaded: " + ResourceManager.getLastLoadedResource(), width / 2, height - 10);
+
+  ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
+
+  fill(255);
+  textSize(20);
+  textAlign(LEFT);
+  text("Currently loading resources:", 10, 20);
+
+  textSize(15);
+  for (int i = 0; i < currentlyLoadingResources.size(); i++) {
+    text(currentlyLoadingResources.get(i), 10, 35 + i * 15);
   }
+}
+
+void startLoaderThread(String currentResourceName, String currentResourceFileName){
+  LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
+  ResourceManager.loaderThreads.add(loaderThread);
+  loaderThread.start();
 }
 
 void handleLoggingInWaiting() {

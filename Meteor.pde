@@ -1,6 +1,6 @@
 class Meteor extends Movable {
 
-  private final float MAXHORIZONTALVELOCITY = 20.0;
+  private final float MAXHORIZONTALVELOCITY = 15.0;
   private final float MINSIZE = 1.0;
   private final float MAXSIZE = 4.0;
   private final float BRIGHTNESS = 300;

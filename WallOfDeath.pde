@@ -40,7 +40,7 @@ class WallOfDeath extends Movable {
 
     if (gameStartSpawnMult < 1)
     {
-      gameStartSpawnMult += 1f / 900f; 
+      gameStartSpawnMult += 1f / 600f; // 10 second begin phase
 
       if (gameStartSpawnMult >= 1)
       {
