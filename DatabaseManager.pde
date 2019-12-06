@@ -116,6 +116,10 @@ public class DatabaseManager {
 
   public boolean registerRunStart() {
 
+    if (currentSessionId < 0) {
+      return false;
+    }
+
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
 
