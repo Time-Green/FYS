@@ -7,7 +7,7 @@ class EnemyBomb extends Enemy {
   //Explosion vars
   private float detectionRange = 90f;
   private boolean isExploding = false;
-  private float explosionTimer = 1.5f * 60f;
+  private float explosionTimer = 1.5f * 40f;
   private float explosionSize = 325f;
   private final float MAXEXPLOSIONDAMAGE = 15f;
 

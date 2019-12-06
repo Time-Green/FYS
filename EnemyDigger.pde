@@ -11,7 +11,7 @@ class EnemyDigger extends Enemy {
     image = ResourceManager.getImage("DiggerEnemy");
     this.speed = NORMALSPEED;
     //1f = 1 tile
-    float tileDistance = 10f;
+    float tileDistance = 30f;
     chaseDistance = OBJECTSIZE * tileDistance;
   }
 
@@ -38,17 +38,17 @@ class EnemyDigger extends Enemy {
       if (player.position.y > this.position.y) {//Go down
         this.isMiningDown = true;
         this.isMiningUp = false;
-        this.gravityForce = 1;
+        this.gravityForce = CHASESPEED-1;
       } else {//Go up
         this.isMiningUp = true;
         this.isMiningDown = false;
-        this.gravityForce = -1;
+        this.gravityForce = -CHASESPEED+1;
       }
     } else {
       //Don't chase the player
       this.speed = NORMALSPEED;
       this.isMiningDown = false;
-      this.gravityForce = 1;
+      this.gravityForce = NORMALSPEED-1;
     }
   }
 }

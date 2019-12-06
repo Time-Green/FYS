@@ -16,6 +16,8 @@ class Player extends Mob {
   private float viewTarget;
   private float easing = 0.025f;
 
+  private int heal = 10;
+
   //Status effects
   public float stunTimer;
 
@@ -50,9 +52,8 @@ class Player extends Mob {
       shockFrames[i] = ResourceManager.getImage("PlayerShock" + i); 
     shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    for (int i = 0; i < MINEFRAMES; i++) {
+    for (int i = 0; i < MINEFRAMES; i++) 
       mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
-    }
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, VIEW_AMOUNT, 1f);
@@ -67,6 +68,8 @@ class Player extends Mob {
     super.update();
 
     setVisibilityBasedOnCurrentBiome();
+
+    regenaration();
 
     checkHealthLow();
 
@@ -84,6 +87,18 @@ class Player extends Mob {
       if (frameCount % 60 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
+    }
+  }
+
+// every 2 seconds the player gains 10hp back but still work in progress
+  void regenaration() {
+    if(currentHealth <= maxHealth) {
+      for(int i = 0; i < 120; i++) {
+      if(i == 120) {
+        currentHealth += heal;
+      }
+      }
+      
     }
   }
 
@@ -218,6 +233,8 @@ class Player extends Mob {
 
     ui.drawWarningOverlay = false;
     AudioManager.stopMusic("BackgroundMusic");
+
+    thread("startRegisterEndThread");
   }
 
   boolean canPickUp(PickUp pickUp) {
