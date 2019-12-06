@@ -218,6 +218,8 @@ class Player extends Mob {
 
     ui.drawWarningOverlay = false;
     AudioManager.stopMusic("BackgroundMusic");
+
+    thread("startRegisterEndThread");
   }
 
   boolean canPickUp(PickUp pickUp) {

@@ -36,8 +36,8 @@ boolean startGame = false; //start the game on next tick. needed to avoid concur
 void setup() {
   dh = new DisposeHandler(this);
 
-  //size(1280, 720, P2D);
-  fullScreen(P2D);
+  size(1280, 720, P2D);
+  //fullScreen(P2D);
 
   databaseManager.beginLogin();
 
@@ -294,6 +294,8 @@ void startAsteroidRain() {
 
   ui.drawWarningOverlay = true;
   AudioManager.playSoundEffect("Siren");
+  
+  thread("startRegisterRunThread");
 }
 
 void handleMultiThreadedLoading(){
@@ -328,6 +330,14 @@ void startLoaderThread(String currentResourceName, String currentResourceFileNam
   LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
   ResourceManager.loaderThreads.add(loaderThread);
   loaderThread.start();
+}
+
+void startRegisterRunThread(){
+  databaseManager.registerRunStart();
+}
+
+void startRegisterEndThread(){
+  databaseManager.registerRunEnd();
 }
 
 void handleLoggingInWaiting() {
