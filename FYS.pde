@@ -15,6 +15,7 @@ DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
 int loginStartTime;
 
+
 DisposeHandler dh;
 
 World world;
@@ -79,6 +80,12 @@ void afterResouceLoadingSetup() {
 
 void setupGame() {
   objectList.clear();
+  destroyList.clear();
+  loadList.clear();
+  tileList.clear();
+  movableList.clear();
+  mobList.clear();
+  lightSources.clear();
 
   ui = new UIController();
 
