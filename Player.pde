@@ -138,6 +138,7 @@ class Player extends Mob {
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
+      runData.playerJumps++;
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
@@ -159,7 +160,6 @@ class Player extends Mob {
       isMiningLeft = false;
       flipSpriteHorizontal = true;
     } 
-
 
     if (InputHelper.isKeyDown(Globals.INVENTORYKEY)) { 
       useInventory();
@@ -226,5 +226,9 @@ class Player extends Mob {
 
   public boolean canPlayerInteract() {
     return true;
+  }
+
+  void afterMine(BaseObject object){
+    runData.playerBlocksMined++;
   }
 }

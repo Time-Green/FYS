@@ -14,7 +14,7 @@ ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
 int loginStartTime;
-
+RunData runData;
 
 DisposeHandler dh;
 
@@ -86,6 +86,8 @@ void setupGame() {
   movableList.clear();
   mobList.clear();
   lightSources.clear();
+
+  runData = new RunData();
 
   ui = new UIController();
 

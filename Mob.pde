@@ -66,7 +66,12 @@ class Mob extends Movable {
       }
 
       lastMine = millis();
+      afterMine(object);
     }
+  }
+
+  void afterMine(BaseObject object){ //hook, used by player to count the mined tiles
+    return;
   }
 
   public void takeDamage(float damageTaken) {

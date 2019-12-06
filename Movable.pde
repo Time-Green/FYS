@@ -28,6 +28,7 @@ class Movable extends BaseObject {
   //Tiles
   protected int miningcolor = #DC143C;
   protected PImage image;
+  protected Tile standingOn;
 
   Movable() {
     super();
@@ -91,6 +92,7 @@ class Movable extends BaseObject {
 
         if (object instanceof Tile) {
           Tile tile = (Tile) object;
+          standingOn = tile;
           slipperiness = tile.slipperiness;
         }
       }

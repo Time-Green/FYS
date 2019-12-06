@@ -17,6 +17,7 @@ public class PickUp extends Movable {
 
       if (canTake && mob.canPickUp(this)) { //maybe replace with canPickUp?
         pickedUp(mob);
+        runData.pickUpsPickedUp++;
 
         return false;
       }
