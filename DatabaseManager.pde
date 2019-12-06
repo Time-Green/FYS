@@ -142,7 +142,7 @@ public class DatabaseManager {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
 
-    JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "' WHERE id = " + currentRunId);
+    JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - world.safeZone) + "' WHERE id = " + currentRunId);
 
     int success = -1;
 
