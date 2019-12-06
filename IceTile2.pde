@@ -3,7 +3,7 @@ public class IceTile2 extends ResourceTile {
   public IceTile2(int x, int y) {
     super(x, y);
 
-    value = 300;
+    value = Globals.GREENICEVALUE;
     slipperiness = 1.1;
 
     image = ResourceManager.getImage("IceBlock2");

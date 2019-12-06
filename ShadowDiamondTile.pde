@@ -3,7 +3,7 @@ public class ShadowDiamondTile extends ResourceTile {
   public ShadowDiamondTile(int x, int y) {
     super(x, y);
 
-    value = 1000;
+    value = Globals.DIAMONDVALUE;
 
     image = ResourceManager.getImage("ShadowDiamondBlock");
     pickUpImage = ResourceManager.getImage("DiamondPickUp");

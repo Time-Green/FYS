@@ -11,7 +11,7 @@ class Tile extends BaseObject {
   PImage destroyedImage;
 
   String breakSound;
-  float dammageDiscolor = 50;
+  float damageDiscolor = 50;
 
   Tile(int x, int y) {
     loadInBack = true;
@@ -51,7 +51,7 @@ class Tile extends BaseObject {
 
       //1% change to spawn torch
       if (random(100) < 1) {
-        load(new Torch(position));
+        load(new Torch(), position);
       }
       if (random(1) < world.currentBiome.enemyChance)
         world.currentBiome.spawnEnemy(position);
@@ -85,7 +85,7 @@ class Tile extends BaseObject {
         return;
       }
 
-      tint(lightningAmount - dammageDiscolor * (maxHp - hp));
+      tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
       image(image, position.x, position.y, tileSize, tileSize);
       tint(255);
     } else {

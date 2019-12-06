@@ -16,6 +16,15 @@ static class Globals {
   static final int STARTKEY = ENTER;
   static final int BACKKEY = BACKSPACE;
 
+  //Ore values (later to be set in database?)
+  static final int COALVALUE = 50; //
+  static final int IRONVALUE = 100; //
+  static final int GREENICEVALUE = 300; //
+  static final int REDICEVALUE = 300; //
+  static final int GOLDVALUE = 500; //
+  static final int DIAMONDVALUE = 1000; //
+  static final int EMERALDVALUE = 5000; //
+
   //Gamestate
   static boolean gamePaused = true;
   static GameState currentGameState = GameState.MainMenu;

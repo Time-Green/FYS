@@ -356,7 +356,7 @@ public class World {
     switch(stripedObjectName) {
 
     case "Torch" :
-      load(new Torch(spawnWorldPos));
+      load(new Torch(), spawnWorldPos);
       break;
 
     case "BombEnemy" :
