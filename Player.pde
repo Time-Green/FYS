@@ -132,7 +132,7 @@ class Player extends Mob {
       if ((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
         walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
         walkCycle.draw();
-      } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1))) {//Jumping
+      } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
         animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageAir.draw();
       } else if (InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
@@ -151,7 +151,7 @@ class Player extends Mob {
 
   void doPlayerMovement() {
 
-    if ((InputHelper.isKeyDown(Globals.JUMPKEY1)) && isGrounded()) {
+    if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
       runData.playerJumps++;
     } else {
