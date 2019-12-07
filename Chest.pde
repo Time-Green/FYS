@@ -69,17 +69,17 @@ class Chest extends Obstacle {
       switch (lootType) {
         case 0:
           // iron
-          newContents.add(load(new ScorePickUp(100, ResourceManager.getImage("IronPickUp")), new PVector(200, 200)));
+          newContents.add(load(new ScorePickUp(Globals.IRONVALUE, ResourceManager.getImage("IronPickUp")), new PVector(200, 200)));
         break;
 
         case 1:
           // gold
-          newContents.add(load(new ScorePickUp(500, ResourceManager.getImage("GoldPickUp")), new PVector(200, 200)));
+          newContents.add(load(new ScorePickUp(Globals.GOLDVALUE, ResourceManager.getImage("GoldPickUp")), new PVector(200, 200)));
         break;
 
         case 2:
           // diamond
-          newContents.add(load(new ScorePickUp(1000, ResourceManager.getImage("DiamondPickUp")), new PVector(200, 200)));
+          newContents.add(load(new ScorePickUp(Globals.DIAMONDVALUE, ResourceManager.getImage("DiamondPickUp")), new PVector(200, 200)));
         break;
       }
     }
