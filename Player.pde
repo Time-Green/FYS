@@ -90,7 +90,7 @@ class Player extends Mob {
     }
   }
 
-// every 3 seconds the player gains 10hp back but still work in progress
+
   void regenaration() {
      if(isHurt == false) {
       if(currentHealth < maxHealth) {
@@ -99,9 +99,9 @@ class Player extends Mob {
           }
         }
       }  
-      else if(isHurt == true) {
+      else if(isHurt == true) { // there is a 3 second timer before the player starts to regenarate if hit
         if(currentHealth < maxHealth) {
-          if(frameCount % 180 == 0)  {
+          if(frameCount % 120 == 0)  {
             if(frameCount % 30 == 0) {
               currentHealth += heal;
             }
