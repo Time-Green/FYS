@@ -94,8 +94,6 @@ class Player extends Mob {
     }
   }
 
-  
-
 
   void regenaration() {
      if(isHurt == false) {
