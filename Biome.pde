@@ -78,7 +78,7 @@ class Biome {
   }
 
   String getStructureName() { //a function so we can give some different probabilities
-    return "Tree";
+    return "SuperBasicDungeon";
   }
 
   void spawnEnemy(PVector position) {
