@@ -55,10 +55,10 @@ class Biome {
 
       if (orechance > 80 && orechance <= 90)
       {
-        return new GoldTile(x, depth);
+        return new GoldTile(x, depth, 0);
       } else if (orechance > 90 && orechance <= 97)
       {
-        return new DiamondTile(x, depth);
+        return new DiamondTile(x, depth, 0);
       } else if (orechance > 97 && orechance <= 100)
       {
         return new ObsedianTile(x, depth);
