@@ -154,8 +154,6 @@ class Player extends Mob {
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
       runData.playerJumps++;
-    } else {
-      isGrounded = false;
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
