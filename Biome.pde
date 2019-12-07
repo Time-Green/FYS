@@ -22,10 +22,10 @@ class Biome {
     float orechance = random(100);
 
     //spawn air at surface
-    if (depth <= world.safeZone)
+    if (depth <= Globals.OVERWORLDHEIGHT)
     {
       return new AirTile(x, depth);
-    } else if (depth <= world.safeZone + 1) // 1 layer of grass (layer 11)
+    } else if (depth <= Globals.OVERWORLDHEIGHT + 1) // 1 layer of grass (layer 11)
     {
       return new GrassTile(x, depth);
     } else if (depth < 15) //spawn 14 layers of dirt
@@ -73,7 +73,7 @@ class Biome {
     return length;
   }
 
-  void placeStructure(int depth) {
+  void placeStructure(World world, int depth) {
     world.safeSpawnStructure(getStructureName(), new PVector(int(random(tilesHorizontal * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
   }
 

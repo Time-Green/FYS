@@ -30,7 +30,7 @@ class Tile extends BaseObject {
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 
-    if (y > world.safeZone) {
+    if (y > Globals.OVERWORLDHEIGHT) {
       destroyedImage = ResourceManager.getImage("DestroyedBlock");
     } else {
       density = false; 
@@ -38,10 +38,10 @@ class Tile extends BaseObject {
     }
   }
 
-  private void setupCave() {
+  private void setupCave(World world) {
 
     //11 is grass layer + transition layer
-    if (gridPosition.y > world.safeZone + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
+    if (gridPosition.y > Globals.OVERWORLDHEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
       destroyed = true;
       density = false;
 
@@ -153,7 +153,7 @@ class Tile extends BaseObject {
     hp = hpToSet;
   }
 
-  void replace(Tile replaceTile) {
+  void replace(World world, Tile replaceTile) {
     int index = world.map.get(int(gridPosition.y)).indexOf(this);
     world.map.get(int(gridPosition.y)).set(index, replaceTile);
 

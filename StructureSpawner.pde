@@ -2,11 +2,10 @@ class StructureSpawner extends Movable {
   String structureName;
 
   PVector structureSize = new PVector(0, 0);
-  ;
   PVector spawnAt = new PVector();
 
 
-  StructureSpawner(String name, PVector target) {
+  StructureSpawner(World world, String name, PVector target) {
     anchored = true;
     image = ResourceManager.getImage("Invisible");
 
@@ -23,11 +22,14 @@ class StructureSpawner extends Movable {
 
       for (String tileString : tileValues) {
         String[] tileProperties = split(tileString, '|');
+        
         if (tileProperties.length == 3) {
+
           if (int(tileProperties[0]) > structureSize.x) {
             //println("x", int(tileProperties[0]));
             structureSize.x = int(tileProperties[0]);
           }
+
           if (int(tileProperties[1]) > structureSize.y) {
             //println("y", int(tileProperties[1]));
             structureSize.y = int(tileProperties[1]);
@@ -36,11 +38,13 @@ class StructureSpawner extends Movable {
       }
     }
   }
+
   void trySpawn() {
     for (int x = 0; x <= structureSize.x; x++) {
       for (int y = 0; y <= structureSize.y; y++) {
         Tile tile = world.getTile((spawnAt.x + x) * tileSize, (spawnAt.y + y) * tileSize);
         //println(spawnAt.x + x, spawnAt.y + y);
+
         if (tile == null) {
           return;
         }

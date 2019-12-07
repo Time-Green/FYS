@@ -151,8 +151,8 @@ public class UIController {
         continue;
       }
 
-      text("Dig!", i * tileSize, world.safeZone * tileSize + arrowYOffset - 15);
-      image(arrowImage, i * tileSize, world.safeZone * tileSize + arrowYOffset);
+      text("Dig!", i * tileSize, Globals.OVERWORLDHEIGHT * tileSize + arrowYOffset - 15);
+      image(arrowImage, i * tileSize, Globals.OVERWORLDHEIGHT * tileSize + arrowYOffset);
     }
 
     tint(255);
@@ -175,7 +175,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - world.safeZone) + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
+    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLDHEIGHT) + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
   }
 
   void startMenu() {
@@ -229,7 +229,7 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + (player.getDepth() - world.safeZone), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
+    text("Depth: " + (player.getDepth() - Globals.OVERWORLDHEIGHT), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
 
     drawInventory();
   }

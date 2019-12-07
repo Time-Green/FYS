@@ -14,7 +14,7 @@ class WallOfDeath extends Movable {
 
   private final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
 
-  private final float BEGINFASE_SAFEZONE = 750; 
+  private final float BEGINFASE_overworldHeight = 750; 
 
   WallOfDeath(float wallWidth) {
 
@@ -157,7 +157,7 @@ class WallOfDeath extends Movable {
 
     float spawnX = random(tilesHorizontal * tileSize + tileSize); 
 
-    while (abs(player.position.x - spawnX) < BEGINFASE_SAFEZONE)
+    while (abs(player.position.x - spawnX) < BEGINFASE_overworldHeight)
     {
       spawnX = random(tilesHorizontal * tileSize + tileSize);
     }

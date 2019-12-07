@@ -96,51 +96,11 @@ void setupGame() {
   player = new Player();
   load(player);
 
-  spawnBirds();
-
   wallOfDeath = new WallOfDeath(tilesHorizontal * tileSize + tileSize);
   load(wallOfDeath);
 
   CameraShaker.reset();
   camera = new Camera(player);
-
-  world.updateWorldDepth();
-
-  spawnOverworldStructures();
-  spawnStarterChest();
-}
-
-void spawnOverworldStructures() {
-
-  world.spawnStructure("Tree", new PVector(1, 6)); 
-
-  int lastSpawnX = 0;
-  final int MIN_DISTANCE = 4;
-
-  for (int i = 0; i < tilesHorizontal - 13; i++) {
-
-    if (i > lastSpawnX + MIN_DISTANCE) {
-
-      if (random(1) < 0.35f) {
-        lastSpawnX = i;
-        world.spawnStructure("Tree", new PVector(i, 6));
-      }
-    }
-  }
-
-  world.spawnStructure("ButtonAltar", new PVector(40, 8));
-}
-
-void spawnBirds() {
-  for (int i = 0; i < birdCount; i++) {
-    Bird bird = new Bird();
-
-    load(bird);
-  }
-}
-
-void spawnStarterChest() {
-  load(new Chest(69), new PVector(30 * tileSize, 10 * tileSize)); //69 is the forcedKey for an always pickaxe spawn
 }
 
 void draw() {
@@ -171,14 +131,14 @@ void draw() {
   camera.update();
 
   world.update();
-  world.draw(camera);
+  world.draw();
 
   updateObjects();
   drawObjects();
 
   world.updateDepth();
 
-  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (world.safeZone + 5) * tileSize) {
+  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLDHEIGHT + 5) * tileSize) {
     ui.drawArrows();
   }
 

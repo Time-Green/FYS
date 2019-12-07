@@ -25,6 +25,9 @@ static class Globals {
   static final int DIAMONDVALUE = 1000; //
   static final int EMERALDVALUE = 5000; //
 
+  //world
+  static final int OVERWORLDHEIGHT = 10;
+
   //Gamestate
   static boolean gamePaused = true;
   static GameState currentGameState = GameState.MainMenu;

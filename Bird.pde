@@ -6,7 +6,7 @@ public class Bird extends Mob {
   final float MINSPEED = 2.0f;
   final float MAXSPEED = 5.0f;
 
-  public Bird() {
+  public Bird(World world) {
 
     //some birds will fly right
     if (random(0, 2) < 1) {
@@ -32,9 +32,9 @@ public class Bird extends Mob {
     //allow bird to fly of the screen
     worldBorderCheck = false;
 
-    PImage[] frames = new PImage[3];
+    PImage[] frames = new PImage[4];
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < frames.length; i++) {
       frames[i] = ResourceManager.getImage("BirdFlying" + i);
     }
 
