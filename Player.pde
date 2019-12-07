@@ -16,7 +16,7 @@ class Player extends Mob {
   private float viewTarget;
   private float easing = 0.025f;
 
-  private int heal = 10;
+  private float heal = 0.2f;
 
   //Status effects
   public float stunTimer;
@@ -90,16 +90,24 @@ class Player extends Mob {
     }
   }
 
-// every 2 seconds the player gains 10hp back but still work in progress
+// every 3 seconds the player gains 10hp back but still work in progress
   void regenaration() {
-    if(currentHealth <= maxHealth) {
-      for(int i = 0; i < 120; i++) {
-      if(i == 120) {
-        currentHealth += heal;
+     if(isHurt == false) {
+      if(currentHealth < maxHealth) {
+        if(frameCount % 30 == 0) {
+          currentHealth += heal;
+          }
+        }
+      }  
+      else if(isHurt == true) {
+        if(currentHealth < maxHealth) {
+          if(frameCount % 180 == 0)  {
+            if(frameCount % 30 == 0) {
+              currentHealth += heal;
+            }
+          }
+        }
       }
-      }
-      
-    }
   }
 
   void setVisibilityBasedOnCurrentBiome() {
