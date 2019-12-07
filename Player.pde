@@ -84,11 +84,17 @@ class Player extends Mob {
 
       ui.drawWarningOverlay = true;
 
-      if (frameCount % 60 == 0) {
+       if (frameCount % 60 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
+
+      } else if (currentHealth > maxHealth / 5f) {
+
+      ui.drawWarningOverlay = false;
     }
   }
+
+  
 
 
   void regenaration() {
@@ -99,7 +105,7 @@ class Player extends Mob {
           }
         }
       }  
-      else if(isHurt == true) { // there is a 3 second timer before the player starts to regenarate if hit
+      else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
         if(currentHealth < maxHealth) {
           if(frameCount % 120 == 0)  {
             if(frameCount % 30 == 0) {
@@ -161,7 +167,6 @@ class Player extends Mob {
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
-      runData.playerJumps++;
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
