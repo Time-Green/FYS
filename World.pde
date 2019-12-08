@@ -56,8 +56,6 @@ public class World {
 
   void spawnOverworldStructures() {
 
-    //spawnTree(new PVector(1, 6)); 
-
     int lastSpawnX = -4;
     final int MIN_DISTANCE_INBETWEEN_TREE = 4;
     final int MAX_XSPAWNPOS = tilesHorizontal - 13;
