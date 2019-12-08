@@ -105,15 +105,9 @@ void setupGame() {
 
 void draw() {
 
-  if (!ResourceManager.isAllLoaded()) {
-    handleMultiThreadedLoading();
-
-    return;
-  }
-
-  //wait until we are logged in
-  if (dbUser == null) {
-    handleLoggingInWaiting();
+  //wait until all resources are loaded and we are logged in
+  if (!ResourceManager.isAllLoaded() || dbUser == null) {
+    handleLoadingScreen();
 
     return;
   }
@@ -267,7 +261,7 @@ void startAsteroidRain() {
   thread("startRegisterRunThread");
 }
 
-void handleMultiThreadedLoading(){
+void handleLoadingScreen(){
   background(0);
 
   float loadingBarWidth = ResourceManager.getLoadingAllProgress();
@@ -280,18 +274,25 @@ void handleMultiThreadedLoading(){
   fill(255);
   textSize(30);
   textAlign(CENTER);
-  text("Loaded: " + ResourceManager.getLastLoadedResource(), width / 2, height - 10);
+  text("Loading", width / 2, height - 10);
+
+  //login
+  if(dbUser == null){
+    text("Logging in", width / 2, height - 55);
+  }else{
+    text("Logged in as " + dbUser.userName, width / 2, height - 55);
+  }
 
   ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
 
   fill(255);
-  textSize(20);
+  textSize(25);
   textAlign(LEFT);
   text("Currently loading resources:", 10, 20);
 
   textSize(15);
   for (int i = 0; i < currentlyLoadingResources.size(); i++) {
-    text(currentlyLoadingResources.get(i), 10, 35 + i * 15);
+    text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
   }
 }
 
@@ -307,15 +308,6 @@ void startRegisterRunThread(){
 
 void startRegisterEndThread(){
   databaseManager.registerRunEnd();
-}
-
-void handleLoggingInWaiting() {
-  background(0);
-
-  fill(255);
-  textSize(30);
-  textAlign(CENTER);
-  text("Logging in...", width / 2, height - 10);
 }
 
 BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch

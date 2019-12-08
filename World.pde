@@ -56,24 +56,25 @@ public class World {
 
   void spawnOverworldStructures() {
 
-    spawnStructure("Tree", new PVector(1, 6)); 
+    //spawnTree(new PVector(1, 6)); 
 
-    int lastSpawnX = 0;
-    final int MIN_DISTANCE_INBETWEEN = 4;
-    final int MAX_DISTANCE = tilesHorizontal - 13;
+    int lastSpawnX = -4;
+    final int MIN_DISTANCE_INBETWEEN_TREE = 4;
+    final int MAX_XSPAWNPOS = tilesHorizontal - 13;
 
-    for (int i = 0; i < MAX_DISTANCE; i++) {
+    for (int i = 1; i < MAX_XSPAWNPOS; i++) {
 
-      if (i > lastSpawnX + MIN_DISTANCE_INBETWEEN) {
-
-        if (random(1) < 0.35f) {
-          lastSpawnX = i;
-          spawnStructure("Tree", new PVector(i, 6));
-        }
+      if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE) {
+        lastSpawnX = i;
+        spawnTree(new PVector(i, 6));
       }
     }
 
     spawnStructure("ButtonAltar", new PVector(40, 8));
+  }
+
+  void spawnTree(PVector location){
+    spawnStructure("Tree", location); 
   }
 
   void spawnBirds() {
@@ -144,7 +145,7 @@ public class World {
     }
 
     for (StructureSpawner spawner : queuedStructures) {
-      spawner.trySpawn();
+      spawner.trySpawn(this);
     }
   }
 
