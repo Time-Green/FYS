@@ -11,6 +11,8 @@ class Player extends Mob {
   private final int SHOCKFRAMES = 2;
   private AnimatedImage animatedImageMine;
   private final int MINEFRAMES = 3;
+  private AnimatedImage animatedImageFall;
+  private final int FALLFRAMES = 4;
 
   private float VIEW_AMOUNT = 500;
   private float viewTarget;
@@ -35,6 +37,7 @@ class Player extends Mob {
     PImage[] airFrames = new PImage[AIRFRAMES];
     PImage[] mineFrames = new PImage[MINEFRAMES];
     PImage[] shockFrames = new PImage[SHOCKFRAMES];
+    PImage[] fallFrames = new PImage[FALLFRAMES];
 
     for (int i = 0; i < WALKFRAMES; i++)
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
@@ -42,7 +45,7 @@ class Player extends Mob {
 
     for (int i = 0; i < IDLEFRAMES; i++)
       idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
-    animatedImageIdle = new AnimatedImage(idleFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    animatedImageIdle = new AnimatedImage(idleFrames, 60 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     for (int i = 0; i < AIRFRAMES; i++)
       airFrames[i] = ResourceManager.getImage("PlayerAir" + i); 
@@ -55,6 +58,10 @@ class Player extends Mob {
     for (int i = 0; i < MINEFRAMES; i++) 
       mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+    for (int i = 0; i < FALLFRAMES; i++) 
+      fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
+    animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, VIEW_AMOUNT, 1f);
   }
@@ -150,7 +157,10 @@ class Player extends Mob {
       } else if (InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
         animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageMine.draw();
-      } else {//Idle
+      } else if(isGrounded == false) {
+        animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageFall.draw();
+      }else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
       }
