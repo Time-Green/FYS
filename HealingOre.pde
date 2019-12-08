@@ -1,9 +1,9 @@
-public class HealthTile extends Tile{
+public class HealthTile extends Tile {
 
   public float healAmount = 20;
   boolean hasHealed; 
 
-  public HealthTile(int x, int y){
+  public HealthTile(int x, int y) {
     super(x, y); 
 
     image = ResourceManager.getImage("MagmaTile");
@@ -22,7 +22,7 @@ public class HealthTile extends Tile{
 
   // void mine(boolean playBreakSound, boolean doResourceDrop){
   //   super.mine(playBreakSound);
-  
+
   //   if(hasHealed){
   //     return; 
   //   }
@@ -33,9 +33,8 @@ public class HealthTile extends Tile{
   //   }
   // }
 
-  private void heal(){
+  private void heal() {
 
-    player.currentHealth += healAmount; 
+    player.currentHealth += healAmount;
   }
-
 }

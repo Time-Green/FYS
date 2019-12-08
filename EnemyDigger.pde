@@ -5,13 +5,13 @@ class EnemyDigger extends Enemy {
   private final float CHASESPEED = 4f;
   private final float NORMALSPEED = 2f;
 
-  EnemyDigger(PVector spawnPos){
+  EnemyDigger(PVector spawnPos) {
     super(spawnPos);
 
     image = ResourceManager.getImage("DiggerEnemy");
     this.speed = NORMALSPEED;
     //1f = 1 tile
-    float tileDistance = 10f;
+    float tileDistance = 30f;
     chaseDistance = OBJECTSIZE * tileDistance;
   }
 
@@ -28,29 +28,27 @@ class EnemyDigger extends Enemy {
       else this.walkLeft = false;
 
       if (this.walkLeft) {//GO left
-          this.isMiningLeft = true;
-          this.isMiningRight = false;
+        this.isMiningLeft = true;
+        this.isMiningRight = false;
       } else {//Go right
-          this.isMiningLeft = false;
-          this.isMiningRight = true;
+        this.isMiningLeft = false;
+        this.isMiningRight = true;
       }
 
       if (player.position.y > this.position.y) {//Go down
-          this.isMiningDown = true;
-          this.isMiningUp = false;
-          this.gravityForce = 1;
+        this.isMiningDown = true;
+        this.isMiningUp = false;
+        this.gravityForce = CHASESPEED-1;
       } else {//Go up
-          this.isMiningUp = true;
-          this.isMiningDown = false;
-          this.gravityForce = -1;
+        this.isMiningUp = true;
+        this.isMiningDown = false;
+        this.gravityForce = -CHASESPEED+1;
       }
-
     } else {
       //Don't chase the player
       this.speed = NORMALSPEED;
       this.isMiningDown = false;
-      this.gravityForce = 1;
+      this.gravityForce = NORMALSPEED-1;
     }
   }
-
 }

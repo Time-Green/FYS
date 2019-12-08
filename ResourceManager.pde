@@ -1,101 +1,136 @@
-public static class ResourceManager{
+public static class ResourceManager {
 
-  private static PApplet game;
+  private static FYS game;
 
   private static ArrayList<String> resourcesToLoadNames = new ArrayList<String>();
   private static ArrayList<String> resourcesToLoadFileNames = new ArrayList<String>();
-  private static int currentLoadIndex = 0;
-  private static int totalResourcesToLoad = 0;
 
   private static HashMap<String, PImage> imageMap = new HashMap<String, PImage>();
   private static HashMap<String, PFont> fontMap = new HashMap<String, PFont>();
 
-  public static void setup(PApplet game){
+  private static boolean isAllLoaded = false;
+  public static ArrayList<LoaderThread> loaderThreads = new ArrayList<LoaderThread>();
+  private static String lastLoadedResource = "";
+
+  public static void setup(FYS game) {
     ResourceManager.game = game;
   }
 
-  public static void prepareResourceLoading(){
+  public static void prepareResourceLoading() {
+
+    //needs to happan to set up the sound library before actual loading begins!
+    SoundFile temp = new SoundFile(game, "Sound/DirtBreak.wav");
+
     String dataPath = game.sketchPath("data");
-    
     File dataFolder = new File(dataPath);
 
     searchInFolder(dataFolder);
   }
 
-  private static void searchInFolder(File folder){
+  private static void searchInFolder(File folder) {
 
-    for (File file : folder.listFiles()){
+    for (File file : folder.listFiles()) {
 
-      if(file.isDirectory()){
+      if (file.isDirectory()) {
         searchInFolder(file);
-      }else if(file.isFile()){
+      } else if (file.isFile()) {
         prepareLoad(getFileName(file), file.getPath());
       }
     }
   }
 
-  private static String getFileName(File file){
+  private static String getFileName(File file) {
     String name = file.getName();
     int pos = name.lastIndexOf(".");
-      
-    if (pos > 0){
+
+    if (pos > 0) {
       name = name.substring(0, pos);
     }
 
     return name;
   }
 
-  public static void prepareLoad(String name, String fileName){
-    totalResourcesToLoad++;
-
+  public static void prepareLoad(String name, String fileName) {
     resourcesToLoadNames.add(name);
     resourcesToLoadFileNames.add(fileName);
   }
 
-  public static String loadNext(){
-    String currentResourceName = resourcesToLoadNames.get(currentLoadIndex);
-    String currentResourceFileName = resourcesToLoadFileNames.get(currentLoadIndex);
+  public static void loadAll(){
+    for (int i = 0; i < resourcesToLoadNames.size(); i++){
 
-    load(currentResourceName, currentResourceFileName);
-    currentLoadIndex++;
+      String currentResourceName = resourcesToLoadNames.get(i);
+      String currentResourceFileName = resourcesToLoadFileNames.get(i);
 
-    if(currentLoadIndex + 1 < resourcesToLoadFileNames.size()){
-      String nextResourceToLoad = resourcesToLoadFileNames.get(currentLoadIndex + 1);
-
-      return nextResourceToLoad;
-    }else{
-      return "";
+      game.startLoaderThread(currentResourceName, currentResourceFileName);
     }
   }
 
-  public static boolean isLoaded(){
-    return currentLoadIndex == totalResourcesToLoad;
+  public static boolean isAllLoaded() {
+
+    if(isAllLoaded){
+      return true;
+    }
+
+    for (int i = 0; i < loaderThreads.size(); i++) {
+
+      if(loaderThreads.get(i).isAlive()){
+        return false;
+      }
+    }
+
+    isAllLoaded = true;
+    return true;
   }
 
-  public static int getCurrentLoadIndex(){
-    return currentLoadIndex;
+  public static float getLoadingAllProgress() {
+    float totalThreadsCompleted = 0;
+
+    for (int i = 0; i < loaderThreads.size(); i++) {
+
+      if(loaderThreads.get(i).isAlive()){
+        totalThreadsCompleted++;
+      }
+    }
+
+    return 1 - (totalThreadsCompleted / float(loaderThreads.size()));
   }
 
-  public static int getTotalResourcesToLoad(){
-    return totalResourcesToLoad;
+  public static String getLastLoadedResource(){
+    return lastLoadedResource;
   }
-  
-  public static void load(String name, String fileName){
-    if(fileName.endsWith(".png") || fileName.endsWith(".jpg")){
+
+  public static ArrayList<String> getLoadingResources(){
+    ArrayList<String> currentlyLoadingResources = new ArrayList<String>();
+
+    for (int i = 0; i < loaderThreads.size(); i++) {
+
+      if(loaderThreads.get(i).isAlive()){
+
+        String name = ((Thread) loaderThreads.get(i)).getName();
+
+        currentlyLoadingResources.add(name);
+      }
+    }
+
+    return currentlyLoadingResources;
+  }
+
+  public static void load(String name, String fileName) {
+    if (fileName.endsWith(".png") || fileName.endsWith(".jpg")) {
       loadImage(name, fileName);
-    }
-    else if(fileName.endsWith(".mp3") || fileName.endsWith(".wav")){
+    } else if (fileName.endsWith(".mp3") || fileName.endsWith(".wav")) {
       loadSoundFile(name, fileName);
-    }
-    else if(fileName.endsWith(".ttf")){
+    } else if (fileName.endsWith(".ttf")) {
       loadFont(name, fileName);
     }
+
+    lastLoadedResource = name;
   }
 
-  private static void loadImage(String name, String fileName){
+  private static void loadImage(String name, String fileName) {
     PImage image = game.loadImage(fileName);
 
-    if(image == null){
+    if (image == null) {
       println("Could not load image: " + fileName);
       return;
     }
@@ -103,18 +138,18 @@ public static class ResourceManager{
     imageMap.put(name, image);
   }
 
-  private static void loadSoundFile(String name, String fileName){
-    if(fileName.contains("Music")){
+  private static void loadSoundFile(String name, String fileName) {
+    if (fileName.contains("Music")) {
       AudioManager.loadMusic(name, fileName);
-    }else{
+    } else {
       AudioManager.loadSoundEffect(name, fileName);
     }
   }
 
-  private static void loadFont(String name, String fileName){
+  private static void loadFont(String name, String fileName) {
     PFont font = game.createFont(fileName, 32);
 
-    if(font == null){
+    if (font == null) {
       println("Could not load font: " + fileName);
       return;
     }
@@ -122,10 +157,10 @@ public static class ResourceManager{
     fontMap.put(name, font);
   }
 
-  public static PImage getImage(String name){
+  public static PImage getImage(String name) {
     PImage image = imageMap.get(name);
 
-    if(image == null){
+    if (image == null) {
       println("Image '" + name + "' not found!");
       return null;
     }
@@ -133,10 +168,10 @@ public static class ResourceManager{
     return image;
   }
 
-  public static PFont getFont(String name){
+  public static PFont getFont(String name) {
     PFont font = fontMap.get(name);
 
-    if(font == null){
+    if (font == null) {
       println("Font '" + name + "' not found!");
       return null;
     }

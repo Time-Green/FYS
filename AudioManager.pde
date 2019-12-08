@@ -1,6 +1,6 @@
 import processing.sound.*;
 
-public static class AudioManager{
+public static class AudioManager {
 
   private static FYS game;
 
@@ -11,16 +11,16 @@ public static class AudioManager{
   private static HashMap<String, SoundFile[]> soundEffectMap = new HashMap<String, SoundFile[]>();
   private static IntDict soundEffectMapIndex = new IntDict();
   private static FloatDict maxAudioVolumes = new FloatDict();
-  
-  public static void setup(FYS game){
+
+  public static void setup(FYS game) {
     AudioManager.game = game;
   }
 
-  public static void loadMusic(String name, String fileName){
+  public static void loadMusic(String name, String fileName) {
 
     SoundFile music = new SoundFile(game, fileName);
 
-    if(music == null){
+    if (music == null) {
       println("Could not load music: " + fileName);
       return;
     }
@@ -29,15 +29,15 @@ public static class AudioManager{
     musicMap.put(name, music);
   }
 
-  public static void loadSoundEffect(String name, String fileName){
+  public static void loadSoundEffect(String name, String fileName) {
 
     SoundFile[] soundArray = new SoundFile[AUDIO_AMOUNT];
 
-    for(int i = 0; i < AUDIO_AMOUNT; i++){
+    for (int i = 0; i < AUDIO_AMOUNT; i++) {
 
       SoundFile sound = new SoundFile(game, fileName);
 
-      if(sound == null){
+      if (sound == null) {
         println("Could not load sound: " + fileName);
         return;
       }
@@ -50,19 +50,19 @@ public static class AudioManager{
     maxAudioVolumes.set(name, 1f);
   }
 
-  public static void playSoundEffect(String name){
+  public static void playSoundEffect(String name) {
     SoundFile[] soundEffects = soundEffectMap.get(name);
     int playAtIndex = soundEffectMapIndex.get(name);
     SoundFile soundToPlay = soundEffects[playAtIndex];
 
-    if(soundToPlay == null){
+    if (soundToPlay == null) {
       println("SoundFile '" + name + "' not found!");
       return;
     }
 
-    if(playAtIndex < AUDIO_AMOUNT - 1){
+    if (playAtIndex < AUDIO_AMOUNT - 1) {
       soundEffectMapIndex.set(name, playAtIndex + 1);
-    }else{
+    } else {
       soundEffectMapIndex.set(name, 0);
     }
 
@@ -71,19 +71,19 @@ public static class AudioManager{
     soundToPlay.play();
   }
 
-  public static void playSoundEffect(String name, PVector atLocation){
+  public static void playSoundEffect(String name, PVector atLocation) {
     SoundFile[] soundEffects = soundEffectMap.get(name);
     int playAtIndex = soundEffectMapIndex.get(name);
     SoundFile soundToPlay = soundEffects[playAtIndex];
 
-    if(soundToPlay == null){
+    if (soundToPlay == null) {
       println("SoundFile '" + name + "' not found!");
       return;
     }
 
-    if(playAtIndex < AUDIO_AMOUNT - 1){
+    if (playAtIndex < AUDIO_AMOUNT - 1) {
       soundEffectMapIndex.set(name, playAtIndex + 1);
-    }else{
+    } else {
       soundEffectMapIndex.set(name, 0);
     }
 
@@ -93,17 +93,17 @@ public static class AudioManager{
     volumeBasedOnDistance = 1 - volumeBasedOnDistance;
     volumeBasedOnDistance = constrain(volumeBasedOnDistance, 0f, 1f);
 
-    if(volumeBasedOnDistance > 0){
+    if (volumeBasedOnDistance > 0) {
       soundToPlay.stop();
       soundToPlay.amp(volumeBasedOnDistance * maxAudioVolumes.get(name));
       soundToPlay.play();
     }
   }
 
-  public static void playMusic(String name){
+  public static void playMusic(String name) {
     SoundFile soundToPlay = musicMap.get(name);
 
-    if(soundToPlay == null){
+    if (soundToPlay == null) {
       println("SoundFile '" + name + "' not found!");
       return;
     }
@@ -113,10 +113,10 @@ public static class AudioManager{
     soundToPlay.play();
   }
 
-  public static void stopMusic(String name){
+  public static void stopMusic(String name) {
     SoundFile soundToStop = musicMap.get(name);
 
-    if(soundToStop == null){
+    if (soundToStop == null) {
       println("SoundFile '" + name + "' not found!");
       return;
     }
@@ -124,10 +124,10 @@ public static class AudioManager{
     soundToStop.stop();
   }
 
-  public static void loopMusic(String name){
+  public static void loopMusic(String name) {
     SoundFile soundToPlay = musicMap.get(name);
 
-    if(soundToPlay == null){
+    if (soundToPlay == null) {
       println("SoundFile '" + name + "' not found!");
       return;
     }
@@ -138,20 +138,20 @@ public static class AudioManager{
   }
 
   // volume range [0-1]
-  public static void setMaxAudioVolume(String name, float volume){
+  public static void setMaxAudioVolume(String name, float volume) {
     SoundFile music = musicMap.get(name);
 
-    if(music != null){
+    if (music != null) {
       maxAudioVolumes.set(name, volume);
       music.amp(volume);
     }
 
     SoundFile[] soundEffects = soundEffectMap.get(name);
 
-    if(soundEffects != null){
+    if (soundEffects != null) {
       maxAudioVolumes.set(name, volume);
 
-      for(SoundFile soundFile : soundEffects){
+      for (SoundFile soundFile : soundEffects) {
         soundFile.amp(volume);
       }
     }

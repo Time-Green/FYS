@@ -1,53 +1,52 @@
-class Item extends PickUp{
+class Item extends PickUp {
   int throwSpeed = 50; //throw speed, for when you use it
   Mob thrower; //whoever threw us, if we're even throwable
 
   float cooldown = 0;
   float takeAfter = 300; //time till we can pick stuff up after throwing them
 
-  Item(){
-    image = ResourceManager.getImage("DiamondPickUp"); 
+  Item() {
+    image = ResourceManager.getImage("DiamondPickUp");
   }
 
-  void update(){
+  void update() {
     super.update();
 
-    if(cooldown != 0 && cooldown < millis()){ //I dislike needing this, but there really isnt another way me thinks
+    if (cooldown != 0 && cooldown < millis()) { //I dislike needing this, but there really isnt another way me thinks
       canTake = true;
       thrower = null;
       cooldown = 0;
     }
   }
 
-  boolean canCollideWith(BaseObject baseObject){
-    if(baseObject == thrower){ //lets not instantly collide with whoever threw us 
-      return false; 
+  boolean canCollideWith(BaseObject baseObject) {
+    if (baseObject == thrower) { //lets not instantly collide with whoever threw us 
+      return false;
     }
 
     return super.canCollideWith(baseObject);
   }
 
-  void pickedUp(Mob mob){
-    if(mob.canAddToInventory(this)){
+  void pickedUp(Mob mob) {
+    if (mob.canAddToInventory(this)) {
       mob.addToInventory(this);
     }
   }
 
-  void onUse(Mob mob){
+  void onUse(Mob mob) {
 
     mob.removeFromInventory(this);
     int direction = 0;
 
-    if(mob.isMiningLeft){
+    if (mob.isMiningLeft) {
       direction = LEFT;
-    }
-    else if(mob.isMiningRight){
+    } else if (mob.isMiningRight) {
       direction = RIGHT;
     }
-    if(mob.isMiningUp){
+    if (mob.isMiningUp) {
       direction = UP;
     }
-    if(mob.isMiningDown){
+    if (mob.isMiningDown) {
       direction = DOWN;
     }
 
@@ -55,21 +54,21 @@ class Item extends PickUp{
     return;
   }
 
-  void throwItem(Mob mob, int direction){ //took me 10 minutes of debugging to discover you cant use throw as func name
+  void throwItem(Mob mob, int direction) { //took me 10 minutes of debugging to discover you cant use throw as func name
     moveTo(mob.position);
-    switch(direction){
-        case UP:
-          velocity.set(0, -throwSpeed);
-          break;
-        case DOWN:
-          velocity.set(0, throwSpeed);
-          break;
-        case LEFT:
-          velocity.set(-throwSpeed, 0);
-          break;
-        case RIGHT:
-          velocity.set(throwSpeed, 0);
-          break;
+    switch(direction) {
+    case UP:
+      velocity.set(0, -throwSpeed);
+      break;
+    case DOWN:
+      velocity.set(0, throwSpeed);
+      break;
+    case LEFT:
+      velocity.set(-throwSpeed, 0);
+      break;
+    case RIGHT:
+      velocity.set(throwSpeed, 0);
+      break;
     }
 
     canTake = false;
@@ -78,11 +77,10 @@ class Item extends PickUp{
   }
 
 
-  void drawOnPlayer(Player mob){
-
+  void drawOnPlayer(Player mob) {
   }
 
-  void canTakeAfter(float timer){
+  void canTakeAfter(float timer) {
     cooldown = millis() + timer;
   }
 }

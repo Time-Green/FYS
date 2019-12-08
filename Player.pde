@@ -11,10 +11,14 @@ class Player extends Mob {
   private final int SHOCKFRAMES = 2;
   private AnimatedImage animatedImageMine;
   private final int MINEFRAMES = 3;
+  private AnimatedImage animatedImageFall;
+  private final int FALLFRAMES = 4;
 
   private float VIEW_AMOUNT = 500;
   private float viewTarget;
   private float easing = 0.025f;
+
+  private float heal = 0.2f;
 
   //Status effects
   public float stunTimer;
@@ -33,6 +37,7 @@ class Player extends Mob {
     PImage[] airFrames = new PImage[AIRFRAMES];
     PImage[] mineFrames = new PImage[MINEFRAMES];
     PImage[] shockFrames = new PImage[SHOCKFRAMES];
+    PImage[] fallFrames = new PImage[FALLFRAMES];
 
     for (int i = 0; i < WALKFRAMES; i++)
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
@@ -40,7 +45,7 @@ class Player extends Mob {
 
     for (int i = 0; i < IDLEFRAMES; i++)
       idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
-    animatedImageIdle = new AnimatedImage(idleFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    animatedImageIdle = new AnimatedImage(idleFrames, 60 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     for (int i = 0; i < AIRFRAMES; i++)
       airFrames[i] = ResourceManager.getImage("PlayerAir" + i); 
@@ -50,10 +55,13 @@ class Player extends Mob {
       shockFrames[i] = ResourceManager.getImage("PlayerShock" + i); 
     shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    for (int i = 0; i < MINEFRAMES; i++) {
+    for (int i = 0; i < MINEFRAMES; i++) 
       mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
-    }
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+    for (int i = 0; i < FALLFRAMES; i++) 
+      fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
+    animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, VIEW_AMOUNT, 1f);
   }
@@ -68,32 +76,58 @@ class Player extends Mob {
 
     setVisibilityBasedOnCurrentBiome();
 
+    regenaration();
+
     checkHealthLow();
 
     statusEffects();
-    if(stunTimer <= 0){
+    if (stunTimer <= 0) {
       doPlayerMovement();
     }
   }
 
-  void checkHealthLow(){
-    if(currentHealth < maxHealth / 5f){ // if lower than 20% health, show low health overlay
-      
+  void checkHealthLow() {
+    if (currentHealth < maxHealth / 5f) { // if lower than 20% health, show low health overlay
+
       ui.drawWarningOverlay = true;
 
-      if(frameCount % 60 == 0){
+       if (frameCount % 60 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
+
+      } else if (currentHealth > maxHealth / 5f) {
+
+      ui.drawWarningOverlay = false;
     }
   }
 
-  void setVisibilityBasedOnCurrentBiome(){
 
-    if(getDepth() > world.currentBiome.startedAt){
+  void regenaration() {
+     if(isHurt == false) {
+      if(currentHealth < maxHealth) {
+        if(frameCount % 30 == 0) {
+          currentHealth += heal;
+          }
+        }
+      }  
+      else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
+        if(currentHealth < maxHealth) {
+          if(frameCount % 120 == 0)  {
+            if(frameCount % 30 == 0) {
+              currentHealth += heal;
+            }
+          }
+        }
+      }
+  }
 
-      if(world.currentBiome.playerVisibility > 0){
+  void setVisibilityBasedOnCurrentBiome() {
+
+    if (getDepth() > world.currentBiome.startedAt) {
+
+      if (world.currentBiome.playerVisibility > 0) {
         viewTarget = world.currentBiome.playerVisibility;
-      }else{
+      } else {
         viewTarget = VIEW_AMOUNT;
       }
     }
@@ -102,38 +136,40 @@ class Player extends Mob {
     lightEmitAmount += dy * easing;
   }
 
-  void draw(){
+  void draw() {
 
-  if (Globals.gamePaused){
-    return;
+    if (Globals.gamePaused) {
+      return;
+    }
+
+    //Animation
+    if (stunTimer > 0f) {//Am I stunned?
+      shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
+      shockedCycle.draw();
+    } else {//Play the other animations when we are not
+      //PLayer input
+      if ((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
+        walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
+        walkCycle.draw();
+      } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
+        animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageAir.draw();
+      } else if (InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
+        animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageMine.draw();
+      } else if(isGrounded == false) {
+        animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageFall.draw();
+      }else {//Idle
+        animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageIdle.draw();
+      }
+
+      for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
+        item.drawOnPlayer(this);
+      }
+    }
   }
-
-  //Animation
-  if (stunTimer > 0f) {//Am I stunned?
-    shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
-    shockedCycle.draw();
-  } else {//Play the other animations when we are not
-    //PLayer input
-    if((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
-      walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
-      walkCycle.draw();
-    }
-    else if((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
-      animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
-      animatedImageAir.draw();
-    }else if(InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
-      animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
-      animatedImageMine.draw();
-    }else{//Idle
-      animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
-      animatedImageIdle.draw();
-    }
-
-    for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
-      item.drawOnPlayer(this);
-    }
-  }
-}
 
   void doPlayerMovement() {
 
@@ -161,10 +197,9 @@ class Player extends Mob {
       flipSpriteHorizontal = true;
     } 
 
-
     if (InputHelper.isKeyDown(Globals.INVENTORYKEY)) { 
       useInventory();
-      InputHelper.onKeyReleased(Globals.INVENTORYKEY); 
+      InputHelper.onKeyReleased(Globals.INVENTORYKEY);
     }
 
     if (InputHelper.isKeyDown('g')) { //for 'testing'
@@ -206,9 +241,9 @@ class Player extends Mob {
 
   private void statusEffects() {
     //Decrease stun timer
-    if(stunTimer > 0f){
+    if (stunTimer > 0f) {
       stunTimer--;
-    } 
+    }
   }
 
   public void die() {
@@ -219,6 +254,8 @@ class Player extends Mob {
 
     ui.drawWarningOverlay = false;
     AudioManager.stopMusic("BackgroundMusic");
+
+    thread("startRegisterEndThread");
   }
 
   boolean canPickUp(PickUp pickUp) {
@@ -227,5 +264,9 @@ class Player extends Mob {
 
   public boolean canPlayerInteract() {
     return true;
+  }
+
+  void afterMine(BaseObject object){
+    runData.playerBlocksMined++;
   }
 }

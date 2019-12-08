@@ -2,7 +2,7 @@ class EnemyMimic extends Enemy {
 
   private boolean detected;
 
-  EnemyMimic(PVector spawnPos){
+  EnemyMimic(PVector spawnPos) {
     //Start off pretending we are a block
     super(spawnPos);
     image = ResourceManager.getImage("MimicTile");
@@ -16,20 +16,18 @@ class EnemyMimic extends Enemy {
     //The jig is up
     if (detected) {
       //Act like a normal enemy
-      final float NORMALSPEED = 4f;
+      final float NORMALSPEED = 6f;
       this.speed = NORMALSPEED;
       gravityForce = 1;
       image = ResourceManager.getImage("MimicEnemy");
     }
   }
 
-  protected void handleCollision(){
+  protected void handleCollision() {
     super.handleCollision();
-    
-    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
+
+    if (CollisionHelper.rectRect(position, size, player.position, player.size)) {
       detected = true;
     }
-
   }
-
 }

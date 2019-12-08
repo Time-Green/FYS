@@ -1,4 +1,4 @@
-public class AnimatedImage{
+public class AnimatedImage {
 
   PImage[] frames;
   float frameDelay, objectWidth;
@@ -7,7 +7,7 @@ public class AnimatedImage{
 
   int frameCounter = 0;
 
-  public AnimatedImage(PImage[] frames, float frameDelay, PVector drawPosition, float objectWidth, boolean flipSpriteHorizontal){
+  public AnimatedImage(PImage[] frames, float frameDelay, PVector drawPosition, float objectWidth, boolean flipSpriteHorizontal) {
     this.frames = frames;
     this.objectWidth = objectWidth;
     this.frameDelay = frameDelay;
@@ -15,7 +15,7 @@ public class AnimatedImage{
     this.flipSpriteHorizontal = flipSpriteHorizontal;
   }
 
-  public void draw(){
+  public void draw() {
     pushMatrix();
 
     translate(drawPosition.x, drawPosition.y);
@@ -23,32 +23,32 @@ public class AnimatedImage{
     int imageToDrawIndex = frameCounter / round(frameDelay) % frames.length;
     PImage imageToDraw = frames[imageToDrawIndex];
 
-    if(flipSpriteHorizontal){
+    if (flipSpriteHorizontal) {
       scale(-1, 1);
       image(imageToDraw, -objectWidth, 0);
-    }else{
+    } else {
       image(imageToDraw, 0, 0);
     }
 
     popMatrix();
 
     // if this animation is paused, return the function before it can increase the frame counter
-    if(isPaused){
+    if (isPaused) {
       return;
     }
 
     frameCounter++;
   }
 
-  public void resetCounter(){
+  public void resetCounter() {
     frameCounter = 0;
   }
 
-  public void pauze(){
+  public void pauze() {
     isPaused = true;
   }
 
-  public void resume(){
+  public void resume() {
     isPaused = false;
   }
 }

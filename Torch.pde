@@ -1,22 +1,21 @@
-public class Torch extends Movable{
+public class Torch extends Movable {
 
   private float startingBrightness = 200;
   private float minBrightness = 150;
   private float maxBrightness = 250;
 
-  public Torch(PVector spawnPos){
+  public Torch() {
     super();
 
-    position.set(spawnPos);
     image = ResourceManager.getImage("Torch");
-      
+
     collisionEnabled = false;
     gravityForce = 0;
 
     setupLightSource(this, startingBrightness, 1f);
   }
 
-  public void update(){
+  public void update() {
     super.update();
 
     //light flikker
@@ -24,7 +23,7 @@ public class Torch extends Movable{
     lightEmitAmount = constrain(lightEmitAmount, minBrightness, maxBrightness);
   }
 
-  void takeDamage(float damageTaken){
+  void takeDamage(float damageTaken) {
     super.takeDamage(damageTaken);
 
     delete(this);

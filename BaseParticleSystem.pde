@@ -12,15 +12,14 @@ public class BaseParticleSystem extends BaseObject {
     currentParticleAmount = amount;
   }
 
-  void update(){
+  void update() {
     super.update();
 
-    if(currentParticleAmount <= 0){
+    if (currentParticleAmount <= 0) {
       delete(this);
     }
   }
 
-  void takeDamage(float damageTaken){
-    
+  void takeDamage(float damageTaken) {
   }
 }

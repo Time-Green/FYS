@@ -9,23 +9,23 @@ class Enemy extends Mob {
 
     this.position.set(spawnPos);
     this.velocity.set(-speed, 0);
-    
+
     //set dragfactors to 1 so we dont slow down by drag
     this.groundedDragFactor = 1f;
     this.aerialDragFactor = 1f;
   }
 
-  void specialAdd(){
+  void specialAdd() {
     super.specialAdd();
     mobList.add(this);
   }
 
-  void destroyed(){
+  void destroyed() {
     super.destroyed();
     mobList.remove(this);
   }
 
-  void update(){
+  void update() {
 
     if (Globals.gamePaused) {
       return;
@@ -36,20 +36,20 @@ class Enemy extends Mob {
     handleCollision();
 
     //Can you please stop removing this bool from this script please?
-    if(this.walkLeft == true){
+    if (this.walkLeft == true) {
       this.velocity.set(-speed, 0);
       //Flip the image if we are on the ground
 
-      if(this.isGrounded){
+      if (this.isGrounded) {
         this.flipSpriteHorizontal = false;
       }
-    }else{
+    } else {
       this.velocity.set(speed, 0);
       //Flip the image if we are on the ground
 
-      if(this.isGrounded){
-        this.flipSpriteHorizontal = true;   
-      }   
+      if (this.isGrounded) {
+        this.flipSpriteHorizontal = true;
+      }
     }
 
     //Stop the enemies from walking outside the screen
@@ -62,11 +62,10 @@ class Enemy extends Mob {
     if (currentHealth <= 0) delete(this);
   }
 
-  protected void handleCollision(){
-    
-    if (CollisionHelper.rectRect(position, size, player.position, player.size)){
+  protected void handleCollision() {
+
+    if (CollisionHelper.rectRect(position, size, player.position, player.size)) {
       player.takeDamage(playerDamage);
     }
   }
-
 }

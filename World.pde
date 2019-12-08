@@ -6,8 +6,6 @@ public class World {
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
   int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
 
-  int safeZone = 10;
-
   PImage dayNightImage;
 
   float wallWidth;
@@ -27,21 +25,66 @@ public class World {
 
     fillBiomeQueue(0);
     switchBiome(0);
+
+    updateWorldDepth();
+
+    spawnOverworldStructures();
+    spawnBirds();
+    spawnStarterChest();
   }
 
   public void update() {
   }
 
-  public void draw(Camera camera) {
-    pushMatrix(); 
+  public void draw() {
+    drawBackgoundImage();
+    //println("map.size(): " + map.size());
+  }
+
+  void drawBackgoundImage(){
+    pushMatrix();
+
     scale(1.1, 1.1);
 
     float xPos = -camera.position.x - 1080 * 0.1;
     float yPos = -camera.position.y * 0.5 - 200;
 
     image(dayNightImage, xPos, yPos, wallWidth, 1080);
+
     popMatrix(); 
-    //println("map.size(): " + map.size());
+  }
+
+  void spawnOverworldStructures() {
+
+    int lastSpawnX = -4;
+    final int MIN_DISTANCE_INBETWEEN_TREE = 4;
+    final int MAX_XSPAWNPOS = tilesHorizontal - 13;
+
+    for (int i = 1; i < MAX_XSPAWNPOS; i++) {
+
+      if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE) {
+        lastSpawnX = i;
+        spawnTree(new PVector(i, 6));
+      }
+    }
+
+    spawnStructure("ButtonAltar", new PVector(40, 8));
+  }
+
+  void spawnTree(PVector location){
+    spawnStructure("Tree", location); 
+  }
+
+  void spawnBirds() {
+    for (int i = 0; i < birdCount; i++) {
+      Bird bird = new Bird(this);
+
+      load(bird);
+    }
+  }
+
+  void spawnStarterChest() {
+    load(new Chest(69), new PVector(30 * tileSize, 10 * tileSize)); //69 is the forcedKey for an always pickaxe spawn
   }
 
   //return tile you're currently on
@@ -54,10 +97,6 @@ public class World {
     }
 
     ArrayList<Tile> subList = map.get(yGridPos); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
-
-    // if(subList.size() == 0){
-    //   return null;
-    // }
 
     int xGridPos = floor(x / tileSize);
 
@@ -72,8 +111,13 @@ public class World {
 
     int mapDepth = map.size();
 
+    int playerDepth = Globals.OVERWORLDHEIGHT;
 
-    for (int y = mapDepth; y <= player.getDepth() + generateOffset; y++) {
+    if(player != null){
+      playerDepth = player.getDepth();
+    }
+
+    for (int y = mapDepth; y <= playerDepth + generateOffset; y++) {
 
       ArrayList<Tile> subArray = new ArrayList<Tile>(); //make a list for the tiles
 
@@ -82,7 +126,7 @@ public class World {
       }
 
       if (currentBiome.structureChance > random(1)) {
-        currentBiome.placeStructure(y);
+        currentBiome.placeStructure(this, y);
       }
 
       for (int x = 0; x <= tilesHorizontal; x++) {
@@ -92,14 +136,14 @@ public class World {
         subArray.add(tile);
         load(tile, true);
 
-        tile.setupCave(); //needs to be after load(tile) otherwise shit will get loaded anyway
+        tile.setupCave(this); //needs to be after load(tile) otherwise shit will get loaded anyway
       }
 
       map.add(subArray);// add the empty tile-list to the bigger list
     }
 
     for (StructureSpawner spawner : queuedStructures) {
-      spawner.trySpawn();
+      spawner.trySpawn(this);
     }
   }
 
@@ -228,7 +272,7 @@ public class World {
   }
 
   void safeSpawnStructure(String structureName, PVector gridSpawnPos) {
-    load(new StructureSpawner(structureName, gridSpawnPos), gridSpawnPos.mult(tileSize));
+    load(new StructureSpawner(this, structureName, gridSpawnPos), gridSpawnPos.mult(tileSize));
   }
 
   void spawnStructure(String structureName, PVector gridSpawnPos) {
@@ -273,7 +317,7 @@ public class World {
 
     String stripedObjectName = stripName(newObjectName);
     Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos);
-    tileToReplace.replace(newTile);
+    tileToReplace.replace(this, newTile);
   }
 
   private void spawnObject(PVector spawnAtGridPos, String newObjectName) {
@@ -317,6 +361,9 @@ public class World {
     case "Wood" :
       return new WoodTile(int(spawnPos.x), int(spawnPos.y));
 
+    case "WoodBirch" :
+      return new WoodBirchTile(int(spawnPos.x), int(spawnPos.y));
+
     case "MagmaTile" :
       return new MagmaRock(int(spawnPos.x), int(spawnPos.y));
 
@@ -353,7 +400,7 @@ public class World {
     switch(stripedObjectName) {
 
     case "Torch" :
-      load(new Torch(spawnWorldPos));
+      load(new Torch(), spawnWorldPos);
       break;
 
     case "BombEnemy" :
@@ -361,7 +408,7 @@ public class World {
       break;
 
     case "ChestStart" :
-      load(new Chest(), spawnWorldPos);
+      load(new Chest(0), spawnWorldPos);
       break;
 
     case "Button" :
@@ -373,40 +420,45 @@ public class World {
       break;
 
     case "Art0" :
-      load(new Banner(), spawnWorldPos);
+      load(new Art0(), spawnWorldPos);
       break;
 
     case "Art1" :
-      load(new Banner(), spawnWorldPos);
+      load(new Art1(), spawnWorldPos);
       break;
 
     case "ChairL" :
-      load(new Banner(), spawnWorldPos);
+      load(new ChairL(), spawnWorldPos);
       break;
 
     case "ChairR" :
-      load(new Banner(), spawnWorldPos);
+      load(new ChairR(), spawnWorldPos);
       break;
 
     case "Skull" :
-      load(new Banner(), spawnWorldPos);
+      load(new Skull(), spawnWorldPos);
       break;
 
     case "SkullTorch" :
-      load(new Banner(), spawnWorldPos);
+      load(new SkullTorch(), spawnWorldPos);
       break;
 
     case "Cobweb" :
-      load(new Banner(), spawnWorldPos);
+      load(new Cobweb(), spawnWorldPos);
       break;
 
     case "Shelf0" :
-      load(new Banner(), spawnWorldPos);
+      load(new Shelf0(), spawnWorldPos);
       break;
 
     case "Shelf1" :
-      load(new Banner(), spawnWorldPos);
+      load(new Shelf1(), spawnWorldPos);
       break;
+
+    case "Table" :
+      load(new Table(), spawnWorldPos);
+      break;
+
 
     default :
       println("ERROR: structure object '" + stripedObjectName + "' not set up or not found!");

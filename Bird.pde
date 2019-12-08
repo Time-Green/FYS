@@ -1,4 +1,4 @@
-public class Bird extends Mob{
+public class Bird extends Mob {
 
   AnimatedImage animatedImage;
   boolean flyingLeft = true;
@@ -6,10 +6,10 @@ public class Bird extends Mob{
   final float MINSPEED = 2.0f;
   final float MAXSPEED = 5.0f;
 
-  public Bird(){
+  public Bird(World world) {
 
     //some birds will fly right
-    if(random(0, 2) < 1){
+    if (random(0, 2) < 1) {
       flyingLeft = false;
     }
 
@@ -17,7 +17,7 @@ public class Bird extends Mob{
     position.set(random(0, world.getWidth()), random(100, 350));
     velocity.set(random(MINSPEED, MAXSPEED), 0);
 
-    if(flyingLeft){
+    if (flyingLeft) {
       flipSpriteHorizontal = true;  
       velocity.mult(-1);
     }
@@ -32,36 +32,36 @@ public class Bird extends Mob{
     //allow bird to fly of the screen
     worldBorderCheck = false;
 
-    PImage[] frames = new PImage[3];
+    PImage[] frames = new PImage[4];
 
-    for(int i = 0; i < 3; i++){
-      frames[i] = ResourceManager.getImage("BirdFlying" + i); 
+    for (int i = 0; i < frames.length; i++) {
+      frames[i] = ResourceManager.getImage("BirdFlying" + i);
     }
 
     //animation speed based on x velocity
     animatedImage = new AnimatedImage(frames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
   }
 
-  void draw(){
+  void draw() {
     animatedImage.draw();
   }
 
-  void update(){
+  void update() {
     super.update();
 
-    if(flyingLeft && position.x < -32){
-        position.x = world.getWidth() + 100;
-    }else if(!flyingLeft && position.x > world.getWidth() + 100){
-        position.x = -32;
+    if (flyingLeft && position.x < -32) {
+      position.x = world.getWidth() + 100;
+    } else if (!flyingLeft && position.x > world.getWidth() + 100) {
+      position.x = -32;
     }
 
-    if(isGrounded){
-      delete(this); 
+    if (isGrounded) {
+      delete(this);
     }
   }
 
-  void takeDamage(float damageTaken){
+  void takeDamage(float damageTaken) {
     super.takeDamage(damageTaken);
-    gravityForce = 0.5f; 
+    gravityForce = 0.5f;
   }
 }

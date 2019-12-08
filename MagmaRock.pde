@@ -1,17 +1,17 @@
-class MagmaRock extends Tile{
-    float damage = 20;
-    
-    MagmaRock(int x, int y){    
-        super(x, y);
+class MagmaRock extends Tile {
+  float damage = 20;
 
-        setupLightSource(this, 300, 1f);
-        image = ResourceManager.getImage("MagmaTile");
+  MagmaRock(int x, int y) {    
+    super(x, y);
 
-        slipperiness = 0.1;
-        setMaxHp(50);
-    }
+    setupLightSource(this, 300, 1f);
+    image = ResourceManager.getImage("LavaBlock");
 
-    void collidedWith(BaseObject object){
-        object.takeDamage(damage);
-    }
+    slipperiness = 0.1;
+    setMaxHp(50);
+  }
+
+  void collidedWith(BaseObject object) {
+    object.takeDamage(damage);
+  }
 }

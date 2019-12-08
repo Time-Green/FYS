@@ -1,6 +1,6 @@
-class AirTile extends Tile{
+class AirTile extends Tile {
 
-  AirTile(int x, int y){
+  AirTile(int x, int y) {
     super(x, y);
 
     density = false;

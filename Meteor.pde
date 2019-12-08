@@ -1,13 +1,13 @@
-class Meteor extends Movable{
+class Meteor extends Movable {
 
-  private final float MAXHORIZONTALVELOCITY = 20.0;
+  private final float MAXHORIZONTALVELOCITY = 12.0;
   private final float MINSIZE = 1.0;
   private final float MAXSIZE = 4.0;
   private final float BRIGHTNESS = 300;
 
   private float sizeModifier;
 
-  Meteor(){
+  Meteor() {
     worldBorderCheck = false;
 
     sizeModifier = random(MINSIZE, MAXSIZE);
@@ -20,20 +20,19 @@ class Meteor extends Movable{
     setupLightSource(this, BRIGHTNESS, 1f);
   }
 
-  void update(){
+  void update() {
 
-    if(Globals.gamePaused){  
+    if (Globals.gamePaused) {  
       return;
     }
-    
+
     super.update(); 
 
-    if(isGrounded){
-    load(new Explosion(position, 100 * sizeModifier, 50, true)); 
-      delete(this); 
-    }else if(position.x < -size.x / 2 || position.x > world.getWidth() + size.x / 2){
+    if (isGrounded) {
+      load(new Explosion(position, 100 * sizeModifier, 50, true)); 
+      delete(this);
+    } else if (position.x < -size.x / 2 || position.x > world.getWidth() + size.x / 2) {
       delete(this);
     }
   }
-
 }

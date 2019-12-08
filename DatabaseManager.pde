@@ -2,7 +2,7 @@ import http.requests.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DatabaseManager{
+public class DatabaseManager {
 
   // USAGE
   // ArrayList<DbUser> allUsers = databaseManager.getAllUsers();
@@ -13,8 +13,9 @@ public class DatabaseManager{
   private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
 
   private int currentSessionId = -1;
+  private int currentRunId = -1;
 
-  public ArrayList<DbUser> getAllUsers(){
+  public ArrayList<DbUser> getAllUsers() {
 
     JSONArray result = doDatabaseRequest("SELECT * FROM User");
     ArrayList<DbUser> returnList = new ArrayList<DbUser>();
@@ -26,25 +27,25 @@ public class DatabaseManager{
     return returnList;
   }
 
-  public boolean userExists(String userName){
+  public boolean userExists(String userName) {
 
     final String COUNT_COLUMN_NAME = "Count";
 
     JSONArray result = doDatabaseRequest("SELECT COUNT(*) AS " + COUNT_COLUMN_NAME +" FROM User WHERE username = '" + userName + "'");
 
-    if(result.size() == 1){
+    if (result.size() == 1) {
       return result.getJSONObject(0).getInt(COUNT_COLUMN_NAME) == 1;
-    }else{
+    } else {
       return false;
     }
   }
 
   //used for logging in
-  public DbUser getOrCreateUser(String userName){
-    
+  public DbUser getOrCreateUser(String userName) {
+
     DbUser user = getUser(userName);
 
-    if(user == null){
+    if (user == null) {
       user = createUser(userName, false);
     }
 
@@ -53,10 +54,10 @@ public class DatabaseManager{
     return user;
   }
 
-  public DbUser createUser(String userName, boolean checkForUserExists){
+  public DbUser createUser(String userName, boolean checkForUserExists) {
 
-    if(checkForUserExists){
-      if(userExists(userName)){
+    if (checkForUserExists) {
+      if (userExists(userName)) {
         println("ERROR: user '" + userName + "' already exists in the database!");
         return null;
       }
@@ -66,24 +67,24 @@ public class DatabaseManager{
 
     JSONArray result = doDatabaseRequest("INSERT INTO User (`username`) VALUES ('" + userName + "')");
 
-    if(result.size() == 1){
+    if (result.size() == 1) {
 
       int newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
 
       return getUser(newId);
-    }else{
+    } else {
       return null;
     }
   }
 
-  public boolean registerSessionStart(DbUser loggedInUser){
+  public boolean registerSessionStart(DbUser loggedInUser) {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
 
     JSONArray result = doDatabaseRequest("INSERT INTO Playsession (`userid`, `startdatetime`) VALUES ('" + loggedInUser.id + "', '" + formatter.format(date) + "')");
 
-    if(result.size() == 1){
+    if (result.size() == 1) {
 
       currentSessionId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
       //println("currentSessionId: " + currentSessionId);
@@ -92,9 +93,9 @@ public class DatabaseManager{
     return currentSessionId >= 0;
   }
 
-  public boolean registerSessionEnd(){
+  public boolean registerSessionEnd() {
 
-    if(currentSessionId < 0){
+    if (currentSessionId < 0) {
       return false;
     }
 
@@ -105,37 +106,78 @@ public class DatabaseManager{
 
     int success = -1;
 
-    if(result.size() == 1){
+    if (result.size() == 1) {
 
-     success = result.getJSONObject(0).getInt("Success");
+      success = result.getJSONObject(0).getInt("Success");
     }
 
     return success == 1;
   }
 
-  public DbUser getUser(int id){
+  public boolean registerRunStart() {
+
+    if (currentSessionId < 0) {
+      return false;
+    }
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date date = new Date();
+
+    JSONArray result = doDatabaseRequest("INSERT INTO Run (`playsessionid`, `startdatetime`) VALUES ('" + currentSessionId + "', '" + formatter.format(date) + "')");
+
+    if (result.size() == 1) {
+
+      currentRunId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+    }
+
+    return currentRunId >= 0;
+  }
+
+  public boolean registerRunEnd() {
+
+    if (currentSessionId < 0 || currentRunId < 0) {
+      return false;
+    }
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date date = new Date();
+
+
+    JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - Globals.OVERWORLDHEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
+
+    int success = -1;
+
+    if (result.size() == 1) {
+
+      success = result.getJSONObject(0).getInt("Success");
+    }
+
+    return success == 1;
+  }
+
+  public DbUser getUser(int id) {
 
     JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE id = " + id);
 
-    if(result.size() == 1){
+    if (result.size() == 1) {
       return buildUser(result.getJSONObject(0));
-    }else{
+    } else {
       return null;
     }
   }
 
-  public DbUser getUser(String userName){
+  public DbUser getUser(String userName) {
 
     JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE username = '" + userName + "'");
 
-    if(result.size() == 1){
+    if (result.size() == 1) {
       return buildUser(result.getJSONObject(0));
-    }else{
+    } else {
       return null;
     }
   }
 
-  private DbUser buildUser(JSONObject jsonUser){
+  private DbUser buildUser(JSONObject jsonUser) {
 
     DbUser user = new DbUser();
 
@@ -145,7 +187,7 @@ public class DatabaseManager{
     return user;
   }
 
-  public JSONArray doDatabaseRequest(String request){
+  public JSONArray doDatabaseRequest(String request) {
 
     String url = BASE_URL + request;
 
@@ -160,33 +202,33 @@ public class DatabaseManager{
 
     String result = get.getContent();
 
-    //println("request: " + request);
-    //println("result: " + result);
+    // println("request: " + request);
+    // println("result: " + result);
 
     return parseJSONArray(result);
   }
 
-  void beginLogin(){
+  void beginLogin() {
     loginStartTime = millis();
     thread("login");
   }
 
   //used to log in using its own thread
-  void login(){
-    
-    try{
+  void login() {
+
+    try {
       String[] lines = loadStrings("DbUser.txt");
 
-      if(lines.length != 1){
+      if (lines.length != 1) {
         println("ERROR: DbUser.txt file not corretly set up, using temporary user");
         setTempUser();
-      }else{
+      } else {
         String currentUserName = lines[0];
         println("Logging in as '" + currentUserName + "'");
         dbUser = databaseManager.getOrCreateUser(currentUserName);
       }
-
-    }catch(Exception e){
+    }
+    catch(Exception e) {
       setTempUser();
 
       println("ERROR: Unable to connect to database or DbUser.txt file not found, using temporary user");
@@ -195,9 +237,9 @@ public class DatabaseManager{
     println("Successfully logged in as '" + dbUser.userName + "', took " + (millis() - loginStartTime) + " ms");
   }
 
-  void setTempUser(){
+  void setTempUser() {
     dbUser = new DbUser();
+    dbUser.id = -1;
     dbUser.userName = "TempUser";
   }
-
 }
