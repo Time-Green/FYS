@@ -7,7 +7,11 @@ class icicle extends Obstacle {
 
 
   //Icicle() {
-   // size.set(10, 50);
+    //switch
+    //case 0;
+   // size.set(50, 70);
+   //case 1;
+   //size.set(50,100);
    // image = ResourceManager.getImage("Icicle");
    // anchored = true;
   //}
