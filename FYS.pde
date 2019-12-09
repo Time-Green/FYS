@@ -409,10 +409,9 @@ void keyPressed() {
   InputHelper.onKeyPressed(keyCode);
   InputHelper.onKeyPressed(key);
 
-  // if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
-  //   load(new EnemyShocker(new PVector(1000, 500)));
-  //   load(new EnemyGhost(new PVector(1100, 500)));
-  // }
+  if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
+    load(new EnemyDigger(new PVector(1000, 500)));
+  }
 }
 
 void keyReleased() {
