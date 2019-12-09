@@ -11,12 +11,14 @@ class Player extends Mob {
   private final int SHOCKFRAMES = 2;
   private AnimatedImage animatedImageMine;
   private final int MINEFRAMES = 3;
+  private AnimatedImage animatedImageFall;
+  private final int FALLFRAMES = 4;
 
   private float VIEW_AMOUNT = 500;
   private float viewTarget;
   private float easing = 0.025f;
 
-  private int heal = 10;
+  private float heal = 0.2f;
 
   //Status effects
   public float stunTimer;
@@ -35,6 +37,7 @@ class Player extends Mob {
     PImage[] airFrames = new PImage[AIRFRAMES];
     PImage[] mineFrames = new PImage[MINEFRAMES];
     PImage[] shockFrames = new PImage[SHOCKFRAMES];
+    PImage[] fallFrames = new PImage[FALLFRAMES];
 
     for (int i = 0; i < WALKFRAMES; i++)
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
@@ -42,7 +45,7 @@ class Player extends Mob {
 
     for (int i = 0; i < IDLEFRAMES; i++)
       idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
-    animatedImageIdle = new AnimatedImage(idleFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    animatedImageIdle = new AnimatedImage(idleFrames, 60 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     for (int i = 0; i < AIRFRAMES; i++)
       airFrames[i] = ResourceManager.getImage("PlayerAir" + i); 
@@ -55,6 +58,10 @@ class Player extends Mob {
     for (int i = 0; i < MINEFRAMES; i++) 
       mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
     animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+    for (int i = 0; i < FALLFRAMES; i++) 
+      fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
+    animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, VIEW_AMOUNT, 1f);
   }
@@ -77,6 +84,8 @@ class Player extends Mob {
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
+
+    hurt();
   }
 
   void checkHealthLow() {
@@ -84,22 +93,34 @@ class Player extends Mob {
 
       ui.drawWarningOverlay = true;
 
-      if (frameCount % 60 == 0) {
+       if (frameCount % 60 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
+
+      } else if (currentHealth > maxHealth / 5f) {
+
+      ui.drawWarningOverlay = false;
     }
   }
 
-// every 2 seconds the player gains 10hp back but still work in progress
+
   void regenaration() {
-    if(currentHealth <= maxHealth) {
-      for(int i = 0; i < 120; i++) {
-      if(i == 120) {
-        currentHealth += heal;
+     if(isHurt == false) {
+      if(currentHealth < maxHealth) {
+        if(frameCount % 30 == 0) {
+          currentHealth += heal;
+          }
+        }
+      }  
+      else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
+        if(currentHealth < maxHealth) {
+          if(frameCount % 120 == 0)  {
+            if(frameCount % 30 == 0) {
+              currentHealth += heal;
+            }
+          }
+        }
       }
-      }
-      
-    }
   }
 
   void setVisibilityBasedOnCurrentBiome() {
@@ -138,7 +159,10 @@ class Player extends Mob {
       } else if (InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
         animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageMine.draw();
-      } else {//Idle
+      } else if(isGrounded == false) {
+        animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageFall.draw();
+      }else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
       }
@@ -153,7 +177,6 @@ class Player extends Mob {
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
-      runData.playerJumps++;
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
@@ -215,7 +238,7 @@ class Player extends Mob {
     }
 
     //needs to happen after camera shake because else 'isHurt' will be always true
-    super.takeDamage(damageTaken);
+    super.takeDamage(damageTaken);  
   }
 
   private void statusEffects() {
@@ -223,6 +246,12 @@ class Player extends Mob {
     if (stunTimer > 0f) {
       stunTimer--;
     }
+  }
+
+  private void hurt() {
+      if (isHurt == true) {
+        AudioManager.playSoundEffect("HurtSound");
+      }
   }
 
   public void die() {

@@ -60,6 +60,7 @@ void login() {
 void afterResouceLoadingSetup() {
   AudioManager.setMaxAudioVolume("Siren", 0.6f);
   AudioManager.setMaxAudioVolume("BackgroundMusic", 0.75f);
+  AudioManager.setMaxAudioVolume("ForestAmbienceMusic", 0.7f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
 
   for (int i = 1; i < 5; i++) {
@@ -96,64 +97,18 @@ void setupGame() {
   player = new Player();
   load(player);
 
-  spawnBirds();
-
   wallOfDeath = new WallOfDeath(tilesHorizontal * tileSize + tileSize);
   load(wallOfDeath);
 
   CameraShaker.reset();
   camera = new Camera(player);
-
-  world.updateWorldDepth();
-
-  spawnOverworldStructures();
-  spawnStarterChest();
-}
-
-void spawnOverworldStructures() {
-
-  world.spawnStructure("Tree", new PVector(1, 6)); 
-
-  int lastSpawnX = 0;
-  final int MIN_DISTANCE = 4;
-
-  for (int i = 0; i < tilesHorizontal - 13; i++) {
-
-    if (i > lastSpawnX + MIN_DISTANCE) {
-
-      if (random(1) < 0.35f) {
-        lastSpawnX = i;
-        world.spawnStructure("Tree", new PVector(i, 6));
-      }
-    }
-  }
-
-  world.spawnStructure("ButtonAltar", new PVector(40, 8));
-}
-
-void spawnBirds() {
-  for (int i = 0; i < birdCount; i++) {
-    Bird bird = new Bird();
-
-    load(bird);
-  }
-}
-
-void spawnStarterChest() {
-  load(new Chest(69), new PVector(30 * tileSize, 10 * tileSize)); //69 is the forcedKey for an always pickaxe spawn
 }
 
 void draw() {
 
-  if (!ResourceManager.isAllLoaded()) {
-    handleMultiThreadedLoading();
-
-    return;
-  }
-
-  //wait until we are logged in
-  if (dbUser == null) {
-    handleLoggingInWaiting();
+  //wait until all resources are loaded and we are logged in
+  if (!ResourceManager.isAllLoaded() || dbUser == null) {
+    handleLoadingScreen();
 
     return;
   }
@@ -171,14 +126,14 @@ void draw() {
   camera.update();
 
   world.update();
-  world.draw(camera);
+  world.draw();
 
   updateObjects();
   drawObjects();
 
   world.updateDepth();
 
-  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (world.safeZone + 5) * tileSize) {
+  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLDHEIGHT + 5) * tileSize) {
     ui.drawArrows();
   }
 
@@ -284,6 +239,7 @@ void enterOverWorld(boolean reloadGame) {
     setupGame();
   }
 
+  AudioManager.loopMusic("ForestAmbienceMusic"); 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
   AudioManager.loopMusic("ForestAmbianceMusic");
@@ -291,6 +247,7 @@ void enterOverWorld(boolean reloadGame) {
 
 void startGameSoon() {
   startGame = true;
+  AudioManager.stopMusic("ForestAmbienceMusic"); 
 }
 
 void startAsteroidRain() {
@@ -307,7 +264,7 @@ void startAsteroidRain() {
   thread("startRegisterRunThread");
 }
 
-void handleMultiThreadedLoading(){
+void handleLoadingScreen(){
   background(0);
 
   float loadingBarWidth = ResourceManager.getLoadingAllProgress();
@@ -320,18 +277,25 @@ void handleMultiThreadedLoading(){
   fill(255);
   textSize(30);
   textAlign(CENTER);
-  text("Loaded: " + ResourceManager.getLastLoadedResource(), width / 2, height - 10);
+  text("Loading", width / 2, height - 10);
+
+  //login
+  if(dbUser == null){
+    text("Logging in", width / 2, height - 55);
+  }else{
+    text("Logged in as " + dbUser.userName, width / 2, height - 55);
+  }
 
   ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
 
   fill(255);
-  textSize(20);
+  textSize(25);
   textAlign(LEFT);
   text("Currently loading resources:", 10, 20);
 
   textSize(15);
   for (int i = 0; i < currentlyLoadingResources.size(); i++) {
-    text(currentlyLoadingResources.get(i), 10, 35 + i * 15);
+    text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
   }
 }
 
@@ -347,15 +311,6 @@ void startRegisterRunThread(){
 
 void startRegisterEndThread(){
   databaseManager.registerRunEnd();
-}
-
-void handleLoggingInWaiting() {
-  background(0);
-
-  fill(255);
-  textSize(30);
-  textAlign(CENTER);
-  text("Logging in...", width / 2, height - 10);
 }
 
 BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch

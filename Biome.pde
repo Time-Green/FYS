@@ -22,10 +22,10 @@ class Biome {
     float orechance = random(100);
 
     //spawn air at surface
-    if (depth <= world.safeZone)
+    if (depth <= Globals.OVERWORLDHEIGHT)
     {
       return new AirTile(x, depth);
-    } else if (depth <= world.safeZone + 1) // 1 layer of grass (layer 11)
+    } else if (depth <= Globals.OVERWORLDHEIGHT + 1) // 1 layer of grass (layer 11)
     {
       return new GrassTile(x, depth);
     } else if (depth < 15) //spawn 14 layers of dirt
@@ -55,10 +55,10 @@ class Biome {
 
       if (orechance > 80 && orechance <= 90)
       {
-        return new GoldTile(x, depth);
+        return new GoldTile(x, depth, 0);
       } else if (orechance > 90 && orechance <= 97)
       {
-        return new DiamondTile(x, depth);
+        return new DiamondTile(x, depth, 0);
       } else if (orechance > 97 && orechance <= 100)
       {
         return new ObsedianTile(x, depth);
@@ -73,12 +73,12 @@ class Biome {
     return length;
   }
 
-  void placeStructure(int depth) {
+  void placeStructure(World world, int depth) {
     world.safeSpawnStructure(getStructureName(), new PVector(int(random(tilesHorizontal * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
   }
 
   String getStructureName() { //a function so we can give some different probabilities
-    return "Tree";
+    return "SuperBasicDungeon";
   }
 
   void spawnEnemy(PVector position) {

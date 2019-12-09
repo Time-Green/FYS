@@ -4,10 +4,9 @@ public class Torch extends Movable {
   private float minBrightness = 150;
   private float maxBrightness = 250;
 
-  public Torch(PVector spawnPos) {
+  public Torch() {
     super();
 
-    position.set(spawnPos);
     image = ResourceManager.getImage("Torch");
 
     collisionEnabled = false;

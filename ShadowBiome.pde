@@ -13,9 +13,9 @@ class ShadowBiome extends Biome {
     if (depth - startedAt < length) {
 
       if (orechance <= 4) {
-        return new ShadowGoldTile(x, depth);
+        return new GoldTile(x, depth, 1);
       } else if (orechance <= 8) {
-        return new ShadowDiamondTile(x, depth);
+        return new DiamondTile(x, depth, 1);
       } else if (orechance <=16) {
         return new ShadowSandTile(x, depth);
       } else if (orechance <=18) {

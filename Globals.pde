@@ -5,9 +5,9 @@ static class Globals {
   static final int LEFTKEY = LEFT;
   static final int RIGHTKEY = RIGHT;
   static final int DIGKEY = DOWN;
-  static final int JUMPKEY1 = 32; //Spacebar, why is SPACEBAR not a thing in prosessing?
-  static final int JUMPKEY2 = UP;
-
+  static final int JUMPKEY1 = UP;
+  static final int JUMPKEY2 = 32; //Spacebar, why is SPACEBAR not a thing in prosessing?
+  
   //inventory
   static final int INVENTORYKEY = ALT;
   static final int ITEMKEY = CONTROL;
@@ -15,6 +15,18 @@ static class Globals {
   //Menus
   static final int STARTKEY = ENTER;
   static final int BACKKEY = BACKSPACE;
+
+  //Ore values (later to be set in database?)
+  static final int COALVALUE = 50;
+  static final int IRONVALUE = 100;
+  static final int GREENICEVALUE = 300;
+  static final int REDICEVALUE = 300;
+  static final int GOLDVALUE = 500;
+  static final int DIAMONDVALUE = 1000;
+  static final int EMERALDVALUE = 5000;
+
+  //world
+  static final int OVERWORLDHEIGHT = 10;
 
   //Gamestate
   static boolean gamePaused = true;

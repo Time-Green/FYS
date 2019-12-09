@@ -11,7 +11,7 @@ class Tile extends BaseObject {
   PImage destroyedImage;
 
   String breakSound;
-  float dammageDiscolor = 50;
+  float damageDiscolor = 50;
 
   Tile(int x, int y) {
     loadInBack = true;
@@ -30,7 +30,7 @@ class Tile extends BaseObject {
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 
-    if (y > world.safeZone) {
+    if (y > Globals.OVERWORLDHEIGHT) {
       destroyedImage = ResourceManager.getImage("DestroyedBlock");
     } else {
       density = false; 
@@ -38,10 +38,10 @@ class Tile extends BaseObject {
     }
   }
 
-  private void setupCave() {
+  private void setupCave(World world) {
 
     //11 is grass layer + transition layer
-    if (gridPosition.y > world.safeZone + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
+    if (gridPosition.y > Globals.OVERWORLDHEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
       destroyed = true;
       density = false;
 
@@ -51,7 +51,7 @@ class Tile extends BaseObject {
 
       //1% change to spawn torch
       if (random(100) < 1) {
-        load(new Torch(position));
+        load(new Torch(), position);
       }
       if (random(1) < world.currentBiome.enemyChance)
         world.currentBiome.spawnEnemy(position);
@@ -85,7 +85,7 @@ class Tile extends BaseObject {
         return;
       }
 
-      tint(lightningAmount - dammageDiscolor * (maxHp - hp));
+      tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
       image(image, position.x, position.y, tileSize, tileSize);
       tint(255);
     } else {
@@ -153,7 +153,7 @@ class Tile extends BaseObject {
     hp = hpToSet;
   }
 
-  void replace(Tile replaceTile) {
+  void replace(World world, Tile replaceTile) {
     int index = world.map.get(int(gridPosition.y)).indexOf(this);
     world.map.get(int(gridPosition.y)).set(index, replaceTile);
 
