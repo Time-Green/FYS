@@ -251,7 +251,10 @@ class Player extends Mob {
   private void hurt() {
       if (isHurt == true) {
         AudioManager.playSoundEffect("HurtSound");
+      if(frameCount % 60 == 0) {
+      AudioManager.stopMusic("HurtSound");
       }
+    }
   }
 
   public void die() {
