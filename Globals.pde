@@ -27,6 +27,10 @@ static class Globals {
   static final int EMERALDVALUE = 5000;
   
 
+  //relic
+   static final int HEALTH_BOOST = 10;
+   static final int DAMAGE_BOOST = 5;
+
   //world
   static final int OVERWORLDHEIGHT = 10;
 

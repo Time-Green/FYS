@@ -133,15 +133,28 @@ public class DatabaseManager {
     return currentRunId >= 0;
   }
 
+  public ArrayList<PlayerRelicInventory> getAllPlayerRelicInventory() {
+
+    JSONArray result = doDatabaseRequest("SELECT * FROM Relicinventory WHERE userid = " + dbUser.id);
+    ArrayList<PlayerRelicInventory> returnList = new ArrayList<PlayerRelicInventory>();
+
+    for (int i = 0; i < result.size(); i++) {
+      returnList.add(buildPlayerRelicInventory(result.getJSONObject(i)));
+    }
+
+    return returnList;
+  }
+
   public boolean registerRunEnd() {
 
     if (currentSessionId < 0 || currentRunId < 0) {
       return false;
     }
 
-    updateRunData();
-    updatePlayerRelicInventory();
+    boolean updateRunDataSucces = updateRunData();
+    boolean updatePlayerRelicSucces = updatePlayerRelicInventory();
 
+    return updateRunDataSucces && updatePlayerRelicSucces;
   }
 
   private boolean updateRunData() {
@@ -182,19 +195,29 @@ public class DatabaseManager {
     }
   }
 
-  public void updatePlayerRelicInventory() {
-    ArrayList<RelicShard> collectedRelicShards = player.runData.collectedRelicShards;
+  public boolean updatePlayerRelicInventory() {
+    ArrayList<RelicShard> collectedRelicShards = runData.collectedRelicShards;
+    boolean success = true;
+
     for(RelicShard collectedRelicShard : collectedRelicShards) {
      // collectedRelicShard.type 
       PlayerRelicInventory playerRelicInventory = getPlayerRelicInventory(collectedRelicShard);
 
       if (playerRelicInventory == null) {
-        insertPlayerRelicInventory(collectedRelicShard);
+        boolean result = insertPlayerRelicInventory(collectedRelicShard);
+        if(result == false){
+          success = false;
+        }
       }
       else{
-        incrementPlayerRelicInventory(collectedRelicShard, playerRelicInventory);
+        boolean result = incrementPlayerRelicInventory(collectedRelicShard, playerRelicInventory);
+         if(result == false){
+          success = false;
+        }
       }
     }
+    
+    return success;
   }
 
   //check if player has the relicshard.
@@ -210,14 +233,37 @@ public class DatabaseManager {
   }
 
   //if not insert new row with this relic id
-  private void insertPlayerRelicInventory(RelicShard collectedRelicShard){
+  private boolean insertPlayerRelicInventory(RelicShard collectedRelicShard) {
 
+    JSONArray result = doDatabaseRequest("INSERT INTO Relicinventory (`userid`, `relicshardid`, `amount`) VALUES ('" + dbUser.id + "', '" + collectedRelicShard.type + "', '1')");
+
+    int newId = -1;
+
+    if (result.size() == 1) {
+
+     newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+    } 
+
+    return newId > -1;
   }
 
   //if it does exist increment the amount for relic update
-  private void incrementPlayerRelicInventory(RelicShard collectedRelicShard, PlayerRelicInventory playerRelicInventory){
+  private boolean incrementPlayerRelicInventory(RelicShard collectedRelicShard, PlayerRelicInventory playerRelicInventory) {
 
+    JSONArray result = doDatabaseRequest("UPDATE Relicinventory SET amount = '" + (playerRelicInventory.amount + 1) + "' ");
+
+    int success = -1;
+
+    if (result.size() == 1) {
+
+      success = result.getJSONObject(0).getInt("Success");
+    }
+
+    return success == 1;
+  
   }
+
+  
 
   private DbUser buildUser(JSONObject jsonUser) {
 

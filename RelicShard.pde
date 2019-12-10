@@ -1,11 +1,5 @@
 class RelicShard extends PickUp {
 
-  int healthBoost = 20;
-  int damageBoost = 20;
-  float relicChance = 100f;
-  int amountRequired = 3;
-  int currentShard0 = 0;
-  int currentShard1 = 0;
   int type;
 
   RelicShard() {
@@ -20,12 +14,29 @@ class RelicShard extends PickUp {
     }
   }
 
-  // void apply() {
-  //   if (currentShard0 == amountRequired) {
-  //     Player.maxHealth += healthBoost;
-  //   }
-  //     if (currentShard1 == amountRequired) {
-  //      Player.baseDamage += damageBoost;
-  //   }
-  // }
+  void pickedUp(Mob mob) {
+    super.pickedUp(mob);
+    PlayerRelicInventory playerRelicInventory = getRelicShardInventoryByType();
+    if(playerRelicInventory == null) {
+      PlayerRelicInventory newPlayerRelicInventory = new PlayerRelicInventory();
+      newPlayerRelicInventory.relicshardid = type;
+      newPlayerRelicInventory.amount = 1;
+
+      totalCollectedRelicShards.add(newPlayerRelicInventory);
+    }
+    else{
+      playerRelicInventory.amount++;
+    }
+
+    runData.collectedRelicShards.add(this);
+  }
+
+  PlayerRelicInventory getRelicShardInventoryByType(){
+    for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards) {
+      if(collectedRelicShardInventory.relicshardid == type) {
+        return collectedRelicShardInventory;
+      }
+    }
+    return null;
+  }
 }
