@@ -133,15 +133,33 @@ public class DatabaseManager {
     return currentRunId >= 0;
   }
 
+  public ArrayList<PlayerRelicInventory> getAllPlayerRelicInventory() {
+
+    JSONArray result = doDatabaseRequest("SELECT * FROM Relicinventory WHERE userid = " + dbUser.id);
+    ArrayList<PlayerRelicInventory> returnList = new ArrayList<PlayerRelicInventory>();
+
+    for (int i = 0; i < result.size(); i++) {
+      returnList.add(buildPlayerRelicInventory(result.getJSONObject(i)));
+    }
+
+    return returnList;
+  }
+
   public boolean registerRunEnd() {
 
     if (currentSessionId < 0 || currentRunId < 0) {
       return false;
     }
 
+    boolean updateRunDataSucces = updateRunData();
+    boolean updatePlayerRelicSucces = updatePlayerRelicInventory();
+
+    return updateRunDataSucces && updatePlayerRelicSucces;
+  }
+
+  private boolean updateRunData() {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
-
 
     JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - Globals.OVERWORLDHEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
 
@@ -177,6 +195,76 @@ public class DatabaseManager {
     }
   }
 
+  public boolean updatePlayerRelicInventory() {
+    ArrayList<RelicShard> collectedRelicShards = runData.collectedRelicShards;
+    boolean success = true;
+
+    for(RelicShard collectedRelicShard : collectedRelicShards) {
+     // collectedRelicShard.type 
+      PlayerRelicInventory playerRelicInventory = getPlayerRelicInventory(collectedRelicShard);
+
+      if (playerRelicInventory == null) {
+        boolean result = insertPlayerRelicInventory(collectedRelicShard);
+        if(result == false){
+          success = false;
+        }
+      }
+      else{
+        boolean result = incrementPlayerRelicInventory(collectedRelicShard, playerRelicInventory);
+         if(result == false){
+          success = false;
+        }
+      }
+    }
+    
+    return success;
+  }
+
+  //check if player has the relicshard.
+  private PlayerRelicInventory getPlayerRelicInventory(RelicShard collectedRelicShard) {
+
+    JSONArray result = doDatabaseRequest("SELECT * FROM Relicinventory WHERE userid = " + dbUser.id + " AND relicshardid =" + collectedRelicShard.type);
+
+    if (result.size() == 1) {
+      return buildPlayerRelicInventory(result.getJSONObject(0));
+    } else {
+      return null;
+    }
+  }
+
+  //if not insert new row with this relic id
+  private boolean insertPlayerRelicInventory(RelicShard collectedRelicShard) {
+
+    JSONArray result = doDatabaseRequest("INSERT INTO Relicinventory (`userid`, `relicshardid`, `amount`) VALUES ('" + dbUser.id + "', '" + collectedRelicShard.type + "', '1')");
+
+    int newId = -1;
+
+    if (result.size() == 1) {
+
+     newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+    } 
+
+    return newId > -1;
+  }
+
+  //if it does exist increment the amount for relic update
+  private boolean incrementPlayerRelicInventory(RelicShard collectedRelicShard, PlayerRelicInventory playerRelicInventory) {
+
+    JSONArray result = doDatabaseRequest("UPDATE Relicinventory SET amount = '" + (playerRelicInventory.amount + 1) + "' ");
+
+    int success = -1;
+
+    if (result.size() == 1) {
+
+      success = result.getJSONObject(0).getInt("Success");
+    }
+
+    return success == 1;
+  
+  }
+
+  
+
   private DbUser buildUser(JSONObject jsonUser) {
 
     DbUser user = new DbUser();
@@ -185,6 +273,18 @@ public class DatabaseManager {
     user.userName = jsonUser.getString("username");
 
     return user;
+  }
+
+   private PlayerRelicInventory buildPlayerRelicInventory(JSONObject json) {
+
+    PlayerRelicInventory playerRelicInventory = new PlayerRelicInventory();
+
+    playerRelicInventory.id = json.getInt("id");
+    playerRelicInventory.userid = json.getInt("userid");
+    playerRelicInventory.relicshardid = json.getInt("relicshardid");
+    playerRelicInventory.amount = json.getInt("amount");
+
+    return playerRelicInventory;
   }
 
   public JSONArray doDatabaseRequest(String request) {

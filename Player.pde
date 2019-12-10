@@ -64,6 +64,9 @@ class Player extends Mob {
     animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, VIEW_AMOUNT, 1f);
+
+    applyRelicBoost();
+
   }
 
   void update() {
@@ -121,6 +124,22 @@ class Player extends Mob {
           }
         }
       }
+  }
+
+  void applyRelicBoost(){
+    for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards) {
+
+      if(collectedRelicShardInventory.relicshardid == 0) {
+        baseDamage += Globals.DAMAGE_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 1) {
+         maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+    }
+  }
+
+  float getRelicStrength(float relicAmount){
+    return floor(relicAmount/3);
   }
 
   void setVisibilityBasedOnCurrentBiome() {

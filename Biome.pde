@@ -19,6 +19,12 @@ class Biome {
 
   Tile getTileToGenerate(int x, int depth) {
 
+    // Never spawn resources directly underneath the player, to discourage the player from just digging straight down
+    if(player != null && abs(x * tileSize - player.position.x) < tileSize * 3){
+
+      return new StoneTile(x, depth); 
+    }
+
     float orechance = random(100);
 
     //spawn air at surface
@@ -68,6 +74,16 @@ class Biome {
     //if no special tile was selected, spawn stone
     return new StoneTile(x, depth);
   }
+
+  // void checkPlayerAboveTile(){
+  //   // Never spwan resources directly underneath the player, to discourage the player from just diggin straight down 
+  //   if(player != null && abs(x * tileSize - player.position.x) < tileSize * 3){
+
+    
+
+  //   return new StoneTile(x, depth); 
+  //   }
+  // }
 
   int getLength() {
     return length;

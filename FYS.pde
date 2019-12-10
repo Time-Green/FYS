@@ -25,6 +25,9 @@ Camera camera;
 UIController ui;
 Enemy[] enemies;
 
+//player collected relicShards
+ArrayList<PlayerRelicInventory> totalCollectedRelicShards = new ArrayList<PlayerRelicInventory>();
+
 int tilesHorizontal = 50;
 int tilesVertical = 50;
 int tileSize = 50;
@@ -74,6 +77,8 @@ void afterResouceLoadingSetup() {
   for (int i = 1; i < 4; i++) {
     AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
+
+  totalCollectedRelicShards = databaseManager.getAllPlayerRelicInventory();
 
   //setup game and show title screen
   setupGame();
