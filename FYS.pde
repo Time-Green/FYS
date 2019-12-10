@@ -38,6 +38,8 @@ boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
 
 void setup() {
+  this.surface.setTitle("Rocky Rain");
+
   dh = new DisposeHandler(this);
 
   size(1280, 720, P2D);
@@ -65,6 +67,7 @@ void afterResouceLoadingSetup() {
   AudioManager.setMaxAudioVolume("BackgroundMusic", 0.75f);
   AudioManager.setMaxAudioVolume("ForestAmbianceMusic", 0.7f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
+  AudioManager.setMaxAudioVolume("HurtSound", 0.75f);
 
   for (int i = 1; i < 5; i++) {
     AudioManager.setMaxAudioVolume("Explosion" + i, 0.2f);
