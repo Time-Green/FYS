@@ -63,7 +63,7 @@ void login() {
 void afterResouceLoadingSetup() {
   AudioManager.setMaxAudioVolume("Siren", 0.6f);
   AudioManager.setMaxAudioVolume("BackgroundMusic", 0.75f);
-  AudioManager.setMaxAudioVolume("ForestAmbienceMusic", 0.7f);
+  AudioManager.setMaxAudioVolume("ForestAmbianceMusic", 0.7f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
 
   for (int i = 1; i < 5; i++) {
@@ -244,15 +244,13 @@ void enterOverWorld(boolean reloadGame) {
     setupGame();
   }
 
-  AudioManager.loopMusic("ForestAmbienceMusic"); 
+  AudioManager.loopMusic("ForestAmbianceMusic"); 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
-  AudioManager.loopMusic("ForestAmbianceMusic");
 }
 
 void startGameSoon() {
   startGame = true;
-  AudioManager.stopMusic("ForestAmbienceMusic"); 
 }
 
 void startAsteroidRain() {
