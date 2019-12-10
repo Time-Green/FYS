@@ -43,8 +43,9 @@ void setup() {
   size(1280, 720, P2D);
   //fullScreen(P2D);
 
+  databaseManager.getAchievement(); 
   databaseManager.beginLogin();
-
+  
   AudioManager.setup(this);
 
   ResourceManager.setup(this);
