@@ -1,17 +1,18 @@
 class EnemyDigger extends Enemy {
 
   private float chaseDistance;
-  private boolean chasePlayer;
-  private final float CHASESPEED = 4f;
-  private final float NORMALSPEED = 2f;
+  private final float IDLESPEED = 0f;
+  private float chaseSpeed = 3f;
 
   EnemyDigger(PVector spawnPos) {
     super(spawnPos);
 
+    chaseSpeed = (chaseSpeed + (getDepth()/100));
+
     image = ResourceManager.getImage("DiggerEnemy");
-    this.speed = NORMALSPEED;
+    this.speed = IDLESPEED;
     //1f = 1 tile
-    float tileDistance = 30f;
+    float tileDistance = 20f;
     chaseDistance = OBJECTSIZE * tileDistance;
   }
 
@@ -21,34 +22,32 @@ class EnemyDigger extends Enemy {
     float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
     if (distanceToPlayer <= chaseDistance) {
 
+      float playerX = player.position.x;
+      float playerY = player.position.y;
+
       //Chase the player
-      this.speed = CHASESPEED;
+      this.speed = chaseSpeed;
 
-      if (player.position.x < this.position.x) this.walkLeft = true;
-      else this.walkLeft = false;
+      if (this.position.x > playerX) this.walkLeft = true;//GO left
+      else this.walkLeft = false;//Go right
 
-      if (this.walkLeft) {//GO left
-        this.isMiningLeft = true;
-        this.isMiningRight = false;
-      } else {//Go right
-        this.isMiningLeft = false;
-        this.isMiningRight = true;
-      }
+      if (this.position.y < playerY) this.gravityForce = chaseSpeed/2;//Go down
+      else this.gravityForce = -chaseSpeed;//Go up
+      
+      //Allowus to mine
+      this.isMiningLeft = true;
+      this.isMiningRight = true;
+      this.isMiningDown = true;
+      this.isMiningUp = true;
 
-      if (player.position.y > this.position.y) {//Go down
-        this.isMiningDown = true;
-        this.isMiningUp = false;
-        this.gravityForce = CHASESPEED-1;
-      } else {//Go up
-        this.isMiningUp = true;
-        this.isMiningDown = false;
-        this.gravityForce = -CHASESPEED+1;
-      }
     } else {
       //Don't chase the player
-      this.speed = NORMALSPEED;
+      this.speed = IDLESPEED;
+      this.isMiningLeft = false;
+      this.isMiningRight = false;
+      this.isMiningUp = false;
       this.isMiningDown = false;
-      this.gravityForce = NORMALSPEED-1;
+      this.gravityForce = 0;
     }
   }
 }

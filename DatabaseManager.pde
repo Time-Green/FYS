@@ -139,9 +139,14 @@ public class DatabaseManager {
       return false;
     }
 
+    updateRunData();
+    updatePlayerRelicInventory();
+
+  }
+
+  private boolean updateRunData() {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
-
 
     JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - Globals.OVERWORLDHEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
 
@@ -177,6 +182,43 @@ public class DatabaseManager {
     }
   }
 
+  public void updatePlayerRelicInventory() {
+    ArrayList<RelicShard> collectedRelicShards = player.runData.collectedRelicShards;
+    for(RelicShard collectedRelicShard : collectedRelicShards) {
+     // collectedRelicShard.type 
+      PlayerRelicInventory playerRelicInventory = getPlayerRelicInventory(collectedRelicShard);
+
+      if (playerRelicInventory == null) {
+        insertPlayerRelicInventory(collectedRelicShard);
+      }
+      else{
+        incrementPlayerRelicInventory(collectedRelicShard, playerRelicInventory);
+      }
+    }
+  }
+
+  //check if player has the relicshard.
+  private PlayerRelicInventory getPlayerRelicInventory(RelicShard collectedRelicShard) {
+
+    JSONArray result = doDatabaseRequest("SELECT * FROM Relicinventory WHERE userid = " + dbUser.id + " AND relicshardid =" + collectedRelicShard.type);
+
+    if (result.size() == 1) {
+      return buildPlayerRelicInventory(result.getJSONObject(0));
+    } else {
+      return null;
+    }
+  }
+
+  //if not insert new row with this relic id
+  private void insertPlayerRelicInventory(RelicShard collectedRelicShard){
+
+  }
+
+  //if it does exist increment the amount for relic update
+  private void incrementPlayerRelicInventory(RelicShard collectedRelicShard, PlayerRelicInventory playerRelicInventory){
+
+  }
+
   private DbUser buildUser(JSONObject jsonUser) {
 
     DbUser user = new DbUser();
@@ -185,6 +227,18 @@ public class DatabaseManager {
     user.userName = jsonUser.getString("username");
 
     return user;
+  }
+
+   private PlayerRelicInventory buildPlayerRelicInventory(JSONObject json) {
+
+    PlayerRelicInventory playerRelicInventory = new PlayerRelicInventory();
+
+    playerRelicInventory.id = json.getInt("id");
+    playerRelicInventory.userid = json.getInt("userid");
+    playerRelicInventory.relicshardid = json.getInt("relicshardid");
+    playerRelicInventory.amount = json.getInt("amount");
+
+    return playerRelicInventory;
   }
 
   public JSONArray doDatabaseRequest(String request) {

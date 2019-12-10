@@ -84,6 +84,8 @@ class Player extends Mob {
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
+
+    hurt();
   }
 
   void checkHealthLow() {
@@ -236,13 +238,22 @@ class Player extends Mob {
     }
 
     //needs to happen after camera shake because else 'isHurt' will be always true
-    super.takeDamage(damageTaken);
+    super.takeDamage(damageTaken);  
   }
 
   private void statusEffects() {
     //Decrease stun timer
     if (stunTimer > 0f) {
       stunTimer--;
+    }
+  }
+
+  private void hurt() {
+      if (isHurt == true) {
+        AudioManager.playSoundEffect("HurtSound");
+      if(frameCount % 60 == 0) {
+      AudioManager.stopMusic("HurtSound");
+      }
     }
   }
 
