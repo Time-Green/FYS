@@ -27,7 +27,7 @@ static class Globals {
 
   //relic
    static final int HEALTH_BOOST = 10;
-   static final int DAMAGE_BOOST = 5;
+   static final float DAMAGE_BOOST = 0.01f;
 
   //world
   static final int OVERWORLDHEIGHT = 10;

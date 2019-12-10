@@ -250,7 +250,7 @@ public class DatabaseManager {
   //if it does exist increment the amount for relic update
   private boolean incrementPlayerRelicInventory(RelicShard collectedRelicShard, PlayerRelicInventory playerRelicInventory) {
 
-    JSONArray result = doDatabaseRequest("UPDATE Relicinventory SET amount = '" + (playerRelicInventory.amount + 1) + "' ");
+    JSONArray result = doDatabaseRequest("UPDATE Relicinventory SET amount = '" + (playerRelicInventory.amount + 1) + "' WHERE id = " + playerRelicInventory.id);
 
     int success = -1;
 
@@ -302,8 +302,8 @@ public class DatabaseManager {
 
     String result = get.getContent();
 
-    // println("request: " + request);
-    // println("result: " + result);
+     //println("request: " + request);
+     //println("result: " + result);
 
     return parseJSONArray(result);
   }
