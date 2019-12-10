@@ -213,6 +213,10 @@ public class Npc extends Mob{
 
   void draw() {
 
+    if (Globals.gamePaused) {
+      return;
+    }
+
     if (abs(velocity.x) > 0.1f && isGrounded()) {//Walking
       walkCycle.flipSpriteHorizontal = velocity.x >= 0;
       walkCycle.draw();
