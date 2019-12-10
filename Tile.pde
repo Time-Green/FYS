@@ -26,7 +26,7 @@ class Tile extends BaseObject {
     gridPosition.x = x;
     gridPosition.y = y;
 
-    setMaxHp(2);
+    setMaxHp(2 + y / 100);
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 

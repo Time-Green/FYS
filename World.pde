@@ -30,6 +30,7 @@ public class World {
 
     spawnOverworldStructures();
     spawnBirds();
+    spawnNpcs();
     spawnStarterChest();
   }
 
@@ -83,8 +84,24 @@ public class World {
     }
   }
 
+  // spawn devs
+  void spawnNpcs() {
+
+    String[] names = loadStrings("Texts/NpcNames.txt");
+    String[] genericTexts = loadStrings("Texts/GenericTexts.txt");
+    String[] panicTexts = loadStrings("Texts/PanicTexts.txt");
+
+    for (int i = 0; i < 6; i++) {
+      String[] personalTexts = loadStrings("Texts/" + names[i] + "Texts.txt");
+
+      Npc npc = new Npc(this, names[i], genericTexts, panicTexts, personalTexts);
+
+      load(npc, new PVector(random(50, 1650), 500));
+    }
+  }
+
   void spawnStarterChest() {
-    load(new Chest(69), new PVector(30 * tileSize, 10 * tileSize)); //69 is the forcedKey for an always pickaxe spawn
+    load(new Chest(69), new PVector(36 * tileSize, 10 * tileSize)); //69 is the forcedKey for an always pickaxe spawn
   }
 
   //return tile you're currently on
