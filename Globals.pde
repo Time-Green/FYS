@@ -22,8 +22,10 @@ static class Globals {
   static final int GREENICEVALUE = 300;
   static final int REDICEVALUE = 300;
   static final int GOLDVALUE = 500;
+  static final int LAPISDVALUE = 500;
   static final int DIAMONDVALUE = 1000;
   static final int EMERALDVALUE = 5000;
+  
 
   //world
   static final int OVERWORLDHEIGHT = 10;
