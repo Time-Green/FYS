@@ -174,7 +174,7 @@ class Player extends Mob {
       } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
         animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageAir.draw();
-      } else if (InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
+      } else if (InputHelper.isKeyDown(Globals.DIGKEY) && Globals.currentGameState == Globals.GameState.InGame) {//Digging
         animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageMine.draw();
       } else if(isGrounded == false) {

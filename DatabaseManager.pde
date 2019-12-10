@@ -40,6 +40,13 @@ public class DatabaseManager {
     }
   }
 
+  public void getAchievement() {
+
+    JSONArray result = doDatabaseRequest("SELECT * FROM Achievement WHERE id = 1");
+
+    
+  }
+
   //used for logging in
   public DbUser getOrCreateUser(String userName) {
 

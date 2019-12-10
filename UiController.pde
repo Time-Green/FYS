@@ -33,7 +33,7 @@ public class UIController {
   float currentOverlayFill = 0;
   boolean isIncreasing = true;
 
-  private final boolean DRAWSTATS = false;
+  private final boolean DRAWSTATS = true;
 
   //Inventory
   private float inventorySize = 50;
