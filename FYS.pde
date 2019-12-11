@@ -26,7 +26,7 @@ UIController ui;
 Enemy[] enemies;
 
 //player collected relicShards
-ArrayList<PlayerRelicInventory> totalCollectedRelicShards = new ArrayList<PlayerRelicInventory>();
+ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -45,7 +45,6 @@ void setup() {
   size(1280, 720, P2D);
   //fullScreen(P2D);
 
-  databaseManager.getAchievement(); 
   databaseManager.beginLogin();
   
   AudioManager.setup(this);
@@ -60,6 +59,7 @@ void setup() {
 
 void login() {
   databaseManager.login();
+  totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
 }
 
 // gets called when all resources are loaded
@@ -81,8 +81,6 @@ void afterResouceLoadingSetup() {
   for (int i = 1; i < 4; i++) {
     AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
-
-  totalCollectedRelicShards = databaseManager.getAllPlayerRelicInventory();
 
   //setup game and show title screen
   setupGame();
@@ -116,7 +114,7 @@ void setupGame() {
 void draw() {
 
   //wait until all resources are loaded and we are logged in
-  if (!ResourceManager.isAllLoaded() || dbUser == null) {
+  if (!ResourceManager.isAllLoaded() || dbUser == null || totalCollectedRelicShards == null) {
     handleLoadingScreen();
 
     return;
