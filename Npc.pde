@@ -126,6 +126,11 @@ public class Npc extends Mob{
       //stop talking after 5 seconds
       if(millis() - timeStartedTalking > maxTalkingShowTime){
         isTalking = false;
+
+        if(isPanicking){
+          startTalking();
+        }
+
         return;
       }
 
