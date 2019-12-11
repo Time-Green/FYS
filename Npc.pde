@@ -8,12 +8,13 @@ public class Npc extends Mob{
   // talking
   private String currentlySayingFullText;
   private String currentlySaying;
-  private boolean isTalking;
+  private boolean isTalking, isAboutToTalk;
   private int currentTextIndex = 0;
   private int currentTalkingWaitTime = 0;
   private final int MAX_TALKING_WAIT_FRAMES = 2; // max frames untill showing next character when talking
   private float maxTalkingShowTime;
   private int timeStartedTalking;
+  private float timeToStartTalking;
   private PImage textBaloon;
   String[] genericTexts;
   String[] panicTexts;
@@ -118,6 +119,10 @@ public class Npc extends Mob{
 
     if(isTalking){
 
+      if(millis() < timeToStartTalking){
+        return;
+      }
+
       //stop talking after 5 seconds
       if(millis() - timeStartedTalking > maxTalkingShowTime){
         isTalking = false;
@@ -147,6 +152,7 @@ public class Npc extends Mob{
   }
 
   private void startTalking(){
+    timeToStartTalking = millis() + random(1500);
     timeStartedTalking = millis();
     currentTextIndex = 0;
     currentTalkingWaitTime = 0;
@@ -230,7 +236,7 @@ public class Npc extends Mob{
 
     drawName();
 
-    if(isTalking){
+    if(isTalking && millis() > timeToStartTalking){
       drawTalking();
     }
 
