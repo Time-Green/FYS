@@ -8,12 +8,13 @@ public class Npc extends Mob{
   // talking
   private String currentlySayingFullText;
   private String currentlySaying;
-  private boolean isTalking;
+  private boolean isTalking, isAboutToTalk;
   private int currentTextIndex = 0;
   private int currentTalkingWaitTime = 0;
   private final int MAX_TALKING_WAIT_FRAMES = 2; // max frames untill showing next character when talking
   private float maxTalkingShowTime;
   private int timeStartedTalking;
+  private float timeToStartTalking;
   private PImage textBaloon;
   String[] genericTexts;
   String[] panicTexts;
@@ -26,11 +27,11 @@ public class Npc extends Mob{
 
   private int lastWalkingStateChange = millis();
 
-  private float changeWalkingDirectionChance = 0.01f;
+  private float changeWalkingDirectionChance = 0.005f;
   private float panicChangeWalkingDirectionChance = 0.05f;
   private float doJumpChance = 0.0025f;
   private float panicDoJumpChance = 0.01f;
-  private float changeIsWalkingChance = 0.05f;
+  private float changeIsWalkingChance = 0.005f;
   private float doTalkChance = 0.001f;
 
   private final float MIN_TIME_INBETWEEN_WALKING_CHANGE = 3 * 1000;
@@ -47,7 +48,6 @@ public class Npc extends Mob{
     this.genericTexts = genericTexts;
     this.panicTexts = panicTexts;
     this.personalTexts = personalTexts;
-    maxTalkingShowTime = random(4000, 6000);
     textBaloon = ResourceManager.getImage("TextBaloon");
     speed = 0.25f;
     jumpForce = 12f;
@@ -118,9 +118,18 @@ public class Npc extends Mob{
 
     if(isTalking){
 
+      if(millis() < timeToStartTalking){
+        return;
+      }
+
       //stop talking after 5 seconds
       if(millis() - timeStartedTalking > maxTalkingShowTime){
         isTalking = false;
+
+        if(isPanicking){
+          startTalking();
+        }
+
         return;
       }
 
@@ -147,7 +156,9 @@ public class Npc extends Mob{
   }
 
   private void startTalking(){
+    timeToStartTalking = millis() + random(1500);
     timeStartedTalking = millis();
+    maxTalkingShowTime = random(4000, 6000);
     currentTextIndex = 0;
     currentTalkingWaitTime = 0;
     currentlySayingFullText = getTextToSay();
@@ -160,7 +171,7 @@ public class Npc extends Mob{
     if(isPanicking){
       return panicTexts[floor(random(panicTexts.length))];
     }else{
-      if(random(1) <= 0.5f){ // random personal text
+      if(random(1) <= 0.75f){ // random personal text
         return personalTexts[floor(random(personalTexts.length))];
       }else{ // random generic text
         return genericTexts[floor(random(genericTexts.length))];
@@ -198,6 +209,7 @@ public class Npc extends Mob{
 
     if(doChangeIsWalking){
       isWalking = !isWalking;
+      lastWalkingStateChange = millis();
     }
   }
 
@@ -213,6 +225,10 @@ public class Npc extends Mob{
 
   void draw() {
 
+    if (Globals.gamePaused) {
+      return;
+    }
+
     if (abs(velocity.x) > 0.1f && isGrounded()) {//Walking
       walkCycle.flipSpriteHorizontal = velocity.x >= 0;
       walkCycle.draw();
@@ -226,7 +242,7 @@ public class Npc extends Mob{
 
     drawName();
 
-    if(isTalking){
+    if(isTalking && millis() > timeToStartTalking){
       drawTalking();
     }
 
