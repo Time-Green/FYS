@@ -33,7 +33,7 @@ public class UIController {
   float currentOverlayFill = 0;
   boolean isIncreasing = true;
 
-  private final boolean DRAWSTATS = false;
+  private final boolean DRAWSTATS = true;
 
   //Inventory
   private float inventorySize = 50;
@@ -229,7 +229,7 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + (player.getDepth() - Globals.OVERWORLDHEIGHT), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
+    text("Depth: " + max(0, player.getDepth() - Globals.OVERWORLDHEIGHT), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
 
     drawInventory();
   }

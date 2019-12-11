@@ -3,7 +3,7 @@ class RelicShard extends PickUp {
   int type;
 
   RelicShard() {
-    type = int(random(2));
+    type = floor(random(2));
     //println(type);
     if (type == 0) {
       //this is a mine boost
@@ -16,6 +16,7 @@ class RelicShard extends PickUp {
 
   void pickedUp(Mob mob) {
     super.pickedUp(mob);
+    //println("PICKUP " + type);
     PlayerRelicInventory playerRelicInventory = getRelicShardInventoryByType();
     if(playerRelicInventory == null) {
       PlayerRelicInventory newPlayerRelicInventory = new PlayerRelicInventory();

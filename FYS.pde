@@ -28,7 +28,7 @@ UIController ui;
 Enemy[] enemies;
 
 //player collected relicShards
-ArrayList<PlayerRelicInventory> totalCollectedRelicShards = new ArrayList<PlayerRelicInventory>();
+ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 
 int tilesHorizontal = 50;
 int tilesVertical = 50;
@@ -40,13 +40,15 @@ boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
 
 void setup() {
+  this.surface.setTitle("Rocky Rain");
+
   dh = new DisposeHandler(this);
 
   size(1280, 720, P2D);
   //fullScreen(P2D);
 
   databaseManager.beginLogin();
-
+  
   AudioManager.setup(this);
 
   ResourceManager.setup(this);
@@ -59,14 +61,16 @@ void setup() {
 
 void login() {
   databaseManager.login();
+  totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
 }
 
 // gets called when all resources are loaded
 void afterResouceLoadingSetup() {
   AudioManager.setMaxAudioVolume("Siren", 0.6f);
   AudioManager.setMaxAudioVolume("BackgroundMusic", 0.75f);
-  AudioManager.setMaxAudioVolume("ForestAmbienceMusic", 0.7f);
+  AudioManager.setMaxAudioVolume("ForestAmbianceMusic", 0.7f);
   AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
+  AudioManager.setMaxAudioVolume("HurtSound", 0.75f);
 
   for (int i = 1; i < 5; i++) {
     AudioManager.setMaxAudioVolume("Explosion" + i, 0.2f);
@@ -79,8 +83,6 @@ void afterResouceLoadingSetup() {
   for (int i = 1; i < 4; i++) {
     AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
-
-  totalCollectedRelicShards = databaseManager.getAllPlayerRelicInventory();
 
   //setup game and show title screen
   setupGame();
@@ -114,7 +116,7 @@ void setupGame() {
 void draw() {
 
   //wait until all resources are loaded and we are logged in
-  if (!ResourceManager.isAllLoaded() || dbUser == null) {
+  if (!ResourceManager.isAllLoaded() || dbUser == null || totalCollectedRelicShards == null) {
     handleLoadingScreen();
 
     return;
@@ -252,15 +254,13 @@ void enterOverWorld(boolean reloadGame) {
     setupGame();
   }
 
-  AudioManager.loopMusic("ForestAmbienceMusic"); 
+  AudioManager.loopMusic("ForestAmbianceMusic"); 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
-  AudioManager.loopMusic("ForestAmbianceMusic");
 }
 
 void startGameSoon() {
   startGame = true;
-  AudioManager.stopMusic("ForestAmbienceMusic"); 
 }
 
 void startAsteroidRain() {

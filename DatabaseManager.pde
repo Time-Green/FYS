@@ -40,6 +40,15 @@ public class DatabaseManager {
     }
   }
 
+  public void getAchievement() {
+
+    if (currentSessionId < 0) {
+      return;
+    }
+
+    JSONArray result = doDatabaseRequest("SELECT * FROM Achievement WHERE id = 1");
+  }
+
   //used for logging in
   public DbUser getOrCreateUser(String userName) {
 
@@ -79,18 +88,22 @@ public class DatabaseManager {
 
   public boolean registerSessionStart(DbUser loggedInUser) {
 
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date date = new Date();
+    try {
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      Date date = new Date();
 
-    JSONArray result = doDatabaseRequest("INSERT INTO Playsession (`userid`, `startdatetime`) VALUES ('" + loggedInUser.id + "', '" + formatter.format(date) + "')");
+      JSONArray result = doDatabaseRequest("INSERT INTO Playsession (`userid`, `startdatetime`) VALUES ('" + loggedInUser.id + "', '" + formatter.format(date) + "')");
 
-    if (result.size() == 1) {
+      if (result.size() == 1) {
+        currentSessionId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+      }
 
-      currentSessionId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
-      //println("currentSessionId: " + currentSessionId);
+      return currentSessionId >= 0;
+    } catch (Exception e) {
+      println("Could not connect to database, do you have an internet connection?");
+      currentSessionId = -1;
+      return false;
     }
-
-    return currentSessionId >= 0;
   }
 
   public boolean registerSessionEnd() {
@@ -133,7 +146,11 @@ public class DatabaseManager {
     return currentRunId >= 0;
   }
 
-  public ArrayList<PlayerRelicInventory> getAllPlayerRelicInventory() {
+  public ArrayList<PlayerRelicInventory> getPlayerRelicInventory() {
+
+    if (currentSessionId < 0) {
+      return new ArrayList<PlayerRelicInventory>();
+    }
 
     JSONArray result = doDatabaseRequest("SELECT * FROM Relicinventory WHERE userid = " + dbUser.id);
     ArrayList<PlayerRelicInventory> returnList = new ArrayList<PlayerRelicInventory>();
@@ -158,6 +175,11 @@ public class DatabaseManager {
   }
 
   private boolean updateRunData() {
+
+    if (currentSessionId < 0) {
+      return false;
+    }
+
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
 
@@ -196,11 +218,15 @@ public class DatabaseManager {
   }
 
   public boolean updatePlayerRelicInventory() {
+
+    if (currentSessionId < 0) {
+      return false;
+    }
+
     ArrayList<RelicShard> collectedRelicShards = runData.collectedRelicShards;
     boolean success = true;
 
     for(RelicShard collectedRelicShard : collectedRelicShards) {
-     // collectedRelicShard.type 
       PlayerRelicInventory playerRelicInventory = getPlayerRelicInventory(collectedRelicShard);
 
       if (playerRelicInventory == null) {
@@ -250,7 +276,7 @@ public class DatabaseManager {
   //if it does exist increment the amount for relic update
   private boolean incrementPlayerRelicInventory(RelicShard collectedRelicShard, PlayerRelicInventory playerRelicInventory) {
 
-    JSONArray result = doDatabaseRequest("UPDATE Relicinventory SET amount = '" + (playerRelicInventory.amount + 1) + "' ");
+    JSONArray result = doDatabaseRequest("UPDATE Relicinventory SET amount = '" + (playerRelicInventory.amount + 1) + "' WHERE id = " + playerRelicInventory.id);
 
     int success = -1;
 
@@ -259,11 +285,8 @@ public class DatabaseManager {
       success = result.getJSONObject(0).getInt("Success");
     }
 
-    return success == 1;
-  
+    return success == 1;  
   }
-
-  
 
   private DbUser buildUser(JSONObject jsonUser) {
 
@@ -302,8 +325,8 @@ public class DatabaseManager {
 
     String result = get.getContent();
 
-    // println("request: " + request);
-    // println("result: " + result);
+     //println("request: " + request);
+     //println("result: " + result);
 
     return parseJSONArray(result);
   }

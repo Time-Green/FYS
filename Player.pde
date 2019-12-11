@@ -88,8 +88,6 @@ class Player extends Mob {
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
-
-    hurt();
   }
 
   void checkHealthLow() {
@@ -135,6 +133,7 @@ class Player extends Mob {
       }
       else if(collectedRelicShardInventory.relicshardid == 1) {
          maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+         currentHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
     }
   }
@@ -176,7 +175,7 @@ class Player extends Mob {
       } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
         animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageAir.draw();
-      } else if (InputHelper.isKeyDown(Globals.DIGKEY)) {//Digging
+      } else if (InputHelper.isKeyDown(Globals.DIGKEY) && Globals.currentGameState == Globals.GameState.InGame) {//Digging
         animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageMine.draw();
       } else if(isGrounded == false) {
@@ -245,7 +244,7 @@ class Player extends Mob {
     score += scoreToAdd;
   }
 
-  public void takeDamage(int damageTaken) {
+  public void takeDamage(float damageTaken) {
 
     //println("player took " + damageTaken + " damage");
 
@@ -258,6 +257,9 @@ class Player extends Mob {
       CameraShaker.induceStress(0.6f);
     }
 
+    AudioManager.playSoundEffect("HurtSound");
+    //println("OOF");
+
     //needs to happen after camera shake because else 'isHurt' will be always true
     super.takeDamage(damageTaken);  
   }
@@ -269,15 +271,6 @@ class Player extends Mob {
       isMiningDown = false;
       isMiningLeft = false;
       isMiningRight = false;
-    }
-  }
-
-  private void hurt() {
-      if (isHurt == true) {
-        AudioManager.playSoundEffect("HurtSound");
-      if(frameCount % 60 == 0) {
-      AudioManager.stopMusic("HurtSound");
-      }
     }
   }
 
