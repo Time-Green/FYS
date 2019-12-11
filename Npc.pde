@@ -48,7 +48,6 @@ public class Npc extends Mob{
     this.genericTexts = genericTexts;
     this.panicTexts = panicTexts;
     this.personalTexts = personalTexts;
-    maxTalkingShowTime = random(4000, 6000);
     textBaloon = ResourceManager.getImage("TextBaloon");
     speed = 0.25f;
     jumpForce = 12f;
@@ -159,6 +158,7 @@ public class Npc extends Mob{
   private void startTalking(){
     timeToStartTalking = millis() + random(1500);
     timeStartedTalking = millis();
+    maxTalkingShowTime = random(4000, 6000);
     currentTextIndex = 0;
     currentTalkingWaitTime = 0;
     currentlySayingFullText = getTextToSay();
