@@ -171,7 +171,7 @@ public class Npc extends Mob{
     if(isPanicking){
       return panicTexts[floor(random(panicTexts.length))];
     }else{
-      if(random(1) <= 0.5f){ // random personal text
+      if(random(1) <= 0.75f){ // random personal text
         return personalTexts[floor(random(personalTexts.length))];
       }else{ // random generic text
         return genericTexts[floor(random(genericTexts.length))];
