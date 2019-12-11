@@ -27,11 +27,11 @@ public class Npc extends Mob{
 
   private int lastWalkingStateChange = millis();
 
-  private float changeWalkingDirectionChance = 0.01f;
+  private float changeWalkingDirectionChance = 0.005f;
   private float panicChangeWalkingDirectionChance = 0.05f;
   private float doJumpChance = 0.0025f;
   private float panicDoJumpChance = 0.01f;
-  private float changeIsWalkingChance = 0.05f;
+  private float changeIsWalkingChance = 0.005f;
   private float doTalkChance = 0.001f;
 
   private final float MIN_TIME_INBETWEEN_WALKING_CHANGE = 3 * 1000;
@@ -48,7 +48,6 @@ public class Npc extends Mob{
     this.genericTexts = genericTexts;
     this.panicTexts = panicTexts;
     this.personalTexts = personalTexts;
-    maxTalkingShowTime = random(4000, 6000);
     textBaloon = ResourceManager.getImage("TextBaloon");
     speed = 0.25f;
     jumpForce = 12f;
@@ -159,6 +158,7 @@ public class Npc extends Mob{
   private void startTalking(){
     timeToStartTalking = millis() + random(1500);
     timeStartedTalking = millis();
+    maxTalkingShowTime = random(4000, 6000);
     currentTextIndex = 0;
     currentTalkingWaitTime = 0;
     currentlySayingFullText = getTextToSay();
@@ -209,6 +209,7 @@ public class Npc extends Mob{
 
     if(doChangeIsWalking){
       isWalking = !isWalking;
+      lastWalkingStateChange = millis();
     }
   }
 
