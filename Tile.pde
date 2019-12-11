@@ -44,6 +44,11 @@ class Tile extends BaseObject {
     if (gridPosition.y > Globals.OVERWORLDHEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
       destroyed = true;
       density = false;
+      if (loadInBack == false) {
+        loadInBack = true;
+        reload(this);
+      }
+
 
       //have a 2 in 10 change to spawn a enemy
       // float enemySpawnRate = random(10);
@@ -137,6 +142,8 @@ class Tile extends BaseObject {
 
     destroyed = true;
     density = false;
+    loadInBack = true;
+    reload(this);
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
     if (lightSources.contains(this)) {

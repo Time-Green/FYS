@@ -13,5 +13,6 @@ class EnemyGhost extends Enemy {
     //Disable gravity and collsion so that this enemy acts like a ghost
     collisionEnabled = false;
     gravityForce = 0;
+    canSwim = false;
   }
 }
