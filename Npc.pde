@@ -27,11 +27,11 @@ public class Npc extends Mob{
 
   private int lastWalkingStateChange = millis();
 
-  private float changeWalkingDirectionChance = 0.01f;
+  private float changeWalkingDirectionChance = 0.005f;
   private float panicChangeWalkingDirectionChance = 0.05f;
   private float doJumpChance = 0.0025f;
   private float panicDoJumpChance = 0.01f;
-  private float changeIsWalkingChance = 0.05f;
+  private float changeIsWalkingChance = 0.005f;
   private float doTalkChance = 0.001f;
 
   private final float MIN_TIME_INBETWEEN_WALKING_CHANGE = 3 * 1000;
@@ -209,6 +209,7 @@ public class Npc extends Mob{
 
     if(doChangeIsWalking){
       isWalking = !isWalking;
+      lastWalkingStateChange = millis();
     }
   }
 
