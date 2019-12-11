@@ -2,10 +2,11 @@ class WaterBiome extends Biome {
 
   WaterBiome() {
     //structureChance = 0.1;
-    caveSpawningPossibilityScale = 0.51f;
-    enemyChance = 0.01;
+    // caveSpawningPossibilityScale = 0.51f;
+    caveSpawningPossibilityScale = 1;
+    enemyChance = 0.0;
 
-    destroyedImage = ResourceManager.getImage("DestroyedWater");
+    destroyedImage = ResourceManager.getImage("WaterTile");
 
     minimumDepth = 175;
   }
@@ -19,10 +20,13 @@ class WaterBiome extends Biome {
     }
    
     float oreChance = 0.01;
+    float tileChange = 0.2;
 
     if (random(1) < oreChance) {
-      return new LapisTile(x, depth, 0);
-    } else {
+      return new LapisTile(x, depth);
+    } else if (random(1) < tileChange) {
+      return new StoneTile(x, depth);
+    }else {
       return new WaterTile(x, depth);
     }
   }

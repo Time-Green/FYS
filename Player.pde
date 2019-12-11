@@ -84,6 +84,7 @@ class Player extends Mob {
     checkHealthLow();
 
     statusEffects();
+
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
@@ -200,6 +201,7 @@ class Player extends Mob {
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
+      if (isSwimming) addForce(new PVector(0, (jumpForce/2)));
     } else {
       isMiningDown = false;
     }
@@ -264,6 +266,9 @@ class Player extends Mob {
     //Decrease stun timer
     if (stunTimer > 0f) {
       stunTimer--;
+      isMiningDown = false;
+      isMiningLeft = false;
+      isMiningRight = false;
     }
   }
 

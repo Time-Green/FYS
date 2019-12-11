@@ -16,17 +16,16 @@ static class Globals {
   static final int STARTKEY = ENTER;
   static final int BACKKEY = BACKSPACE;
 
-  //Ore values (later to be set in database?)
+  //Ore values (later to be set in database?, yes)
   static final int COALVALUE = 50;
   static final int IRONVALUE = 100;
   static final int GREENICEVALUE = 300;
   static final int REDICEVALUE = 300;
   static final int GOLDVALUE = 500;
-  static final int LAPISDVALUE = 500;
+  static final int LAPISVALUE = 750;
   static final int DIAMONDVALUE = 1000;
   static final int EMERALDVALUE = 5000;
   
-
   //relic
    static final int HEALTH_BOOST = 10;
    static final int DAMAGE_BOOST = 5;

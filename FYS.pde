@@ -1,6 +1,8 @@
 ArrayList<BaseObject> objectList = new ArrayList<BaseObject>(); //<>//
 ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the objectList,
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
+ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
+
 
 //These only exists as helpers. All drawing and updating is handled from objectList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -171,6 +173,12 @@ void updateObjects() {
     object.update();
   }
 
+  for (BaseObject object : reloadList) {
+    tileList.remove((Tile)object);
+    tileList.add((Tile)object);
+  }
+  reloadList.clear();
+
   //used to start the game with the button
   if (startGame) {
     startGame = false;
@@ -340,6 +348,10 @@ BaseObject load(BaseObject newObject, boolean priority) { //load it RIGHT NOW. O
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion
+}
+
+void reload(BaseObject reloadingObject) { //handles reload, call delete(object) to delete that object from the world
+  reloadList.add(reloadingObject); //queue for reloading
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor) {
