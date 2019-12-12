@@ -23,7 +23,7 @@ class Player extends Mob {
   //Status effects
   public float stunTimer;
 
-  PVector spawnPosition = new PVector(1200, 500);
+  PVector spawnPosition = new PVector(1300, 500);
   int score = 0;
 
   public Player() {
