@@ -30,7 +30,6 @@ Enemy[] enemies;
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 
 int tilesHorizontal = 50;
-int tilesVertical = 50;
 int tileSize = 50;
 
 int birdCount = round(random(10, 15));
