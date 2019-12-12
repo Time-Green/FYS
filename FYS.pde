@@ -3,7 +3,6 @@ ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and l
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
-
 //These only exists as helpers. All drawing and updating is handled from objectList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
@@ -44,8 +43,8 @@ void setup() {
 
   dh = new DisposeHandler(this);
 
-  size(1280, 720, P2D);
-  //fullScreen(P2D);
+  //size(1280, 720, P2D);
+  fullScreen(P2D);
 
   databaseManager.beginLogin();
   
@@ -257,6 +256,7 @@ void enterOverWorld(boolean reloadGame) {
   AudioManager.loopMusic("ForestAmbianceMusic"); 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
+  camera.lerpAmount = 0.075f;
 }
 
 void startGameSoon() {

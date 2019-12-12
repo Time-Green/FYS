@@ -274,7 +274,7 @@ public class Npc extends Mob{
   private void drawTalking(){
     fill(0);
     image(textBaloon, position.x + 15, position.y - 25 - textBaloon.height / 1.5f, textBaloon.width / 1.5f, textBaloon.height / 1.5f);
-    text(currentlySaying, position.x + 55, position.y - 100, textBaloon.width / 1.5f - 75, textBaloon.height / 1.5f);
+    text(currentlySaying, position.x + 53, position.y - 100, textBaloon.width / 1.5f - 70, textBaloon.height / 1.5f);
   }
 
   void takeDamage(float damageTaken) {
