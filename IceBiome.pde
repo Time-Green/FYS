@@ -3,6 +3,7 @@ class IceBiome extends Biome {
   IceBiome() {
 
     destroyedImage = ResourceManager.getImage("DestroyedIce");
+    ceilingObstacleChance = 0.1;
   }
 
   Tile getTileToGenerate(int x, int depth) {

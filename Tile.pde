@@ -44,15 +44,17 @@ class Tile extends BaseObject {
     if (gridPosition.y > Globals.OVERWORLDHEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
       destroyed = true;
       density = false;
+
+      if(random(1) < world.currentBiome.ceilingObstacleChance){ //do a chance check first to save time and resources
+        println("yote");
+        world.currentBiome.prepareCeilingObstacle(this, world);
+      }
+      
+
       if (loadInBack == false) {
         loadInBack = true;
         reload(this);
       }
-
-
-      //have a 2 in 10 change to spawn a enemy
-      // float enemySpawnRate = random(10);
-      // if (enemySpawnRate >= 8) 
 
       //1% change to spawn torch
       if (random(100) < 1) {

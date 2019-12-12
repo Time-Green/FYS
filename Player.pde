@@ -262,8 +262,6 @@ class Player extends Mob {
 
   public void takeDamage(float damageTaken) {
 
-    println("player took " + damageTaken + " damage");
-
     if (isImmortal || damageTaken == 0.0) {
       return;
     }
