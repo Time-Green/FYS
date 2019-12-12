@@ -23,7 +23,7 @@ class Player extends Mob {
   //Status effects
   public float stunTimer;
 
-  PVector spawnPosition = new PVector(1200, 500);
+  PVector spawnPosition = new PVector(1300, 509);
   int score = 0;
 
   public Player() {
@@ -160,7 +160,10 @@ class Player extends Mob {
 
   void draw() {
 
-    if (Globals.gamePaused) {
+    if(Globals.gamePaused){
+      animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
+      animatedImageIdle.draw();
+
       return;
     }
 
@@ -241,6 +244,10 @@ class Player extends Mob {
       switchInventory();
       InputHelper.onKeyReleased(Globals.ITEMKEY); //ssssh
     }
+    if (InputHelper.isKeyDown('i')) { 
+      load(new Icicle(), new PVector (player.position.x + 200, player.position.y - 200));
+      InputHelper.onKeyReleased('i'); //ssssh
+    }
   }
 
   void addScore(int scoreToAdd) {
@@ -249,19 +256,19 @@ class Player extends Mob {
 
   public void takeDamage(float damageTaken) {
 
-    //println("player took " + damageTaken + " damage");
+    println("player took " + damageTaken + " damage");
 
-    if (isImmortal) {
+    if (isImmortal || damageTaken == 0.0) {
       return;
     }
 
     if (isHurt == false) {
       // if the player has taken damage, add camera shake
-      CameraShaker.induceStress(0.6f);
-    }
+      //40 is about max damage
+      CameraShaker.induceStress(damageTaken / 40);
 
-    AudioManager.playSoundEffect("HurtSound");
-    //println("OOF");
+      AudioManager.playSoundEffect("HurtSound");
+    }
 
     //needs to happen after camera shake because else 'isHurt' will be always true
     super.takeDamage(damageTaken);  

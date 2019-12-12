@@ -1,41 +1,43 @@
-class icicle extends Obstacle {
+class Icicle extends Obstacle {
     
-    private int damage = 10;
+    private float damage = 10f;
     private int radiusX = 1;
     private int radiusY = 10;
+    private String shatterNoise = "GlassBreak" + floor(random(1, 4));
 
 
+  Icicle() {
+    anchored = true;
+    
+    image = ResourceManager.getImage("Icicle");
+  }
 
-  //Icicle() {
-    //switch
-    //case 0;
-   // size.set(50, 70);
-   //case 1;
-   //size.set(50,100);
-   // image = ResourceManager.getImage("Icicle");
-   // anchored = true;
-  //}
+  void collidedWith(BaseObject object){
 
-  void pushed(Mob mob, PVector otherPosition) {
+    object.takeDamage(damage);
+    shatter();
 
-    if (otherPosition.y > 0) { 
-      mob.takeDamage(1f);
+
+  }
+
+  void shatter(){
+    
+    AudioManager.playSoundEffect(shatterNoise);
+
+    delete(this);
+  }
+
+  void update(){
+
+    super.update();
+
+    if(player.position.x < position.x + size.x && player.position.x > position.x){
+      if(player.position.y > position.y){
+
+        anchored = false;
+      }
+
     }
   }
 
-  void spawn() {
-      //icicle's only spawn in the ice biome and always spawns in caves at the ceiling.
-  }
-
-  void react() {
-
-      //if the player walks under the icile this would react and fall down we need to add gravity 
-      //the fallspeed and activation radius it should look down about 10 blocks and it may differ +1 -1 
-      //from xplayer.
-
-  }
-
-  void delete() {
-     //delete the icicle after it has been fallen.
-  }
 }

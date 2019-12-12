@@ -3,7 +3,6 @@ ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and l
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
-
 //These only exists as helpers. All drawing and updating is handled from objectList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
@@ -257,6 +256,7 @@ void enterOverWorld(boolean reloadGame) {
   AudioManager.loopMusic("ForestAmbianceMusic"); 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
+  camera.lerpAmount = 0.075f;
 }
 
 void startGameSoon() {
@@ -277,6 +277,8 @@ void startAsteroidRain() {
   thread("startRegisterRunThread");
 }
 
+String dots = "";
+
 void handleLoadingScreen(){
   background(0);
 
@@ -290,16 +292,25 @@ void handleLoadingScreen(){
   fill(255);
   textSize(30);
   textAlign(CENTER);
-  text("Loading", width / 2, height - 10);
+
+  if(loadingBarWidth < 1){
+    text("Loading", width / 2, height - 10);
+  }
+
+  handleDots();
 
   //login
   if(dbUser == null){
-    text("Logging in", width / 2, height - 55);
+    text("Logging in" + dots, width / 2, height - 55);
   }else{
     text("Logged in as " + dbUser.userName, width / 2, height - 55);
   }
 
   ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
+
+  if(currentlyLoadingResources.size() == 0){
+    return;
+  }
 
   fill(255);
   textSize(25);
@@ -309,6 +320,17 @@ void handleLoadingScreen(){
   textSize(15);
   for (int i = 0; i < currentlyLoadingResources.size(); i++) {
     text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
+  }
+}
+
+private void handleDots(){
+
+  if(frameCount % 20 == 0){
+    dots += ".";
+  }
+
+  if(dots.length() > 3){
+    dots = "";
   }
 }
 

@@ -58,23 +58,35 @@ public class Npc extends Mob{
 
   private void loadFrames(){
     for (int i = 0; i < WALKFRAMES; i++){
-      walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i);
+      walkFrames[i] = ResourceManager.getImage("JonahWalk" + i);
     }
 
     walkCycle = new AnimatedImage(walkFrames, 10, position, size.x, flipSpriteHorizontal);
 
     for (int i = 0; i < IDLEFRAMES; i++){
-      idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i);
+      idleFrames[i] = ResourceManager.getImage("JonahIdle" + i);
     }
 
     animatedImageIdle = new AnimatedImage(idleFrames, 60, position, size.x, flipSpriteHorizontal);
+
+    //   for (int i = 0; i < WALKFRAMES; i++){
+    //   walkFrames[i] = ResourceManager.getImage("JackWalk" + i);
+    // }
+
+    // walkCycle = new AnimatedImage(walkFrames, 10, position, size.x, flipSpriteHorizontal);
+
+    // for (int i = 0; i < IDLEFRAMES; i++){
+    //   idleFrames[i] = ResourceManager.getImage("JackIdle" + i);
+    // }
+
+    // animatedImageIdle = new AnimatedImage(idleFrames, 60, position, size.x, flipSpriteHorizontal);
   }
 
   void update() {
 
-    if (Globals.gamePaused) {  
-      return;
-    }
+    //if (Globals.gamePaused) {  
+    //  return;
+    //}
 
     super.update();
 
@@ -168,15 +180,20 @@ public class Npc extends Mob{
 
   private String getTextToSay(){
 
+    String textToSay;
+
     if(isPanicking){
-      return panicTexts[floor(random(panicTexts.length))];
+      textToSay = panicTexts[floor(random(panicTexts.length))];
     }else{
       if(random(1) <= 0.75f){ // random personal text
-        return personalTexts[floor(random(personalTexts.length))];
+        textToSay = personalTexts[floor(random(personalTexts.length))];
       }else{ // random generic text
-        return genericTexts[floor(random(genericTexts.length))];
+        textToSay = genericTexts[floor(random(genericTexts.length))];
       }
     }
+
+    //insert player name
+    return textToSay.replace("{PlayerName}", dbUser.userName);
   }
 
   private void borderCheck(){
@@ -225,9 +242,9 @@ public class Npc extends Mob{
 
   void draw() {
 
-    if (Globals.gamePaused) {
-      return;
-    }
+    //if (Globals.gamePaused) {
+    //  return;
+    //}
 
     if (abs(velocity.x) > 0.1f && isGrounded()) {//Walking
       walkCycle.flipSpriteHorizontal = velocity.x >= 0;
@@ -257,7 +274,7 @@ public class Npc extends Mob{
   private void drawTalking(){
     fill(0);
     image(textBaloon, position.x + 15, position.y - 25 - textBaloon.height / 1.5f, textBaloon.width / 1.5f, textBaloon.height / 1.5f);
-    text(currentlySaying, position.x + 55, position.y - 100, textBaloon.width / 1.5f - 75, textBaloon.height / 1.5f);
+    text(currentlySaying, position.x + 53, position.y - 100, textBaloon.width / 1.5f - 70, textBaloon.height / 1.5f);
   }
 
   void takeDamage(float damageTaken) {
