@@ -168,7 +168,7 @@ public class DatabaseManager {
       return new ArrayList<LeaderbordRow>();
     }
 
-    JSONArray result = doDatabaseRequest("SELECT u.username, r.score, r.depth FROM Run r INNER JOIN Playsession p ON r.playsessionid = p.id INNER JOIN User u ON p.userid = u.id WHERE r.score > -1 ORDER BY r.score DESC LIMIT 10");
+    JSONArray result = doDatabaseRequest("SELECT u.username, r.score, r.depth FROM Run r INNER JOIN Playsession p ON r.playsessionid = p.id INNER JOIN User u ON p.userid = u.id WHERE r.score IS NOT NULL ORDER BY r.score DESC LIMIT 10");
     ArrayList<LeaderbordRow> returnList = new ArrayList<LeaderbordRow>();
 
     for (int i = 0; i < result.size(); i++) {

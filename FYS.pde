@@ -82,12 +82,13 @@ void afterResouceLoadingSetup() {
     AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
 
-  // ArrayList<LeaderbordRow> leaderBord = databaseManager.getLeaderbord();
+  ArrayList<LeaderbordRow> leaderBord = databaseManager.getLeaderbord();
 
-  // for(int i = 0; i<leaderBord.size(); i++){
-  //   println(leaderBord.get(i).userName);
+  for(int i = 0; i<leaderBord.size(); i++){
+    println(leaderBord.get(i).userName);
 
-  // }
+  }
+
   //setup game and show title screen
   setupGame();
 }
