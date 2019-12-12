@@ -14,10 +14,10 @@ class Icicle extends Obstacle {
 
   void collidedWith(BaseObject object){
 
-    object.takeDamage(damage);
-    shatter();
-
-
+    if(object.position.y > position.y){ //we're beneath
+      object.takeDamage(damage);
+      shatter();
+    }
   }
 
   void shatter(){

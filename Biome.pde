@@ -4,6 +4,7 @@ class Biome {
 
   float structureChance = 0.001; //chance of a structure spawning between 0 and 1 for every row of tiles
   float enemyChance = 0.01; //chance of enemy spawning on an open tile
+  float ceilingObstacleChance = 0.0; //chance that a tile can have something hanging from it
 
   int minimumDepth = 0;
   int maximumDepth = 999999;
@@ -111,5 +112,21 @@ class Biome {
     } else { 
       load(new EnemyShocker(position));
     }
+  }
+  void prepareCeilingObstacle(Tile target, World world){
+    Tile above = world.getTile(target.position.x, target.position.y - tileSize);
+    println(above);
+
+    if(above == null){
+      return;
+    }
+
+    if(above.density){
+      spawnCeilingObstacle(target);
+    }
+  }
+
+  void spawnCeilingObstacle(Tile tile){
+    load(new Icicle(), tile.position);
   }
 }
