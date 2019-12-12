@@ -162,6 +162,22 @@ public class DatabaseManager {
     return returnList;
   }
 
+  public ArrayList<LeaderbordRow> getLeaderbord() {
+
+    if (currentSessionId < 0) {
+      return new ArrayList<LeaderbordRow>();
+    }
+
+    JSONArray result = doDatabaseRequest("SELECT u.username, r.score, r.depth FROM Run r INNER JOIN Playsession p ON r.playsessionid = p.id INNER JOIN User u ON p.userid = u.id WHERE r.score > -1 ORDER BY r.score DESC LIMIT 10");
+    ArrayList<LeaderbordRow> returnList = new ArrayList<LeaderbordRow>();
+
+    for (int i = 0; i < result.size(); i++) {
+      returnList.add(buildLeaderbordRow(result.getJSONObject(i)));
+    }
+
+    return returnList;
+  }
+
   public boolean registerRunEnd() {
 
     if (currentSessionId < 0 || currentRunId < 0) {
@@ -308,6 +324,17 @@ public class DatabaseManager {
     playerRelicInventory.amount = json.getInt("amount");
 
     return playerRelicInventory;
+  }
+
+  private LeaderbordRow buildLeaderbordRow(JSONObject json) {
+
+    LeaderbordRow leaderbordRow = new LeaderbordRow();
+
+    leaderbordRow.userName = json.getString("username");
+    leaderbordRow.score = json.getInt("score");
+    leaderbordRow.depth = json.getInt("depth");
+
+    return leaderbordRow;
   }
 
   public JSONArray doDatabaseRequest(String request) {
