@@ -241,6 +241,10 @@ class Player extends Mob {
       switchInventory();
       InputHelper.onKeyReleased(Globals.ITEMKEY); //ssssh
     }
+    if (InputHelper.isKeyDown('i')) { 
+      load(new Icicle(), new PVector (player.position.x + 200, player.position.y - 200));
+      InputHelper.onKeyReleased('i'); //ssssh
+    }
   }
 
   void addScore(int scoreToAdd) {
