@@ -24,9 +24,15 @@ public class Camera {
     //get current camera shake
     PVector currentCameraShakeOffset = CameraShaker.getShakeOffset();
 
-    //do scrolling and add camera shake
-    position.x = (-target.position.x + width * 0.5 - target.size.x / 2) + currentCameraShakeOffset.x;
-    position.y = (-target.position.y + height * 0.5 - target.size.y / 2) + currentCameraShakeOffset.y;
+    float targetX = -target.position.x + width * 0.5 - target.size.x / 2;
+    float targetY = -target.position.y + height * 0.5 - target.size.y / 2;
+
+    PVector targetPosition = new PVector(targetX, targetY);
+
+    targetPosition.add(currentCameraShakeOffset);
+
+    //position.set(targetPosition);
+    position.lerp(targetPosition, 0.1f);
 
     //limit x position so the camera doesent go to far to the left or right
     float minXposotion = -(tilesHorizontal * tileSize + tileSize - width);
