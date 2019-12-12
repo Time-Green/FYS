@@ -180,15 +180,20 @@ public class Npc extends Mob{
 
   private String getTextToSay(){
 
+    String textToSay;
+
     if(isPanicking){
-      return panicTexts[floor(random(panicTexts.length))];
+      textToSay = panicTexts[floor(random(panicTexts.length))];
     }else{
       if(random(1) <= 0.75f){ // random personal text
-        return personalTexts[floor(random(personalTexts.length))];
+        textToSay = personalTexts[floor(random(personalTexts.length))];
       }else{ // random generic text
-        return genericTexts[floor(random(genericTexts.length))];
+        textToSay = genericTexts[floor(random(genericTexts.length))];
       }
     }
+
+    //insert player name
+    return textToSay.replace("{PlayerName}", dbUser.userName);
   }
 
   private void borderCheck(){
