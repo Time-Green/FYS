@@ -88,6 +88,7 @@ void afterResouceLoadingSetup() {
 }
 
 void setupGame() {
+  player = null; //fixed world generation bug on restart
   objectList.clear();
   destroyList.clear();
   loadList.clear();
