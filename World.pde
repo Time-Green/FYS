@@ -96,7 +96,7 @@ public class World {
 
       Npc npc = new Npc(this, names[i], genericTexts, panicTexts, personalTexts);
 
-      load(npc, new PVector(random(50, 1650), 500));
+      load(npc, new PVector(random(50, 1650), 509));
     }
   }
 
