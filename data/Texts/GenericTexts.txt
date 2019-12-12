@@ -6,4 +6,4 @@ Who could have made this game?
 That chest looks interesting!
 What would that button do?
 I really like {PlayerName}
-Hello {PlayerName} how are you?
+Hello {PlayerName}
