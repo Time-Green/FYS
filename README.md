@@ -1,5 +1,5 @@
 # FYS
-De officiële repository van het TUI FYS-team
 
-
-HALLO
+Liberies used:
+- http.requests
+- minim

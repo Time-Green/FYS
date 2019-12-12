@@ -1,6 +1,7 @@
 ArrayList<BaseObject> objectList = new ArrayList<BaseObject>(); //<>//
 ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the objectList,
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
+ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
 //These only exists as helpers. All drawing and updating is handled from objectList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -173,6 +174,12 @@ void updateObjects() {
     object.update();
   }
 
+  for (BaseObject object : reloadList) {
+    tileList.remove((Tile)object);
+    tileList.add((Tile)object);
+  }
+  reloadList.clear();
+
   //used to start the game with the button
   if (startGame) {
     startGame = false;
@@ -249,6 +256,7 @@ void enterOverWorld(boolean reloadGame) {
   AudioManager.loopMusic("ForestAmbianceMusic"); 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
+  camera.lerpAmount = 0.075f;
 }
 
 void startGameSoon() {
@@ -269,6 +277,8 @@ void startAsteroidRain() {
   thread("startRegisterRunThread");
 }
 
+String dots = "";
+
 void handleLoadingScreen(){
   background(0);
 
@@ -282,16 +292,25 @@ void handleLoadingScreen(){
   fill(255);
   textSize(30);
   textAlign(CENTER);
-  text("Loading", width / 2, height - 10);
+
+  if(loadingBarWidth < 1){
+    text("Loading", width / 2, height - 10);
+  }
+
+  handleDots();
 
   //login
   if(dbUser == null){
-    text("Logging in", width / 2, height - 55);
+    text("Logging in" + dots, width / 2, height - 55);
   }else{
     text("Logged in as " + dbUser.userName, width / 2, height - 55);
   }
 
   ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
+
+  if(currentlyLoadingResources.size() == 0){
+    return;
+  }
 
   fill(255);
   textSize(25);
@@ -301,6 +320,17 @@ void handleLoadingScreen(){
   textSize(15);
   for (int i = 0; i < currentlyLoadingResources.size(); i++) {
     text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
+  }
+}
+
+private void handleDots(){
+
+  if(frameCount % 20 == 0){
+    dots += ".";
+  }
+
+  if(dots.length() > 3){
+    dots = "";
   }
 }
 
@@ -340,6 +370,10 @@ BaseObject load(BaseObject newObject, boolean priority) { //load it RIGHT NOW. O
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion
+}
+
+void reload(BaseObject reloadingObject) { //handles reload, call delete(object) to delete that object from the world
+  reloadList.add(reloadingObject); //queue for reloading
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor) {

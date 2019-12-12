@@ -29,25 +29,39 @@ public static class AudioManager {
     musicMap.put(name, music);
   }
 
+  private static int tries = 0;
+  private final static int MAX_TRIES = 10;
+
   public static void loadSoundEffect(String name, String fileName) {
 
-    SoundFile[] soundArray = new SoundFile[AUDIO_AMOUNT];
+    try {
+      SoundFile[] soundArray = new SoundFile[AUDIO_AMOUNT];
 
-    for (int i = 0; i < AUDIO_AMOUNT; i++) {
+      for (int i = 0; i < AUDIO_AMOUNT; i++) {
 
-      SoundFile sound = new SoundFile(game, fileName);
+        SoundFile sound = new SoundFile(game, fileName);
 
-      if (sound == null) {
-        println("Could not load sound: " + fileName);
+        if (sound == null) {
+          println("Could not load sound: " + fileName);
+          return;
+        }
+
+        soundArray[i] = sound;
+      }
+
+      soundEffectMap.put(name, soundArray);
+      soundEffectMapIndex.set(name, 0);
+      maxAudioVolumes.set(name, 1f);
+
+    }catch(Exception e){
+      tries++;
+
+      if(tries > MAX_TRIES){
         return;
       }
 
-      soundArray[i] = sound;
+      loadSoundEffect(name, fileName);
     }
-
-    soundEffectMap.put(name, soundArray);
-    soundEffectMapIndex.set(name, 0);
-    maxAudioVolumes.set(name, 1f);
   }
 
   public static void playSoundEffect(String name) {

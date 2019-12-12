@@ -1,8 +1,7 @@
 import processing.core.*;
 
-public class CameraShaker
+public static class CameraShaker
 {
-  //singelton instance of CameraShaker
   private static PApplet game;
 
   private static PVector currentShakeOffset = new PVector();
@@ -11,11 +10,11 @@ public class CameraShaker
 
   // Maximum distance in each direction the transform
   // with translate during shaking.
-  private static PVector maximumShakeAmount = new PVector(10, 10);
+  private static PVector maximumShakeAmount = new PVector(20, 20);
 
   // Frequency of the Perlin noise function. Higher values
   // will result in faster shaking.
-  private static float frequency = 10;
+  private static float frequency = 15;
 
   // Trauma is taken to this power before
   // shaking is applied. Higher values will result in a smoother

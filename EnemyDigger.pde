@@ -8,7 +8,7 @@ class EnemyDigger extends Enemy {
     super(spawnPos);
 
     chaseSpeed = (chaseSpeed + (getDepth()/100));
-    println("chaseSpeed: "+chaseSpeed);
+    //println("chaseSpeed: "+chaseSpeed);
 
     image = ResourceManager.getImage("DiggerEnemy");
     this.speed = IDLESPEED;

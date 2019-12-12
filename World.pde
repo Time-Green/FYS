@@ -96,7 +96,7 @@ public class World {
 
       Npc npc = new Npc(this, names[i], genericTexts, panicTexts, personalTexts);
 
-      load(npc, new PVector(random(50, 1650), 500));
+      load(npc, new PVector(random(50, 1650), 509));
     }
   }
 
@@ -424,7 +424,7 @@ public class World {
       load(new EnemyBomb(spawnWorldPos));
       break;
 
-    case "ChestStart" :
+    case "Chest" :
       load(new Chest(0), spawnWorldPos);
       break;
 
@@ -475,7 +475,6 @@ public class World {
     case "Table" :
       load(new Table(), spawnWorldPos);
       break;
-
 
     default :
       println("ERROR: structure object '" + stripedObjectName + "' not set up or not found!");
