@@ -6,8 +6,8 @@ class Mob extends Movable {
   boolean isImmortal = false;
 
   //Movement
-  protected boolean isSwimming;
-  protected boolean canSwim; 
+  protected boolean isSwimming = false;
+  protected boolean canSwim = false; 
 
   //Taking damage
   final float HURTCOOLDOWN = 60f;
@@ -30,8 +30,12 @@ class Mob extends Movable {
     super.update();
 
   if (canSwim) {
-    if (isSwimming) gravityForce = 0.5f;
-    else gravityForce = 1;
+    if (isSwimming) {
+      gravityForce = 0.1f;
+    }
+    else {
+      gravityForce = 1;
+    }
   }
 
     if (isHurt == true) {

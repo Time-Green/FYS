@@ -31,6 +31,7 @@ class Player extends Mob {
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
     viewTarget = VIEW_AMOUNT;
+    isSwimming = true;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -194,13 +195,15 @@ class Player extends Mob {
 
   void doPlayerMovement() {
 
+    if (isSwimming)isGrounded = true;
+
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-      if (isSwimming) addForce(new PVector(0, (jumpForce/2)));
+      if (isSwimming) addForce(new PVector(0, (jumpForce/5)));
     } else {
       isMiningDown = false;
     }
