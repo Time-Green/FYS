@@ -92,11 +92,19 @@ class Player extends Mob {
   }
 
   void checkHealthLow() {
-    if (currentHealth < maxHealth / 5f) { // if lower than 20% health, show low health overlay
+    if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f) { // if lower than 20% health, show low health overlay
 
       ui.drawWarningOverlay = true;
 
        if (frameCount % 60 == 0) {
+        AudioManager.playSoundEffect("LowHealth");
+      }
+
+      }else if (currentHealth < maxHealth / 10f) { // if lower than 10% health, show low health overlay intesified
+
+      ui.drawWarningOverlay = true;
+
+       if (frameCount % 40 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
 
