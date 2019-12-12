@@ -18,7 +18,7 @@ class Player extends Mob {
   private float viewTarget;
   private float easing = 0.025f;
 
-  private float heal = 0.2f;
+  private float regen = 0.2f;
 
   //Status effects
   public float stunTimer;
@@ -31,6 +31,7 @@ class Player extends Mob {
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
     viewTarget = VIEW_AMOUNT;
+    isSwimming = true;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -110,7 +111,7 @@ class Player extends Mob {
      if(isHurt == false) {
       if(currentHealth < maxHealth) {
         if(frameCount % 30 == 0) {
-          currentHealth += heal;
+          currentHealth += regen;
           }
         }
       }  
@@ -118,7 +119,7 @@ class Player extends Mob {
         if(currentHealth < maxHealth) {
           if(frameCount % 120 == 0)  {
             if(frameCount % 30 == 0) {
-              currentHealth += heal;
+              currentHealth += regen;
             }
           }
         }
@@ -134,6 +135,12 @@ class Player extends Mob {
       else if(collectedRelicShardInventory.relicshardid == 1) {
          maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
          currentHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 2) {
+        regen += Globals.REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 3) {
+        this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
     }
   }
@@ -184,7 +191,7 @@ class Player extends Mob {
       } else if(isGrounded == false) {
         animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageFall.draw();
-      }else {//Idle
+      } else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
       }
@@ -197,13 +204,15 @@ class Player extends Mob {
 
   void doPlayerMovement() {
 
+    if (isSwimming)isGrounded = true;
+
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
       addForce(new PVector(0, -jumpForce));
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-      if (isSwimming) addForce(new PVector(0, (jumpForce/2)));
+      if (isSwimming) addForce(new PVector(0, (jumpForce/5)));
     } else {
       isMiningDown = false;
     }
@@ -252,8 +261,6 @@ class Player extends Mob {
   }
 
   public void takeDamage(float damageTaken) {
-
-    println("player took " + damageTaken + " damage");
 
     if (isImmortal || damageTaken == 0.0) {
       return;

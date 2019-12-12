@@ -32,9 +32,7 @@ class Icicle extends Obstacle {
     super.update();
 
     if(player.position.x < position.x + size.x && player.position.x > position.x){
-      println("iets");
       if(player.position.y > position.y){
-        println("iets2");
 
         anchored = false;
       }
