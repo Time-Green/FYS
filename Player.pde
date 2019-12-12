@@ -92,11 +92,19 @@ class Player extends Mob {
   }
 
   void checkHealthLow() {
-    if (currentHealth < maxHealth / 5f) { // if lower than 20% health, show low health overlay
+    if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f) { // if lower than 20% health, show low health overlay
 
       ui.drawWarningOverlay = true;
 
        if (frameCount % 60 == 0) {
+        AudioManager.playSoundEffect("LowHealth");
+      }
+
+      }else if (currentHealth < maxHealth / 10f) { // if lower than 10% health, show low health overlay intesified
+
+      ui.drawWarningOverlay = true;
+
+       if (frameCount % 40 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
 
@@ -110,7 +118,7 @@ class Player extends Mob {
   void regenaration() {
      if(isHurt == false) {
       if(currentHealth < maxHealth) {
-        if(frameCount % 30 == 0) {
+        if(frameCount % 5 == 0) {
           currentHealth += regen;
           }
         }
@@ -118,7 +126,7 @@ class Player extends Mob {
       else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
         if(currentHealth < maxHealth) {
           if(frameCount % 120 == 0)  {
-            if(frameCount % 30 == 0) {
+            if(frameCount % 5 == 0) {
               currentHealth += regen;
             }
           }
