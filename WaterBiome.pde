@@ -8,7 +8,7 @@ class WaterBiome extends Biome {
 
     destroyedImage = ResourceManager.getImage("DestroyedWater");
 
-    minimumDepth = 175;
+    minimumDepth = 100000000;
   }
 
   Tile getTileToGenerate(int x, int depth) {
