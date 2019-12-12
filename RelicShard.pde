@@ -3,7 +3,7 @@ class RelicShard extends PickUp {
   int type;
 
   RelicShard() {
-    type = floor(random(4));
+    type = floor(random(5));
     if (type == 0) {
       //this is a mine boost
       image =  ResourceManager.getImage("RelicShard0");
@@ -18,6 +18,10 @@ class RelicShard extends PickUp {
     else if (type == 3) {
       //this is a speedboost
       image =  ResourceManager.getImage("RelicShard3");
+    }
+    else if (type == 4) {
+      //this is a speedboost
+      image =  ResourceManager.getImage("RelicShard4");
     }
   }
 

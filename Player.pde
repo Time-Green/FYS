@@ -14,7 +14,7 @@ class Player extends Mob {
   private AnimatedImage animatedImageFall;
   private final int FALLFRAMES = 4;
 
-  private float VIEW_AMOUNT = 500;
+  private float VIEW_AMOUNT = 400;
   private float viewTarget;
   private float easing = 0.025f;
 
@@ -31,7 +31,7 @@ class Player extends Mob {
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
     viewTarget = VIEW_AMOUNT;
-    isSwimming = true;
+    isSwimming = false;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -150,11 +150,14 @@ class Player extends Mob {
       else if(collectedRelicShardInventory.relicshardid == 3) {
         this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
+      else if(collectedRelicShardInventory.relicshardid == 4) {
+        VIEW_AMOUNT += Globals.LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
     }
   }
 
   float getRelicStrength(float relicAmount){
-    return floor(relicAmount/3);
+    return floor(relicAmount/5);
   }
 
   void setVisibilityBasedOnCurrentBiome() {
