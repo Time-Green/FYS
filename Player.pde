@@ -18,7 +18,7 @@ class Player extends Mob {
   private float viewTarget;
   private float easing = 0.025f;
 
-  private float regen = 0.5f;
+  private float regen = 0.2f;
 
   //Status effects
   public float stunTimer;
@@ -110,7 +110,7 @@ class Player extends Mob {
   void regenaration() {
      if(isHurt == false) {
       if(currentHealth < maxHealth) {
-        if(frameCount % 10 == 0) {
+        if(frameCount % 5 == 0) {
           currentHealth += regen;
           }
         }
@@ -118,7 +118,7 @@ class Player extends Mob {
       else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
         if(currentHealth < maxHealth) {
           if(frameCount % 120 == 0)  {
-            if(frameCount % 10 == 0) {
+            if(frameCount % 5 == 0) {
               currentHealth += regen;
             }
           }
