@@ -28,6 +28,7 @@ public class Bird extends Mob {
 
     //disable gravity
     gravityForce = 0f;
+    canSwim = false;
 
     //allow bird to fly of the screen
     worldBorderCheck = false;
