@@ -18,7 +18,7 @@ class Player extends Mob {
   private float viewTarget;
   private float easing = 0.025f;
 
-  private float heal = 0.2f;
+  private float regen = 0.2f;
 
   //Status effects
   public float stunTimer;
@@ -111,7 +111,7 @@ class Player extends Mob {
      if(isHurt == false) {
       if(currentHealth < maxHealth) {
         if(frameCount % 30 == 0) {
-          currentHealth += heal;
+          currentHealth += regen;
           }
         }
       }  
@@ -119,7 +119,7 @@ class Player extends Mob {
         if(currentHealth < maxHealth) {
           if(frameCount % 120 == 0)  {
             if(frameCount % 30 == 0) {
-              currentHealth += heal;
+              currentHealth += regen;
             }
           }
         }
@@ -135,6 +135,12 @@ class Player extends Mob {
       else if(collectedRelicShardInventory.relicshardid == 1) {
          maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
          currentHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 2) {
+        regen += Globals.REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 3) {
+        this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
     }
   }
@@ -185,7 +191,7 @@ class Player extends Mob {
       } else if(isGrounded == false) {
         animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageFall.draw();
-      }else {//Idle
+      } else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
       }
