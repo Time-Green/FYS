@@ -20,7 +20,7 @@ class RelicShard extends PickUp {
       image =  ResourceManager.getImage("RelicShard3");
     }
     else if (type == 4) {
-      //this is a speedboost
+      //this is a lightboost
       image =  ResourceManager.getImage("RelicShard4");
     }
   }
