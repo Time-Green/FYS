@@ -19,8 +19,9 @@ class Player extends Mob {
   private float easing = 0.025f;
 
   private float regen = 0.2f;
-  private final float fireDamage = 4;
-  boolean isRegen;
+  public final float fireDamage = 4;
+  public boolean isRegen;
+  public boolean isOnFire = false;
 
   //Status effects
   public float stunTimer;
@@ -319,17 +320,20 @@ class Player extends Mob {
   }
 
   //fire damage blocks regenaration
-  // void fireAct(float fireDamage) {
-  //   if(MagmaRock.collidedWith) {
-  //     if(frameCount % 30 == 0) {
-  //       isRegen = false;
-  //       currentHealth -= fireDamage;
-  //       if(frameCount % 180 == 0) {
-  //         break;
-  //       }
-  //     }
-  //   }
-  // }
+  public void fireAct(float fireDamage) {
+    if(isOnFire == true){
+      if(frameCount % 30 == 0) {
+        currentHealth -= fireDamage;
+        isRegen = false;
+        isOnFire = true;
+        currentHealth -= fireDamage;
+        if(frameCount % 180 == 0) {
+          isOnFire = false;
+          isRegen = true;
+        }
+      }
+    }
+  }
 
   public void die() {
     super.die();
