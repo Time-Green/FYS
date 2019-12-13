@@ -52,6 +52,9 @@ void setup() {
   CameraShaker.setup(this);
 
   ResourceManager.loadAll();
+
+  //anti alliasing
+  smooth(16);
 }
 
 void login() {

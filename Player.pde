@@ -19,6 +19,8 @@ class Player extends Mob {
   private float easing = 0.025f;
 
   private float regen = 0.2f;
+  private final float fireDamage = 4;
+  boolean isRegen;
 
   //Status effects
   public float stunTimer;
@@ -86,6 +88,8 @@ class Player extends Mob {
 
     statusEffects();
 
+    fireAct(fireDamage);
+
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
@@ -116,22 +120,28 @@ class Player extends Mob {
 
 
   void regenaration() {
-     if(isHurt == false) {
-      if(currentHealth < maxHealth) {
-        if(frameCount % 5 == 0) {
-          currentHealth += regen;
-          }
-        }
-      }  
-      else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
-        if(currentHealth < maxHealth) {
-          if(frameCount % 120 == 0)  {
+    if(isRegen == false) {
+      if(frameCount % 180 == 0) {
+        if(isHurt == false) {
+          if(currentHealth < maxHealth) {
             if(frameCount % 5 == 0) {
               currentHealth += regen;
+              isRegen = true;
+            }
+          }
+        }  
+    else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
+      if(currentHealth < maxHealth) {
+        if(frameCount % 120 == 0)  {
+          if(frameCount % 5 == 0) {
+            currentHealth += regen;
+            isRegen = true;
+              }
             }
           }
         }
       }
+    }
   }
 
   void applyRelicBoost(){
@@ -298,6 +308,19 @@ class Player extends Mob {
       isMiningRight = false;
     }
   }
+
+  //fire damage blocks regenaration
+  // void fireAct(float fireDamage) {
+  //   if(MagmaRock.collidedWith) {
+  //     if(frameCount % 30 == 0) {
+  //       isRegen = false;
+  //       currentHealth -= fireDamage;
+  //       if(frameCount % 180 == 0) {
+  //         break;
+  //       }
+  //     }
+  //   }
+  // }
 
   public void die() {
     super.die();

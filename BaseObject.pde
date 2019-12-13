@@ -91,4 +91,7 @@ class BaseObject {
 
   void collidedWith(BaseObject object) {
   }
+
+  void fireAct(float fireDamage){
+  }
 }
