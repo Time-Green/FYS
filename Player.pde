@@ -22,7 +22,8 @@ class Player extends Mob {
   public float stunTimer;
 
   PVector spawnPosition = new PVector(1200, 500);
-  int score = 0;
+
+  private int score = 0;
 
   public Player() {
     position = spawnPosition;
@@ -74,6 +75,7 @@ class Player extends Mob {
     checkHealthLow();
 
     statusEffects();
+    
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
@@ -92,13 +94,15 @@ class Player extends Mob {
 
 // every 2 seconds the player gains 10hp back but still work in progress
   void regenaration() {
+
     if(currentHealth <= maxHealth) {
+
       for(int i = 0; i < 120; i++) {
-      if(i == 120) {
-        currentHealth += heal;
+
+        if(i == 120) {
+          currentHealth += heal;
+        }
       }
-      }
-      
     }
   }
 
@@ -123,7 +127,14 @@ class Player extends Mob {
       return;
     }
 
-    //Animation
+    handleAnimation();
+
+    for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
+      item.drawOnPlayer(this);
+    }
+  }
+
+  private void handleAnimation(){
     if (stunTimer > 0f) {//Am I stunned?
       shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
       shockedCycle.draw();
@@ -141,10 +152,6 @@ class Player extends Mob {
       } else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
-      }
-
-      for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
-        item.drawOnPlayer(this);
       }
     }
   }
