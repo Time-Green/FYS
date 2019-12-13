@@ -144,11 +144,21 @@ class Movable extends BaseObject {
 
     super.draw();
 
+    if(image == null){
+      println("ERROR: image for object '" + this + "' not found!");
+
+      return;
+    }
+
     pushMatrix();
 
     translate(position.x, position.y);
 
     tint(lightningAmount);
+    if(image == null){
+      println("ERROR: Object", this, "doesn't have a defined image!");
+      return;
+    }
 
     if (!flipSpriteHorizontal && !flipSpriteVertical) {
       scale(1, 1);
@@ -251,7 +261,7 @@ class Movable extends BaseObject {
   }
 
   int getDepth() {
-    return int(position.y / tileSize);
+    return int(position.y / Globals.TILE_SIZE);
   }
 
   void attemptMine(BaseObject object) {

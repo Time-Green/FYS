@@ -14,11 +14,11 @@ class Player extends Mob {
   private AnimatedImage animatedImageFall;
   private final int FALLFRAMES = 4;
 
-  private float VIEW_AMOUNT = 500;
+  private float VIEW_AMOUNT = 400;
   private float viewTarget;
   private float easing = 0.025f;
 
-  private float heal = 0.2f;
+  private float regen = 0.2f;
 
   //Status effects
   public float stunTimer;
@@ -31,7 +31,7 @@ class Player extends Mob {
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
     viewTarget = VIEW_AMOUNT;
-    // isSwimming = true;
+    isSwimming = false;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -92,11 +92,19 @@ class Player extends Mob {
   }
 
   void checkHealthLow() {
-    if (currentHealth < maxHealth / 5f) { // if lower than 20% health, show low health overlay
+    if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f) { // if lower than 20% health, show low health overlay
 
       ui.drawWarningOverlay = true;
 
        if (frameCount % 60 == 0) {
+        AudioManager.playSoundEffect("LowHealth");
+      }
+
+      }else if (currentHealth < maxHealth / 10f) { // if lower than 10% health, show low health overlay intesified
+
+      ui.drawWarningOverlay = true;
+
+       if (frameCount % 40 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
 
@@ -110,16 +118,16 @@ class Player extends Mob {
   void regenaration() {
      if(isHurt == false) {
       if(currentHealth < maxHealth) {
-        if(frameCount % 30 == 0) {
-          currentHealth += heal;
+        if(frameCount % 5 == 0) {
+          currentHealth += regen;
           }
         }
       }  
       else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
         if(currentHealth < maxHealth) {
           if(frameCount % 120 == 0)  {
-            if(frameCount % 30 == 0) {
-              currentHealth += heal;
+            if(frameCount % 5 == 0) {
+              currentHealth += regen;
             }
           }
         }
@@ -136,11 +144,20 @@ class Player extends Mob {
          maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
          currentHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
+      else if(collectedRelicShardInventory.relicshardid == 2) {
+        regen += Globals.REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 3) {
+        this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 4) {
+        VIEW_AMOUNT += Globals.LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
     }
   }
 
   float getRelicStrength(float relicAmount){
-    return floor(relicAmount/3);
+    return floor(relicAmount/5);
   }
 
   void setVisibilityBasedOnCurrentBiome() {
@@ -185,7 +202,7 @@ class Player extends Mob {
       } else if(isGrounded == false) {
         animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageFall.draw();
-      }else {//Idle
+      } else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
       }
@@ -259,8 +276,6 @@ class Player extends Mob {
   }
 
   public void takeDamage(float damageTaken) {
-
-    println("player took " + damageTaken + " damage");
 
     if (isImmortal || damageTaken == 0.0) {
       return;

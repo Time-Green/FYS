@@ -44,7 +44,7 @@ public class Camera {
     position.lerp(targetPosition, lerpAmount);
 
     //limit x position so the camera doesent go to far to the left or right
-    float minXposotion = -(tilesHorizontal * tileSize + tileSize - width);
+    float minXposotion = -(Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE - width);
     position.x = constrain(position.x, minXposotion, 0);
 
     translate(position.x, position.y);

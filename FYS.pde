@@ -16,6 +16,9 @@ DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
 int loginStartTime;
 RunData runData;
+ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
+ArrayList<LeaderboardRow> leaderBoard;
+String loginStatus = "Logging in";
 
 DisposeHandler dh;
 
@@ -26,17 +29,10 @@ Camera camera;
 UIController ui;
 Enemy[] enemies;
 
-//player collected relicShards
-ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
-
-int tilesHorizontal = 50;
-int tilesVertical = 50;
-int tileSize = 50;
-
-int birdCount = round(random(10, 15));
-
 boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
+
+PGraphics leaderBoardGraphics;
 
 void setup() {
   this.surface.setTitle("Rocky Rain");
@@ -60,7 +56,36 @@ void setup() {
 
 void login() {
   databaseManager.login();
+  loginStatus = "Getting player inventory";
   totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+  //loginStatus = "Getting player achievements";
+  //playerAchievements = databaseManager.getPlayerAchievements();
+  loginStatus = "Getting leaderboard";
+  leaderBoard = databaseManager.getLeaderboard(10);
+  loginStatus = "";
+}
+
+private void generateLeaderboardGraphics(){
+  leaderBoardGraphics = createGraphics(int(Globals.TILE_SIZE * 9), int(Globals.TILE_SIZE * 5));
+
+  leaderBoardGraphics.beginDraw();
+
+  leaderBoardGraphics.textAlign(CENTER, CENTER);
+  leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
+  leaderBoardGraphics.textSize(25);
+  leaderBoardGraphics.text("Leaderboard", (Globals.TILE_SIZE * 9) / 2, 20);
+
+  leaderBoardGraphics.textSize(12);
+
+  int i = 0;
+
+  for (LeaderboardRow leaderboardRow : leaderBoard) {
+    leaderBoardGraphics.text("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m", (Globals.TILE_SIZE * 9) / 2, 53 + i * 20);
+    //println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
+    i++;
+  }
+
+  leaderBoardGraphics.endDraw();
 }
 
 // gets called when all resources are loaded
@@ -83,11 +108,14 @@ void afterResouceLoadingSetup() {
     AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
 
+  generateLeaderboardGraphics();
+
   //setup game and show title screen
   setupGame();
 }
 
 void setupGame() {
+  player = null; //fixed world generation bug on restart
   objectList.clear();
   destroyList.clear();
   loadList.clear();
@@ -100,12 +128,12 @@ void setupGame() {
 
   ui = new UIController();
 
-  world = new World(tilesHorizontal * tileSize + tileSize);
+  world = new World();
 
   player = new Player();
   load(player);
 
-  wallOfDeath = new WallOfDeath(tilesHorizontal * tileSize + tileSize);
+  wallOfDeath = new WallOfDeath();
   load(wallOfDeath);
 
   CameraShaker.reset();
@@ -115,7 +143,7 @@ void setupGame() {
 void draw() {
 
   //wait until all resources are loaded and we are logged in
-  if (!ResourceManager.isAllLoaded() || dbUser == null || totalCollectedRelicShards == null) {
+  if (!ResourceManager.isAllLoaded() || loginStatus != "") {
     handleLoadingScreen();
 
     return;
@@ -141,9 +169,11 @@ void draw() {
 
   world.updateDepth();
 
-  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLDHEIGHT + 5) * tileSize) {
+  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE) {
     ui.drawArrows();
   }
+
+  //image(leaderBoardGraphics, 12 * Globals.TILE_SIZE, 5 * Globals.TILE_SIZE);
 
   popMatrix();
   //draw hud below popMatrix();
@@ -265,16 +295,16 @@ void startGameSoon() {
 
 void startAsteroidRain() {
 
+  thread("startRegisterRunThread");
+
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
   AudioManager.stopMusic("ForestAmbianceMusic");
   AudioManager.loopMusic("BackgroundMusic");
+  AudioManager.playSoundEffect("Siren");
 
   ui.drawWarningOverlay = true;
-  AudioManager.playSoundEffect("Siren");
-  
-  thread("startRegisterRunThread");
 }
 
 String dots = "";
@@ -297,12 +327,12 @@ void handleLoadingScreen(){
     text("Loading", width / 2, height - 10);
   }
 
-  handleDots();
-
   //login
-  if(dbUser == null){
-    text("Logging in" + dots, width / 2, height - 55);
+  if(loginStatus != ""){
+    //handleDots();
+    text(loginStatus + dots, width / 2, height - 55);
   }else{
+    fill(0, 255, 0);
     text("Logged in as " + dbUser.userName, width / 2, height - 55);
   }
 
@@ -334,16 +364,19 @@ private void handleDots(){
   }
 }
 
+// start a thread to load 1 resource
 void startLoaderThread(String currentResourceName, String currentResourceFileName){
   LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
   ResourceManager.loaderThreads.add(loaderThread);
   loaderThread.start();
 }
 
+// start a thread that registers a run start
 void startRegisterRunThread(){
   databaseManager.registerRunStart();
 }
 
+// start a thread that registers a run end
 void startRegisterEndThread(){
   databaseManager.registerRunEnd();
 }
@@ -355,7 +388,7 @@ BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it 
 
 BaseObject load(BaseObject newObject, PVector setPosition) {
   loadList.add(newObject);
-  newObject.moveTo(setPosition);
+  newObject.position.set(setPosition);
   return newObject;
 }
 

@@ -13,7 +13,7 @@ class FireBiome extends Biome {
   Tile getTileToGenerate(int x, int depth) {
    
     // Never spawn resources directly underneath the player, to discourage the player from just digging straight down
-    if(player != null && abs(x * tileSize - player.position.x) < tileSize * 4){
+    if(player != null && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 4){
 
       return new VulcanicTile(x, depth); 
     }

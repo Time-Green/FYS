@@ -4,12 +4,6 @@ import java.util.Date;
 
 public class DatabaseManager {
 
-  // USAGE
-  // ArrayList<DbUser> allUsers = databaseManager.getAllUsers();
-  // for(DbUser user : allUsers){
-  //     println("user.username: " + user.userName);
-  // }
-
   private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
 
   private int currentSessionId = -1;
@@ -162,6 +156,22 @@ public class DatabaseManager {
     return returnList;
   }
 
+  public ArrayList<LeaderboardRow> getLeaderboard(int amount) {
+
+    if (currentSessionId < 0) {
+      return new ArrayList<LeaderboardRow>();
+    }
+
+    JSONArray result = doDatabaseRequest("SELECT u.username, MAX(r.score) score, MAX(r.depth) depth FROM Run r INNER JOIN Playsession p ON r.playsessionid = p.id INNER JOIN User u ON p.userid = u.id WHERE r.score IS NOT NULL GROUP BY u.username ORDER BY MAX(r.score) DESC LIMIT " + amount);
+    ArrayList<LeaderboardRow> returnList = new ArrayList<LeaderboardRow>();
+
+    for (int i = 0; i < result.size(); i++) {
+      returnList.add(buildLeaderboardRow(result.getJSONObject(i)));
+    }
+
+    return returnList;
+  }
+
   public boolean registerRunEnd() {
 
     if (currentSessionId < 0 || currentRunId < 0) {
@@ -183,7 +193,7 @@ public class DatabaseManager {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date date = new Date();
 
-    JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - Globals.OVERWORLDHEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
+    JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
 
     int success = -1;
 
@@ -308,6 +318,17 @@ public class DatabaseManager {
     playerRelicInventory.amount = json.getInt("amount");
 
     return playerRelicInventory;
+  }
+
+  private LeaderboardRow buildLeaderboardRow(JSONObject json) {
+
+    LeaderboardRow leaderboardRow = new LeaderboardRow();
+
+    leaderboardRow.userName = json.getString("username");
+    leaderboardRow.score = json.getInt("score");
+    leaderboardRow.depth = json.getInt("depth");
+
+    return leaderboardRow;
   }
 
   public JSONArray doDatabaseRequest(String request) {

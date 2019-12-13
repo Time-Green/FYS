@@ -7,7 +7,7 @@ namespace StructureDesigner
     {
         public readonly List<Image[,]> Layers = new List<Image[,]>();
 
-        public State(int tileSize, int editorGridWidth, int editorGridHeight, List<Image[,]> layers)
+        public State(int Globals.TILE_SIZE, int editorGridWidth, int editorGridHeight, List<Image[,]> layers)
         {
             //copy data
             foreach (var layer in layers)
@@ -22,8 +22,8 @@ namespace StructureDesigner
                         {
                             layerArray[x, y] = new Image
                             {
-                                Height = tileSize,
-                                Width = tileSize,
+                                Height = Globals.TILE_SIZE,
+                                Width = Globals.TILE_SIZE,
                                 Source = layer[x, y].Source.Clone()
                             };
                         }

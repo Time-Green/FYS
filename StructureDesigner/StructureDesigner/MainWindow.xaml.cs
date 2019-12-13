@@ -17,7 +17,7 @@ namespace StructureDesigner
 {
     public partial class MainWindow
     {
-        private const int TileSize = 50;
+        private const int Globals.TILE_SIZE = 50;
         private const int LayerAmount = 4;
         private const int EditorGridWidth = 50;
         private const int EditorGridHeight = 100;
@@ -40,8 +40,8 @@ namespace StructureDesigner
             InitializeComponent();
 
             Canvas.RenderTransform = _scaleTransform;
-            Canvas.Width = EditorGridWidth * TileSize;
-            Canvas.Height = EditorGridHeight * TileSize;
+            Canvas.Width = EditorGridWidth * Globals.TILE_SIZE;
+            Canvas.Height = EditorGridHeight * Globals.TILE_SIZE;
 
             AddLayers(true);
             AddGridLines();
@@ -92,10 +92,10 @@ namespace StructureDesigner
             {
                 var line = new Line
                 {
-                    X1 = i * TileSize,
-                    X2 = i * TileSize,
+                    X1 = i * Globals.TILE_SIZE,
+                    X2 = i * Globals.TILE_SIZE,
                     Y1 = 0,
-                    Y2 = EditorGridHeight * TileSize,
+                    Y2 = EditorGridHeight * Globals.TILE_SIZE,
                     Stroke = Brushes.DarkRed,
                     StrokeThickness = 1
                 };
@@ -109,9 +109,9 @@ namespace StructureDesigner
                 var line = new Line
                 {
                     X1 = 0,
-                    X2 = EditorGridWidth * TileSize,
-                    Y1 = i * TileSize,
-                    Y2 = i * TileSize,
+                    X2 = EditorGridWidth * Globals.TILE_SIZE,
+                    Y1 = i * Globals.TILE_SIZE,
+                    Y2 = i * Globals.TILE_SIZE,
                     Stroke = Brushes.DarkRed,
                     StrokeThickness = 1
                 };
@@ -144,8 +144,8 @@ namespace StructureDesigner
                 var image = new Image
                 {
                     Source = new BitmapImage(new Uri(file)),
-                    Width = TileSize,
-                    Height = TileSize,
+                    Width = Globals.TILE_SIZE,
+                    Height = Globals.TILE_SIZE,
                     Margin = new Thickness(5),
                     ToolTip = Path.GetFileNameWithoutExtension(file)
                 };
@@ -161,8 +161,8 @@ namespace StructureDesigner
             var image = new Image
             {
                 Source = new BitmapImage(new Uri(@"delete.png", UriKind.RelativeOrAbsolute)),
-                Width = TileSize,
-                Height = TileSize,
+                Width = Globals.TILE_SIZE,
+                Height = Globals.TILE_SIZE,
                 Margin = new Thickness(5),
                 ToolTip = "Delete",
                 Name = "Delete"
@@ -252,7 +252,7 @@ namespace StructureDesigner
 
         private void RemoveTile(Point gridPoint)
         {
-            var existingImageOnGridPoint = _layers[_selectedLayer][(int)gridPoint.X / TileSize, (int)gridPoint.Y / TileSize];
+            var existingImageOnGridPoint = _layers[_selectedLayer][(int)gridPoint.X / Globals.TILE_SIZE, (int)gridPoint.Y / Globals.TILE_SIZE];
 
             if (existingImageOnGridPoint == null)
             {
@@ -260,12 +260,12 @@ namespace StructureDesigner
             }
 
             Canvas.Children.Remove(existingImageOnGridPoint);
-            _layers[_selectedLayer][(int) gridPoint.X / TileSize, (int) gridPoint.Y / TileSize] = null;
+            _layers[_selectedLayer][(int) gridPoint.X / Globals.TILE_SIZE, (int) gridPoint.Y / Globals.TILE_SIZE] = null;
         }
 
         private void AddTile(Point gridPoint, ImageSource imageSource, int layer)
         {
-            var existingImageOnGridPoint = _layers[layer][(int) gridPoint.X / TileSize, (int) gridPoint.Y / TileSize];
+            var existingImageOnGridPoint = _layers[layer][(int) gridPoint.X / Globals.TILE_SIZE, (int) gridPoint.Y / Globals.TILE_SIZE];
 
             if (existingImageOnGridPoint != null)
             {
@@ -280,8 +280,8 @@ namespace StructureDesigner
 
             var img = new Image
             {
-                Height = TileSize,
-                Width = TileSize,
+                Height = Globals.TILE_SIZE,
+                Width = Globals.TILE_SIZE,
                 Source = imageSource
             };
 
@@ -295,21 +295,21 @@ namespace StructureDesigner
             Canvas.SetLeft(img, gridPoint.X);
             Canvas.SetTop(img, gridPoint.Y);
 
-            _layers[layer][(int)gridPoint.X / TileSize, (int)gridPoint.Y / TileSize] = img;
+            _layers[layer][(int)gridPoint.X / Globals.TILE_SIZE, (int)gridPoint.Y / Globals.TILE_SIZE] = img;
         }
 
         private static Point GetGridPos(Point dropPoint)
         {
             var flooredXValue = (int) Math.Floor(dropPoint.X);
 
-            while (flooredXValue % TileSize != 0)
+            while (flooredXValue % Globals.TILE_SIZE != 0)
             {
                 flooredXValue--;
             }
             
             var flooredYValue = (int)Math.Floor(dropPoint.Y);
 
-            while (flooredYValue % TileSize != 0)
+            while (flooredYValue % Globals.TILE_SIZE != 0)
             {
                 flooredYValue--;
             }
@@ -387,7 +387,7 @@ namespace StructureDesigner
                     var x = int.Parse(split[0]);
                     var y = int.Parse(split[1]);
                     var file = split[2];
-                    var point = new Point(x * TileSize, y * TileSize);
+                    var point = new Point(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE);
                     var fullPath = _fysDataDirectory + file;
 
                     AddTile(point, new BitmapImage(new Uri(fullPath)), layerIndex);
@@ -490,7 +490,7 @@ namespace StructureDesigner
                 return;
             }
 
-            var undoAction = new State(TileSize, EditorGridWidth, EditorGridHeight, _layers);
+            var undoAction = new State(Globals.TILE_SIZE, EditorGridWidth, EditorGridHeight, _layers);
 
             var amountToRemove = _states.Count - _undoIndex;
             _states.RemoveRange(_undoIndex, amountToRemove);
@@ -541,7 +541,7 @@ namespace StructureDesigner
                     {
                         if (layer[x, y] != null)
                         {
-                            AddTile(new Point(x * TileSize, y * TileSize), layer[x, y].Source, layerCount);
+                            AddTile(new Point(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE), layer[x, y].Source, layerCount);
                         }
                     }
                 }
