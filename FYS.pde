@@ -80,6 +80,19 @@ private void generateLeaderboardGraphics(){
   int i = 0;
 
   for (LeaderboardRow leaderboardRow : leaderBoard) {
+
+    if(i == 0){
+      leaderBoardGraphics.fill(#C98910);
+    }else if(i == 1){
+      leaderBoardGraphics.fill(#A8A8A8);
+    }else if(i == 2){
+      leaderBoardGraphics.fill(#cd7f32);
+    }else if(leaderboardRow.userName.equals(dbUser.userName)){
+      leaderBoardGraphics.fill(255); // WIP
+    }else{
+      leaderBoardGraphics.fill(255);
+    }
+    
     leaderBoardGraphics.text("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m", (Globals.TILE_SIZE * 9) / 2, 53 + i * 20);
     //println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
     i++;
