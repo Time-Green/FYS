@@ -31,7 +31,7 @@ class Player extends Mob {
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
     viewTarget = VIEW_AMOUNT;
-    isSwimming = true;
+    // isSwimming = true;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -198,15 +198,17 @@ class Player extends Mob {
 
   void doPlayerMovement() {
 
+    //Allow endless jumps while swimming
     if (isSwimming)isGrounded = true;
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
-      addForce(new PVector(0, -jumpForce));
+      if (!isSwimming) addForce(new PVector(0, -jumpForce));
+      else addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-      if (isSwimming) addForce(new PVector(0, (jumpForce/5)));
+      if (isSwimming) addForce(new PVector(0, (jumpForce/10)));//Swim down
     } else {
       isMiningDown = false;
     }
@@ -214,16 +216,18 @@ class Player extends Mob {
     if (InputHelper.isKeyDown(Globals.LEFTKEY)) {
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
-      isMiningRight = false;
       flipSpriteHorizontal = false;
+    } else {
+      isMiningLeft = false;
     }
 
     if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
       addForce(new PVector(speed, 0));
       isMiningRight = true;
-      isMiningLeft = false;
       flipSpriteHorizontal = true;
-    } 
+    } else {
+      isMiningRight = false;
+    }
 
     if (InputHelper.isKeyDown(Globals.INVENTORYKEY)) { 
       useInventory();

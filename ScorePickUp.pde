@@ -15,6 +15,7 @@ public class ScorePickUp extends PickUp {
 
   void pickedUp(Mob mob) {
     player.addScore(score);
+    load(new PickupText(score, new PVector(this.position.x,this.position.y)));
 
     super.pickedUp(mob);
   }
