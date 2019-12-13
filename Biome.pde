@@ -115,7 +115,6 @@ class Biome {
   }
   void prepareCeilingObstacle(Tile target, World world){
     Tile above = world.getTile(target.position.x, target.position.y - Globals.TILE_SIZE);
-    println(above);
 
     if(above == null){
       return;
