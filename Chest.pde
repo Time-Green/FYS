@@ -46,7 +46,7 @@ class Chest extends Obstacle {
 
       case 69:
         newContents.add(load(new Pickaxe(), new PVector(200, 200)));
-        //please don't remoe this for relic testing
+        //please don't remove this for relic testing
       case 70:
         newContents.add(load(new RelicShard(), new PVector(200, 200)));
         addRandomLoot(newContents);

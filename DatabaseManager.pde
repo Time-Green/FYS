@@ -34,13 +34,23 @@ public class DatabaseManager {
     }
   }
 
-  public void getAchievement() {
+  public ArrayList<Achievement> getPlayerAchievements() {
 
     if (currentSessionId < 0) {
-      return;
+      return new ArrayList<Achievement>();
     }
 
-    JSONArray result = doDatabaseRequest("SELECT * FROM Achievement WHERE id = 1");
+    JSONArray result = doDatabaseRequest("SELECT A.id, A.name, A.description FROM Achievement AS A INNER JOIN UnlockedAchievement ON UnlockedAchievement.achievementid = A.id WHERE UnlockedAchievement.playerid = " + dbUser.id);
+    ArrayList<Achievement> returnList = new ArrayList<Achievement>();
+
+    for (int i = 0; i < result.size(); i++) {
+      returnList.add(buildAchievement(result.getJSONObject(i)));
+    }
+
+    // todo make for loop
+    println(returnList.get(0).name); 
+    return returnList;
+    
   }
 
   //used for logging in
@@ -320,6 +330,17 @@ public class DatabaseManager {
     return playerRelicInventory;
   }
 
+  private Achievement buildAchievement(JSONObject json) {
+
+    Achievement achievement = new Achievement();
+
+    achievement.id = json.getInt("id");
+    achievement.name = json.getString("name");
+    achievement.description = json.getString("description");
+
+    return achievement;
+  }
+  
   private LeaderboardRow buildLeaderboardRow(JSONObject json) {
 
     LeaderboardRow leaderboardRow = new LeaderboardRow();
