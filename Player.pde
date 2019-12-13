@@ -219,8 +219,13 @@ class Player extends Mob {
     if (isSwimming)isGrounded = true;
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
-      if (!isSwimming) addForce(new PVector(0, -jumpForce));
-      else addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
+      if (!isSwimming){
+        addForce(new PVector(0, -jumpForce));
+        runData.playerJumps++;
+      }
+      else {
+        addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
+      }
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
