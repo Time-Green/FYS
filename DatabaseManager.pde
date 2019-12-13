@@ -34,20 +34,21 @@ public class DatabaseManager {
     }
   }
 
-    public ArrayList<Achievement> getPlayerAchievementInventory() {
+  public ArrayList<Achievement> getPlayerAchievements() {
 
     if (currentSessionId < 0) {
       return new ArrayList<Achievement>();
     }
 
-    JSONArray result = doDatabaseRequest("SELECT A.name, A.description FROM Achievement AS A INNER JOIN UnlockedAchievement ON UnlockedAchievement.achievementid = A.id WHERE UnlockedAchievement.playerid = " + dbUser.id);
+    JSONArray result = doDatabaseRequest("SELECT A.id, A.name, A.description FROM Achievement AS A INNER JOIN UnlockedAchievement ON UnlockedAchievement.achievementid = A.id WHERE UnlockedAchievement.playerid = " + dbUser.id);
     ArrayList<Achievement> returnList = new ArrayList<Achievement>();
 
     for (int i = 0; i < result.size(); i++) {
       returnList.add(buildAchievement(result.getJSONObject(i)));
     }
 
-    print(returnList); 
+    // todo make for loop
+    println(returnList.get(0).name); 
     return returnList;
     
   }

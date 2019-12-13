@@ -18,6 +18,7 @@ int loginStartTime;
 RunData runData;
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderboardRow> leaderBoard;
+ArrayList<Achievement> playerAchievements; 
 String loginStatus = "Logging in";
 
 DisposeHandler dh;
@@ -61,8 +62,8 @@ void login() {
   databaseManager.login();
   loginStatus = "Getting player inventory";
   totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
-  //loginStatus = "Getting player achievements";
-  //playerAchievements = databaseManager.getPlayerAchievements();
+  loginStatus = "Getting player achievements";
+  playerAchievements = databaseManager.getPlayerAchievements();
   loginStatus = "Getting leaderboard";
   leaderBoard = databaseManager.getLeaderboard(10);
   loginStatus = "";
