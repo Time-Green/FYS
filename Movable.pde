@@ -145,7 +145,7 @@ class Movable extends BaseObject {
     super.draw();
 
     if(image == null){
-      println("ERROR: image for object '" + this + "' not found!");
+      println("ERROR: Image for object '" + this + "' not found!");
 
       return;
     }
@@ -155,10 +155,6 @@ class Movable extends BaseObject {
     translate(position.x, position.y);
 
     tint(lightningAmount);
-    if(image == null){
-      println("ERROR: Object", this, "doesn't have a defined image!");
-      return;
-    }
 
     if (!flipSpriteHorizontal && !flipSpriteVertical) {
       scale(1, 1);
