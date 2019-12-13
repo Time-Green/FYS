@@ -46,7 +46,6 @@ class Tile extends BaseObject {
       density = false;
 
       if(random(1) < world.currentBiome.ceilingObstacleChance){ //do a chance check first to save time and resources
-        println("yote");
         world.currentBiome.prepareCeilingObstacle(this, world);
       }
       
