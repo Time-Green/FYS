@@ -149,6 +149,10 @@ class Movable extends BaseObject {
     translate(position.x, position.y);
 
     tint(lightningAmount);
+    if(image == null){
+      println("ERROR: Object", this, "doesn't have a defined image!");
+      return;
+    }
 
     if (!flipSpriteHorizontal && !flipSpriteVertical) {
       scale(1, 1);
