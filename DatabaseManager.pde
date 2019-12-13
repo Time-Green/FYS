@@ -48,7 +48,7 @@ public class DatabaseManager {
     }
 
     // todo make for loop
-    println(returnList.get(0).name); 
+    //println(returnList.get(0).name); 
     return returnList;
     
   }

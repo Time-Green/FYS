@@ -58,28 +58,16 @@ public class Npc extends Mob{
 
   private void loadFrames(){
     for (int i = 0; i < WALKFRAMES; i++){
-      walkFrames[i] = ResourceManager.getImage("JonahWalk" + i);
+      walkFrames[i] = ResourceManager.getImage(name + "Walk" + i);
     }
 
     walkCycle = new AnimatedImage(walkFrames, 10, position, size.x, flipSpriteHorizontal);
 
     for (int i = 0; i < IDLEFRAMES; i++){
-      idleFrames[i] = ResourceManager.getImage("JonahIdle" + i);
+      idleFrames[i] = ResourceManager.getImage(name + "Idle" + i);
     }
 
     animatedImageIdle = new AnimatedImage(idleFrames, 60, position, size.x, flipSpriteHorizontal);
-
-    //   for (int i = 0; i < WALKFRAMES; i++){
-    //   walkFrames[i] = ResourceManager.getImage("JackWalk" + i);
-    // }
-
-    // walkCycle = new AnimatedImage(walkFrames, 10, position, size.x, flipSpriteHorizontal);
-
-    // for (int i = 0; i < IDLEFRAMES; i++){
-    //   idleFrames[i] = ResourceManager.getImage("JackIdle" + i);
-    // }
-
-    // animatedImageIdle = new AnimatedImage(idleFrames, 60, position, size.x, flipSpriteHorizontal);
   }
 
   void update() {
