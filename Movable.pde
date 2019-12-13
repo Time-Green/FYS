@@ -144,6 +144,12 @@ class Movable extends BaseObject {
 
     super.draw();
 
+    if(image == null){
+      println("ERROR: Image for object '" + this + "' not found!");
+
+      return;
+    }
+
     pushMatrix();
 
     translate(position.x, position.y);
@@ -251,7 +257,7 @@ class Movable extends BaseObject {
   }
 
   int getDepth() {
-    return int(position.y / tileSize);
+    return int(position.y / Globals.TILE_SIZE);
   }
 
   void attemptMine(BaseObject object) {

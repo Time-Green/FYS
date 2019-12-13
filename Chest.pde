@@ -46,6 +46,10 @@ class Chest extends Obstacle {
 
       case 69:
         newContents.add(load(new Pickaxe(), new PVector(200, 200)));
+        //please don't remove this for relic testing
+      case 70:
+        newContents.add(load(new RelicShard(), new PVector(200, 200)));
+        addRandomLoot(newContents);
       break;
     }
 
@@ -104,7 +108,7 @@ class Chest extends Obstacle {
     AudioManager.playSoundEffect("ChestOpen");
 
     for (Movable movable : contents) {
-      movable.moveTo(position.x, position.y - tileSize);
+      movable.position.set(new PVector(position.x, position.y - Globals.TILE_SIZE));
       movable.suspended = false;
 
       movable.velocity.y = random(jumpiness / 4, jumpiness);

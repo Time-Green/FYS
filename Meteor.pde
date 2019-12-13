@@ -11,7 +11,7 @@ class Meteor extends Movable {
     worldBorderCheck = false;
 
     sizeModifier = random(MINSIZE, MAXSIZE);
-    size.set(tileSize * sizeModifier, tileSize * sizeModifier);
+    size.set(Globals.TILE_SIZE * sizeModifier, Globals.TILE_SIZE * sizeModifier);
 
     aerialDragFactor = 1.0f;
     velocity.set(random(-MAXHORIZONTALVELOCITY, MAXHORIZONTALVELOCITY), 0);

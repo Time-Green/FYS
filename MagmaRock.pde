@@ -1,5 +1,5 @@
 class MagmaRock extends Tile {
-  float damage = 20;
+  float damage = 10;
 
   MagmaRock(int x, int y) {    
     super(x, y);
@@ -13,5 +13,6 @@ class MagmaRock extends Tile {
 
   void collidedWith(BaseObject object) {
     object.takeDamage(damage);
+    object.fireAct(damage);
   }
 }

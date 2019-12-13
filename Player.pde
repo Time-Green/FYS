@@ -14,11 +14,13 @@ class Player extends Mob {
   private AnimatedImage animatedImageFall;
   private final int FALLFRAMES = 4;
 
-  private float VIEW_AMOUNT = 500;
+  private float VIEW_AMOUNT = 400;
   private float viewTarget;
   private float easing = 0.025f;
 
-  private float heal = 0.2f;
+  private float regen = 0.2f;
+  private final float fireDamage = 4;
+  boolean isRegen;
 
   //Status effects
   public float stunTimer;
@@ -31,7 +33,7 @@ class Player extends Mob {
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
     viewTarget = VIEW_AMOUNT;
-    isSwimming = true;
+    isSwimming = false;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -86,17 +88,27 @@ class Player extends Mob {
 
     statusEffects();
 
+    fireAct(fireDamage);
+
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
   }
 
   void checkHealthLow() {
-    if (currentHealth < maxHealth / 5f) { // if lower than 20% health, show low health overlay
+    if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f) { // if lower than 20% health, show low health overlay
 
       ui.drawWarningOverlay = true;
 
        if (frameCount % 60 == 0) {
+        AudioManager.playSoundEffect("LowHealth");
+      }
+
+      }else if (currentHealth < maxHealth / 10f) { // if lower than 10% health, show low health overlay intesified
+
+      ui.drawWarningOverlay = true;
+
+       if (frameCount % 40 == 0) {
         AudioManager.playSoundEffect("LowHealth");
       }
 
@@ -108,22 +120,28 @@ class Player extends Mob {
 
 
   void regenaration() {
-     if(isHurt == false) {
-      if(currentHealth < maxHealth) {
-        if(frameCount % 30 == 0) {
-          currentHealth += heal;
+    if(isRegen == false) {
+      if(frameCount % 180 == 0) {
+        if(isHurt == false) {
+          if(currentHealth < maxHealth) {
+            if(frameCount % 5 == 0) {
+              currentHealth += regen;
+              isRegen = true;
+            }
           }
-        }
-      }  
-      else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
-        if(currentHealth < maxHealth) {
-          if(frameCount % 120 == 0)  {
-            if(frameCount % 30 == 0) {
-              currentHealth += heal;
+        }  
+    else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
+      if(currentHealth < maxHealth) {
+        if(frameCount % 120 == 0)  {
+          if(frameCount % 5 == 0) {
+            currentHealth += regen;
+            isRegen = true;
+              }
             }
           }
         }
       }
+    }
   }
 
   void applyRelicBoost(){
@@ -136,11 +154,20 @@ class Player extends Mob {
          maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
          currentHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
+      else if(collectedRelicShardInventory.relicshardid == 2) {
+        regen += Globals.REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 3) {
+        this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
+      else if(collectedRelicShardInventory.relicshardid == 4) {
+        VIEW_AMOUNT += Globals.LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+      }
     }
   }
 
   float getRelicStrength(float relicAmount){
-    return floor(relicAmount/3);
+    return floor(relicAmount/5);
   }
 
   void setVisibilityBasedOnCurrentBiome() {
@@ -185,7 +212,7 @@ class Player extends Mob {
       } else if(isGrounded == false) {
         animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageFall.draw();
-      }else {//Idle
+      } else {//Idle
         animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageIdle.draw();
       }
@@ -198,15 +225,22 @@ class Player extends Mob {
 
   void doPlayerMovement() {
 
+    //Allow endless jumps while swimming
     if (isSwimming)isGrounded = true;
 
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
-      addForce(new PVector(0, -jumpForce));
+      if (!isSwimming){
+        addForce(new PVector(0, -jumpForce));
+        runData.playerJumps++;
+      }
+      else {
+        addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
+      }
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
       isMiningDown = true;
-      if (isSwimming) addForce(new PVector(0, (jumpForce/5)));
+      if (isSwimming) addForce(new PVector(0, (jumpForce/10)));//Swim down
     } else {
       isMiningDown = false;
     }
@@ -214,16 +248,18 @@ class Player extends Mob {
     if (InputHelper.isKeyDown(Globals.LEFTKEY)) {
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
-      isMiningRight = false;
       flipSpriteHorizontal = false;
+    } else {
+      isMiningLeft = false;
     }
 
     if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
       addForce(new PVector(speed, 0));
       isMiningRight = true;
-      isMiningLeft = false;
       flipSpriteHorizontal = true;
-    } 
+    } else {
+      isMiningRight = false;
+    }
 
     if (InputHelper.isKeyDown(Globals.INVENTORYKEY)) { 
       useInventory();
@@ -256,8 +292,6 @@ class Player extends Mob {
 
   public void takeDamage(float damageTaken) {
 
-    println("player took " + damageTaken + " damage");
-
     if (isImmortal || damageTaken == 0.0) {
       return;
     }
@@ -283,6 +317,19 @@ class Player extends Mob {
       isMiningRight = false;
     }
   }
+
+  //fire damage blocks regenaration
+  // void fireAct(float fireDamage) {
+  //   if(MagmaRock.collidedWith) {
+  //     if(frameCount % 30 == 0) {
+  //       isRegen = false;
+  //       currentHealth -= fireDamage;
+  //       if(frameCount % 180 == 0) {
+  //         break;
+  //       }
+  //     }
+  //   }
+  // }
 
   public void die() {
     super.die();
