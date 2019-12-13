@@ -4,12 +4,6 @@ import java.util.Date;
 
 public class DatabaseManager {
 
-  // USAGE
-  // ArrayList<DbUser> allUsers = databaseManager.getAllUsers();
-  // for(DbUser user : allUsers){
-  //     println("user.username: " + user.userName);
-  // }
-
   private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
 
   private int currentSessionId = -1;

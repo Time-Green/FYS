@@ -16,6 +16,9 @@ DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
 int loginStartTime;
 RunData runData;
+ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
+ArrayList<LeaderbordRow> leaderBoard;
+boolean loginCompleted;
 
 DisposeHandler dh;
 
@@ -25,9 +28,6 @@ WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
 Enemy[] enemies;
-
-//player collected relicShards
-ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 
 boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
@@ -55,6 +55,8 @@ void setup() {
 void login() {
   databaseManager.login();
   totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+  leaderBoard = databaseManager.getLeaderbord();
+  loginCompleted = true;
 }
 
 // gets called when all resources are loaded
@@ -77,11 +79,8 @@ void afterResouceLoadingSetup() {
     AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
   }
 
-  ArrayList<LeaderbordRow> leaderBord = databaseManager.getLeaderbord();
-
-  for(int i = 0; i<leaderBord.size(); i++){
-    println(leaderBord.get(i).userName);
-
+  for(int i = 0; i < leaderBoard.size(); i++){
+    println(leaderBoard.get(i).userName);
   }
 
   //setup game and show title screen
@@ -117,7 +116,7 @@ void setupGame() {
 void draw() {
 
   //wait until all resources are loaded and we are logged in
-  if (!ResourceManager.isAllLoaded() || dbUser == null || totalCollectedRelicShards == null) {
+  if (!ResourceManager.isAllLoaded() || !loginCompleted) {
     handleLoadingScreen();
 
     return;
