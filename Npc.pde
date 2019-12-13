@@ -23,7 +23,7 @@ public class Npc extends Mob{
   private AnimatedImage walkCycle;
   private final int WALKFRAMES = 4;
   private AnimatedImage animatedImageIdle;
-  private final int IDLEFRAMES = 3;
+  private final int IDLEFRAMES = 1;
 
   private int lastWalkingStateChange = millis();
 
