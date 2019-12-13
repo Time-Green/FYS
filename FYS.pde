@@ -58,6 +58,8 @@ void login() {
   databaseManager.login();
   loginStatus = "Getting player inventory";
   totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+  //loginStatus = "Getting player achievements";
+  //playerAchievements = databaseManager.getPlayerAchievements();
   loginStatus = "Getting leaderboard";
   leaderBoard = databaseManager.getLeaderboard(10);
   loginStatus = "";

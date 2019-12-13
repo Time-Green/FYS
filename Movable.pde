@@ -144,6 +144,12 @@ class Movable extends BaseObject {
 
     super.draw();
 
+    if(image == null){
+      println("ERROR: image for object '" + this + "' not found!");
+
+      return;
+    }
+
     pushMatrix();
 
     translate(position.x, position.y);
