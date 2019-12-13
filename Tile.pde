@@ -17,20 +17,20 @@ class Tile extends BaseObject {
     loadInBack = true;
     movableCollision = true;
 
-    position.x = x * tileSize;
-    position.y = y * tileSize;
+    position.x = x * Globals.TILE_SIZE;
+    position.y = y * Globals.TILE_SIZE;
 
-    size.x = tileSize;
-    size.y = tileSize;
+    size.x = Globals.TILE_SIZE;
+    size.y = Globals.TILE_SIZE;
 
     gridPosition.x = x;
     gridPosition.y = y;
 
-    setMaxHp(2);
+    setMaxHp(2 + y / 100);
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 
-    if (y > Globals.OVERWORLDHEIGHT) {
+    if (y > Globals.OVERWORLD_HEIGHT) {
       destroyedImage = ResourceManager.getImage("DestroyedBlock");
     } else {
       density = false; 
@@ -41,13 +41,19 @@ class Tile extends BaseObject {
   private void setupCave(World world) {
 
     //11 is grass layer + transition layer
-    if (gridPosition.y > Globals.OVERWORLDHEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
+    if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
       destroyed = true;
       density = false;
 
-      //have a 2 in 10 change to spawn a enemy
-      // float enemySpawnRate = random(10);
-      // if (enemySpawnRate >= 8) 
+      if(random(1) < world.currentBiome.ceilingObstacleChance){ //do a chance check first to save time and resources
+        world.currentBiome.prepareCeilingObstacle(this, world);
+      }
+      
+
+      if (loadInBack == false) {
+        loadInBack = true;
+        reload(this);
+      }
 
       //1% change to spawn torch
       if (random(100) < 1) {
@@ -86,13 +92,13 @@ class Tile extends BaseObject {
       }
 
       tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
-      image(image, position.x, position.y, tileSize, tileSize);
+      image(image, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
       tint(255);
     } else {
 
       if (destroyedImage != null) {
         tint(lightningAmount);
-        image(destroyedImage, position.x, position.y, tileSize, tileSize);
+        image(destroyedImage, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
         tint(255);
       }
     }
@@ -137,6 +143,8 @@ class Tile extends BaseObject {
 
     destroyed = true;
     density = false;
+    loadInBack = true;
+    reload(this);
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
     if (lightSources.contains(this)) {

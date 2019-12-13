@@ -1,27 +1,26 @@
 public class World {
   ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
   ArrayList<StructureSpawner> queuedStructures = new ArrayList<StructureSpawner>();
-  //TODO: CLEANUP MAP ROWS AFTER ALL TILES IN THE ROW HAVE BEEN DELETED
 
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
   int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
 
   PImage dayNightImage;
 
-  float wallWidth;
+  int birdCount = round(random(10, 15));
 
   Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
   Biome currentBiome;
   ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
   int switchDepth; //the depth at wich we switch to the next biome in the qeueu
 
-  World(float wallWidth) {
-    this.wallWidth = wallWidth;
+  World() {
     dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, 8)));
 
     //Specially queued biomes, for cinematic effect
     biomeQueue.add(new OverworldBiome());
     biomeQueue.add(new NormalBiome());
+    // biomeQueue.add(new WaterBiome());
 
     fillBiomeQueue(0);
     switchBiome(0);
@@ -30,6 +29,7 @@ public class World {
 
     spawnOverworldStructures();
     spawnBirds();
+    spawnNpcs();
     spawnStarterChest();
   }
 
@@ -38,42 +38,41 @@ public class World {
 
   public void draw() {
     drawBackgoundImage();
-    //println("map.size(): " + map.size());
   }
 
   void drawBackgoundImage(){
-    pushMatrix();
-
-    scale(1.1, 1.1);
-
-    float xPos = -camera.position.x - 1080 * 0.1;
+    float xPos = -camera.position.x - width * 0.1;
     float yPos = -camera.position.y * 0.5 - 200;
 
-    image(dayNightImage, xPos, yPos, wallWidth, 1080);
+    float worldWidth = Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE;
 
+    pushMatrix();
+    scale(1.1, 1.1);
+    image(dayNightImage, xPos, yPos, worldWidth, dayNightImage.height);
     popMatrix(); 
   }
 
   void spawnOverworldStructures() {
 
-    spawnStructure("Tree", new PVector(1, 6)); 
+    spawnStructure("Leaderboard", new PVector(12, 5));
 
-    int lastSpawnX = 0;
-    final int MIN_DISTANCE_INBETWEEN = 4;
-    final int MAX_DISTANCE = tilesHorizontal - 13;
+    int lastSpawnX = -4;
+    final int MIN_DISTANCE_INBETWEEN_TREE = 4;
+    final int MAX_XSPAWNPOS = Globals.TILES_HORIZONTAL - 13;
 
-    for (int i = 0; i < MAX_DISTANCE; i++) {
+    for (int i = 1; i < MAX_XSPAWNPOS; i++) {
 
-      if (i > lastSpawnX + MIN_DISTANCE_INBETWEEN) {
-
-        if (random(1) < 0.35f) {
-          lastSpawnX = i;
-          spawnStructure("Tree", new PVector(i, 6));
-        }
+      if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE && (i < 8 || i > 21)) {
+        lastSpawnX = i;
+        spawnTree(new PVector(i, 6));
       }
     }
 
     spawnStructure("ButtonAltar", new PVector(40, 8));
+  }
+
+  void spawnTree(PVector location){
+    spawnStructure("Tree", location); 
   }
 
   void spawnBirds() {
@@ -84,14 +83,30 @@ public class World {
     }
   }
 
+  // spawn devs
+  void spawnNpcs() {
+
+    String[] names = loadStrings("Texts/NpcNames.txt");
+    String[] genericTexts = loadStrings("Texts/GenericTexts.txt");
+    String[] panicTexts = loadStrings("Texts/PanicTexts.txt");
+
+    for (int i = 0; i < 6; i++) {
+      String[] personalTexts = loadStrings("Texts/" + names[i] + "Texts.txt");
+
+      Npc npc = new Npc(this, names[i], genericTexts, panicTexts, personalTexts);
+
+      load(npc, new PVector(random(50, 1650), 509));
+    }
+  }
+
   void spawnStarterChest() {
-    load(new Chest(69), new PVector(30 * tileSize, 10 * tileSize)); //69 is the forcedKey for an always pickaxe spawn
+    load(new Chest(69), new PVector(36 * Globals.TILE_SIZE, 10 * Globals.TILE_SIZE)); //69 is the forcedKey for an always pickaxe spawn
   }
 
   //return tile you're currently on
   Tile getTile(float x, float y) {
 
-    int yGridPos = floor(y / tileSize);
+    int yGridPos = floor(y / Globals.TILE_SIZE);
 
     if (yGridPos < 0 || yGridPos > map.size() - 1) {
       return null;
@@ -99,7 +114,7 @@ public class World {
 
     ArrayList<Tile> subList = map.get(yGridPos); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
-    int xGridPos = floor(x / tileSize);
+    int xGridPos = floor(x / Globals.TILE_SIZE);
 
     if (xGridPos < 0 || xGridPos >= subList.size()) {
       return null;
@@ -112,7 +127,7 @@ public class World {
 
     int mapDepth = map.size();
 
-    int playerDepth = Globals.OVERWORLDHEIGHT;
+    int playerDepth = Globals.OVERWORLD_HEIGHT;
 
     if(player != null){
       playerDepth = player.getDepth();
@@ -126,11 +141,11 @@ public class World {
         switchBiome(y);
       }
 
-      if (currentBiome.structureChance > random(1)) {
+      if (y > Globals.OVERWORLD_HEIGHT + 11 && currentBiome.structureChance > random(1)) {
         currentBiome.placeStructure(this, y);
       }
 
-      for (int x = 0; x <= tilesHorizontal; x++) {
+      for (int x = 0; x <= Globals.TILES_HORIZONTAL; x++) {
         Tile tile = currentBiome.getTileToGenerate(x, y);
         tile.destroyedImage = currentBiome.destroyedImage;
 
@@ -144,7 +159,7 @@ public class World {
     }
 
     for (StructureSpawner spawner : queuedStructures) {
-      spawner.trySpawn();
+      spawner.trySpawn(this);
     }
   }
 
@@ -157,43 +172,43 @@ public class World {
     float middleY = y + collider.size.y * 0.5f;
 
     //cardinals
-    Tile topTile = getTile(middleX, middleY - tileSize);
+    Tile topTile = getTile(middleX, middleY - Globals.TILE_SIZE);
     if (topTile != null) {
       surrounding.add(topTile);
     }
 
-    Tile botTile = getTile(middleX, middleY + tileSize);
+    Tile botTile = getTile(middleX, middleY + Globals.TILE_SIZE);
     if (botTile != null) {
       surrounding.add(botTile);
     }
 
-    Tile leftTile = getTile(middleX - tileSize, middleY);
+    Tile leftTile = getTile(middleX - Globals.TILE_SIZE, middleY);
     if (leftTile != null) {
       surrounding.add(leftTile);
     }
 
-    Tile rightTile = getTile(middleX + tileSize, middleY);
+    Tile rightTile = getTile(middleX + Globals.TILE_SIZE, middleY);
     if (rightTile != null) {
       surrounding.add(rightTile);
     }
 
     //diagonals
-    Tile botRightTile = getTile(middleX + tileSize, middleY + tileSize);
+    Tile botRightTile = getTile(middleX + Globals.TILE_SIZE, middleY + Globals.TILE_SIZE);
     if (botRightTile != null) {
       surrounding.add(botRightTile);
     }
 
-    Tile botLeftTile = getTile(middleX - tileSize, middleY + tileSize);
+    Tile botLeftTile = getTile(middleX - Globals.TILE_SIZE, middleY + Globals.TILE_SIZE);
     if (botLeftTile != null) {
       surrounding.add(botLeftTile);
     }
 
-    Tile topLeftTile = getTile(middleX - tileSize, middleY - tileSize);
+    Tile topLeftTile = getTile(middleX - Globals.TILE_SIZE, middleY - Globals.TILE_SIZE);
     if (topLeftTile != null) {
       surrounding.add(topLeftTile);
     }
 
-    Tile topRightTile = getTile(middleX + tileSize, middleY - tileSize);
+    Tile topRightTile = getTile(middleX + Globals.TILE_SIZE, middleY - Globals.TILE_SIZE);
     if (topRightTile != null) {
       surrounding.add(topRightTile);
     }
@@ -227,11 +242,11 @@ public class World {
   }
 
   PVector getGridPosition(Movable movable) {//return the X and Y in tiles
-    return new PVector(floor(movable.position.x / tileSize), floor(movable.position.y / tileSize));
+    return new PVector(floor(movable.position.x / Globals.TILE_SIZE), floor(movable.position.y / Globals.TILE_SIZE));
   }
 
   float getWidth() {
-    return tilesHorizontal * tileSize;
+    return Globals.TILES_HORIZONTAL * Globals.TILE_SIZE;
   }
 
   boolean canBiomeSwitch(int depth) {
@@ -273,7 +288,7 @@ public class World {
   }
 
   void safeSpawnStructure(String structureName, PVector gridSpawnPos) {
-    load(new StructureSpawner(this, structureName, gridSpawnPos), gridSpawnPos.mult(tileSize));
+    load(new StructureSpawner(this, structureName, gridSpawnPos), gridSpawnPos.mult(Globals.TILE_SIZE));
   }
 
   void spawnStructure(String structureName, PVector gridSpawnPos) {
@@ -304,20 +319,21 @@ public class World {
           // if layerIndex == 0 (background) replace the existing tile
           //else if layerIndex > 1, spawn on top of other tile (used for enemies, torch)
           if (layerIndex == 0) {
-            replaceObject(worldTilePosition, tileType);
+            replaceObject(worldTilePosition, tileType, structureName, structureTilePosition);
           } else {
             spawnObject(worldTilePosition, tileType);
           }
         }
+
       }
     }
   }
 
-  private void replaceObject(PVector relaceAtGridPos, String newObjectName) {
-    Tile tileToReplace = getTile(relaceAtGridPos.x * tileSize, relaceAtGridPos.y * tileSize);
+  private void replaceObject(PVector relaceAtGridPos, String newObjectName, String structureName, PVector structureTilePosition) {
+    Tile tileToReplace = getTile(relaceAtGridPos.x * Globals.TILE_SIZE, relaceAtGridPos.y * Globals.TILE_SIZE);
 
     String stripedObjectName = stripName(newObjectName);
-    Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos);
+    Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos, structureName, structureTilePosition);
     tileToReplace.replace(this, newTile);
   }
 
@@ -335,7 +351,7 @@ public class World {
     return stripedObjectName;
   }
 
-  private Tile convertNameToTile(String stripedObjectName, PVector spawnPos) {
+  private Tile convertNameToTile(String stripedObjectName, PVector spawnPos, String structureName, PVector structureTilePosition) {
 
     switch(stripedObjectName) {
 
@@ -345,7 +361,11 @@ public class World {
       return destroyedStoneTile;
 
     case "WoodPlank" :
-      return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y));
+      if(structureName == "Leaderboard"){
+        return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y), structureTilePosition); // extra code needs to be ran at leaderboard
+      }else{
+        return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y)); // extra code needs to be ran at leaderboard
+      }
 
     case "DoorTop" :
       return new DoorTopTile(int(spawnPos.x), int(spawnPos.y));
@@ -385,6 +405,9 @@ public class World {
 
     case "DungeonStairR" :
       return new DungeonStairR(int(spawnPos.x), int(spawnPos.y));
+
+    case "Fencepost" :
+      return new Fencepost(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");
@@ -395,8 +418,8 @@ public class World {
 
     PVector spawnWorldPos = new PVector();
     spawnWorldPos.set(spawnAtGridPos);
-    spawnWorldPos.x *= tileSize;
-    spawnWorldPos.y *= tileSize;
+    spawnWorldPos.x *= Globals.TILE_SIZE;
+    spawnWorldPos.y *= Globals.TILE_SIZE;
 
     switch(stripedObjectName) {
 
@@ -408,7 +431,7 @@ public class World {
       load(new EnemyBomb(spawnWorldPos));
       break;
 
-    case "ChestStart" :
+    case "Chest" :
       load(new Chest(0), spawnWorldPos);
       break;
 
@@ -459,7 +482,6 @@ public class World {
     case "Table" :
       load(new Table(), spawnWorldPos);
       break;
-
 
     default :
       println("ERROR: structure object '" + stripedObjectName + "' not set up or not found!");

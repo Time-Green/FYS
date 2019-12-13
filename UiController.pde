@@ -33,7 +33,7 @@ public class UIController {
   float currentOverlayFill = 0;
   boolean isIncreasing = true;
 
-  private final boolean DRAWSTATS = false;
+  private final boolean DRAWSTATS = true;
 
   //Inventory
   private float inventorySize = 50;
@@ -131,7 +131,7 @@ public class UIController {
     if (frameCount % 30 == 0) {
 
       if (arrowYTarget == 0) {
-        arrowYTarget = tileSize;
+        arrowYTarget = Globals.TILE_SIZE;
       } else {
         arrowYTarget = 0;
       }
@@ -145,14 +145,14 @@ public class UIController {
     textFont(instructionFont);
     textSize(instructionFontSize / 2);
 
-    for (int i = 0; i < tilesHorizontal + 1; i++) {
+    for (int i = 0; i < Globals.TILES_HORIZONTAL + 1; i++) {
 
       if (i % 2 == 0) {
         continue;
       }
 
-      text("Dig!", i * tileSize, Globals.OVERWORLDHEIGHT * tileSize + arrowYOffset - 15);
-      image(arrowImage, i * tileSize, Globals.OVERWORLDHEIGHT * tileSize + arrowYOffset);
+      text("Dig!", i * Globals.TILE_SIZE, Globals.OVERWORLD_HEIGHT * Globals.TILE_SIZE + arrowYOffset - 15);
+      image(arrowImage, i * Globals.TILE_SIZE, Globals.OVERWORLD_HEIGHT * Globals.TILE_SIZE + arrowYOffset);
     }
 
     tint(255);
@@ -175,7 +175,7 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLDHEIGHT) + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
+    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
   }
 
   void startMenu() {
@@ -229,7 +229,7 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + (player.getDepth() - Globals.OVERWORLDHEIGHT), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
+    text("Depth: " + max(0, player.getDepth() - Globals.OVERWORLD_HEIGHT), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
 
     drawInventory();
   }

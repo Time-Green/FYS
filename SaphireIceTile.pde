@@ -1,6 +1,6 @@
-public class IceTile2 extends ResourceTile {
+public class SaphireIceTile extends ResourceTile {
 
-  public IceTile2(int x, int y) {
+  public SaphireIceTile(int x, int y) {
     super(x, y);
 
     value = Globals.GREENICEVALUE;

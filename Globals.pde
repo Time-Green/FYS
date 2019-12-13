@@ -16,17 +16,27 @@ static class Globals {
   static final int STARTKEY = ENTER;
   static final int BACKKEY = BACKSPACE;
 
-  //Ore values (later to be set in database?)
+  //Ore values (later to be set in database?, yes)
   static final int COALVALUE = 50;
   static final int IRONVALUE = 100;
   static final int GREENICEVALUE = 300;
   static final int REDICEVALUE = 300;
   static final int GOLDVALUE = 500;
+  static final int LAPISVALUE = 750;
   static final int DIAMONDVALUE = 1000;
   static final int EMERALDVALUE = 5000;
+  
+  //relicboost
+   static final int HEALTH_BOOST = 10;
+   static final float DAMAGE_BOOST = 0.01f;
+   static final float REGEN_BOOST = 0.02f;
+   static final float SPEED_BOOST = 0.01f;
+   static final float LIGHT_BOOST = 10;
 
   //world
-  static final int OVERWORLDHEIGHT = 10;
+  static final int OVERWORLD_HEIGHT = 10; // in grid tiles
+  static final int TILES_HORIZONTAL = 50;
+  static final float TILE_SIZE = 50; // in pixels
 
   //Gamestate
   static boolean gamePaused = true;

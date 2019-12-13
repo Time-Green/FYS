@@ -23,6 +23,13 @@ class BaseObject {
 
   private void updateLightning() {
 
+    //if in overworld, fully lit up object
+    if(position.y <= Globals.OVERWORLD_HEIGHT * Globals.TILE_SIZE + Globals.TILE_SIZE){
+      lightningAmount = 255;
+
+      return;
+    }
+
     lightningAmount = 0;
 
     for (BaseObject lightSource : lightSources) {
@@ -41,9 +48,9 @@ class BaseObject {
   boolean inCameraView() {
     PVector camPos = camera.getPosition();
 
-    if (position.y > -camPos.y - tileSize
+    if (position.y > -camPos.y - Globals.TILE_SIZE
       && position.y < -camPos.y + height
-      && position.x > -camPos.x - tileSize
+      && position.x > -camPos.x - Globals.TILE_SIZE
       && position.x < -camPos.x + width) {
       return true;
     }
@@ -78,18 +85,20 @@ class BaseObject {
   void pushed(Movable movable, float x, float y) { //we got pushed by an movable
   }
 
-  public void moveTo(PVector newPosition) { //for moving to specific coords, but made so we could add some extra checks to it later if we need to
-    position.set(newPosition);
-  }
-
-  public void moveTo(float x, float y) { //alt for just x and y
-    moveTo(new PVector(x, y));
-  }
-
   boolean canCollideWith(BaseObject object) { //return false for magically phasing through things. 
     return density;
   }
 
   void collidedWith(BaseObject object) {
+  }
+
+  void fireAct(float fireDamage){
+  }
+
+
+ protected float timeInSeconds(float seconds) {
+    //* 60 milli seconds, 60 milliseconds is 1 second
+    seconds *= 60;
+    return seconds;
   }
 }

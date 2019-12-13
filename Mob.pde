@@ -3,10 +3,14 @@ class Mob extends Movable {
   //Health
   float maxHealth = 30;
   float currentHealth = maxHealth;
-  boolean isImmortal = false;  
+  boolean isImmortal = false;
+
+  //Movement
+  protected boolean isSwimming = false;
+  protected boolean canSwim = false; 
 
   //Taking damage
-  final float HURTCOOLDOWN = 60f;
+  final float HURTCOOLDOWN = timeInSeconds(1);
   float timeSinceLastHurt = 0f; 
   boolean isHurt;
 
@@ -24,6 +28,15 @@ class Mob extends Movable {
 
   public void update() {
     super.update();
+
+  if (canSwim) {
+    if (isSwimming) {
+      gravityForce = 0.1f;
+    }
+    else {
+      gravityForce = 1;
+    }
+  }
 
     if (isHurt == true) {
 

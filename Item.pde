@@ -55,7 +55,9 @@ class Item extends PickUp {
   }
 
   void throwItem(Mob mob, int direction) { //took me 10 minutes of debugging to discover you cant use throw as func name
-    moveTo(mob.position);
+    
+    position.set(mob.position);
+
     switch(direction) {
     case UP:
       velocity.set(0, -throwSpeed);

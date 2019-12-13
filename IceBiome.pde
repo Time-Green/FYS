@@ -3,9 +3,17 @@ class IceBiome extends Biome {
   IceBiome() {
 
     destroyedImage = ResourceManager.getImage("DestroyedIce");
+    ceilingObstacleChance = 0.1;
   }
 
   Tile getTileToGenerate(int x, int depth) {
+    
+    // Never spawn resources directly underneath the player, to discourage the player from just digging straight down
+    if(player != null && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3){
+
+      return new IceTile(x, depth); 
+    }
+    
     float orechance = random(100);
     caveSpawningPossibilityScale = .60;
     enemyChance = 0.03;
@@ -16,7 +24,7 @@ class IceBiome extends Biome {
       } else if (orechance <= 8) {
         return new RedIceTile(x, depth);
       } else if (orechance <=12) {
-        return new IceTile2(x, depth);
+        return new SaphireIceTile(x, depth);
       }
     }
 
