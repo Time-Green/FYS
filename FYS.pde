@@ -18,7 +18,7 @@ int loginStartTime;
 RunData runData;
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderbordRow> leaderBoard;
-boolean loginCompleted;
+String loginStatus = "Logging in";
 
 DisposeHandler dh;
 
@@ -54,9 +54,11 @@ void setup() {
 
 void login() {
   databaseManager.login();
+  loginStatus = "Getting player inventory";
   totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+  loginStatus = "Getting loaderboard";
   leaderBoard = databaseManager.getLeaderbord();
-  loginCompleted = true;
+  loginStatus = "";
 }
 
 // gets called when all resources are loaded
@@ -116,7 +118,7 @@ void setupGame() {
 void draw() {
 
   //wait until all resources are loaded and we are logged in
-  if (!ResourceManager.isAllLoaded() || !loginCompleted) {
+  if (!ResourceManager.isAllLoaded() || loginStatus != "") {
     handleLoadingScreen();
 
     return;
@@ -298,12 +300,12 @@ void handleLoadingScreen(){
     text("Loading", width / 2, height - 10);
   }
 
-  handleDots();
-
   //login
-  if(dbUser == null){
-    text("Logging in" + dots, width / 2, height - 55);
+  if(loginStatus != ""){
+    //handleDots();
+    text(loginStatus + dots, width / 2, height - 55);
   }else{
+    fill(0, 255, 0);
     text("Logged in as " + dbUser.userName, width / 2, height - 55);
   }
 
