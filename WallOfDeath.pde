@@ -14,11 +14,13 @@ class WallOfDeath extends Movable {
 
   private final int DESTROYTILESAFTER = 10; //destroys tiles permanently x tiles behind the WoD
 
-  private final float BEGINFASE_overworldHeight = 750; 
+  private final float BEGINFASE_OVERWORLD_HEIGHT = 750; 
 
-  WallOfDeath(float wallWidth) {
+  WallOfDeath() {
 
-    size.set(wallWidth, tileSize * 2);
+    float worldWidth = Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE;
+
+    size.set(worldWidth, Globals.TILE_SIZE * 2);
     position.y = player.position.y - maxDistanceFromPlayer;
 
     //for debug only, Remove this line of code when puplishing
@@ -141,25 +143,25 @@ class WallOfDeath extends Movable {
 
   private void spawnTargetedMeteor(float targetPosX) {
 
-    float spawnPosX = targetPosX + random(-tileSize * 2, tileSize * 2);
+    float spawnPosX = targetPosX + random(-Globals.TILE_SIZE * 2, Globals.TILE_SIZE * 2);
 
     load(new Meteor(), new PVector(spawnPosX, position.y));
   }
 
   private void spawnMeteorAbovePlayer() {
 
-    float spawnPosX = player.position.x + random(-tileSize * 2, tileSize * 2);
+    float spawnPosX = player.position.x + random(-Globals.TILE_SIZE * 2, Globals.TILE_SIZE * 2);
 
     load(new Meteor(), new PVector(spawnPosX, position.y));
   }
 
   private void spawnRandomTargetedMeteor() {
 
-    float spawnX = random(tilesHorizontal * tileSize + tileSize); 
+    float spawnX = random(Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE); 
 
-    while (abs(player.position.x - spawnX) < BEGINFASE_overworldHeight)
+    while (abs(player.position.x - spawnX) < BEGINFASE_OVERWORLD_HEIGHT)
     {
-      spawnX = random(tilesHorizontal * tileSize + tileSize);
+      spawnX = random(Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE);
     }
 
     load(new Meteor(), new PVector(spawnX, position.y));
@@ -170,7 +172,7 @@ class WallOfDeath extends Movable {
     for (BaseObject object : objectList) {
 
       //is the object above the wall of death..
-      if (object.position.y < position.y - DESTROYTILESAFTER * tileSize) {
+      if (object.position.y < position.y - DESTROYTILESAFTER * Globals.TILE_SIZE) {
 
         //..and its not the player..
         if (object instanceof Player) {

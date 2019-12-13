@@ -251,7 +251,7 @@ class Movable extends BaseObject {
   }
 
   int getDepth() {
-    return int(position.y / tileSize);
+    return int(position.y / Globals.TILE_SIZE);
   }
 
   void attemptMine(BaseObject object) {

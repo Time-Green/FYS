@@ -10,7 +10,7 @@ class ShadowBiome extends Biome {
   Tile getTileToGenerate(int x, int depth) {
     
     // Never spawn resources directly underneath the player, to discourage the player from just digging straight down
-    if(player != null && abs(x * tileSize - player.position.x) < tileSize * 3){
+    if(player != null && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3){
 
       return new ShadowTile(x, depth); 
     }

@@ -21,7 +21,7 @@ class Biome {
   Tile getTileToGenerate(int x, int depth) {
 
     // Never spawn resources directly underneath the player, to discourage the player from just digging straight down
-    if(player != null && depth > Globals.OVERWORLDHEIGHT + 11 && abs(x * tileSize - player.position.x) < tileSize * 3){
+    if(player != null && depth > Globals.OVERWORLD_HEIGHT + 11 && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3){
 
       return new StoneTile(x, depth); 
     }
@@ -29,10 +29,10 @@ class Biome {
     float orechance = random(100);
 
     //spawn air at surface
-    if (depth <= Globals.OVERWORLDHEIGHT)
+    if (depth <= Globals.OVERWORLD_HEIGHT)
     {
       return new AirTile(x, depth);
-    } else if (depth <= Globals.OVERWORLDHEIGHT + 1) // 1 layer of grass (layer 11)
+    } else if (depth <= Globals.OVERWORLD_HEIGHT + 1) // 1 layer of grass (layer 11)
     {
       return new GrassTile(x, depth);
     } else if (depth < 15) //spawn 14 layers of dirt
@@ -78,7 +78,7 @@ class Biome {
 
   // void checkPlayerAboveTile(){
   //   // Never spwan resources directly underneath the player, to discourage the player from just diggin straight down 
-  //   if(player != null && abs(x * tileSize - player.position.x) < tileSize * 3){
+  //   if(player != null && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3){
 
     
 
@@ -91,7 +91,7 @@ class Biome {
   }
 
   void placeStructure(World world, int depth) {
-    world.safeSpawnStructure(getStructureName(), new PVector(int(random(tilesHorizontal * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
+    world.safeSpawnStructure(getStructureName(), new PVector(int(random(Globals.TILES_HORIZONTAL * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
   }
 
   String getStructureName() { //a function so we can give some different probabilities
@@ -114,7 +114,7 @@ class Biome {
     }
   }
   void prepareCeilingObstacle(Tile target, World world){
-    Tile above = world.getTile(target.position.x, target.position.y - tileSize);
+    Tile above = world.getTile(target.position.x, target.position.y - Globals.TILE_SIZE);
     println(above);
 
     if(above == null){

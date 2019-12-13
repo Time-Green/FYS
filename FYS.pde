@@ -29,11 +29,6 @@ Enemy[] enemies;
 //player collected relicShards
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 
-int tilesHorizontal = 50;
-int tileSize = 50;
-
-int birdCount = round(random(10, 15));
-
 boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
 
@@ -107,12 +102,12 @@ void setupGame() {
 
   ui = new UIController();
 
-  world = new World(tilesHorizontal * tileSize + tileSize);
+  world = new World();
 
   player = new Player();
   load(player);
 
-  wallOfDeath = new WallOfDeath(tilesHorizontal * tileSize + tileSize);
+  wallOfDeath = new WallOfDeath();
   load(wallOfDeath);
 
   CameraShaker.reset();
@@ -148,7 +143,7 @@ void draw() {
 
   world.updateDepth();
 
-  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLDHEIGHT + 5) * tileSize) {
+  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE) {
     ui.drawArrows();
   }
 
@@ -272,16 +267,16 @@ void startGameSoon() {
 
 void startAsteroidRain() {
 
+  thread("startRegisterRunThread");
+
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.InGame;
 
   AudioManager.stopMusic("ForestAmbianceMusic");
   AudioManager.loopMusic("BackgroundMusic");
+  AudioManager.playSoundEffect("Siren");
 
   ui.drawWarningOverlay = true;
-  AudioManager.playSoundEffect("Siren");
-  
-  thread("startRegisterRunThread");
 }
 
 String dots = "";
@@ -341,16 +336,19 @@ private void handleDots(){
   }
 }
 
+// start a thread to load 1 resource
 void startLoaderThread(String currentResourceName, String currentResourceFileName){
   LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
   ResourceManager.loaderThreads.add(loaderThread);
   loaderThread.start();
 }
 
+// start a thread that registers a run start
 void startRegisterRunThread(){
   databaseManager.registerRunStart();
 }
 
+// start a thread that registers a run end
 void startRegisterEndThread(){
   databaseManager.registerRunEnd();
 }
@@ -362,7 +360,7 @@ BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it 
 
 BaseObject load(BaseObject newObject, PVector setPosition) {
   loadList.add(newObject);
-  newObject.moveTo(setPosition);
+  newObject.position.set(setPosition);
   return newObject;
 }
 

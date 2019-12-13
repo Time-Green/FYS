@@ -17,11 +17,11 @@ class Tile extends BaseObject {
     loadInBack = true;
     movableCollision = true;
 
-    position.x = x * tileSize;
-    position.y = y * tileSize;
+    position.x = x * Globals.TILE_SIZE;
+    position.y = y * Globals.TILE_SIZE;
 
-    size.x = tileSize;
-    size.y = tileSize;
+    size.x = Globals.TILE_SIZE;
+    size.y = Globals.TILE_SIZE;
 
     gridPosition.x = x;
     gridPosition.y = y;
@@ -30,7 +30,7 @@ class Tile extends BaseObject {
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 
-    if (y > Globals.OVERWORLDHEIGHT) {
+    if (y > Globals.OVERWORLD_HEIGHT) {
       destroyedImage = ResourceManager.getImage("DestroyedBlock");
     } else {
       density = false; 
@@ -41,7 +41,7 @@ class Tile extends BaseObject {
   private void setupCave(World world) {
 
     //11 is grass layer + transition layer
-    if (gridPosition.y > Globals.OVERWORLDHEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
+    if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
       destroyed = true;
       density = false;
 
@@ -93,13 +93,13 @@ class Tile extends BaseObject {
       }
 
       tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
-      image(image, position.x, position.y, tileSize, tileSize);
+      image(image, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
       tint(255);
     } else {
 
       if (destroyedImage != null) {
         tint(lightningAmount);
-        image(destroyedImage, position.x, position.y, tileSize, tileSize);
+        image(destroyedImage, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
         tint(255);
       }
     }
