@@ -70,7 +70,6 @@ class Player extends Mob {
     setupLightSource(this, VIEW_AMOUNT, 1f);
 
     applyRelicBoost();
-
   }
 
   void update() {
@@ -120,23 +119,23 @@ class Player extends Mob {
   }
 
 
-  void regenaration() {
-    if(isRegen == false) {
-      if(frameCount % 180 == 0) {
-        if(isHurt == false) {
-          if(currentHealth < maxHealth) {
-            if(frameCount % 5 == 0) {
+  void regenaration(){
+    if(isRegen == false){
+      if(frameCount % 180 == 0){
+        if(isHurt == false){
+          if(currentHealth < maxHealth){
+            if(frameCount % 5 == 0){
               currentHealth += regen;
               isRegen = true;
             }
           }
         }  
-    else if(isHurt == true) { // there is a 2 second timer before the player starts to regenarate if hit
-      if(currentHealth < maxHealth) {
-        if(frameCount % 120 == 0)  {
-          if(frameCount % 5 == 0) {
-            currentHealth += regen;
-            isRegen = true;
+        else if(isHurt == true){ // there is a 2 second timer before the player starts to regenarate if hit
+          if(currentHealth < maxHealth){
+            if(frameCount % 120 == 0){
+              if(frameCount % 5 == 0){
+                currentHealth += regen;
+                isRegen = true;
               }
             }
           }

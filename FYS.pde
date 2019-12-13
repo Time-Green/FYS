@@ -155,6 +155,8 @@ void setupGame() {
 
   CameraShaker.reset();
   camera = new Camera(player);
+
+  AudioManager.loopMusic("ForestAmbianceMusic"); 
 }
 
 void draw() {
@@ -300,7 +302,7 @@ void enterOverWorld(boolean reloadGame) {
     setupGame();
   }
 
-  AudioManager.loopMusic("ForestAmbianceMusic"); 
+  //AudioManager.loopMusic("ForestAmbianceMusic"); 
   Globals.gamePaused = false;
   Globals.currentGameState = Globals.GameState.Overworld;
   camera.lerpAmount = 0.075f;
