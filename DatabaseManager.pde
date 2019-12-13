@@ -156,17 +156,17 @@ public class DatabaseManager {
     return returnList;
   }
 
-  public ArrayList<LeaderbordRow> getLeaderbord() {
+  public ArrayList<LeaderboardRow> getLeaderboard(int amount) {
 
     if (currentSessionId < 0) {
-      return new ArrayList<LeaderbordRow>();
+      return new ArrayList<LeaderboardRow>();
     }
 
-    JSONArray result = doDatabaseRequest("SELECT u.username, r.score, r.depth FROM Run r INNER JOIN Playsession p ON r.playsessionid = p.id INNER JOIN User u ON p.userid = u.id WHERE r.score IS NOT NULL ORDER BY r.score DESC LIMIT 10");
-    ArrayList<LeaderbordRow> returnList = new ArrayList<LeaderbordRow>();
+    JSONArray result = doDatabaseRequest("SELECT u.username, MAX(r.score) score, MAX(r.depth) depth FROM Run r INNER JOIN Playsession p ON r.playsessionid = p.id INNER JOIN User u ON p.userid = u.id WHERE r.score IS NOT NULL GROUP BY u.username ORDER BY MAX(r.score) DESC LIMIT " + amount);
+    ArrayList<LeaderboardRow> returnList = new ArrayList<LeaderboardRow>();
 
     for (int i = 0; i < result.size(); i++) {
-      returnList.add(buildLeaderbordRow(result.getJSONObject(i)));
+      returnList.add(buildLeaderboardRow(result.getJSONObject(i)));
     }
 
     return returnList;
@@ -320,15 +320,15 @@ public class DatabaseManager {
     return playerRelicInventory;
   }
 
-  private LeaderbordRow buildLeaderbordRow(JSONObject json) {
+  private LeaderboardRow buildLeaderboardRow(JSONObject json) {
 
-    LeaderbordRow leaderbordRow = new LeaderbordRow();
+    LeaderboardRow leaderboardRow = new LeaderboardRow();
 
-    leaderbordRow.userName = json.getString("username");
-    leaderbordRow.score = json.getInt("score");
-    leaderbordRow.depth = json.getInt("depth");
+    leaderboardRow.userName = json.getString("username");
+    leaderboardRow.score = json.getInt("score");
+    leaderboardRow.depth = json.getInt("depth");
 
-    return leaderbordRow;
+    return leaderboardRow;
   }
 
   public JSONArray doDatabaseRequest(String request) {

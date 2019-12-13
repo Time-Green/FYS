@@ -1,7 +1,6 @@
 public class World {
   ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
   ArrayList<StructureSpawner> queuedStructures = new ArrayList<StructureSpawner>();
-  //TODO: CLEANUP MAP ROWS AFTER ALL TILES IN THE ROW HAVE BEEN DELETED
 
   float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
   int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
@@ -39,25 +38,23 @@ public class World {
 
   public void draw() {
     drawBackgoundImage();
-    //println("map.size(): " + map.size());
   }
 
   void drawBackgoundImage(){
-    pushMatrix();
-
-    scale(1.1, 1.1);
-
-    float xPos = -camera.position.x - 1080 * 0.1;
+    float xPos = -camera.position.x - width * 0.1;
     float yPos = -camera.position.y * 0.5 - 200;
 
     float worldWidth = Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE;
 
-    image(dayNightImage, xPos, yPos, worldWidth, 1080);
-
+    pushMatrix();
+    scale(1.1, 1.1);
+    image(dayNightImage, xPos, yPos, worldWidth, dayNightImage.height);
     popMatrix(); 
   }
 
   void spawnOverworldStructures() {
+
+    spawnStructure("Leaderboard", new PVector(12, 5));
 
     int lastSpawnX = -4;
     final int MIN_DISTANCE_INBETWEEN_TREE = 4;
@@ -65,7 +62,7 @@ public class World {
 
     for (int i = 1; i < MAX_XSPAWNPOS; i++) {
 
-      if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE) {
+      if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE && (i < 8 || i > 21)) {
         lastSpawnX = i;
         spawnTree(new PVector(i, 6));
       }
@@ -322,20 +319,21 @@ public class World {
           // if layerIndex == 0 (background) replace the existing tile
           //else if layerIndex > 1, spawn on top of other tile (used for enemies, torch)
           if (layerIndex == 0) {
-            replaceObject(worldTilePosition, tileType);
+            replaceObject(worldTilePosition, tileType, structureName, structureTilePosition);
           } else {
             spawnObject(worldTilePosition, tileType);
           }
         }
+
       }
     }
   }
 
-  private void replaceObject(PVector relaceAtGridPos, String newObjectName) {
+  private void replaceObject(PVector relaceAtGridPos, String newObjectName, String structureName, PVector structureTilePosition) {
     Tile tileToReplace = getTile(relaceAtGridPos.x * Globals.TILE_SIZE, relaceAtGridPos.y * Globals.TILE_SIZE);
 
     String stripedObjectName = stripName(newObjectName);
-    Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos);
+    Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos, structureName, structureTilePosition);
     tileToReplace.replace(this, newTile);
   }
 
@@ -353,7 +351,7 @@ public class World {
     return stripedObjectName;
   }
 
-  private Tile convertNameToTile(String stripedObjectName, PVector spawnPos) {
+  private Tile convertNameToTile(String stripedObjectName, PVector spawnPos, String structureName, PVector structureTilePosition) {
 
     switch(stripedObjectName) {
 
@@ -363,7 +361,11 @@ public class World {
       return destroyedStoneTile;
 
     case "WoodPlank" :
-      return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y));
+      if(structureName == "Leaderboard"){
+        return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y), structureTilePosition); // extra code needs to be ran at leaderboard
+      }else{
+        return new WoodPlankTile(int(spawnPos.x), int(spawnPos.y)); // extra code needs to be ran at leaderboard
+      }
 
     case "DoorTop" :
       return new DoorTopTile(int(spawnPos.x), int(spawnPos.y));
@@ -403,6 +405,9 @@ public class World {
 
     case "DungeonStairR" :
       return new DungeonStairR(int(spawnPos.x), int(spawnPos.y));
+
+    case "Fencepost" :
+      return new Fencepost(int(spawnPos.x), int(spawnPos.y));
     }
 
     println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");

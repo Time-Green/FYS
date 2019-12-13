@@ -1,4 +1,4 @@
-public class LeaderbordRow {
+public class LeaderboardRow {
 
     public String userName;
     public int score;
