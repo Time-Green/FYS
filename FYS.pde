@@ -53,9 +53,6 @@ void setup() {
   CameraShaker.setup(this);
 
   ResourceManager.loadAll();
-
-  //anti alliasing
-  smooth(16);
 }
 
 void login() {
@@ -107,22 +104,23 @@ private void generateLeaderboardGraphics(){
 
 // gets called when all resources are loaded
 void afterResouceLoadingSetup() {
-  AudioManager.setMaxAudioVolume("Siren", 0.6f);
-  AudioManager.setMaxAudioVolume("BackgroundMusic", 0.75f);
-  AudioManager.setMaxAudioVolume("ForestAmbianceMusic", 0.7f);
-  AudioManager.setMaxAudioVolume("DirtBreak", 0.5f);
-  AudioManager.setMaxAudioVolume("HurtSound", 0.75f);
+  AudioManager.setMaxVolume("Siren", 0.6f);
+  AudioManager.setMaxVolume("BackgroundMusic", 0.75f);
+  AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
+  AudioManager.setMaxVolume("DirtBreak", 0.5f);
+  AudioManager.setMaxVolume("HurtSound", 0.75f);
+  AudioManager.setMaxVolume("LowHealth", 0.7f);
 
   for (int i = 1; i < 5; i++) {
-    AudioManager.setMaxAudioVolume("Explosion" + i, 0.2f);
+    AudioManager.setMaxVolume("Explosion" + i, 0.2f);
   }
 
   for (int i = 1; i < 5; i++) {
-    AudioManager.setMaxAudioVolume("StoneBreak" + i, 0.5f);
+    AudioManager.setMaxVolume("StoneBreak" + i, 0.5f);
   }
 
   for (int i = 1; i < 4; i++) {
-    AudioManager.setMaxAudioVolume("GlassBreak" + i, 0.4f);
+    AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
   }
 
   generateLeaderboardGraphics();
@@ -269,7 +267,8 @@ void handleGameFlow() {
     Globals.gamePaused = true;
 
     //if we died we restart the game by pressing enter
-    if (InputHelper.isKeyDown(Globals.STARTKEY)) { 
+    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
+      //TODO: UPDATE HIGHSCORE BOARD HERE!!!
       enterOverWorld(true);
       InputHelper.onKeyReleased(Globals.STARTKEY);
     }

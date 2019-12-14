@@ -14,8 +14,13 @@ public class Camera {
 
   private void setupInitialValues(){
     position.x = -target.position.x + width * 0.5f - target.size.x / 2f;
-    position.y = 190;
 
+    if(Globals.currentGameState == Globals.GameState.GameOver){
+      position.y = -190;
+    }else{
+      position.y = 190;
+    }
+    
     lerpAmount = 0.002f;
   }
 

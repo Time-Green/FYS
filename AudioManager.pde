@@ -152,7 +152,7 @@ public static class AudioManager {
   }
 
   // volume range [0-1]
-  public static void setMaxAudioVolume(String name, float volume) {
+  public static void setMaxVolume(String name, float volume) {
     SoundFile music = musicMap.get(name);
 
     if (music != null) {
