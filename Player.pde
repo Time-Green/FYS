@@ -20,7 +20,7 @@ class Player extends Mob {
 
   private float regen = 0.2f;
   public final float fireDamage = 4;
-  public boolean isRegen;
+  public boolean isRegen = true;
   public boolean isOnFire = false;
 
   //Status effects
@@ -122,21 +122,25 @@ class Player extends Mob {
   void regenaration(){
     if(isRegen == false){
       if(frameCount % 180 == 0){
-        if(isHurt == false){
-          if(currentHealth < maxHealth){
-            if(frameCount % 5 == 0){
-              currentHealth += regen;
-              isRegen = true;
+        isRegen = true;
+      }
+    }
+
+    if(isRegen == true) {
+      if(isHurt == false){
+        if(currentHealth < maxHealth){
+          if(frameCount % 5 == 0){
+            currentHealth += regen;
+            isRegen = true;
             }
           }
         }  
-        else if(isHurt == true){ // there is a 2 second timer before the player starts to regenarate if hit
-          if(currentHealth < maxHealth){
-            if(frameCount % 120 == 0){
-              if(frameCount % 5 == 0){
-                currentHealth += regen;
-                isRegen = true;
-              }
+      else if(isHurt == true){ // there is a 2 second timer before the player starts to regenarate if hit
+        if(currentHealth < maxHealth){
+          if(frameCount % 120 == 0){
+            if(frameCount % 5 == 0){
+              currentHealth += regen;
+              isRegen = true;
             }
           }
         }
