@@ -82,6 +82,10 @@ class WallOfDeath extends Movable {
     cleanUpObjects();
   }
 
+  void draw(){
+    //don't draw anything
+  }
+
   private void doStartingCameraShake() {
 
     if (Globals.currentGameState == Globals.GameState.InGame && isInBeginfase) {
