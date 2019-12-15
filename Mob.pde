@@ -26,8 +26,20 @@ class Mob extends Movable {
   int lastUse;
   int useCooldown = 100;
 
+  //regen and fire
+  public float regen = 0.2f;
+  private final float fireDamage = 4;
+  public boolean canRegen = false;
+  private boolean isOnFire = false;
+  private int fireTimer;
+  private int regenTimer;
+
   public void update() {
     super.update();
+
+    handleOnFire();
+
+    regenaration();
 
   if (canSwim) {
     if (isSwimming) {
@@ -97,6 +109,7 @@ class Mob extends Movable {
       if (isHurt == false) {
         isHurt = true;
         currentHealth -= damageTaken;
+        regenTimer = 0;
 
         if (currentHealth <= 0) {
           die();
@@ -114,6 +127,35 @@ class Mob extends Movable {
     }
 
     return baseDamage * getHeldItem().damageCoefficient;
+  }
+
+    //fire damage blocks regenaration
+  public void handleOnFire() {
+    if(isOnFire){
+      if(fireTimer % 30 == 0) {
+        takeDamage(fireDamage);
+        if(fireTimer > 180) {
+          isOnFire = false;
+        }
+      }
+      fireTimer++;
+    }
+  }
+
+  void regenaration(){
+    if(regenTimer > 120) {
+      if(currentHealth < maxHealth){
+        if(frameCount % 5 == 0){
+          currentHealth += regen;
+        }
+      }
+    }
+    regenTimer++;
+  }
+
+  void setOnFire() {
+    isOnFire = true;
+    fireTimer = 0;
   }
 
   void setMaxHp(float hpToSet) {

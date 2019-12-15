@@ -13,6 +13,9 @@ class MagmaRock extends Tile {
 
   void collidedWith(BaseObject object) {
     object.takeDamage(damage);
-    object.fireAct(damage);
+    if(object instanceof Mob) {
+      Mob mob = (Mob) object;
+      mob.setOnFire();
+    }
   }
 }

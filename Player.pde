@@ -18,11 +18,6 @@ class Player extends Mob {
   private float viewTarget;
   private float easing = 0.025f;
 
-  private float regen = 0.2f;
-  public final float fireDamage = 4;
-  public boolean isRegen = true;
-  public boolean isOnFire = false;
-
   //Status effects
   public float stunTimer;
 
@@ -35,6 +30,7 @@ class Player extends Mob {
     baseDamage = 0.1; //low basedamage without pickaxe
     viewTarget = VIEW_AMOUNT;
     isSwimming = false;
+    canRegen = true;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -82,13 +78,9 @@ class Player extends Mob {
 
     setVisibilityBasedOnCurrentBiome();
 
-    regenaration();
-
     checkHealthLow();
 
     statusEffects();
-
-    fireAct(fireDamage);
 
     if (stunTimer <= 0) {
       doPlayerMovement();
@@ -115,36 +107,6 @@ class Player extends Mob {
       } else if (currentHealth > maxHealth / 5f) {
 
       ui.drawWarningOverlay = false;
-    }
-  }
-
-
-  void regenaration(){
-    if(isRegen == false){
-      if(frameCount % 180 == 0){
-        isRegen = true;
-      }
-    }
-
-    if(isRegen == true) {
-      if(isHurt == false){
-        if(currentHealth < maxHealth){
-          if(frameCount % 5 == 0){
-            currentHealth += regen;
-            isRegen = true;
-            }
-          }
-        }  
-      else if(isHurt == true){ // there is a 2 second timer before the player starts to regenarate if hit
-        if(currentHealth < maxHealth){
-          if(frameCount % 120 == 0){
-            if(frameCount % 5 == 0){
-              currentHealth += regen;
-              isRegen = true;
-            }
-          }
-        }
-      }
     }
   }
 
@@ -322,22 +284,6 @@ class Player extends Mob {
       isMiningDown = false;
       isMiningLeft = false;
       isMiningRight = false;
-    }
-  }
-
-  //fire damage blocks regenaration
-  public void fireAct(float fireDamage) {
-    if(isOnFire == true){
-      if(frameCount % 30 == 0) {
-        currentHealth -= fireDamage;
-        isRegen = false;
-        isOnFire = true;
-        currentHealth -= fireDamage;
-        if(frameCount % 180 == 0) {
-          isOnFire = false;
-          isRegen = true;
-        }
-      }
     }
   }
 
