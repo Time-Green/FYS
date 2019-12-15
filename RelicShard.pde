@@ -11,10 +11,7 @@ class RelicShard extends PickUp {
     // 4: lightboost
 
     type = floor(random(5));
-
-    if (type == 0) {
-      image = ResourceManager.getImage("RelicShard" + type);
-    }
+    image = ResourceManager.getImage("RelicShard" + type);
   }
 
   void pickedUp(Mob mob) {
