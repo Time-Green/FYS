@@ -13,8 +13,8 @@ class Biome {
   float caveSpawningPossibilityScale = 0.68f; //lower for more caves
   int startedAt;
 
-  //-1 is standard player view
-  float playerVisibility = -1;
+  // the amount the player can see in the biome
+  float playerVisibilityScale = 1;
 
   PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 

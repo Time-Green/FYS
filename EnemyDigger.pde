@@ -3,18 +3,17 @@ class EnemyDigger extends Enemy {
   private float chaseDistance;
   private final float IDLESPEED = 0f;
   private float chaseSpeed = 4f;
+  private final float TILE_DISTANCE = 20f;
 
   EnemyDigger(PVector spawnPos) {
     super(spawnPos);
 
-    chaseSpeed = (chaseSpeed + (getDepth()/100));
-    //println("chaseSpeed: "+chaseSpeed);
+    chaseSpeed = chaseSpeed + getDepth() / 250;
 
     image = ResourceManager.getImage("DiggerEnemy");
     this.speed = IDLESPEED;
-    //1f = 1 tile
-    float tileDistance = 20f;
-    chaseDistance = OBJECTSIZE * tileDistance;
+
+    chaseDistance = OBJECTSIZE * TILE_DISTANCE;
   }
 
   void update() {
