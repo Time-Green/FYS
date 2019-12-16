@@ -104,6 +104,10 @@ class Tile extends BaseObject {
     }
   }
 
+  void update(){
+    super.update();
+  }
+
   void takeDamage(float damageTaken, boolean playBreakSound) {
     super.takeDamage(damageTaken);
 

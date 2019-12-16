@@ -27,7 +27,7 @@ class Mob extends Movable {
   int useCooldown = 100;
 
   //regen and fire
-  public float regen = 0.2f;
+  public float regen = 0.05f;
   private final float fireDamage = 4;
   public boolean canRegen = false;
   private boolean isOnFire = false;
@@ -145,9 +145,7 @@ class Mob extends Movable {
   void regenaration(){
     if(regenTimer > 120) {
       if(currentHealth < maxHealth){
-        if(frameCount % 5 == 0){
-          currentHealth += regen;
-        }
+        currentHealth += regen;
       }
     }
     regenTimer++;
