@@ -6,6 +6,7 @@ class Tile extends BaseObject {
   float slipperiness = 1; //how much people slip on it. lower is slipperier
 
   private float maxHp, hp;
+  public float healthMultiplier = 1;
 
   PImage image;
   PImage destroyedImage;
@@ -26,7 +27,8 @@ class Tile extends BaseObject {
     gridPosition.x = x;
     gridPosition.y = y;
 
-    setMaxHp(2 + y / 250);
+    //the hp of the tile gows up the lower you go
+    setMaxHp((2 + y / 250) * healthMultiplier);
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 

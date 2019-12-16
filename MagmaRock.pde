@@ -8,13 +8,16 @@ class MagmaRock extends Tile {
     image = ResourceManager.getImage("LavaBlock");
 
     slipperiness = 0.1;
-    setMaxHp(50);
+    healthMultiplier = 3f;
+    //setMaxHp(50);
   }
 
   void collidedWith(BaseObject object) {
     object.takeDamage(damage);
+
     if(object instanceof Mob) {
       Mob mob = (Mob) object;
+
       mob.setOnFire();
     }
   }
