@@ -153,6 +153,11 @@ class Player extends Mob {
 
   void draw() {
 
+    if(Globals.currentGameState == Globals.GameState.GameOver){
+      // donr draw when we are dead
+      return;
+    }
+
     if(Globals.gamePaused){
       animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
       animatedImageIdle.draw();
@@ -290,13 +295,7 @@ class Player extends Mob {
   public void die() {
     super.die();
 
-    Globals.gamePaused = true;
-    Globals.currentGameState = Globals.GameState.GameOver;
-
-    ui.drawWarningOverlay = false;
-    AudioManager.stopMusic("BackgroundMusic");
-
-    thread("startRegisterEndThread");
+    endRun();
   }
 
   boolean canPickUp(PickUp pickUp) {

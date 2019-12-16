@@ -33,19 +33,16 @@ class WallOfDeath extends Movable {
 
   void update() {
 
-    if (Globals.gamePaused || Globals.currentGameState == Globals.GameState.Overworld)
-    {
+    if (Globals.gamePaused || Globals.currentGameState == Globals.GameState.Overworld){
       return;
     }
 
     super.update();
 
-    if (gameStartSpawnMult < 1)
-    {
+    if (gameStartSpawnMult < 1){
       gameStartSpawnMult += 1f / 600f; // 10 second begin phase
 
-      if (gameStartSpawnMult >= 1)
-      {
+      if (gameStartSpawnMult >= 1){
         gameStartSpawnMult = 1; 
         isInBeginfase = false;
         ui.drawWarningOverlay = false;
@@ -68,14 +65,9 @@ class WallOfDeath extends Movable {
       position.y = player.position.y - maxDistanceFromPlayer;
     }
 
-    float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.1f) * 0.000125f) * gameStartSpawnMult;
+    float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.085f) * 0.000125f) * gameStartSpawnMult;
 
-    //maxAsteroidSpawnChange *= gameStartSpawnMult; 
-
-    //println("maxAsteroidSpawnChange: " + maxAsteroidSpawnChange);
-
-    if (random(maxAsteroidSpawnChange) > 1)
-    {     
+    if (random(maxAsteroidSpawnChange) > 1){     
       spawnAstroid();
     }
 

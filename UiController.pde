@@ -35,6 +35,8 @@ public class UIController {
 
   private final boolean DRAWSTATS = true;
 
+  String dots = "";
+
   //Inventory
   private float inventorySize = 50;
 
@@ -175,7 +177,25 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
+    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "m", width / 2, height / 2 + instructionFontSize);
+
+    if(isUploadingRunResults){
+      handleDots();
+      text("Uploading run stats" + dots, width / 2, height / 2 + instructionFontSize * 4);
+    }else{
+      text("Enter: restart", width / 2, height / 2 + instructionFontSize * 4);
+    }
+  }
+
+  private void handleDots(){
+
+    if(frameCount % 10 == 0){
+      dots += ".";
+    }
+
+    if(dots.length() > 3){
+      dots = "";
+    }
   }
 
   void startMenu() {

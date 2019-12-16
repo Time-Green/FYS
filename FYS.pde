@@ -20,6 +20,7 @@ ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderboardRow> leaderBoard;
 ArrayList<Achievement> playerAchievements; 
 String loginStatus = "Logging in";
+boolean isUploadingRunResults = false;
 
 DisposeHandler dh;
 
@@ -266,9 +267,9 @@ void handleGameFlow() {
   case GameOver:
     Globals.gamePaused = true;
 
-    //if we died we restart the game by pressing enter
-    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
-      //TODO: UPDATE HIGHSCORE BOARD HERE!!!
+    //if we died and we uploaded the run stats, we restart the game by pressing enter
+    if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults) {
+      generateLeaderboardGraphics();
       enterOverWorld(true);
       InputHelper.onKeyReleased(Globals.STARTKEY);
     }
@@ -311,6 +312,7 @@ void startGameSoon() {
   startGame = true;
 }
 
+//called when the player pressed the button
 void startAsteroidRain() {
 
   thread("startRegisterRunThread");
@@ -323,6 +325,18 @@ void startAsteroidRain() {
   AudioManager.playSoundEffect("Siren");
 
   ui.drawWarningOverlay = true;
+}
+
+//is called when the played died
+void endRun(){
+  isUploadingRunResults = true;
+  Globals.gamePaused = true;
+  Globals.currentGameState = Globals.GameState.GameOver;
+
+  ui.drawWarningOverlay = false;
+  AudioManager.stopMusic("BackgroundMusic");
+
+  thread("startRegisterEndThread");
 }
 
 String dots = "";
@@ -397,6 +411,11 @@ void startRegisterRunThread(){
 // start a thread that registers a run end
 void startRegisterEndThread(){
   databaseManager.registerRunEnd();
+
+  //update leaderboard with new data
+  leaderBoard = databaseManager.getLeaderboard(10);
+
+  isUploadingRunResults = false;
 }
 
 BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
