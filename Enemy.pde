@@ -1,6 +1,6 @@
 class Enemy extends Mob {
 
-  protected float playerDamage = 5;
+  protected float playerDamage = 10;
 
   public Enemy(PVector spawnPos) {
     this.speed = 5f;
