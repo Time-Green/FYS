@@ -53,13 +53,18 @@ class Enemy extends Mob {
     }
 
     //Stop the enemies from walking outside the screen
-    if (position.x < 10)
+    if (position.x < 10){
       walkLeft = false;
-    if (position.x > world.getWidth() - 10)
+    }
+
+    if (position.x > world.getWidth() - 10){
       walkLeft = true;
+    }
 
     //Dying
-    if (currentHealth <= 0) delete(this);
+    if (currentHealth <= 0){
+      delete(this);
+    }
   }
 
   protected void handleCollision() {

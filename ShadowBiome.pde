@@ -1,7 +1,7 @@
 class ShadowBiome extends Biome {
 
   ShadowBiome() {
-    enemyChance = 0.1;
+    enemyChance = 0.15;
     minimumDepth = 200;
     playerVisibility = 350;
     destroyedImage = ResourceManager.getImage("DestroyedShadow");
