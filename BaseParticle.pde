@@ -6,8 +6,8 @@ public class BaseParticle extends Movable {
 
   float maxLifeTime = 2000; //max 2000ms life time
 
-  float minSize = 8;
-  float maxSize = 20;
+  float minSize = 15;
+  float maxSize = 30;
 
   color particleColor = color(255);
 
