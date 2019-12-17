@@ -2,12 +2,12 @@ class EnemyDigger extends Enemy {
 
   private float chaseDistance;
   private final float IDLESPEED = 0f;
-  private float chaseSpeed = 4f;
+  private float chaseSpeed = 2f;
 
   EnemyDigger(PVector spawnPos) {
     super(spawnPos);
 
-    chaseSpeed = (chaseSpeed + (getDepth()/100));
+    chaseSpeed += 0.25f *getDepth()/100;
     //println("chaseSpeed: "+chaseSpeed);
 
     image = ResourceManager.getImage("DiggerEnemy");
@@ -35,7 +35,7 @@ class EnemyDigger extends Enemy {
       if (this.position.y < playerY) this.gravityForce = chaseSpeed/2;//Go down
       else this.gravityForce = -chaseSpeed;//Go up
       
-      //Allowus to mine
+      //Allow us to mine
       this.isMiningLeft = true;
       this.isMiningRight = true;
       this.isMiningDown = true;
