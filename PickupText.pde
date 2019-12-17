@@ -18,6 +18,7 @@ public class PickupText extends BaseObject
 
 		//Draw the score text
 		text("+"+this.score, this.position.x, this.position.y);
+		this.position.y--;
 		
 		//Decrease the alive counter and remove the text when it is 0
 		aliveTime--;

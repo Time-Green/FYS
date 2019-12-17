@@ -7,7 +7,7 @@ class NormalBiome extends Biome
 	}
 
   String getStructureName() {
-    return "Dungeon2";
+    return "Dungeon";
   }
 
   BaseObject spawnGroundObstacle(Tile target)
