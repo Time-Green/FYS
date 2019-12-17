@@ -10,5 +10,6 @@ public class IronTile extends ResourceTile
 
 		image = ResourceManager.getImage("IronBlock");
 		pickUpImage = ResourceManager.getImage("IronPickUp");
+		decalType = "DecalStone";
 	}
 }

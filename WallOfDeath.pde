@@ -73,7 +73,7 @@ class WallOfDeath extends Movable
 
 		if (random(maxAsteroidSpawnChange) > 1)
 		{     
-			spawnAstroid();
+			//spawnAstroid();
 		}
 
 		cleanUpObjects();
