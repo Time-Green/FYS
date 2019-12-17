@@ -6,13 +6,11 @@ class Flower extends Mob {
   PImage[]  flowerFrames = new PImage[FLOWERFRAMES];
 
     public Flower() {
-        this.position = new PVector(1395, 509);
         setupLightSource(this, 125f, 1f);
         size.set(Globals.TILE_SIZE, Globals.TILE_SIZE);
 
         setMaxHp(20);
         loadFrames();
-        //image = ResourceManager.getImage("Flower" + 0); 
     }
 
     private void loadFrames() {
@@ -24,7 +22,6 @@ class Flower extends Mob {
 
     void update() {
         super.update();
-
     }
 
     void draw() {
