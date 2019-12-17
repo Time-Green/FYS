@@ -8,6 +8,8 @@ class Flower extends Mob {
     public Flower() {
         this.position = new PVector(1395, 509);
         setupLightSource(this, 125f, 1f);
+        size.set(Globals.TILE_SIZE, Globals.TILE_SIZE);
+
         setMaxHp(20);
         loadFrames();
         //image = ResourceManager.getImage("Flower" + 0); 
