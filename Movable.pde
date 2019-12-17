@@ -279,4 +279,8 @@ class Movable extends BaseObject {
   public boolean canPlayerInteract() { //looks better than instanceof
     return false;
   }
+
+  void unroot(Tile tile){ //called upon being released from a tile, like icicles or flowers
+    delete(this);
+  }
 }

@@ -14,6 +14,8 @@ class Tile extends BaseObject {
   String breakSound;
   float damageDiscolor = 50;
 
+  ArrayList<Movable> rootedIn = new ArrayList<Movable>();
+
   Tile(int x, int y) {
     loadInBack = true;
     movableCollision = true;
@@ -63,6 +65,9 @@ class Tile extends BaseObject {
       }
       if (random(1) < world.currentBiome.enemyChance)
         world.currentBiome.spawnEnemy(position);
+    }
+    else{
+      world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
     }
   }
 
@@ -150,6 +155,8 @@ class Tile extends BaseObject {
     destroyed = true;
     density = false;
     loadInBack = true;
+    
+    releaseRooted();
     reload(this);
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
@@ -173,5 +180,11 @@ class Tile extends BaseObject {
 
     delete(this);
     load(replaceTile);
+  }
+
+  void releaseRooted(){ //destroy plants, drop icicles etc
+    for(Movable rooted : rootedIn){
+      rooted.unroot(this);
+    }
   }
 }

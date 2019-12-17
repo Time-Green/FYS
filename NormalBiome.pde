@@ -7,5 +7,9 @@ class NormalBiome extends Biome { //the default biome, almost identical to the B
   String getStructureName() {
     return "Dungeon";
   }
-  
+
+  BaseObject spawnGroundObstacle(Tile target)
+  {
+    return load(new Flower(), target.position);
+  }
 }

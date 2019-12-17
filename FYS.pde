@@ -445,6 +445,7 @@ BaseObject load(BaseObject newObject, boolean priority) { //load it RIGHT NOW. O
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion
+  deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
 }
 
 void reload(BaseObject reloadingObject) { //handles reload, call delete(object) to delete that object from the world

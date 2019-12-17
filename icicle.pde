@@ -27,6 +27,10 @@ class Icicle extends Obstacle {
     delete(this);
   }
 
+  void unroot(Tile tile){
+    anchored = false;
+  }
+
   void update(){
 
     super.update();
@@ -36,8 +40,6 @@ class Icicle extends Obstacle {
 
         anchored = false;
       }
-
     }
   }
-
 }
