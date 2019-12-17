@@ -58,15 +58,23 @@ class Biome
 			}
 			else if (depth > 500)
 			{
-				if (orechance > 80 && orechance <= 90)
+				if (orechance > 80 && orechance <= 88)
 				{
 					return new GoldTile(x, depth, 0);
 				}
-				else if (orechance > 90 && orechance <= 97)
+				else if (orechance > 88 && orechance <= 93)
+				{
+					return new RedstoneTile(x, depth, 0);
+				}
+				else if (orechance > 93 && orechance <= 96)
 				{
 					return new DiamondTile(x, depth, 0);
 				}
-				else if (orechance > 97 && orechance <= 100)
+				else if (orechance > 96 && orechance <= 98)
+				{
+					return new AmethystTile(x, depth, 0);
+				}
+				else if (orechance > 98 && orechance <= 100)
 				{
 					return new ObsedianTile(x, depth);
 				}

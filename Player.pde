@@ -13,6 +13,8 @@ class Player extends Mob
 	private final int MINEFRAMES = 3;
 	private AnimatedImage animatedImageFall;
 	private final int FALLFRAMES = 4;
+  private AnimatedImage animatedImageFire;
+  private final int FIREFRAMES = 4;
 
 	private float viewAmount = 400;
 	private float viewTarget = viewAmount;
@@ -39,6 +41,7 @@ class Player extends Mob
 		PImage[] mineFrames = new PImage[MINEFRAMES];
 		PImage[] shockFrames = new PImage[SHOCKFRAMES];
 		PImage[] fallFrames = new PImage[FALLFRAMES];
+    PImage[] fireFrames = new PImage[FIREFRAMES];
 
 		for (int i = 0; i < WALKFRAMES; i++)
 		{
@@ -81,6 +84,10 @@ class Player extends Mob
 		}
 
 		animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+     for (int i = 0; i < FIREFRAMES; i++)
+      fireFrames[i] = ResourceManager.getImage("Fire" + i); 
+    animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		setupLightSource(this, viewAmount, 1f);
 
