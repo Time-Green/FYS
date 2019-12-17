@@ -4,7 +4,7 @@ public class ObsedianTile extends Tile
 	{
 		super(x, y);
 
-		setMaxHp(2);
+		setMaxHp(150);
 
 		image = ResourceManager.getImage("ObsedianBlock");
 	}
@@ -14,6 +14,5 @@ public class ObsedianTile extends Tile
 		super.takeDamage(damageTaken);
 
 		//keep health at 2 so the player can't mine it
-		setMaxHp(2);
 	}
 }
