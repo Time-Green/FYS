@@ -76,6 +76,11 @@ class Player extends Mob {
 
     super.update();
 
+    if(player.getDepth() > 100 && !achievementHelper.hasUnlockedAchievement(1))
+    {
+      achievementHelper.unlock(1); 
+    }
+
     setVisibilityBasedOnCurrentBiome();
 
     checkHealthLow();

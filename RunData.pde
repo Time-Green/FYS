@@ -3,6 +3,6 @@ public class RunData {
     int playerBlocksMined; 
     int pickUpsPickedUp;
     
-    ArrayList<Achievement> unlockedAchievements = new ArrayList<Achievement>();
+    ArrayList<Integer> unlockedAchievementIds = new ArrayList<Integer>();
     ArrayList<RelicShard> collectedRelicShards = new ArrayList<RelicShard>();
 }

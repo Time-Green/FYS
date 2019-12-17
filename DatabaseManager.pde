@@ -34,24 +34,94 @@ public class DatabaseManager {
     }
   }
 
-  public ArrayList<Achievement> getPlayerAchievements() {
-
-    if (currentSessionId < 0) {
-      return new ArrayList<Achievement>();
+  public ArrayList<Achievement> getPlayerAchievements() 
+  {
+    if (currentSessionId < 0) 
+	{
+    	return new ArrayList<Achievement>();
     }
 
     JSONArray result = doDatabaseRequest("SELECT A.id, A.name, A.description FROM Achievement AS A INNER JOIN UnlockedAchievement ON UnlockedAchievement.achievementid = A.id WHERE UnlockedAchievement.playerid = " + dbUser.id);
     ArrayList<Achievement> returnList = new ArrayList<Achievement>();
 
-    for (int i = 0; i < result.size(); i++) {
-      returnList.add(buildAchievement(result.getJSONObject(i)));
+    for (int i = 0; i < result.size(); i++) 
+	{
+    	returnList.add(buildAchievement(result.getJSONObject(i)));
     }
-
-    // todo make for loop
-    //println(returnList.get(0).name); 
+    
     return returnList;
     
   }
+
+  public ArrayList<Integer> getPlayerUnlockedAchievementIds() 
+  {
+    if (currentSessionId < 0) 
+	{
+		return new ArrayList<Integer>();
+    }
+
+    JSONArray result = doDatabaseRequest("SELECT achievementid FROM UnlockedAchievement WHERE playerid = " + dbUser.id);
+    ArrayList<Integer> returnList = new ArrayList<Integer>();
+
+    for (int i = 0; i < result.size(); i++) 
+	{
+		returnList.add(result.getJSONObject(i).getInt("achievementid")); 
+    }
+    
+	// for(int i = 0; i < returnList.size(); i++)
+	// {
+	// 	println(returnList.get(i)); 
+	// }
+
+    return returnList; 
+  }
+
+  //get all the currently available achievements
+  public ArrayList<Achievement> getAllAchievements() 
+  {
+    JSONArray result = doDatabaseRequest("SELECT * FROM Achievement");
+
+    ArrayList<Achievement> returnList = new ArrayList<Achievement>(); 
+
+    for (int i = 0; i < result.size(); i++) 
+	{
+		returnList.add(buildAchievement(result.getJSONObject(i)));
+    }
+
+	return returnList; 
+  }
+
+  //if not insert new row with this user id and achievement id
+  private boolean insertNewAchievement(int unlockedAchievementId) 
+  {
+    JSONArray result = doDatabaseRequest("INSERT INTO UnlockedAchievement (`playerid`, `achievementid`) VALUES ('" + dbUser.id + "', '" + unlockedAchievementId + "')");
+	
+	return true; 
+  }
+
+  public boolean updatePlayerAchievements() 
+  {
+
+  if (currentSessionId < 0) 
+  {
+	  return false;
+  }
+
+  ArrayList<Integer> unlockedAchievementIds = runData.unlockedAchievementIds;
+  boolean success = true;
+
+  for(int unlockedAchievementId : unlockedAchievementIds)
+  {
+      boolean result = insertNewAchievement(unlockedAchievementId);
+	  
+      if(result == false)
+	  {
+        success = false;
+	  }
+  }
+  
+  return success;
+}
 
   //used for logging in
   public DbUser getOrCreateUser(String userName) {
@@ -190,6 +260,7 @@ public class DatabaseManager {
 
     boolean updateRunDataSucces = updateRunData();
     boolean updatePlayerRelicSucces = updatePlayerRelicInventory();
+    boolean updatePlayerAchievementSucces = updatePlayerAchievements();
 
     return updateRunDataSucces && updatePlayerRelicSucces;
   }
@@ -338,6 +409,8 @@ public class DatabaseManager {
     achievement.name = json.getString("name");
     achievement.description = json.getString("description");
 
+	println("Achievement: " + achievement.id + ", " + achievement.name);
+
     return achievement;
   }
   
@@ -367,8 +440,8 @@ public class DatabaseManager {
 
     String result = get.getContent();
 
-     //println("request: " + request);
-     //println("result: " + result);
+    //  println("request: " + request);
+    //  println("result: " + result);
 
     return parseJSONArray(result);
   }

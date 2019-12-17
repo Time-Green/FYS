@@ -12,13 +12,15 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
 //database variables
+AchievementHelper achievementHelper = new AchievementHelper(); 
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
 int loginStartTime;
 RunData runData;
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderboardRow> leaderBoard;
-ArrayList<Achievement> playerAchievements; 
+ArrayList<Integer> unlockedAchievementIds; 
+ArrayList<Achievement> allAchievements; 
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
@@ -45,6 +47,7 @@ void setup() {
   //fullScreen(P2D);
 
   databaseManager.beginLogin();
+
   
   AudioManager.setup(this);
 
@@ -60,8 +63,10 @@ void login() {
   databaseManager.login();
   loginStatus = "Getting player inventory";
   totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+  loginStatus = "Getting achievement data";
+  allAchievements = databaseManager.getAllAchievements();
   loginStatus = "Getting player achievements";
-  playerAchievements = databaseManager.getPlayerAchievements();
+  unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
   loginStatus = "Getting leaderboard";
   leaderBoard = databaseManager.getLeaderboard(10);
   loginStatus = "";
@@ -416,6 +421,8 @@ void startRegisterRunThread(){
 // start a thread that registers a run end
 void startRegisterEndThread(){
   databaseManager.registerRunEnd();
+
+  unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
 
   //update leaderboard with new data
   leaderBoard = databaseManager.getLeaderboard(10);
