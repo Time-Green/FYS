@@ -28,9 +28,9 @@ class Mob extends Movable {
 
   //regen and fire
   public float regen = 0.05f;
-  private final float fireDamage = 6;
+  private final float fireDamage = 5;
   public boolean canRegen = false;
-  private boolean isOnFire = false;
+  public boolean isOnFire = false;
   private int fireTimer;
   private int regenTimer;
 
@@ -133,7 +133,7 @@ class Mob extends Movable {
     //fire damage blocks regenaration
   public void handleOnFire() {
     if(isOnFire){
-      if(fireTimer % 30 == 0) {
+      if(fireTimer % 20 == 0) {
         takeDamage(fireDamage);
         if(fireTimer > 180) {
           isOnFire = false;

@@ -67,7 +67,7 @@ class Player extends Mob {
     animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
      for (int i = 0; i < FIREFRAMES; i++)
-      fireFrames[i] = ResourceManager.getImage("Fire" + i); 
+      fireFrames[i] = ResourceManager.getImage("FireP" + i); 
     animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, viewAmount, 1f);
@@ -92,6 +92,7 @@ class Player extends Mob {
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
+    playerOnFire();
   }
 
   void checkHealthLow() {
@@ -156,7 +157,7 @@ class Player extends Mob {
   void draw() {
 
     if(Globals.currentGameState == Globals.GameState.GameOver){
-      // donr draw when we are dead
+      // don't draw when we are dead
       return;
     }
 
@@ -168,9 +169,20 @@ class Player extends Mob {
     }
 
     handleAnimation();
+    playerOnFire();
 
     for (Item item : inventory) { //player only, because we'll never bother adding a holding sprite for every mob 
       item.drawOnPlayer(this);
+    }
+  }
+
+  void playerOnFire() {
+    tint(255, 200);
+    if(isOnFire == true) {
+      animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageFire.draw();
+
+        AudioManager.playSoundEffect("FireSound");
     }
   }
 
@@ -198,7 +210,6 @@ class Player extends Mob {
       }
     }
   }
-
 
   void doPlayerMovement() {
 
