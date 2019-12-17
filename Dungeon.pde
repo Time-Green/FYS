@@ -16,7 +16,7 @@ class DungeonBlock1 extends Tile {
     image = ResourceManager.getImage("DungeonBlock1");
     density = true;
     healthMultiplier = 2;
-    //setMaxHp(15);
+    setMaxHp(30);
 
     //make it a lightsource if it is the button altar, "sun"
     if(y == Globals.OVERWORLD_HEIGHT){
