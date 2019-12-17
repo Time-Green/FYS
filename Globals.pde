@@ -21,11 +21,11 @@ static class Globals {
 	static final int IRONVALUE = 100;
 	static final int GREENICEVALUE = 300;
 	static final int REDICEVALUE = 300;
-  static final int REDSTONEVALUE = 400;
+  	static final int REDSTONEVALUE = 400;
 	static final int GOLDVALUE = 500;
 	static final int LAPISVALUE = 750;
 	static final int DIAMONDVALUE = 1000;
-  static final int AMETHYSTVALUE = 2500;
+  	static final int AMETHYSTVALUE = 2500;
 	static final int EMERALDVALUE = 5000;
 	
 	//relicboost

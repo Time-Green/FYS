@@ -180,11 +180,6 @@ public class DatabaseManager
 	{
 		returnList.add(result.getJSONObject(i).getInt("achievementid")); 
     }
-    
-	// for(int i = 0; i < returnList.size(); i++)
-	// {
-	// 	println(returnList.get(i)); 
-	// }
 
     return returnList; 
   }
