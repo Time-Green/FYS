@@ -348,4 +348,8 @@ class Movable extends BaseObject
 	{
 		return false;
 	}
+
+  void unroot(Tile tile){ //called upon being released from a tile, like icicles or flowers
+    delete(this);
+  }
 }
