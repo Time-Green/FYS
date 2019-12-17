@@ -82,8 +82,6 @@ class Player extends Mob
 
   void update() {
 
-    super.update();
-
     if (Globals.gamePaused) {  
       return;
     }
