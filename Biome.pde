@@ -1,5 +1,5 @@
-class Biome {
-
+class Biome
+{
 	int length = 50; //after how many tiles do we tell world to get another biome?
 
 	float structureChance = 0.001; //chance of a structure spawning between 0 and 1 for every row of tiles
