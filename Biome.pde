@@ -20,7 +20,6 @@ class Biome {
 
   	Tile getTileToGenerate(int x, int depth)
   	{
-
     	if(spawnResourceTileAllowed(x, depth))
     	{
       		float orechance = random(100);
