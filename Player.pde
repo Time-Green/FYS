@@ -13,8 +13,8 @@ class Player extends Mob
 	private final int MINEFRAMES = 3;
 	private AnimatedImage animatedImageFall;
 	private final int FALLFRAMES = 4;
-  private AnimatedImage animatedImageFire;
-  private final int FIREFRAMES = 4;
+	private AnimatedImage animatedImageFire;
+	private final int FIREFRAMES = 4;
 
 	private float viewAmount = 400;
 	private float viewTarget = viewAmount;
@@ -41,54 +41,39 @@ class Player extends Mob
 		PImage[] mineFrames = new PImage[MINEFRAMES];
 		PImage[] shockFrames = new PImage[SHOCKFRAMES];
 		PImage[] fallFrames = new PImage[FALLFRAMES];
-    PImage[] fireFrames = new PImage[FIREFRAMES];
+    	PImage[] fireFrames = new PImage[FIREFRAMES];
 
 		for (int i = 0; i < WALKFRAMES; i++)
-		{
 			walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i);
-		}
 
 		walkCycle = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < IDLEFRAMES; i++)
-		{
 			idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
-		}
 
 		animatedImageIdle = new AnimatedImage(idleFrames, 60 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < AIRFRAMES; i++)
-		{
 			airFrames[i] = ResourceManager.getImage("PlayerAir" + i);
-		}
 
 		animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    for (int i = 0; i < SHOCKFRAMES; i++)
-		{
+    	for (int i = 0; i < SHOCKFRAMES; i++)
 			shockFrames[i] = ResourceManager.getImage("PlayerShock" + i);
-		}
 
 		shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < MINEFRAMES; i++) 
-		{
 			mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
-		}
-
 		animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < FALLFRAMES; i++) 
-		{
 			fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
-		}
-    animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    	animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-     for (int i = 0; i < FIREFRAMES; i++)
-     {
-      fireFrames[i] = ResourceManager.getImage("FireP" + i); 
-     }
-    animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+     	for (int i = 0; i < FIREFRAMES; i++)
+      		fireFrames[i] = ResourceManager.getImage("FireP" + i); 
+    	animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, viewAmount, 1f);
 
@@ -103,9 +88,14 @@ class Player extends Mob
       return;
     }
 
+	println("stunTimer: "+stunTimer);
+
+	statusEffects();
+
     if (stunTimer <= 0) {
       doPlayerMovement();
     }
+
     playerOnFire();
   }
 
@@ -114,9 +104,7 @@ class Player extends Mob
 
       ui.drawWarningOverlay = true;
 
-       if (frameCount % 60 == 0) {
-        AudioManager.playSoundEffect("LowHealth");
-      }
+       if (frameCount % 60 == 0) AudioManager.playSoundEffect("LowHealth");
 	  }
   }
 

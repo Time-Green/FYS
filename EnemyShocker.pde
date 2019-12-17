@@ -1,7 +1,7 @@
 class EnemyShocker extends Enemy
 {
 	//Normal time times 60 seconds
-	private float stunTime = 0.5f * 120;
+	private float stunTime = timeInSeconds(1f);
 
 	EnemyShocker(PVector spawnPos)
 	{
