@@ -15,6 +15,8 @@ class Tile extends BaseObject
 	String breakSound;
 	float damageDiscolor = 50;
 
+  color particleColor = color(#7a6e6d);
+
 	Tile(int x, int y)
 	{
 		loadInBack = true;
@@ -172,6 +174,10 @@ class Tile extends BaseObject
 		if (playBreakSound && breakSound != null)
 		{
 			playBreakSound();
+
+      		//create particle system
+		    TileBreakParticleSystem particleSystem = new TileBreakParticleSystem(position, 15, 6, particleColor);
+		    load(particleSystem);
 		}
 
 		destroyed = true;

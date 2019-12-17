@@ -4,6 +4,8 @@ public class SaphireIceTile extends ResourceTile
 	{
 		super(x, y);
 
+		particleColor = color(#152fd6);
+
 		value = Globals.GREENICEVALUE;
 		slipperiness = 1.1;
 
