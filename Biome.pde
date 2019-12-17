@@ -18,57 +18,59 @@ class Biome {
 
   PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
-  Tile getTileToGenerate(int x, int depth) {
+  Tile getTileToGenerate(int x, int depth)
+  {
 
-    // Never spawn resources directly underneath the player, to discourage the player from just digging straight down
-    if(player != null && depth > Globals.OVERWORLD_HEIGHT + 11 && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3){
-
-      return new StoneTile(x, depth); 
-    }
-
-    float orechance = random(100);
-
-    //spawn air at surface
-    if (depth <= Globals.OVERWORLD_HEIGHT)
+    if(spawnResourceTileAllowed(x, depth))
     {
-      return new AirTile(x, depth);
-    } else if (depth <= Globals.OVERWORLD_HEIGHT + 1) // 1 layer of grass (layer 11)
-    {
-      return new GrassTile(x, depth);
-    } else if (depth < 15) //spawn 14 layers of dirt
-    {
-      return new DirtTile(x, depth);
-    } else if (depth == 15) // 1 layer of dirt to stone transition
-    {
-      return new DirtStoneTransitionTile(x, depth);
-    } else if (depth > 15 && depth <= 500) { //begin stone layers
+      float orechance = random(100);
 
-      if (orechance > 80 && orechance <= 90)
+      //spawn air at surface
+      if (depth <= Globals.OVERWORLD_HEIGHT)
       {
-        return new CoalTile(x, depth);
-      } else if (orechance > 90 && orechance <= 98)
-      {
-        return new IronTile(x, depth);
-      } else if (orechance > 98 && orechance <= 100)
-      {
-        //return new MysteryTile(x, depth);
-        //if(random(1) > 0.5){
-        return new ExplosionTile(x, depth);
-        // }else{
-        //   return new HealthTile(x, depth); 
-        // }
+        return new AirTile(x, depth);
       }
-    } else if (depth > 500) {
-
-      if (orechance > 80 && orechance <= 90)
+      else if (depth <= Globals.OVERWORLD_HEIGHT + 1)
       {
-        return new GoldTile(x, depth, 0);
-      } else if (orechance > 90 && orechance <= 97)
+        return new GrassTile(x, depth);
+      }
+      else if (depth < 15)
       {
-        return new DiamondTile(x, depth, 0);
-      } else if (orechance > 97 && orechance <= 100)
+        return new DirtTile(x, depth);
+      }
+      else if (depth == 15)
       {
-        return new ObsedianTile(x, depth);
+        return new DirtStoneTransitionTile(x, depth);
+      }
+      else if (depth > 15 && depth <= 500)
+      {
+        if (orechance > 80 && orechance <= 90)
+        {
+          return new CoalTile(x, depth);
+        }
+        else if (orechance > 90 && orechance <= 98)
+        {
+          return new IronTile(x, depth);
+        }
+        else if (orechance > 98 && orechance <= 100)
+        {
+          return new ExplosionTile(x, depth);
+        }
+      }
+      else if (depth > 500)
+      {
+        if (orechance > 80 && orechance <= 90)
+        {
+          return new GoldTile(x, depth, 0);
+        }
+        else if (orechance > 90 && orechance <= 97)
+        {
+          return new DiamondTile(x, depth, 0);
+        }
+        else if (orechance > 97 && orechance <= 100)
+        {
+          return new ObsedianTile(x, depth);
+        }
       }
     }
 
@@ -76,15 +78,14 @@ class Biome {
     return new StoneTile(x, depth);
   }
 
-  // void checkPlayerAboveTile(){
-  //   // Never spwan resources directly underneath the player, to discourage the player from just diggin straight down 
-  //   if(player != null && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3){
+  // Never spawn resources directly underneath the player, to discourage the player from just digging straight down
+  public boolean spawnResourceTileAllowed(int x, int depth) {
+    if(player != null && depth > Globals.OVERWORLD_HEIGHT + 11 && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3){
+      return false;
+    }
 
-    
-
-  //   return new StoneTile(x, depth); 
-  //   }
-  // }
+    return true;
+  }
 
   int getLength() {
     return length;
