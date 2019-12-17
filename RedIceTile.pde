@@ -4,6 +4,8 @@ public class RedIceTile extends ResourceTile
 	{
 		super(x, y);
 
+		particleColor = color(#c70c22);
+
 		value = Globals.REDICEVALUE;
 
 		slipperiness = 1.1;

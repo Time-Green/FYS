@@ -6,6 +6,8 @@ public class IceTile extends Tile
 
 		slipperiness = 1.1;
 
+		particleColor = color(#37d4e6);
+
 		healthMultiplier = 0.75f;
 
 		image = ResourceManager.getImage("IceBlock");

@@ -6,6 +6,8 @@ public class DirtTile extends Tile
 
 		healthMultiplier = 0.5f;
 
+		particleColor = color(#6e3e26);
+
 		image = ResourceManager.getImage("DirtBlock");
 		breakSound = "DirtBreak";
 	}

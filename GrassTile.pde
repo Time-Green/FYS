@@ -4,6 +4,9 @@ public class GrassTile extends Tile
 	{
 		super(x, y);
 
+		particleColor = color(#33540d);
+
+
 		image = ResourceManager.getImage("GrassBlock");
 		breakSound = "DirtBreak";
 

@@ -5,6 +5,8 @@ public class IronTile extends ResourceTile
 		super(x, y);
 
 		value = Globals.IRONVALUE;
+		
+		particleColor = color(#ccccc6);
 
 		image = ResourceManager.getImage("IronBlock");
 		pickUpImage = ResourceManager.getImage("IronPickUp");

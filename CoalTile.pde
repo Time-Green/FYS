@@ -6,6 +6,8 @@ public class CoalTile extends ResourceTile
 
 		value = Globals.COALVALUE;
 
+		particleColor = color(#262625);
+
 		image = ResourceManager.getImage("CoalBlock");
 		pickUpImage = ResourceManager.getImage("CoalPickUp");
 	}
