@@ -253,7 +253,7 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + max(0, player.getDepth() - Globals.OVERWORLD_HEIGHT), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
+    text("Depth: " + (max(0, player.getDepth() - Globals.OVERWORLD_HEIGHT)) + "m", 10, hudTextStartX + hudFontSize + 10);
 
     drawInventory();
   }
