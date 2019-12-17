@@ -91,7 +91,6 @@ class Player extends Mob
     if(player.getDepth() - Globals.OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(1))
     {
       achievementHelper.unlock(1); 
-	  ui.startDisplayingAchievement(1); 
     }
 
     setVisibilityBasedOnCurrentBiome();
