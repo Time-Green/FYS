@@ -1,6 +1,6 @@
 public class AmethystTile extends ResourceTile {
 
-  public AmethystTile(int x, int y) {
+  public AmethystTile(int x, int y, int type) {
     super(x, y);
 
     value = Globals.AMETHYSTVALUE;
