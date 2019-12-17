@@ -15,8 +15,8 @@ class Mob extends Movable {
   boolean isHurt;
 
   //Mining
-  int miningCooldown = timeInSeconds(1); //cooldown in millis
-  int lastMine;
+  float miningCooldown = timeInSeconds(.1f); //cooldown in millis
+  float lastMine;
   float baseDamage = 1;
 
   //Inventory
