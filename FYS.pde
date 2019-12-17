@@ -261,7 +261,7 @@ void handleGameFlow() {
 
   case InGame:
 
-    //Pauze the game
+    //Pause the game
     if (InputHelper.isKeyDown(Globals.STARTKEY)) {
       Globals.currentGameState = Globals.GameState.GamePaused;
       InputHelper.onKeyReleased(Globals.STARTKEY);
