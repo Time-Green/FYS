@@ -6,10 +6,6 @@ class NormalBiome extends Biome
 		structureChance = 0.008;
 	}
 
-  NormalBiome() {
-    structureChance = 0.02;
-  }
-
   String getStructureName() {
     return "Dungeon2";
   }

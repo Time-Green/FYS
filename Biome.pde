@@ -5,6 +5,7 @@ class Biome
 	float structureChance = 0.001; //chance of a structure spawning between 0 and 1 for every row of tiles
 	float enemyChance = 0.01; //chance of enemy spawning on an open tile
 	float ceilingObstacleChance = 0.0; //chance that a tile can have something hanging from it
+	float groundObstacleChance = 0.1; //ditto but then ground
 
 	int minimumDepth = 0;
 	int maximumDepth = 999999;
@@ -161,7 +162,7 @@ class Biome
 	void prepareGroundObstacle(Tile target, World world)
 	{
 		Tile above = world.getTile(target.position.x, target.position.y - Globals.TILE_SIZE); //get the tile above us
-    	if(above != null && !above.density)
+    	if(random(1) < groundObstacleChance && above != null && !above.density)
 		{
 			Movable rooter = (Movable) spawnGroundObstacle(above);
 			if(rooter != null)
