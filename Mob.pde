@@ -15,7 +15,7 @@ class Mob extends Movable {
   boolean isHurt;
 
   //Mining
-  int miningCooldown = 1; //cooldown in millis
+  int miningCooldown = timeInSeconds(1); //cooldown in millis
   int lastMine;
   float baseDamage = 1;
 
@@ -225,4 +225,5 @@ class Mob extends Movable {
     }
     return null; //should never happen, because we should always check hasHeldItem before calling this
   }
+
 }

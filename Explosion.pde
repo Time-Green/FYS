@@ -22,7 +22,7 @@ class Explosion extends BaseObject {
     objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
 
     //create particle system
-    ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, 200, radius / 15);
+    ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, int(radius / 2), radius / 15);
     load(particleSystem);
 
     //play sound

@@ -2,6 +2,8 @@ import processing.sound.*;
 
 public static class AudioManager {
 
+  private static final boolean AUDIO_ENABLED = true;
+
   private static FYS game;
 
   private final static int AUDIO_AMOUNT = 1;
@@ -13,10 +15,19 @@ public static class AudioManager {
   private static FloatDict maxAudioVolumes = new FloatDict();
 
   public static void setup(FYS game) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
+
     AudioManager.game = game;
   }
 
   public static void loadMusic(String name, String fileName) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
 
     SoundFile music = new SoundFile(game, fileName);
 
@@ -33,6 +44,10 @@ public static class AudioManager {
   private final static int MAX_TRIES = 10;
 
   public static void loadSoundEffect(String name, String fileName) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
 
     try {
       SoundFile[] soundArray = new SoundFile[AUDIO_AMOUNT];
@@ -65,6 +80,11 @@ public static class AudioManager {
   }
 
   public static void playSoundEffect(String name) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
+
     SoundFile[] soundEffects = soundEffectMap.get(name);
     int playAtIndex = soundEffectMapIndex.get(name);
     SoundFile soundToPlay = soundEffects[playAtIndex];
@@ -86,6 +106,11 @@ public static class AudioManager {
   }
 
   public static void playSoundEffect(String name, PVector atLocation) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
+
     SoundFile[] soundEffects = soundEffectMap.get(name);
     int playAtIndex = soundEffectMapIndex.get(name);
     SoundFile soundToPlay = soundEffects[playAtIndex];
@@ -115,6 +140,11 @@ public static class AudioManager {
   }
 
   public static void playMusic(String name) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
+
     SoundFile soundToPlay = musicMap.get(name);
 
     if (soundToPlay == null) {
@@ -128,6 +158,11 @@ public static class AudioManager {
   }
 
   public static void stopMusic(String name) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
+
     SoundFile soundToStop = musicMap.get(name);
 
     if (soundToStop == null) {
@@ -139,6 +174,11 @@ public static class AudioManager {
   }
 
   public static void loopMusic(String name) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
+
     SoundFile soundToPlay = musicMap.get(name);
 
     if (soundToPlay == null) {
@@ -153,6 +193,11 @@ public static class AudioManager {
 
   // volume range [0-1]
   public static void setMaxVolume(String name, float volume) {
+
+    if(!AUDIO_ENABLED){
+      return;
+    }
+
     SoundFile music = musicMap.get(name);
 
     if (music != null) {

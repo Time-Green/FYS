@@ -81,6 +81,8 @@ private void generateLeaderboardGraphics(){
 
   int i = 0;
 
+  leaderBoardGraphics.textAlign(LEFT, CENTER);
+
   for (LeaderboardRow leaderboardRow : leaderBoard) {
 
     if(i == 0){
@@ -95,8 +97,13 @@ private void generateLeaderboardGraphics(){
       leaderBoardGraphics.fill(255);
     }
     
-    leaderBoardGraphics.text("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m", (Globals.TILE_SIZE * 9) / 2, 53 + i * 20);
+    leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
+    leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
+    leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
+    leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
+
     //println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
+
     i++;
   }
 
@@ -190,8 +197,6 @@ void draw() {
   if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE) {
     ui.drawArrows();
   }
-
-  //image(leaderBoardGraphics, 12 * Globals.TILE_SIZE, 5 * Globals.TILE_SIZE);
 
   popMatrix();
   //draw hud below popMatrix();
