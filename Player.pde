@@ -13,6 +13,8 @@ class Player extends Mob {
   private final int MINEFRAMES = 3;
   private AnimatedImage animatedImageFall;
   private final int FALLFRAMES = 4;
+  private AnimatedImage animatedImageFire;
+  private final int FIREFRAMES = 4;
 
   private float viewAmount = 400;
   private float viewTarget = viewAmount;
@@ -38,6 +40,7 @@ class Player extends Mob {
     PImage[] mineFrames = new PImage[MINEFRAMES];
     PImage[] shockFrames = new PImage[SHOCKFRAMES];
     PImage[] fallFrames = new PImage[FALLFRAMES];
+    PImage[] fireFrames = new PImage[FIREFRAMES];
 
     for (int i = 0; i < WALKFRAMES; i++)
       walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i); 
@@ -62,6 +65,10 @@ class Player extends Mob {
     for (int i = 0; i < FALLFRAMES; i++) 
       fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
     animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+
+     for (int i = 0; i < FIREFRAMES; i++)
+      fireFrames[i] = ResourceManager.getImage("Fire" + i); 
+    animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     setupLightSource(this, viewAmount, 1f);
 
@@ -173,13 +180,13 @@ class Player extends Mob {
       shockedCycle.draw();
     } else {//Play the other animations when we are not
       //PLayer input
-      if ((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) {//Walking
+      if ((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)||InputHelper.isKeyDown('d')||InputHelper.isKeyDown('a')) && isGrounded()) {//Walking
         walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
         walkCycle.draw();
-      } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) {//Jumping
+      } else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)||InputHelper.isKeyDown('a'))) {//Jumping
         animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageAir.draw();
-      } else if (InputHelper.isKeyDown(Globals.DIGKEY) && Globals.currentGameState == Globals.GameState.InGame) {//Digging
+      } else if (InputHelper.isKeyDown(Globals.DIGKEY)||InputHelper.isKeyDown('s') && Globals.currentGameState == Globals.GameState.InGame) {//Digging
         animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
         animatedImageMine.draw();
       } else if(isGrounded == false) {
@@ -192,6 +199,7 @@ class Player extends Mob {
     }
   }
 
+
   void doPlayerMovement() {
 
     //Allow endless jumps while swimming
@@ -199,7 +207,7 @@ class Player extends Mob {
 
     gravityForce = 1f;
 
-    if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
+    if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)||InputHelper.isKeyDown('w')) && isGrounded()) {
 
       if (!isSwimming){
         addForce(new PVector(0, -jumpForce));
@@ -208,19 +216,19 @@ class Player extends Mob {
       else {
         addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
       }
-    }else if(!InputHelper.isKeyDown(Globals.JUMPKEY1) && !InputHelper.isKeyDown(Globals.JUMPKEY2) && !isGrounded()){
+    }else if(!InputHelper.isKeyDown(Globals.JUMPKEY1) && !InputHelper.isKeyDown(Globals.JUMPKEY2) && !InputHelper.isKeyDown('w') && !isGrounded()){
       //allow for short jumps
       gravityForce = 1.8f;
     }
 
-    if (InputHelper.isKeyDown(Globals.DIGKEY)) {
+    if (InputHelper.isKeyDown(Globals.DIGKEY)||InputHelper.isKeyDown('s')) {
       isMiningDown = true;
       if (isSwimming) addForce(new PVector(0, (jumpForce/10)));//Swim down
     } else {
       isMiningDown = false;
     }
 
-    if (InputHelper.isKeyDown(Globals.LEFTKEY)) {
+    if (InputHelper.isKeyDown(Globals.LEFTKEY)||InputHelper.isKeyDown('a')) {
       addForce(new PVector(-speed, 0));
       isMiningLeft = true;
       flipSpriteHorizontal = false;
@@ -228,7 +236,7 @@ class Player extends Mob {
       isMiningLeft = false;
     }
 
-    if (InputHelper.isKeyDown(Globals.RIGHTKEY)) {
+    if (InputHelper.isKeyDown(Globals.RIGHTKEY)||InputHelper.isKeyDown('d')) {
       addForce(new PVector(speed, 0));
       isMiningRight = true;
       flipSpriteHorizontal = true;
