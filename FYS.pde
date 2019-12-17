@@ -503,10 +503,9 @@ BaseObject load(BaseObject newObject, boolean priority)
   return newObject;
 }
 
-// handles removal, call delete(object) to delete that object from the world
-void delete(BaseObject deletingObject)
-{
-	destroyList.add(deletingObject); //queue for deletion
+void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
+  destroyList.add(deletingObject); //queue for deletion
+  deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
 }
 
 // handles reload, call delete(object) to delete that object from the world

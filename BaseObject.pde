@@ -73,6 +73,10 @@ class BaseObject
 		return;
 	}
 
+  void onDeleteQueued(){ //event for when we were QUEUED to be deleted. If our deletion meant deletion of others, it would cause
+                         //a concurrentmodificationexception, so we need to do it instantly
+  }
+
 	// add to certain lists
 	void specialAdd()
 	{

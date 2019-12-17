@@ -64,7 +64,7 @@ class Player extends Mob
 
 		animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-		for (int i = 0; i < SHOCKFRAMES; i++)
+    for (int i = 0; i < SHOCKFRAMES; i++)
 		{
 			shockFrames[i] = ResourceManager.getImage("PlayerShock" + i);
 		}
@@ -82,69 +82,43 @@ class Player extends Mob
 		{
 			fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
 		}
-
-		animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+    animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
      for (int i = 0; i < FIREFRAMES; i++)
-      fireFrames[i] = ResourceManager.getImage("Fire" + i); 
+     {
+      fireFrames[i] = ResourceManager.getImage("FireP" + i); 
+     }
     animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-		setupLightSource(this, viewAmount, 1f);
+    setupLightSource(this, viewAmount, 1f);
 
-		applyRelicBoost();
-	}
+    applyRelicBoost();
+  }
 
-	void update()
-	{
-		if (Globals.gamePaused)
-		{  
-			return;
-		}
+  void update() {
 
-		super.update();
+    super.update();
 
-		setVisibilityBasedOnCurrentBiome();
+    if (Globals.gamePaused) {  
+      return;
+    }
 
-		checkHealthLow();
+    if (stunTimer <= 0) {
+      doPlayerMovement();
+    }
+    playerOnFire();
+  }
 
-		statusEffects();
+  void checkHealthLow() {
+    if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f) { // if lower than 20% health, show low health overlay
 
-		if (stunTimer <= 0)
-		{
-			doPlayerMovement();
-		}
-	}
+      ui.drawWarningOverlay = true;
 
-	void checkHealthLow()
-	{
-		// if lower than 20% health, show low health overlay
-		if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f)
-		{
-
-			ui.drawWarningOverlay = true;
-
-			if (frameCount % 60 == 0)
-			{
-				AudioManager.playSoundEffect("LowHealth");
-			}
-
-		}
-		else if (currentHealth < maxHealth / 10f) // if lower than 10% health, show low health overlay intesified
-		{
-
-			ui.drawWarningOverlay = true;
-
-			if (frameCount % 40 == 0)
-			{
-				AudioManager.playSoundEffect("LowHealth");
-			}
-
-		}
-		else if (currentHealth > maxHealth / 5f)
-		{
-			ui.drawWarningOverlay = false;
-		}
-	}
+       if (frameCount % 60 == 0) {
+        AudioManager.playSoundEffect("LowHealth");
+      }
+	  }
+  }
 
 	void applyRelicBoost()
 	{
@@ -208,6 +182,8 @@ class Player extends Mob
 
 		handleAnimation();
 
+    playerOnFire();
+
 		// player only, because we'll never bother adding a holding sprite for every mob 
 		for (Item item : inventory)
 		{
@@ -252,6 +228,16 @@ class Player extends Mob
 			}
 		}
 	}
+
+   void playerOnFire() {
+    tint(255, 200);
+    if(isOnFire == true) {
+      animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
+        animatedImageFire.draw();
+
+        AudioManager.playSoundEffect("FireSound");
+    }
+  }
 
 	void doPlayerMovement()
 	{

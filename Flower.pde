@@ -7,6 +7,7 @@ class Flower extends Mob {
         this.position = new PVector(1395, 509);
         setupLightSource(this, 125f, 1f);
         setMaxHp(20);
+        image = ResourceManager.getImage("Flower" + 0); 
 
     PImage[]  flowerFrames = new PImage[FLOWERFRAMES];
 

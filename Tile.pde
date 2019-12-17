@@ -1,215 +1,226 @@
-class Tile extends BaseObject
-{
-	PVector gridPosition = new PVector(); //same as position, but complete tiles instead of pixels
+class Tile extends BaseObject {
+  PVector gridPosition = new PVector(); //same as position, but complete tiles instead of pixels
 
-	boolean destroyed;
+  boolean destroyed;
 
-	float slipperiness = 1; //how much people slip on it. lower is slipperier
+  float slipperiness = 1; //how much people slip on it. lower is slipperier
 
-	private float maxHp, hp;
-	public float healthMultiplier = 1;
+  private float maxHp, hp;
+  public float healthMultiplier = 1;
 
-	PImage image;
-	PImage destroyedImage;
+  PImage image;
+  PImage destroyedImage;
 
-	String breakSound;
-	float damageDiscolor = 50;
+  String breakSound;
+  float damageDiscolor = 50;
 
-  color particleColor = color(#7a6e6d);
+  color particleColor = color(#45403d);
 
-	Tile(int x, int y)
-	{
-		loadInBack = true;
-		movableCollision = true;
+  ArrayList<Movable> rootedIn = new ArrayList<Movable>();
 
-		position.x = x * Globals.TILE_SIZE;
-		position.y = y * Globals.TILE_SIZE;
+  Tile(int x, int y) 
+  {
+    loadInBack = true;
+    movableCollision = true;
 
-		size.x = Globals.TILE_SIZE;
-		size.y = Globals.TILE_SIZE;
+    position.x = x * Globals.TILE_SIZE;
+    position.y = y * Globals.TILE_SIZE;
 
-		gridPosition.x = x;
-		gridPosition.y = y;
+    size.x = Globals.TILE_SIZE;
+    size.y = Globals.TILE_SIZE;
 
-		//the hp of the tile gows up the lower you go
-		setMaxHp((2 + y / 250) * healthMultiplier);
+    gridPosition.x = x;
+    gridPosition.y = y;
 
-		breakSound = "StoneBreak" + floor(random(1, 5));
+    //the hp of the tile gows up the lower you go
+    setMaxHp((2 + y / 250) * healthMultiplier);
 
-		if (y > Globals.OVERWORLD_HEIGHT)
-		{
-			destroyedImage = ResourceManager.getImage("DestroyedBlock");
-		}
-		else
-		{
-			density = false; 
-			destroyedImage = null;
-		}
-	}
+    breakSound = "StoneBreak" + floor(random(1, 5));
 
-	private void setupCave(World world)
-	{
-		//11 is grass layer + transition layer
-		if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale)
-		{
-			destroyed = true;
-			density = false;
+    if (y > Globals.OVERWORLD_HEIGHT) 
+    {
+      destroyedImage = ResourceManager.getImage("DestroyedBlock");
+    } else 
+    {
+      density = false; 
+      destroyedImage = null;
+    }
+  }
 
-			//do a chance check first to save time and resources
-			if(random(1) < world.currentBiome.ceilingObstacleChance)
-			{
-				world.currentBiome.prepareCeilingObstacle(this, world);
-			}
+  private void setupCave(World world) {
 
-			if (loadInBack == false)
-			{
-				loadInBack = true;
-				reload(this);
-			}
+    //11 is grass layer + transition layer
+    if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
+    {
+      destroyed = true;
+      density = false;
 
-			//1% change to spawn torch
-			if (random(100) < 1)
-			{
-				load(new Torch(), position);
-			}
+      if(random(1) < world.currentBiome.ceilingObstacleChance)
+      { //do a chance check first to save time and resources
+        world.currentBiome.prepareCeilingObstacle(this, world);
+      }
+      
 
-			if (random(1) < world.currentBiome.enemyChance)
-			{
-				world.currentBiome.spawnEnemy(position);
-			}
-		}
-	}
+      if (loadInBack == false) 
+      {
+        loadInBack = true;
+        reload(this);
+      }
 
-	void specialAdd()
-	{
-		super.specialAdd();
+      //1% change to spawn torch
+      if (random(100) < 1)
+      {
+        load(new Torch(), position);
+      }
+      if (random(1) < world.currentBiome.enemyChance)
+        world.currentBiome.spawnEnemy(position);
+    }
+    else
+    {
+      world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
+    }
+  }
 
-		tileList.add(this);
-	}
+  void specialAdd() 
+  {
+    super.specialAdd();
 
-	void destroyed()
-	{
-		super.destroyed();
+    tileList.add(this);
+  }
 
-		world.map.get(int(gridPosition.y)).remove(this);
-		tileList.remove(this);
-	}
+  void destroyed() 
+  {
+    super.destroyed();
 
-	void draw()
-	{
-		if (!inCameraView())
-		{
-			return;
-		}
+    world.map.get(int(gridPosition.y)).remove(this);
+    tileList.remove(this);
+  }
 
-		super.draw();
+  void draw() 
+  {
+    if (!inCameraView()) 
+    {
+      return;
+    }
 
-		if (!destroyed)
-		{
-			//if we dont have an image, we cant draw anything
-			if (image == null)
-			{
-				return;
-			}
+    super.draw();
 
-			tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
-			image(image, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
-			tint(255);
-		}
-		else
-		{
-			if (destroyedImage != null) {
-				tint(lightningAmount);
-				image(destroyedImage, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
-				tint(255);
-			}
-		}
-	}
+    if (!destroyed) 
+    {
 
-	void update()
-	{
-		super.update();
-	}
+      //if we dont have an image, we cant draw anything
+      if (image == null) 
+      {
+        return;
+      }
 
-	void takeDamage(float damageTaken, boolean playBreakSound)
-	{
-		super.takeDamage(damageTaken);
+      tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
+      image(image, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      tint(255);
+    } else 
+    {
+      if (destroyedImage != null) 
+      {
+        tint(lightningAmount);
+        image(destroyedImage, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+        tint(255);
+      }
+    }
+  }
 
-		hp -= damageTaken;
+  void update()
+  {
+    super.update();
+  }
 
-		if (hp <= 0)
-		{
-			if (this instanceof ResourceTile)
-			{
-				ResourceTile thisTile = (ResourceTile) this;
+  void takeDamage(float damageTaken, boolean playBreakSound) 
+  {
+    super.takeDamage(damageTaken);
 
-				thisTile.mine(playBreakSound, false);
-			}
-			else
-			{
-				mine(playBreakSound);
-			}
-		}
-	}
+    hp -= damageTaken;
 
-	void takeDamage(float damageTaken)
-	{
-		super.takeDamage(damageTaken);
+    if (hp <= 0) 
+    {
+      if (this instanceof ResourceTile) 
+      {
 
-		hp -= damageTaken;
+        ResourceTile thisTile = (ResourceTile) this;
 
-		if (hp <= 0)
-		{
-			mine(true);
-		}
-	}
+        thisTile.mine(playBreakSound, false);
+      } else 
+      {
+        mine(playBreakSound);
+      }
+    }
+  }
 
-	boolean canMine()
-	{
-		return density;
-	}
+  void takeDamage(float damageTaken) 
+  {
+    super.takeDamage(damageTaken);
 
-	public void mine(boolean playBreakSound)
-	{
-		if (playBreakSound && breakSound != null)
-		{
-			playBreakSound();
+    hp -= damageTaken;
 
-      		//create particle system
-		    TileBreakParticleSystem particleSystem = new TileBreakParticleSystem(position, 15, 6, particleColor);
-		    load(particleSystem);
-		}
+    if (hp <= 0) 
+    {
+      mine(true);
+    }
+  }
 
-		destroyed = true;
-		density = false;
-		loadInBack = true;
-		reload(this);
+  boolean canMine() 
+  {
+    return density;
+  }
 
-		//if this tile generates light and is destroyed, disable the lightsource by removing it
-		if (lightSources.contains(this))
-		{
-			lightSources.remove(this);
-		}
-	}
+  public void mine(boolean playBreakSound) {
 
-	private void playBreakSound()
-	{
-		AudioManager.playSoundEffect(breakSound);
-	}
+    if (playBreakSound && breakSound != null) 
+    {
+      playBreakSound();
 
-	void setMaxHp(float hpToSet)
-	{
-		maxHp = hpToSet;
-		hp = hpToSet;
-	}
+		//create particle system
+		TileBreakParticleSystem particleSystem = new TileBreakParticleSystem(position, 15, 6, particleColor);
+		load(particleSystem);
+    }
 
-	void replace(World world, Tile replaceTile)
-	{
-		int index = world.map.get(int(gridPosition.y)).indexOf(this);
-		
-		world.map.get(int(gridPosition.y)).set(index, replaceTile);
+    destroyed = true;
+    density = false;
+    loadInBack = true;
+    
+    releaseRooted();
+    reload(this);
 
-		delete(this);
-		load(replaceTile);
-	}
+    //if this tile generates light and is destroyed, disable the lightsource by removing it
+    if (lightSources.contains(this)) 
+    {
+      lightSources.remove(this);
+    }
+  }
+
+  private void playBreakSound() 
+  {
+    AudioManager.playSoundEffect(breakSound);
+  }
+
+  void setMaxHp(float hpToSet) 
+  {
+    maxHp = hpToSet;
+    hp = hpToSet;
+  }
+
+  void replace(World world, Tile replaceTile) 
+  {
+    int index = world.map.get(int(gridPosition.y)).indexOf(this);
+    world.map.get(int(gridPosition.y)).set(index, replaceTile);
+
+    delete(this);
+    load(replaceTile);
+  }
+
+  void releaseRooted()
+  { //destroy plants, drop icicles etc
+    for(Movable rooted : rootedIn)
+    {
+      rooted.unroot(this);
+    }
+  }
 }
