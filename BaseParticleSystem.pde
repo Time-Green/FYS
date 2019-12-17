@@ -1,25 +1,29 @@
-public class BaseParticleSystem extends BaseObject {
+public class BaseParticleSystem extends BaseObject
+{
+	protected int particleAmount;
+	protected int currentParticleAmount;
 
-  protected int particleAmount;
-  protected int currentParticleAmount;
+	public BaseParticleSystem(PVector spawnPos, int amount)
+	{
+		super();
 
-  public BaseParticleSystem(PVector spawnPos, int amount)
-  {
-    super();
+		position.set(spawnPos);
+		particleAmount = amount;
+		currentParticleAmount = amount;
+	}
 
-    position.set(spawnPos);
-    particleAmount = amount;
-    currentParticleAmount = amount;
-  }
+	void update()
+	{
+		super.update();
 
-  void update() {
-    super.update();
+		if (currentParticleAmount <= 0)
+		{
+			delete(this);
+		}
+	}
 
-    if (currentParticleAmount <= 0) {
-      delete(this);
-    }
-  }
-
-  void takeDamage(float damageTaken) {
-  }
+	void takeDamage(float damageTaken)
+	{
+		
+	}
 }

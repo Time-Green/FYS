@@ -1,158 +1,174 @@
-class DungeonBlock0 extends Tile {
-
-  DungeonBlock0(int x, int y) {
-    super(x, y);
-    image = ResourceManager.getImage("DungeonBlock0");
-    density = true;
-    healthMultiplier = 2;
-    //setMaxHp(15);
-  }
+class DungeonBlock0 extends Tile
+{
+	DungeonBlock0(int x, int y)
+	{
+		super(x, y);
+		image = ResourceManager.getImage("DungeonBlock0");
+		density = true;
+		healthMultiplier = 2;
+	}
 }
 
-class DungeonBlock1 extends Tile {
+class DungeonBlock1 extends Tile
+{
+	DungeonBlock1(int x, int y)
+	{
+		super(x, y);
 
-  DungeonBlock1(int x, int y) {
-    super(x, y);
-    image = ResourceManager.getImage("DungeonBlock1");
-    density = true;
-    healthMultiplier = 2;
-    //setMaxHp(15);
+		image = ResourceManager.getImage("DungeonBlock1");
+		density = true;
+		healthMultiplier = 2;
 
-    //make it a lightsource if it is the button altar, "sun"
-    if(y == Globals.OVERWORLD_HEIGHT){
-      setupLightSource(this, 600f, 0.03f);
-    }
-  }
+		//make it a lightsource if it is the button altar, "sun"
+		if(y == Globals.OVERWORLD_HEIGHT)
+		{
+			setupLightSource(this, 600f, 0.03f);
+		}
+	}
 }
 
-class DungeonBlock2 extends Tile {
+class DungeonBlock2 extends Tile
+{
+	DungeonBlock2(int x, int y)
+	{
+		super(x, y);
 
-  DungeonBlock2(int x, int y) {
-    super(x, y);
-    image = ResourceManager.getImage("DungeonBlock2");
-    density = false;
-    healthMultiplier = 2;
-    //setMaxHp(15);
-  }
+		image = ResourceManager.getImage("DungeonBlock2");
+		density = false;
+		healthMultiplier = 2;
+	}
 }
 
-class DungeonStairL extends Tile {
+class DungeonStairL extends Tile
+{
+	DungeonStairL(int x, int y)
+	{
+		super(x, y);
 
-  DungeonStairL(int x, int y) {
-    super(x, y);
-    image = ResourceManager.getImage("DungeonStairL");
-    healthMultiplier = 2;
-    //setMaxHp(15);
-  }
+		image = ResourceManager.getImage("DungeonStairL");
+		healthMultiplier = 2;
+	}
 }
 
-class DungeonStairR extends Tile {
+class DungeonStairR extends Tile
+{
+	DungeonStairR(int x, int y)
+	{
+		super(x, y);
 
-  DungeonStairR(int x, int y) {
-    super(x, y);
-    image = ResourceManager.getImage("DungeonStairR");
-    healthMultiplier = 2;
-    //setMaxHp(15);
-  }
+		image = ResourceManager.getImage("DungeonStairR");
+		healthMultiplier = 2;
+	}
 }
 
-class Art0 extends Obstacle {
-
-  Art0() {
-    anchored = true;
-    image = ResourceManager.getImage("Art0");
-    size.set(100, 50);
-    density = false;
-  }
+class Art0 extends Obstacle
+{
+	Art0()
+	{
+		anchored = true;
+		image = ResourceManager.getImage("Art0");
+		size.set(100, 50);
+		density = false;
+	}
 }
 
-class Art1 extends Obstacle {
-
-  Art1() {
-    anchored = true;
-    image = ResourceManager.getImage("Art1");
-    density = false;
-  }
+class Art1 extends Obstacle
+{
+	Art1()
+	{
+		anchored = true;
+		image = ResourceManager.getImage("Art1");
+		density = false;
+	}
 }
 
-class Banner extends Obstacle {
-
-  Banner() {
-    anchored = true;
-    image = ResourceManager.getImage("Banner");
-    size.set(50, 100);
-    density = false;
-  }
+class Banner extends Obstacle
+{
+	Banner()
+	{
+		anchored = true;
+		image = ResourceManager.getImage("Banner");
+		size.set(50, 100);
+		density = false;
+	}
 }
 
-class ChairL extends Obstacle {
-
-  ChairL() {
-    image = ResourceManager.getImage("ChairL");
-    density = false;
-  }
+class ChairL extends Obstacle
+{
+	ChairL()
+	{
+		image = ResourceManager.getImage("ChairL");
+		density = false;
+	}
 }
 
-class ChairR extends Obstacle {
-
-  ChairR() {
-    image = ResourceManager.getImage("ChairR");
-    density = false;
-  }
+class ChairR extends Obstacle
+{
+	ChairR()
+	{
+		image = ResourceManager.getImage("ChairR");
+		density = false;
+	}
 }
 
-class Table extends Obstacle {
-
-  Table() {
-    image = ResourceManager.getImage("Table");
-    size.set(100, 50);
-    density = false;
-  }
+class Table extends Obstacle
+{
+	Table()
+	{
+		image = ResourceManager.getImage("Table");
+		size.set(100, 50);
+		density = false;
+	}
 }
 
-class Shelf0 extends Obstacle {
-
-  Shelf0() {
-    anchored = true;
-    image = ResourceManager.getImage("Shelf0");
-    density = false;
-  }
+class Shelf0 extends Obstacle
+{
+	Shelf0()
+	{
+		anchored = true;
+		image = ResourceManager.getImage("Shelf0");
+		density = false;
+	}
 }
 
-class Shelf1 extends Obstacle {
-
-  Shelf1() {
-    anchored = true;
-    image = ResourceManager.getImage("Shelf1");
-    density = false;
-  }
+class Shelf1 extends Obstacle
+{
+	Shelf1()
+	{
+		anchored = true;
+		image = ResourceManager.getImage("Shelf1");
+		density = false;
+	}
 }
 
-class Skull extends Obstacle {
-
-  Skull() {
-    image = ResourceManager.getImage("Skull");
-    size.set(20, 20);
-    density = false;
-  }
+class Skull extends Obstacle
+{
+	Skull()
+	{
+		image = ResourceManager.getImage("Skull");
+		size.set(20, 20);
+		density = false;
+	}
 }
 
-class SkullTorch extends Torch {
+class SkullTorch extends Torch
+{
+	SkullTorch()
+	{
+		super();
 
-  SkullTorch() {
-    super();
-
-    image = ResourceManager.getImage("SkullTorch");
-    size.set(20, 20);
-    density = false;
-  }
+		image = ResourceManager.getImage("SkullTorch");
+		size.set(20, 20);
+		density = false;
+	}
 }
 
-class Cobweb extends Obstacle {
-
-  Cobweb() {
-    anchored = true;
-    image = ResourceManager.getImage("Cobweb");
-    density = false;
-  }
+class Cobweb extends Obstacle
+{
+	Cobweb()
+	{
+		anchored = true;
+		image = ResourceManager.getImage("Cobweb");
+		density = false;
+	}
 }

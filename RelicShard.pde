@@ -1,43 +1,53 @@
-class RelicShard extends PickUp {
+class RelicShard extends PickUp
+{
+	int type;
 
-  int type;
+	RelicShard()
+	{
 
-  RelicShard() {
+		// 0: mine boost
+		// 1: healthboost
+		// 2: regenboost
+		// 3: speedboost
+		// 4: lightboost
 
-    // 0: mine boost
-    // 1: healthboost
-    // 2: regenboost
-    // 3: speedboost
-    // 4: lightboost
+		type = floor(random(5));
+		image = ResourceManager.getImage("RelicShard" + type);
+	}
 
-    type = floor(random(5));
-    image = ResourceManager.getImage("RelicShard" + type);
-  }
+	void pickedUp(Mob mob)
+	{
+		super.pickedUp(mob);
 
-  void pickedUp(Mob mob) {
-    super.pickedUp(mob);
-    //println("PICKUP " + type);
-    PlayerRelicInventory playerRelicInventory = getRelicShardInventoryByType();
-    if(playerRelicInventory == null) {
-      PlayerRelicInventory newPlayerRelicInventory = new PlayerRelicInventory();
-      newPlayerRelicInventory.relicshardid = type;
-      newPlayerRelicInventory.amount = 1;
+		PlayerRelicInventory playerRelicInventory = getRelicShardInventoryByType();
 
-      totalCollectedRelicShards.add(newPlayerRelicInventory);
-    }
-    else{
-      playerRelicInventory.amount++;
-    }
+		if(playerRelicInventory == null)
+		{
+			PlayerRelicInventory newPlayerRelicInventory = new PlayerRelicInventory();
 
-    runData.collectedRelicShards.add(this);
-  }
+			newPlayerRelicInventory.relicshardid = type;
+			newPlayerRelicInventory.amount = 1;
 
-  PlayerRelicInventory getRelicShardInventoryByType(){
-    for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards) {
-      if(collectedRelicShardInventory.relicshardid == type) {
-        return collectedRelicShardInventory;
-      }
-    }
-    return null;
-  }
+			totalCollectedRelicShards.add(newPlayerRelicInventory);
+		}
+		else
+		{
+			playerRelicInventory.amount++;
+		}
+
+		runData.collectedRelicShards.add(this);
+	}
+
+	PlayerRelicInventory getRelicShardInventoryByType()
+	{
+		for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards)
+		{
+			if(collectedRelicShardInventory.relicshardid == type)
+			{
+				return collectedRelicShardInventory;
+			}
+		}
+
+		return null;
+	}
 }

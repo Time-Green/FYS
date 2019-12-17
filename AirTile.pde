@@ -1,9 +1,9 @@
-class AirTile extends Tile {
+class AirTile extends Tile
+{
+	AirTile(int x, int y) {
+		super(x, y);
 
-  AirTile(int x, int y) {
-    super(x, y);
-
-    density = false;
-    destroyedImage = null;
-  }
+		density = false;
+		destroyedImage = null;
+	}
 }

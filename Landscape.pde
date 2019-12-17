@@ -1,30 +1,33 @@
-public class LeafTile extends Tile {
+public class LeafTile extends Tile
+{
+	public LeafTile(int x, int y)
+	{
+		super(x, y);
 
-  public LeafTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("Leaf");
-  }
+		image = ResourceManager.getImage("Leaf");
+	}
 }
 
-public class WoodTile extends Tile {
+public class WoodTile extends Tile
+{
+	public WoodTile(int x, int y)
+	{
+		super(x, y);
 
-  public WoodTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("Wood");
-    this.density = false; 
-    destroyedImage = null;
-  }
+		image = ResourceManager.getImage("Wood");
+		density = false; 
+		destroyedImage = null;
+	}
 }
 
-public class WoodBirchTile extends Tile {
+public class WoodBirchTile extends Tile
+{
+	public WoodBirchTile(int x, int y)
+	{
+		super(x, y);
 
-  public WoodBirchTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("WoodBirch");
-    this.density = false; 
-    destroyedImage = null;
-  }
+		image = ResourceManager.getImage("WoodBirch");
+		density = false; 
+		destroyedImage = null;
+	}
 }

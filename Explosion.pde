@@ -1,85 +1,101 @@
-class Explosion extends BaseObject {
+class Explosion extends BaseObject
+{
+	float maxRadius;
+	float maxDamage = 100;
+	float currentRadius = 0;
+	float radiusIncrease = 35;
 
-  float maxRadius;
-  float maxDamage = 100;
-  float currentRadius = 0;
-  float radiusIncrease = 35;
+	boolean dealDamageToPlayer;
 
-  boolean dealDamageToPlayer;
+	ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
 
-  ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
+	Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer)
+	{
+		position.set(spawnPos);
+		maxRadius = radius;
+		this.maxDamage = maxDamage;
+		this.dealDamageToPlayer = dealDamageToPlayer;
 
-  Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer) {
-    position.set(spawnPos);
-    maxRadius = radius;
-    this.maxDamage = maxDamage;
-    this.dealDamageToPlayer = dealDamageToPlayer;
+		//flash
+		setupLightSource(this, radius, 1f);
 
-    //flash
-    setupLightSource(this, radius, 1f);
+		//get objects inside max range
+		objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
 
-    //get objects inside max range
-    objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
+		//create particle system
+		ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, int(radius / 2), radius / 15);
+		load(particleSystem);
 
-    //create particle system
-    ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, int(radius / 2), radius / 15);
-    load(particleSystem);
+		//play sound
+		String explosionSound = "Explosion" + floor(random(1, 5));
+		AudioManager.playSoundEffect(explosionSound, position);
+	}
 
-    //play sound
-    String explosionSound = "Explosion" + floor(random(1, 5));
-    AudioManager.playSoundEffect(explosionSound, position);
-  }
+	void explode()
+	{
+		ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
 
-  void explode() {
-    ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
+		for (BaseObject object : objectsInMaxRadius)
+		{
+			if (dist(position.x, position.y, object.position.x, object.position.y) < currentRadius)
+			{
+				objectsInCurrentExplosionRadius.add(object);
+			}
+		}
 
-    for (BaseObject object : objectsInMaxRadius) {
+		for (BaseObject object : objectsInCurrentExplosionRadius)
+		{
+			if (!dealDamageToPlayer && object == player)
+			{
+				continue;
+			}
 
-      if (dist(position.x, position.y, object.position.x, object.position.y) < currentRadius) {
-        objectsInCurrentExplosionRadius.add(object);
-      }
-    }
+			//damage falloff
+			float damage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
 
-    for (BaseObject object : objectsInCurrentExplosionRadius) {
+			if (object instanceof Tile)
+			{
+				Tile tileToDamage = (Tile)object;
 
-      if (!dealDamageToPlayer && object == player) {
-        continue;
-      }
+				tileToDamage.takeDamage(damage, false);
+			}
+			else
+			{
+				object.takeDamage(damage);
+			}
+		}
 
-      //damage falloff
-      float damage = maxDamage - ((currentRadius / maxRadius) * maxDamage);
+		CameraShaker.induceStress(0.05f);
+	}
 
-      if (object instanceof Tile) {
-        Tile tileToDamage = (Tile)object;
+	void update()
+	{
+		super.update();
 
-        tileToDamage.takeDamage(damage, false);
-      } else {
-        object.takeDamage(damage);
-      }
-    }
+		if (currentRadius < maxRadius)
+		{
+			currentRadius += radiusIncrease;
 
-    CameraShaker.induceStress(0.05f);
-  }
+			if (currentRadius > maxRadius)
+			{
+				currentRadius = maxRadius;
+			}
 
-  void update() {
-    super.update();
+			explode();
+		}
+		else
+		{
+			delete(this);
+		}
+	}
 
-    if (currentRadius < maxRadius) {
-      currentRadius += radiusIncrease;
+	void draw()
+	{
 
-      if (currentRadius > maxRadius) {
-        currentRadius = maxRadius;
-      }
+	}
 
-      explode();
-    } else {
-      delete(this);
-    }
-  }
+	void fade()
+	{
 
-  void draw() {
-  }
-
-  void fade() {
-  }
+	}
 }
