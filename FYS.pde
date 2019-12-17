@@ -550,7 +550,8 @@ void keyPressed()
 	// TEMPORARY (duh)
 	if(key == 'E' || key == 'e')
 	{
-		load(new EnemyDigger(new PVector(1000, 500)));
+		load(new Explosion(new PVector(1000, 500),1,5,false));
+		// load(new Explosion(position, explosionSize, 5, false));
 	}
 }
 
