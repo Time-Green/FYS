@@ -1,12 +1,15 @@
-public class GreenIceTile extends ResourceTile {
+public class GreenIceTile extends ResourceTile
+{
+	public GreenIceTile(int x, int y)
+	{
+		super(x, y);
+		
+		particleColor = color(#24d12b);
 
-  public GreenIceTile(int x, int y) {
-    super(x, y);
+		value = Globals.GREENICEVALUE;
+		slipperiness = 1.1;
 
-    value = Globals.GREENICEVALUE;
-    slipperiness = 1.1;
-
-    image = ResourceManager.getImage("GreenIceBlock");
-    pickUpImage = ResourceManager.getImage("EmeraldPickup");
-  }
+		image = ResourceManager.getImage("GreenIceBlock");
+		pickUpImage = ResourceManager.getImage("EmeraldPickup");
+	}
 }

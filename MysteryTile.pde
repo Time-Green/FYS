@@ -1,8 +1,9 @@
-public class MysteryTile extends PowerUpTile {
+public class MysteryTile extends PowerUpTile
+{
+	public MysteryTile (int x, int y)
+	{
+		super(x, y);
 
-  public MysteryTile (int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("MysteryBlock");
-  }
+		image = ResourceManager.getImage("MysteryBlock");
+	}
 }

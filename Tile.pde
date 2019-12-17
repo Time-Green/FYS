@@ -14,7 +14,12 @@ class Tile extends BaseObject {
   String breakSound;
   float damageDiscolor = 50;
 
-  Tile(int x, int y) {
+  color particleColor = color(#45403d);
+
+  ArrayList<Movable> rootedIn = new ArrayList<Movable>();
+
+  Tile(int x, int y) 
+  {
     loadInBack = true;
     movableCollision = true;
 
@@ -32,9 +37,11 @@ class Tile extends BaseObject {
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 
-    if (y > Globals.OVERWORLD_HEIGHT) {
+    if (y > Globals.OVERWORLD_HEIGHT) 
+    {
       destroyedImage = ResourceManager.getImage("DestroyedBlock");
-    } else {
+    } else 
+    {
       density = false; 
       destroyedImage = null;
     }
@@ -43,62 +50,77 @@ class Tile extends BaseObject {
   private void setupCave(World world) {
 
     //11 is grass layer + transition layer
-    if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) {
+    if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
+    {
       destroyed = true;
       density = false;
 
-      if(random(1) < world.currentBiome.ceilingObstacleChance){ //do a chance check first to save time and resources
+      if(random(1) < world.currentBiome.ceilingObstacleChance)
+      { //do a chance check first to save time and resources
         world.currentBiome.prepareCeilingObstacle(this, world);
       }
       
 
-      if (loadInBack == false) {
+      if (loadInBack == false) 
+      {
         loadInBack = true;
         reload(this);
       }
 
       //1% change to spawn torch
-      if (random(100) < 1) {
+      if (random(100) < 1)
+      {
         load(new Torch(), position);
       }
       if (random(1) < world.currentBiome.enemyChance)
         world.currentBiome.spawnEnemy(position);
     }
+    else
+    {
+      world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
+    }
   }
 
-  void specialAdd() {
+  void specialAdd() 
+  {
     super.specialAdd();
 
     tileList.add(this);
   }
 
-  void destroyed() {
+  void destroyed() 
+  {
     super.destroyed();
 
     world.map.get(int(gridPosition.y)).remove(this);
     tileList.remove(this);
   }
 
-  void draw() {
-    if (!inCameraView()) {
+  void draw() 
+  {
+    if (!inCameraView()) 
+    {
       return;
     }
 
     super.draw();
 
-    if (!destroyed) {
+    if (!destroyed) 
+    {
 
       //if we dont have an image, we cant draw anything
-      if (image == null) {
+      if (image == null) 
+      {
         return;
       }
 
       tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
       image(image, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
       tint(255);
-    } else {
-
-      if (destroyedImage != null) {
+    } else 
+    {
+      if (destroyedImage != null) 
+      {
         tint(lightningAmount);
         image(destroyedImage, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
         tint(255);
@@ -106,72 +128,99 @@ class Tile extends BaseObject {
     }
   }
 
-  void update(){
+  void update()
+  {
     super.update();
   }
 
-  void takeDamage(float damageTaken, boolean playBreakSound) {
+  void takeDamage(float damageTaken, boolean playBreakSound) 
+  {
     super.takeDamage(damageTaken);
 
     hp -= damageTaken;
 
-    if (hp <= 0) {
-      if (this instanceof ResourceTile) {
+    if (hp <= 0) 
+    {
+      if (this instanceof ResourceTile) 
+      {
 
         ResourceTile thisTile = (ResourceTile) this;
 
         thisTile.mine(playBreakSound, false);
-      } else {
+      } else 
+      {
         mine(playBreakSound);
       }
     }
   }
 
-  void takeDamage(float damageTaken) {
+  void takeDamage(float damageTaken) 
+  {
     super.takeDamage(damageTaken);
 
     hp -= damageTaken;
 
-    if (hp <= 0) {
+    if (hp <= 0) 
+    {
       mine(true);
     }
   }
 
-  boolean canMine() {
+  boolean canMine() 
+  {
     return density;
   }
 
   public void mine(boolean playBreakSound) {
 
-    if (playBreakSound && breakSound != null) {
+    if (playBreakSound && breakSound != null) 
+    {
       playBreakSound();
+
+		//create particle system
+		TileBreakParticleSystem particleSystem = new TileBreakParticleSystem(position, 15, 6, particleColor);
+		load(particleSystem);
     }
 
     destroyed = true;
     density = false;
     loadInBack = true;
+    
+    releaseRooted();
     reload(this);
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
-    if (lightSources.contains(this)) {
+    if (lightSources.contains(this)) 
+    {
       lightSources.remove(this);
     }
   }
 
-  private void playBreakSound() {
+  private void playBreakSound() 
+  {
     AudioManager.playSoundEffect(breakSound);
   }
 
-  void setMaxHp(float hpToSet) {
+  void setMaxHp(float hpToSet) 
+  {
     maxHp = hpToSet;
     hp = hpToSet;
   }
 
-  void replace(World world, Tile replaceTile) {
+  void replace(World world, Tile replaceTile) 
+  {
     int index = world.map.get(int(gridPosition.y)).indexOf(this);
     world.map.get(int(gridPosition.y)).set(index, replaceTile);
 
     delete(this);
     load(replaceTile);
+  }
+
+  void releaseRooted()
+  { //destroy plants, drop icicles etc
+    for(Movable rooted : rootedIn)
+    {
+      rooted.unroot(this);
+    }
   }
 }

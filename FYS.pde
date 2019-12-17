@@ -38,28 +38,30 @@ boolean startGame = false; //start the game on next tick. needed to avoid concur
 
 PGraphics leaderBoardGraphics;
 
-void setup() {
-  this.surface.setTitle("Rocky Rain");
+void setup()
+{
+	this.surface.setTitle("Rocky Rain");
 
-  dh = new DisposeHandler(this);
+	dh = new DisposeHandler(this);
 
-  size(1280, 720, P2D);
-  //fullScreen(P2D);
+	size(1280, 720, P2D);
+	//fullScreen(P2D);
 
   databaseManager.beginLogin();
 
   
   AudioManager.setup(this);
 
-  ResourceManager.setup(this);
-  ResourceManager.prepareResourceLoading();
+	ResourceManager.setup(this);
+	ResourceManager.prepareResourceLoading();
 
-  CameraShaker.setup(this);
+	CameraShaker.setup(this);
 
-  ResourceManager.loadAll();
+	ResourceManager.loadAll();
 }
 
-void login() {
+void login() 
+{
   databaseManager.login();
   loginStatus = "Getting player inventory";
   totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
@@ -72,425 +74,495 @@ void login() {
   loginStatus = "";
 }
 
-private void generateLeaderboardGraphics(){
-  leaderBoardGraphics = createGraphics(int(Globals.TILE_SIZE * 9), int(Globals.TILE_SIZE * 5));
+private void generateLeaderboardGraphics()
+{
+	leaderBoardGraphics = createGraphics(int(Globals.TILE_SIZE * 9), int(Globals.TILE_SIZE * 5));
 
-  leaderBoardGraphics.beginDraw();
+	leaderBoardGraphics.beginDraw();
 
-  leaderBoardGraphics.textAlign(CENTER, CENTER);
-  leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
-  leaderBoardGraphics.textSize(25);
-  leaderBoardGraphics.text("Leaderboard", (Globals.TILE_SIZE * 9) / 2, 20);
+	leaderBoardGraphics.textAlign(CENTER, CENTER);
+	leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
+	leaderBoardGraphics.textSize(25);
+	leaderBoardGraphics.text("Leaderboard", (Globals.TILE_SIZE * 9) / 2, 20);
 
-  leaderBoardGraphics.textSize(12);
+	leaderBoardGraphics.textSize(12);
 
-  int i = 0;
+	int i = 0;
 
-  leaderBoardGraphics.textAlign(LEFT, CENTER);
+	leaderBoardGraphics.textAlign(LEFT, CENTER);
 
-  for (LeaderboardRow leaderboardRow : leaderBoard) {
+	for (LeaderboardRow leaderboardRow : leaderBoard)
+	{
+		if(i == 0)
+		{
+			leaderBoardGraphics.fill(#C98910);
+		}
+		else if(i == 1)
+		{
+			leaderBoardGraphics.fill(#A8A8A8);
+		}
+		else if(i == 2)
+		{
+			leaderBoardGraphics.fill(#cd7f32);
+		}
+		else if(leaderboardRow.userName.equals(dbUser.userName))
+		{
+			leaderBoardGraphics.fill(255); // WIP
+		}
+		else
+		{
+			leaderBoardGraphics.fill(255);
+		}
+		
+		leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
+		leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
+		leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
+		leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
 
-    if(i == 0){
-      leaderBoardGraphics.fill(#C98910);
-    }else if(i == 1){
-      leaderBoardGraphics.fill(#A8A8A8);
-    }else if(i == 2){
-      leaderBoardGraphics.fill(#cd7f32);
-    }else if(leaderboardRow.userName.equals(dbUser.userName)){
-      leaderBoardGraphics.fill(255); // WIP
-    }else{
-      leaderBoardGraphics.fill(255);
-    }
-    
-    leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
-    leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
-    leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
-    leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
+		//println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
 
-    //println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
-
-    i++;
+		i++;
   }
 
   leaderBoardGraphics.endDraw();
 }
 
 // gets called when all resources are loaded
-void afterResouceLoadingSetup() {
-  AudioManager.setMaxVolume("Siren", 0.6f);
-  AudioManager.setMaxVolume("BackgroundMusic", 0.75f);
-  AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
-  AudioManager.setMaxVolume("DirtBreak", 0.5f);
-  AudioManager.setMaxVolume("HurtSound", 0.75f);
-  AudioManager.setMaxVolume("LowHealth", 0.7f);
+void afterResouceLoadingSetup()
+{
+	AudioManager.setMaxVolume("Siren", 0.6f);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.75f);
+	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
+	AudioManager.setMaxVolume("DirtBreak", 0.5f);
+	AudioManager.setMaxVolume("HurtSound", 0.75f);
+	AudioManager.setMaxVolume("LowHealth", 0.7f);
 
-  for (int i = 1; i < 5; i++) {
-    AudioManager.setMaxVolume("Explosion" + i, 0.2f);
-  }
+	for (int i = 1; i < 5; i++)
+	{
+		AudioManager.setMaxVolume("Explosion" + i, 0.2f);
+	}
 
-  for (int i = 1; i < 5; i++) {
-    AudioManager.setMaxVolume("StoneBreak" + i, 0.5f);
-  }
+	for (int i = 1; i < 5; i++)
+	{
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.5f);
+	}
 
-  for (int i = 1; i < 4; i++) {
-    AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
-  }
+	for (int i = 1; i < 4; i++)
+	{
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
+	}
 
-  generateLeaderboardGraphics();
+	generateLeaderboardGraphics();
 
-  //setup game and show title screen
-  setupGame();
+	//setup game and show title screen
+	setupGame();
 }
 
-void setupGame() {
-  player = null; //fixed world generation bug on restart
-  objectList.clear();
-  destroyList.clear();
-  loadList.clear();
-  tileList.clear();
-  movableList.clear();
-  mobList.clear();
-  lightSources.clear();
+void setupGame()
+{
+	player = null; //fixed world generation bug on restart
+	objectList.clear();
+	destroyList.clear();
+	loadList.clear();
+	tileList.clear();
+	movableList.clear();
+	mobList.clear();
+	lightSources.clear();
 
-  runData = new RunData();
+	runData = new RunData();
 
-  ui = new UIController();
+	ui = new UIController();
 
-  world = new World();
+	world = new World();
 
-  player = new Player();
-  load(player);
+	player = new Player();
+	load(player);
 
-  wallOfDeath = new WallOfDeath();
-  load(wallOfDeath);
+	wallOfDeath = new WallOfDeath();
+	load(wallOfDeath);
 
-  CameraShaker.reset();
-  camera = new Camera(player);
+	CameraShaker.reset();
+	camera = new Camera(player);
 
-  AudioManager.loopMusic("ForestAmbianceMusic"); 
+	AudioManager.loopMusic("ForestAmbianceMusic"); 
 }
 
-void draw() {
+void draw()
+{
+	//wait until all resources are loaded and we are logged in
+	if (!ResourceManager.isAllLoaded() || loginStatus != "")
+	{
+		handleLoadingScreen();
 
-  //wait until all resources are loaded and we are logged in
-  if (!ResourceManager.isAllLoaded() || loginStatus != "") {
-    handleLoadingScreen();
+		return;
+	}
 
-    return;
-  }
+	if (!hasCalledAfterResourceLoadSetup)
+	{
+		hasCalledAfterResourceLoadSetup = true;
+		afterResouceLoadingSetup();
+	}
 
-  if (!hasCalledAfterResourceLoadSetup) {
-    hasCalledAfterResourceLoadSetup = true;
+	//push and pop are needed so the hud can be correctly drawn
+	pushMatrix();
 
-    afterResouceLoadingSetup();
-  }
+	CameraShaker.update();
+	camera.update();
 
-  //push and pop are needed so the hud can be correctly drawn
-  pushMatrix();
+	world.update();
+	world.draw();
 
-  CameraShaker.update();
-  camera.update();
+	updateObjects();
+	drawObjects();
 
-  world.update();
-  world.draw();
+	world.updateDepth();
 
-  updateObjects();
-  drawObjects();
+	if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE)
+	{
+		ui.drawArrows();
+	}
 
-  world.updateDepth();
+	popMatrix();
+	//draw hud below popMatrix();
 
-  if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE) {
-    ui.drawArrows();
-  }
+	handleGameFlow();
 
-  popMatrix();
-  //draw hud below popMatrix();
-
-  handleGameFlow();
-
-  ui.draw();
+	ui.draw();
 }
 
-void updateObjects() {
-  for (BaseObject object : destroyList) {
+void updateObjects()
+{
+	for (BaseObject object : destroyList)
+	{
+		//clean up light sources of they are destroyed
+		if (lightSources.contains(object))
+		{
+			lightSources.remove(object);
+		}
 
-    //clean up light sources of they are destroyed
-    if (lightSources.contains(object)) {
-      lightSources.remove(object);
-    }
+		object.destroyed(); //handle some dying stuff, like removing ourselves from our type specific lists
+	}
 
-    object.destroyed(); //handle some dying stuff, like removing ourselves from our type specific lists
-  }
-  destroyList.clear();
+	destroyList.clear();
 
-  for (BaseObject object : loadList) {
-    object.specialAdd();
-  }
-  loadList.clear();
+	for (BaseObject object : loadList)
+	{
+		object.specialAdd();
+	}
 
-  for (BaseObject object : objectList) {
-    object.update();
-  }
+	loadList.clear();
 
-  for (BaseObject object : reloadList) {
-    tileList.remove((Tile)object);
-    tileList.add((Tile)object);
-  }
-  reloadList.clear();
+	for (BaseObject object : objectList)
+	{
+		object.update();
+	}
 
-  //used to start the game with the button
-  if (startGame) {
-    startGame = false;
-    startAsteroidRain();
-  }
+	for (BaseObject object : reloadList)
+	{
+		tileList.remove((Tile)object);
+		tileList.add((Tile)object);
+	}
+
+	reloadList.clear();
+
+	//used to start the game with the button
+	if (startGame)
+	{
+		startGame = false;
+		startAsteroidRain();
+	}
 }
 
-void drawObjects() {
-  for (BaseObject object : objectList) {
-    object.draw();
-  }
+void drawObjects()
+{
+	for (BaseObject object : objectList)
+	{
+		object.draw();
+	}
 }
 
-void handleGameFlow() {
+void handleGameFlow()
+{
+  switch (Globals.currentGameState)
+  {
+	case MainMenu:
+		//if we are in the main menu we start the game by pressing enter
+		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		{
+			enterOverWorld(false);
+		}
 
-  switch (Globals.currentGameState) {
+		break;
 
-  case MainMenu:
+	case InGame:
+		//Pauze the game
+		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		{
+			Globals.currentGameState = Globals.GameState.GamePaused;
+			InputHelper.onKeyReleased(Globals.STARTKEY);
+		}
 
-    //if we are in the main menu we start the game by pressing enter
-    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
-      enterOverWorld(false);
-    }
+		break;
 
-    break;
+	case GameOver:
+		Globals.gamePaused = true;
 
-  case InGame:
+		//if we died and we uploaded the run stats, we restart the game by pressing enter
+		if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults)
+		{
+			generateLeaderboardGraphics();
+			enterOverWorld(true);
+			InputHelper.onKeyReleased(Globals.STARTKEY);
+		}
 
-    //Pauze the game
-    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
-      Globals.currentGameState = Globals.GameState.GamePaused;
-      InputHelper.onKeyReleased(Globals.STARTKEY);
-    }
+		break;
 
-    break;
+	case GamePaused:
+		Globals.gamePaused = true;
 
-  case GameOver:
-    Globals.gamePaused = true;
+		//if the game has been paused the player can contineu the game
+		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		{
+			Globals.gamePaused = false;
+			Globals.currentGameState = Globals.GameState.InGame;
+			InputHelper.onKeyReleased(Globals.STARTKEY);
+		}
 
-    //if we died and we uploaded the run stats, we restart the game by pressing enter
-    if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults) {
-      generateLeaderboardGraphics();
-      enterOverWorld(true);
-      InputHelper.onKeyReleased(Globals.STARTKEY);
-    }
+		//Reset game to over world
+		if (InputHelper.isKeyDown(Globals.BACKKEY))
+		{
+			enterOverWorld(true);
+		}
 
-    break;
-
-  case GamePaused:
-    Globals.gamePaused = true;
-
-    //if the game has been paused the player can contineu the game
-    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
-      Globals.gamePaused = false;
-      Globals.currentGameState = Globals.GameState.InGame;
-      InputHelper.onKeyReleased(Globals.STARTKEY);
-    }
-
-    //Reset game to over world
-    if (InputHelper.isKeyDown(Globals.BACKKEY)) {
-      enterOverWorld(true);
-    }
-
-    break;
-  }
+		break;
+	}
 }
 
 //used to start a new game
-void enterOverWorld(boolean reloadGame) {
+void enterOverWorld(boolean reloadGame)
+{
+	if (reloadGame)
+	{
+		setupGame();
+	}
 
-  if (reloadGame) {
-    setupGame();
-  }
-
-  //AudioManager.loopMusic("ForestAmbianceMusic"); 
-  Globals.gamePaused = false;
-  Globals.currentGameState = Globals.GameState.Overworld;
-  camera.lerpAmount = 0.075f;
+	//AudioManager.loopMusic("ForestAmbianceMusic"); 
+	Globals.gamePaused = false;
+	Globals.currentGameState = Globals.GameState.Overworld;
+	camera.lerpAmount = 0.075f;
 }
 
-void startGameSoon() {
-  startGame = true;
+void startGameSoon()
+{
+  	startGame = true;
 }
 
 //called when the player pressed the button
-void startAsteroidRain() {
+void startAsteroidRain()
+{
+	thread("startRegisterRunThread");
 
-  thread("startRegisterRunThread");
+	Globals.gamePaused = false;
+	Globals.currentGameState = Globals.GameState.InGame;
 
-  Globals.gamePaused = false;
-  Globals.currentGameState = Globals.GameState.InGame;
+	AudioManager.stopMusic("ForestAmbianceMusic");
+	AudioManager.loopMusic("BackgroundMusic");
+	AudioManager.playSoundEffect("Siren");
 
-  AudioManager.stopMusic("ForestAmbianceMusic");
-  AudioManager.loopMusic("BackgroundMusic");
-  AudioManager.playSoundEffect("Siren");
-
-  ui.drawWarningOverlay = true;
+	ui.drawWarningOverlay = true;
 }
 
 //is called when the played died
-void endRun(){
-  isUploadingRunResults = true;
-  Globals.gamePaused = true;
-  Globals.currentGameState = Globals.GameState.GameOver;
+void endRun()
+{
+	isUploadingRunResults = true;
+	Globals.gamePaused = true;
+	Globals.currentGameState = Globals.GameState.GameOver;
 
-  ui.drawWarningOverlay = false;
-  AudioManager.stopMusic("BackgroundMusic");
+	ui.drawWarningOverlay = false;
+	AudioManager.stopMusic("BackgroundMusic");
 
-  thread("startRegisterEndThread");
+	thread("startRegisterEndThread");
 }
 
 String dots = "";
 
-void handleLoadingScreen(){
-  background(0);
+void handleLoadingScreen()
+{
+	background(0);
 
-  float loadingBarWidth = ResourceManager.getLoadingAllProgress();
+	float loadingBarWidth = ResourceManager.getLoadingAllProgress();
 
-  //loading bar
-  fill(lerpColor(color(255, 0, 0), color(0, 255, 0), loadingBarWidth));
-  rect(0, height - 40, loadingBarWidth * width, 40);
+	//loading bar
+	fill(lerpColor(color(255, 0, 0), color(0, 255, 0), loadingBarWidth));
+	rect(0, height - 40, loadingBarWidth * width, 40);
 
-  //loading display
-  fill(255);
-  textSize(30);
-  textAlign(CENTER);
+	//loading display
+	fill(255);
+	textSize(30);
+	textAlign(CENTER);
 
-  if(loadingBarWidth < 1){
-    text("Loading", width / 2, height - 10);
-  }
+	if(loadingBarWidth < 1)
+	{
+		text("Loading", width / 2, height - 10);
+	}
 
-  //login
-  if(loginStatus != ""){
-    //handleDots();
-    text(loginStatus + dots, width / 2, height - 55);
-  }else{
-    fill(0, 255, 0);
-    text("Logged in as " + dbUser.userName, width / 2, height - 55);
-  }
+	//login
+	if(loginStatus != "")
+	{
+		//handleDots();
+		text(loginStatus + dots, width / 2, height - 55);
+	}
+	else
+	{
+		fill(0, 255, 0);
+		text("Logged in as " + dbUser.userName, width / 2, height - 55);
+	}
 
-  ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
+	ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
 
-  if(currentlyLoadingResources.size() == 0){
-    return;
-  }
+	if(currentlyLoadingResources.size() == 0)
+	{
+		return;
+	}
 
-  fill(255);
-  textSize(25);
-  textAlign(LEFT);
-  text("Currently loading resources:", 10, 20);
+	fill(255);
+	textSize(25);
+	textAlign(LEFT);
+	text("Currently loading resources:", 10, 20);
 
-  textSize(15);
-  for (int i = 0; i < currentlyLoadingResources.size(); i++) {
-    text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
-  }
+	textSize(15);
+
+	for (int i = 0; i < currentlyLoadingResources.size(); i++)
+	{
+		text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
+	}
 }
 
-private void handleDots(){
+private void handleDots()
+{
+	if(frameCount % 20 == 0)
+	{
+		dots += ".";
+	}
 
-  if(frameCount % 20 == 0){
-    dots += ".";
-  }
-
-  if(dots.length() > 3){
-    dots = "";
-  }
+	if(dots.length() > 3)
+	{
+		dots = "";
+	}
 }
 
 // start a thread to load 1 resource
-void startLoaderThread(String currentResourceName, String currentResourceFileName){
-  LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
-  ResourceManager.loaderThreads.add(loaderThread);
-  loaderThread.start();
+void startLoaderThread(String currentResourceName, String currentResourceFileName)
+{
+	LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
+	ResourceManager.loaderThreads.add(loaderThread);
+	loaderThread.start();
 }
 
 // start a thread that registers a run start
-void startRegisterRunThread(){
-  databaseManager.registerRunStart();
+void startRegisterRunThread()
+{
+  	databaseManager.registerRunStart();
 }
 
 // start a thread that registers a run end
-void startRegisterEndThread(){
-  databaseManager.registerRunEnd();
+void startRegisterEndThread()
+{
+	databaseManager.registerRunEnd();
 
   unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
 
   //update leaderboard with new data
   leaderBoard = databaseManager.getLeaderboard(10);
 
-  isUploadingRunResults = false;
+	isUploadingRunResults = false;
 }
 
-BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
-  loadList.add(newObject); //qeue for loading
-  return newObject;
+// handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
+BaseObject load(BaseObject newObject)
+{
+	loadList.add(newObject); //qeue for loading
+
+	return newObject;
 }
 
-BaseObject load(BaseObject newObject, PVector setPosition) {
+BaseObject load(BaseObject newObject, PVector setPosition)
+{
   loadList.add(newObject);
   newObject.position.set(setPosition);
+
   return newObject;
 }
 
-BaseObject load(BaseObject newObject, boolean priority) { //load it RIGHT NOW. Only use in specially processed objects, like world
-  if (priority) {
+// load it RIGHT NOW. Only use in specially processed objects, like world
+BaseObject load(BaseObject newObject, boolean priority)
+{
+  if (priority)
+  {
     newObject.specialAdd();
-  } else {
+  }
+  else
+  {
     load(newObject);
   }
+
   return newObject;
 }
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion
+  deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
 }
 
-void reload(BaseObject reloadingObject) { //handles reload, call delete(object) to delete that object from the world
-  reloadList.add(reloadingObject); //queue for reloading
+// handles reload, call delete(object) to delete that object from the world
+void reload(BaseObject reloadingObject)
+{
+	reloadList.add(reloadingObject); //queue for reloading
 }
 
-void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor) {
-  object.lightEmitAmount = lightEmitAmount;
-  object.distanceDimFactor = dimFactor;
-  lightSources.add(object);
+void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
+{
+	object.lightEmitAmount = lightEmitAmount;
+	object.distanceDimFactor = dimFactor;
+	lightSources.add(object);
 }
 
-ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius) {
-  ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
+ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
+{
+	ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
 
-  for (BaseObject object : objectList) {
+	for (BaseObject object : objectList)
+	{
+		if (object.suspended)
+		{
+			continue;
+		}
 
-    if (object.suspended) {
-      continue;
-    }
+		if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius)
+		{
+			objectsInRadius.add(object);
+		}
+	}
 
-    if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius) {
-      objectsInRadius.add(object);
-    }
-  }
-
-  return objectsInRadius;
+	return objectsInRadius;
 }
 
-void keyPressed() {
-  InputHelper.onKeyPressed(keyCode);
-  InputHelper.onKeyPressed(key);
+void keyPressed()
+{
+	InputHelper.onKeyPressed(keyCode);
+	InputHelper.onKeyPressed(key);
 
-  if(key == 'E' || key == 'e'){ // TEMPORARY (duh)
-    load(new EnemyDigger(new PVector(1000, 500)));
-  }
+	// TEMPORARY (duh)
+	if(key == 'E' || key == 'e')
+	{
+		load(new EnemyShocker(new PVector(1000, 500)));
+		// load(new Explosion(new PVector(1000, 500),1,5,false));
+	}
 }
 
-void keyReleased() {
-  InputHelper.onKeyReleased(keyCode);
-  InputHelper.onKeyReleased(key);
+void keyReleased()
+{
+	InputHelper.onKeyReleased(keyCode);
+	InputHelper.onKeyReleased(key);
 }

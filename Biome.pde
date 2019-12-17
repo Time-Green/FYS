@@ -5,6 +5,7 @@ class Biome
 	float structureChance = 0.001; //chance of a structure spawning between 0 and 1 for every row of tiles
 	float enemyChance = 0.01; //chance of enemy spawning on an open tile
 	float ceilingObstacleChance = 0.0; //chance that a tile can have something hanging from it
+	float groundObstacleChance = 0.1; //ditto but then ground
 
 	int minimumDepth = 0;
 	int maximumDepth = 999999;
@@ -58,15 +59,23 @@ class Biome
 			}
 			else if (depth > 500)
 			{
-				if (orechance > 80 && orechance <= 90)
+				if (orechance > 80 && orechance <= 88)
 				{
 					return new GoldTile(x, depth, 0);
 				}
-				else if (orechance > 90 && orechance <= 97)
+				else if (orechance > 88 && orechance <= 93)
+				{
+					return new RedstoneTile(x, depth, 0);
+				}
+				else if (orechance > 93 && orechance <= 96)
 				{
 					return new DiamondTile(x, depth, 0);
 				}
-				else if (orechance > 97 && orechance <= 100)
+				else if (orechance > 96 && orechance <= 98)
+				{
+					return new AmethystTile(x, depth, 0);
+				}
+				else if (orechance > 98 && orechance <= 100)
 				{
 					return new ObsedianTile(x, depth);
 				}
@@ -149,4 +158,22 @@ class Biome
 	{
 		load(new Icicle(), tile.position);
   	}
+	
+	void prepareGroundObstacle(Tile target, World world)
+	{
+		Tile above = world.getTile(target.position.x, target.position.y - Globals.TILE_SIZE); //get the tile above us
+    	if(random(1) < groundObstacleChance && above != null && !above.density)
+		{
+			Movable rooter = (Movable) spawnGroundObstacle(above);
+			if(rooter != null)
+			{
+				target.rootedIn.add(rooter);
+			}
+		}
+	}
+
+	BaseObject spawnGroundObstacle(Tile target) //please return movable type, since that's the only sensible obstacle
+	{
+		return null;
+	}
 }

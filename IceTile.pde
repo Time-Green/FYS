@@ -1,13 +1,16 @@
-public class IceTile extends Tile {
+public class IceTile extends Tile
+{
+	public IceTile(int x, int y)
+	{
+		super(x, y);
 
-  public IceTile(int x, int y) {
-    super(x, y);
+		slipperiness = 1.1;
 
-    slipperiness = 1.1;
+		particleColor = color(#37d4e6);
 
-    healthMultiplier = 0.75f;
+		healthMultiplier = 0.75f;
 
-    image = ResourceManager.getImage("IceBlock");
-    breakSound = "GlassBreak" + floor(random(1, 4));
-  }
+		image = ResourceManager.getImage("IceBlock");
+		breakSound = "GlassBreak" + floor(random(1, 4));
+	}
 }

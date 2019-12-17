@@ -1,13 +1,16 @@
-public class SaphireIceTile extends ResourceTile {
+public class SaphireIceTile extends ResourceTile
+{
+	public SaphireIceTile(int x, int y)
+	{
+		super(x, y);
 
-  public SaphireIceTile(int x, int y) {
-    super(x, y);
+		particleColor = color(#152fd6);
 
-    value = Globals.GREENICEVALUE;
-    slipperiness = 1.1;
+		value = Globals.GREENICEVALUE;
+		slipperiness = 1.1;
 
-    image = ResourceManager.getImage("IceBlock2");
-    pickUpImage = ResourceManager.getImage("SaphirePickup");
-    breakSound = "GlassBreak" + floor(random(1, 4));
-  }
+		image = ResourceManager.getImage("IceBlock2");
+		pickUpImage = ResourceManager.getImage("SaphirePickup");
+		breakSound = "GlassBreak" + floor(random(1, 4));
+	}
 }

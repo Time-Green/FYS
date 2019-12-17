@@ -1,18 +1,24 @@
-public class GoldTile extends ResourceTile {
+public class GoldTile extends ResourceTile
+{
+	public GoldTile(int x, int y, int type)
+	{
+		super(x, y);
 
-  public GoldTile(int x, int y, int type) {
-    super(x, y);
+		value = Globals.GOLDVALUE;
 
-    value = Globals.GOLDVALUE;
+		if(type == 0)
+		{
+			image = ResourceManager.getImage("IronBlock"); // ironblock for gold???
+		}
+		else if(type == 1)
+		{
+			image = ResourceManager.getImage("ShadowGoldBlock");
+		}
+		else
+		{
+			println("Type not found!");
+		}
 
-    if(type == 0){
-      image = ResourceManager.getImage("IronBlock"); // ironblock for gold???
-    }else if(type == 1){
-      image = ResourceManager.getImage("ShadowGoldBlock");
-    }else{
-      println("Type not found!");
-    }
-
-    pickUpImage = ResourceManager.getImage("GoldPickUp");
-  }
+		pickUpImage = ResourceManager.getImage("GoldPickUp");
+	}
 }

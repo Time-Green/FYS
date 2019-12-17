@@ -1,8 +1,9 @@
-class EnemyWalker extends Enemy {
+class EnemyWalker extends Enemy
+{
+	EnemyWalker(PVector spawnPos)
+	{
+		super(spawnPos);
 
-  EnemyWalker(PVector spawnPos) {
-    super(spawnPos);
-
-    image = ResourceManager.getImage("WalkerEnemy");
-  }
+		image = ResourceManager.getImage("WalkerEnemy");
+	}
 }

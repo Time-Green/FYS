@@ -1,13 +1,16 @@
-public class RedIceTile extends ResourceTile {
+public class RedIceTile extends ResourceTile
+{
+	public RedIceTile(int x, int y)
+	{
+		super(x, y);
 
-  public RedIceTile(int x, int y) {
-    super(x, y);
+		particleColor = color(#c70c22);
 
-    value = Globals.REDICEVALUE;
+		value = Globals.REDICEVALUE;
 
-    slipperiness = 1.1;
+		slipperiness = 1.1;
 
-    image = ResourceManager.getImage("RedIceBlock");
-    pickUpImage = ResourceManager.getImage("RubyPickup");
-  }
+		image = ResourceManager.getImage("RedIceBlock");
+		pickUpImage = ResourceManager.getImage("RubyPickup");
+	}
 }
