@@ -10,12 +10,12 @@ class Mob extends Movable {
   protected boolean canSwim = false; 
 
   //Taking damage
-  final float HURTCOOLDOWN = 60;
+  final float HURTCOOLDOWN = timeInSeconds(1);
   float timeSinceLastHurt = 0f; 
   boolean isHurt;
 
   //Mining
-  int miningCooldown = 1; //cooldown in millis
+  int miningCooldown = timeInSeconds(1); //cooldown in millis
   int lastMine;
   float baseDamage = 1;
 
@@ -225,4 +225,5 @@ class Mob extends Movable {
     }
     return null; //should never happen, because we should always check hasHeldItem before calling this
   }
+
 }
