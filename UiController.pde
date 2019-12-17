@@ -35,6 +35,10 @@ public class UIController {
 
   private final boolean DRAWSTATS = true;
 
+  String dots = "";
+
+  int scoreDisplay = 0;
+
   //Inventory
   private float inventorySize = 50;
 
@@ -61,6 +65,8 @@ public class UIController {
   }
 
   void draw() {
+    
+    handleScore();
 
     //draw hud at center position
     rectMode(CENTER);
@@ -175,7 +181,25 @@ public class UIController {
     //sub text
     textFont(instructionFont);
     textSize(instructionFontSize);
-    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "m\n\nEnter: restart", width / 2, height / 2 + instructionFontSize);
+    text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "m", width / 2, height / 2 + instructionFontSize);
+
+    if(isUploadingRunResults){
+      handleDots();
+      text("Uploading run stats" + dots, width / 2, height / 2 + instructionFontSize * 4);
+    }else{
+      text("Enter: restart", width / 2, height / 2 + instructionFontSize * 4);
+    }
+  }
+
+  private void handleDots(){
+
+    if(frameCount % 10 == 0){
+      dots += ".";
+    }
+
+    if(dots.length() > 3){
+      dots = "";
+    }
   }
 
   void startMenu() {
@@ -224,12 +248,12 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Score: " + player.score, 10, hudTextStartX);
+    text("Score: " + scoreDisplay, 10, hudTextStartX);
 
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Depth: " + max(0, player.getDepth() - Globals.OVERWORLD_HEIGHT), 10, hudTextStartX + hudFontSize + 10); //-10 because we dont truly start at 0 depth, but at 10 depth
+    text("Depth: " + (max(0, player.getDepth() - Globals.OVERWORLD_HEIGHT)) + "m", 10, hudTextStartX + hudFontSize + 10);
 
     drawInventory();
   }
@@ -303,4 +327,21 @@ public class UIController {
 
     //imageMode(CORNER);
   }
+
+  private void handleScore(){
+		if(scoreDisplay < player.score){
+
+			int scoreToAdd = round((player.score - scoreDisplay) / 15);
+
+			if(scoreToAdd == 0){
+				scoreToAdd++;
+			}
+
+			scoreDisplay += scoreToAdd;
+
+			if(scoreDisplay > player.score){
+				scoreDisplay = player.score;
+			}
+		}
+	}
 }

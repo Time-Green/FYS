@@ -11,7 +11,7 @@ public class ObsedianTile extends Tile {
   void takeDamage(float damageTaken) {
     super.takeDamage(damageTaken);
 
-    //keep health at 2 so the player can't mine its
+    //keep health at 2 so the player can't mine it
     setMaxHp(2);
   }
 }

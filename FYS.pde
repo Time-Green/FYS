@@ -20,6 +20,7 @@ ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderboardRow> leaderBoard;
 ArrayList<Achievement> playerAchievements; 
 String loginStatus = "Logging in";
+boolean isUploadingRunResults = false;
 
 DisposeHandler dh;
 
@@ -80,6 +81,8 @@ private void generateLeaderboardGraphics(){
 
   int i = 0;
 
+  leaderBoardGraphics.textAlign(LEFT, CENTER);
+
   for (LeaderboardRow leaderboardRow : leaderBoard) {
 
     if(i == 0){
@@ -94,8 +97,13 @@ private void generateLeaderboardGraphics(){
       leaderBoardGraphics.fill(255);
     }
     
-    leaderBoardGraphics.text("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m", (Globals.TILE_SIZE * 9) / 2, 53 + i * 20);
+    leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
+    leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
+    leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
+    leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
+
     //println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
+
     i++;
   }
 
@@ -190,8 +198,6 @@ void draw() {
     ui.drawArrows();
   }
 
-  //image(leaderBoardGraphics, 12 * Globals.TILE_SIZE, 5 * Globals.TILE_SIZE);
-
   popMatrix();
   //draw hud below popMatrix();
 
@@ -266,9 +272,9 @@ void handleGameFlow() {
   case GameOver:
     Globals.gamePaused = true;
 
-    //if we died we restart the game by pressing enter
-    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
-      //TODO: UPDATE HIGHSCORE BOARD HERE!!!
+    //if we died and we uploaded the run stats, we restart the game by pressing enter
+    if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults) {
+      generateLeaderboardGraphics();
       enterOverWorld(true);
       InputHelper.onKeyReleased(Globals.STARTKEY);
     }
@@ -311,6 +317,7 @@ void startGameSoon() {
   startGame = true;
 }
 
+//called when the player pressed the button
 void startAsteroidRain() {
 
   thread("startRegisterRunThread");
@@ -323,6 +330,18 @@ void startAsteroidRain() {
   AudioManager.playSoundEffect("Siren");
 
   ui.drawWarningOverlay = true;
+}
+
+//is called when the played died
+void endRun(){
+  isUploadingRunResults = true;
+  Globals.gamePaused = true;
+  Globals.currentGameState = Globals.GameState.GameOver;
+
+  ui.drawWarningOverlay = false;
+  AudioManager.stopMusic("BackgroundMusic");
+
+  thread("startRegisterEndThread");
 }
 
 String dots = "";
@@ -397,6 +416,11 @@ void startRegisterRunThread(){
 // start a thread that registers a run end
 void startRegisterEndThread(){
   databaseManager.registerRunEnd();
+
+  //update leaderboard with new data
+  leaderBoard = databaseManager.getLeaderboard(10);
+
+  isUploadingRunResults = false;
 }
 
 BaseObject load(BaseObject newObject) { //handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch

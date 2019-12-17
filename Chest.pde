@@ -33,7 +33,7 @@ class Chest extends Obstacle {
     switch(randomKey) {
       case 1:
         newContents.add(load(new RelicShard(), new PVector(200, 200)));
-        addRandomLoot(newContents);
+        addRandomLoot(newContents, 12);
       break;
 
       case 2:
@@ -41,7 +41,7 @@ class Chest extends Obstacle {
           newContents.add(load(new Dynamite(), new PVector(200, 200)));
         }
 
-        addRandomLoot(newContents);
+        addRandomLoot(newContents, 12);
       break;
 
       case 69:
@@ -49,7 +49,7 @@ class Chest extends Obstacle {
         //please don't remove this for relic testing
       case 70:
         newContents.add(load(new RelicShard(), new PVector(200, 200)));
-        addRandomLoot(newContents);
+        addRandomLoot(newContents, 6);
       break;
     }
 
@@ -62,9 +62,9 @@ class Chest extends Obstacle {
     }
   }
 
-  void addRandomLoot(ArrayList<BaseObject> newContents){
+  void addRandomLoot(ArrayList<BaseObject> newContents, int maxAmount){
 
-    int randomLootAmount = (int) random(6, 12);
+    int randomLootAmount = (int) random(maxAmount / 2, maxAmount);
 
     for (int i = 0; i < randomLootAmount; i++) {
 

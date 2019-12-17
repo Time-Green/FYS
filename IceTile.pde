@@ -5,6 +5,8 @@ public class IceTile extends Tile {
 
     slipperiness = 1.1;
 
+    healthMultiplier = 0.75f;
+
     image = ResourceManager.getImage("IceBlock");
     breakSound = "GlassBreak" + floor(random(1, 4));
   }

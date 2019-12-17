@@ -407,4 +407,14 @@ public class DatabaseManager {
     dbUser.id = -1;
     dbUser.userName = "TempUser";
   }
+
+  int getUserTotal(String userid, String data){ //get a given userid's total data. like total amount of jumps across all games
+    JSONArray result = doDatabaseRequest("SELECT SUM(" + data + ") as" + data + " FROM Playsession, Run WHERE Playsession.id = Run.playsessionid AND Playsession.userid = '" + userid + ";");
+    try{
+      return result.getInt(0);
+    }
+    catch(Exception e){
+      return 0;
+    }
+  }
 }

@@ -14,14 +14,9 @@ class Player extends Mob {
   private AnimatedImage animatedImageFall;
   private final int FALLFRAMES = 4;
 
-  private float VIEW_AMOUNT = 400;
-  private float viewTarget;
+  private float viewAmount = 400;
+  private float viewTarget = viewAmount;
   private float easing = 0.025f;
-
-  private float regen = 0.2f;
-  public final float fireDamage = 4;
-  public boolean isRegen;
-  public boolean isOnFire = false;
 
   //Status effects
   public float stunTimer;
@@ -33,8 +28,9 @@ class Player extends Mob {
     position = spawnPosition;
     setMaxHp(100);
     baseDamage = 0.1; //low basedamage without pickaxe
-    viewTarget = VIEW_AMOUNT;
     isSwimming = false;
+    canRegen = true;
+    jumpForce = 21f;
 
     PImage[] walkFrames = new PImage[WALKFRAMES];
     PImage[] idleFrames = new PImage[IDLEFRAMES];
@@ -67,7 +63,7 @@ class Player extends Mob {
       fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
     animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    setupLightSource(this, VIEW_AMOUNT, 1f);
+    setupLightSource(this, viewAmount, 1f);
 
     applyRelicBoost();
   }
@@ -82,13 +78,9 @@ class Player extends Mob {
 
     setVisibilityBasedOnCurrentBiome();
 
-    regenaration();
-
     checkHealthLow();
 
     statusEffects();
-
-    fireAct(fireDamage);
 
     if (stunTimer <= 0) {
       doPlayerMovement();
@@ -118,32 +110,6 @@ class Player extends Mob {
     }
   }
 
-
-  void regenaration(){
-    if(isRegen == false){
-      if(frameCount % 180 == 0){
-        if(isHurt == false){
-          if(currentHealth < maxHealth){
-            if(frameCount % 5 == 0){
-              currentHealth += regen;
-              isRegen = true;
-            }
-          }
-        }  
-        else if(isHurt == true){ // there is a 2 second timer before the player starts to regenarate if hit
-          if(currentHealth < maxHealth){
-            if(frameCount % 120 == 0){
-              if(frameCount % 5 == 0){
-                currentHealth += regen;
-                isRegen = true;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   void applyRelicBoost(){
     for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards) {
 
@@ -161,7 +127,7 @@ class Player extends Mob {
         this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
       else if(collectedRelicShardInventory.relicshardid == 4) {
-        VIEW_AMOUNT += Globals.LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+        viewAmount += Globals.LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
       }
     }
   }
@@ -173,12 +139,7 @@ class Player extends Mob {
   void setVisibilityBasedOnCurrentBiome() {
 
     if (getDepth() > world.currentBiome.startedAt) {
-
-      if (world.currentBiome.playerVisibility > 0) {
-        viewTarget = world.currentBiome.playerVisibility;
-      } else {
-        viewTarget = VIEW_AMOUNT;
-      }
+      viewTarget = viewAmount * world.currentBiome.playerVisibilityScale;
     }
 
     float dy = viewTarget - lightEmitAmount;
@@ -186,6 +147,11 @@ class Player extends Mob {
   }
 
   void draw() {
+
+    if(Globals.currentGameState == Globals.GameState.GameOver){
+      // donr draw when we are dead
+      return;
+    }
 
     if(Globals.gamePaused){
       animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
@@ -231,7 +197,10 @@ class Player extends Mob {
     //Allow endless jumps while swimming
     if (isSwimming)isGrounded = true;
 
+    gravityForce = 1f;
+
     if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded()) {
+
       if (!isSwimming){
         addForce(new PVector(0, -jumpForce));
         runData.playerJumps++;
@@ -239,6 +208,9 @@ class Player extends Mob {
       else {
         addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
       }
+    }else if(!InputHelper.isKeyDown(Globals.JUMPKEY1) && !InputHelper.isKeyDown(Globals.JUMPKEY2) && !isGrounded()){
+      //allow for short jumps
+      gravityForce = 1.8f;
     }
 
     if (InputHelper.isKeyDown(Globals.DIGKEY)) {
@@ -321,32 +293,10 @@ class Player extends Mob {
     }
   }
 
-  //fire damage blocks regenaration
-  public void fireAct(float fireDamage) {
-    if(isOnFire == true){
-      if(frameCount % 30 == 0) {
-        currentHealth -= fireDamage;
-        isRegen = false;
-        isOnFire = true;
-        currentHealth -= fireDamage;
-        if(frameCount % 180 == 0) {
-          isOnFire = false;
-          isRegen = true;
-        }
-      }
-    }
-  }
-
   public void die() {
     super.die();
 
-    Globals.gamePaused = true;
-    Globals.currentGameState = Globals.GameState.GameOver;
-
-    ui.drawWarningOverlay = false;
-    AudioManager.stopMusic("BackgroundMusic");
-
-    thread("startRegisterEndThread");
+    endRun();
   }
 
   boolean canPickUp(PickUp pickUp) {

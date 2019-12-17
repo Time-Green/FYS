@@ -14,6 +14,8 @@ class Meteor extends Movable {
     size.set(Globals.TILE_SIZE * sizeModifier, Globals.TILE_SIZE * sizeModifier);
 
     aerialDragFactor = 1.0f;
+    gravityForce = 0.75f;
+
     velocity.set(random(-MAXHORIZONTALVELOCITY, MAXHORIZONTALVELOCITY), 0);
     image = ResourceManager.getImage("Meteor 2");
 

@@ -4,7 +4,8 @@ class DungeonBlock0 extends Tile {
     super(x, y);
     image = ResourceManager.getImage("DungeonBlock0");
     density = true;
-    setMaxHp(15);
+    healthMultiplier = 2;
+    //setMaxHp(15);
   }
 }
 
@@ -14,7 +15,8 @@ class DungeonBlock1 extends Tile {
     super(x, y);
     image = ResourceManager.getImage("DungeonBlock1");
     density = true;
-    setMaxHp(15);
+    healthMultiplier = 2;
+    //setMaxHp(15);
 
     //make it a lightsource if it is the button altar, "sun"
     if(y == Globals.OVERWORLD_HEIGHT){
@@ -29,7 +31,8 @@ class DungeonBlock2 extends Tile {
     super(x, y);
     image = ResourceManager.getImage("DungeonBlock2");
     density = false;
-    setMaxHp(15);
+    healthMultiplier = 2;
+    //setMaxHp(15);
   }
 }
 
@@ -38,7 +41,8 @@ class DungeonStairL extends Tile {
   DungeonStairL(int x, int y) {
     super(x, y);
     image = ResourceManager.getImage("DungeonStairL");
-    setMaxHp(15);
+    healthMultiplier = 2;
+    //setMaxHp(15);
   }
 }
 
@@ -47,7 +51,8 @@ class DungeonStairR extends Tile {
   DungeonStairR(int x, int y) {
     super(x, y);
     image = ResourceManager.getImage("DungeonStairR");
-    setMaxHp(15);
+    healthMultiplier = 2;
+    //setMaxHp(15);
   }
 }
 

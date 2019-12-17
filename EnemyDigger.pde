@@ -12,9 +12,9 @@ class EnemyDigger extends Enemy {
 
     image = ResourceManager.getImage("DiggerEnemy");
     this.speed = IDLESPEED;
-    //1f = 1 tile
-    float tileDistance = 20f;
-    chaseDistance = OBJECTSIZE * tileDistance;
+
+    float TILE_DISTANCE = 20f;
+    chaseDistance = OBJECTSIZE * TILE_DISTANCE;
   }
 
   void update() {

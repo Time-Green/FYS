@@ -91,14 +91,4 @@ class BaseObject {
 
   void collidedWith(BaseObject object) {
   }
-
-  void fireAct(float fireDamage){
-  }
-
-
- protected float timeInSeconds(float seconds) {
-    //* 60 milli seconds, 60 milliseconds is 1 second
-    seconds *= 60;
-    return seconds;
-  }
 }

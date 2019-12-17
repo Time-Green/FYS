@@ -10,7 +10,7 @@ class Mob extends Movable {
   protected boolean canSwim = false; 
 
   //Taking damage
-  final float HURTCOOLDOWN = timeInSeconds(1);
+  final float HURTCOOLDOWN = 60;
   float timeSinceLastHurt = 0f; 
   boolean isHurt;
 
@@ -26,8 +26,20 @@ class Mob extends Movable {
   int lastUse;
   int useCooldown = 100;
 
+  //regen and fire
+  public float regen = 0.05f;
+  private final float fireDamage = 6;
+  public boolean canRegen = false;
+  private boolean isOnFire = false;
+  private int fireTimer;
+  private int regenTimer;
+
   public void update() {
     super.update();
+
+    handleOnFire();
+
+    regenaration();
 
   if (canSwim) {
     if (isSwimming) {
@@ -52,7 +64,8 @@ class Mob extends Movable {
 
   public void attemptMine(BaseObject object) {
 
-    if (Globals.currentGameState == Globals.GameState.Overworld) { // In the overworld we disable digging all together. 
+    // In the overworld we disable digging all together. 
+    if (Globals.currentGameState == Globals.GameState.Overworld) {
       return;
     } else {
 
@@ -97,6 +110,7 @@ class Mob extends Movable {
       if (isHurt == false) {
         isHurt = true;
         currentHealth -= damageTaken;
+        regenTimer = 0;
 
         if (currentHealth <= 0) {
           die();
@@ -114,6 +128,33 @@ class Mob extends Movable {
     }
 
     return baseDamage * getHeldItem().damageCoefficient;
+  }
+
+    //fire damage blocks regenaration
+  public void handleOnFire() {
+    if(isOnFire){
+      if(fireTimer % 30 == 0) {
+        takeDamage(fireDamage);
+        if(fireTimer > 180) {
+          isOnFire = false;
+        }
+      }
+      fireTimer++;
+    }
+  }
+
+  void regenaration(){
+    if(regenTimer > 120) {
+      if(currentHealth < maxHealth){
+        currentHealth += regen;
+      }
+    }
+    regenTimer++;
+  }
+
+  void setOnFire() {
+    isOnFire = true;
+    fireTimer = 0;
   }
 
   void setMaxHp(float hpToSet) {
