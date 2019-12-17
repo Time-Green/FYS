@@ -40,7 +40,7 @@ public class DatabaseManager
 
 	public ArrayList<Achievement> getPlayerAchievements()
 	{
-		if (currentSessionId < 0
+		if (currentSessionId < 0)
 		{
 			return new ArrayList<Achievement>();
 		}
