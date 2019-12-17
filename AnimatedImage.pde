@@ -1,54 +1,62 @@
-public class AnimatedImage {
+public class AnimatedImage
+{
+	PImage[] frames;
+	float frameDelay, objectWidth;
+	PVector drawPosition;
+	boolean flipSpriteHorizontal, isPaused;
 
-  PImage[] frames;
-  float frameDelay, objectWidth;
-  PVector drawPosition;
-  boolean flipSpriteHorizontal, isPaused;
+	int frameCounter = 0;
 
-  int frameCounter = 0;
+	public AnimatedImage(PImage[] frames, float frameDelay, PVector drawPosition, float objectWidth, boolean flipSpriteHorizontal)
+	{
+		this.frames = frames;
+		this.objectWidth = objectWidth;
+		this.frameDelay = frameDelay;
+		this.drawPosition = drawPosition;
+		this.flipSpriteHorizontal = flipSpriteHorizontal;
+	}
 
-  public AnimatedImage(PImage[] frames, float frameDelay, PVector drawPosition, float objectWidth, boolean flipSpriteHorizontal) {
-    this.frames = frames;
-    this.objectWidth = objectWidth;
-    this.frameDelay = frameDelay;
-    this.drawPosition = drawPosition;
-    this.flipSpriteHorizontal = flipSpriteHorizontal;
-  }
+	public void draw()
+	{
+		pushMatrix();
 
-  public void draw() {
-    pushMatrix();
+		translate(drawPosition.x, drawPosition.y);
 
-    translate(drawPosition.x, drawPosition.y);
+		int imageToDrawIndex = frameCounter / round(frameDelay) % frames.length;
+		PImage imageToDraw = frames[imageToDrawIndex];
 
-    int imageToDrawIndex = frameCounter / round(frameDelay) % frames.length;
-    PImage imageToDraw = frames[imageToDrawIndex];
+		if (flipSpriteHorizontal)
+		{
+			scale(-1, 1);
+			image(imageToDraw, -objectWidth, 0);
+		} else
+		{
+			image(imageToDraw, 0, 0);
+		}
 
-    if (flipSpriteHorizontal) {
-      scale(-1, 1);
-      image(imageToDraw, -objectWidth, 0);
-    } else {
-      image(imageToDraw, 0, 0);
-    }
+		popMatrix();
 
-    popMatrix();
+		// if this animation is paused, return the function before it can increase the frame counter
+		if (isPaused)
+		{
+			return;
+		}
 
-    // if this animation is paused, return the function before it can increase the frame counter
-    if (isPaused) {
-      return;
-    }
+		frameCounter++;
+	}
 
-    frameCounter++;
-  }
+	public void resetCounter()
+	{
+		frameCounter = 0;
+	}
 
-  public void resetCounter() {
-    frameCounter = 0;
-  }
+	public void pauze()
+	{
+		isPaused = true;
+	}
 
-  public void pauze() {
-    isPaused = true;
-  }
-
-  public void resume() {
-    isPaused = false;
-  }
+	public void resume()
+	{
+		isPaused = false;
+	}
 }

@@ -276,6 +276,7 @@ void drawObjects()
 	}
 }
 
+<<<<<<< HEAD
 void handleGameFlow()
 {
   switch (Globals.currentGameState)
@@ -331,6 +332,60 @@ void handleGameFlow()
 
 		break;
 	}
+=======
+void handleGameFlow() {
+
+  switch (Globals.currentGameState) {
+
+  case MainMenu:
+
+    //if we are in the main menu we start the game by pressing enter
+    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
+      enterOverWorld(false);
+    }
+
+    break;
+
+  case InGame:
+
+    //Pause the game
+    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
+      Globals.currentGameState = Globals.GameState.GamePaused;
+      InputHelper.onKeyReleased(Globals.STARTKEY);
+    }
+
+    break;
+
+  case GameOver:
+    Globals.gamePaused = true;
+
+    //if we died and we uploaded the run stats, we restart the game by pressing enter
+    if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults) {
+      generateLeaderboardGraphics();
+      enterOverWorld(true);
+      InputHelper.onKeyReleased(Globals.STARTKEY);
+    }
+
+    break;
+
+  case GamePaused:
+    Globals.gamePaused = true;
+
+    //if the game has been paused the player can contineu the game
+    if (InputHelper.isKeyDown(Globals.STARTKEY)) {
+      Globals.gamePaused = false;
+      Globals.currentGameState = Globals.GameState.InGame;
+      InputHelper.onKeyReleased(Globals.STARTKEY);
+    }
+
+    //Reset game to over world
+    if (InputHelper.isKeyDown(Globals.BACKKEY)) {
+      enterOverWorld(true);
+    }
+
+    break;
+  }
+>>>>>>> 9d02fd7c8a2d1503dae51705f6fbbc0317be0338
 }
 
 //used to start a new game
@@ -503,9 +558,10 @@ BaseObject load(BaseObject newObject, boolean priority)
   return newObject;
 }
 
-void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
-  destroyList.add(deletingObject); //queue for deletion
-  deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
+// handles removal, call delete(object) to delete that object from the world
+void delete(BaseObject deletingObject)
+{
+	destroyList.add(deletingObject); //queue for deletion
 }
 
 // handles reload, call delete(object) to delete that object from the world

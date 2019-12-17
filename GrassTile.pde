@@ -1,12 +1,13 @@
-public class GrassTile extends Tile {
+public class GrassTile extends Tile
+{
+	public GrassTile(int x, int y)
+	{
+		super(x, y);
 
-  public GrassTile(int x, int y) {
-    super(x, y);
+		image = ResourceManager.getImage("GrassBlock");
+		breakSound = "DirtBreak";
 
-    image = ResourceManager.getImage("GrassBlock");
-    breakSound = "DirtBreak";
-
-    // "sun"
-    setupLightSource(this, 600f, 0.03f);
-  }
+		// simulates sun
+		setupLightSource(this, 600f, 0.03f);
+	}
 }

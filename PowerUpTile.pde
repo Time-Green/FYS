@@ -1,11 +1,14 @@
-public class PowerUpTile extends Tile {
+public class PowerUpTile extends Tile
+{
+	public PowerUpTile(int x, int y)
+	{
+		super(x, y); 
+		
+		image = ResourceManager.getImage("MysteryBlock");
+	}
 
-  public PowerUpTile(int x, int y) {
-    super(x, y); 
-    image = ResourceManager.getImage("MysteryBlock");
-  }
-
-  void mine() {
-    super.mine(true);
-  }
+	void mine()
+	{
+		super.mine(true);
+	}
 }

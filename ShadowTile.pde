@@ -1,8 +1,9 @@
-public class ShadowTile extends Tile {
+public class ShadowTile extends Tile
+{
+	public ShadowTile(int x, int y)
+	{
+		super(x, y);
 
-  public ShadowTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("ShadowBlock");
-  }
+		image = ResourceManager.getImage("ShadowBlock");
+	}
 }

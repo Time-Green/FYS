@@ -1,8 +1,9 @@
-class VulcanicTile extends Tile {
+class VulcanicTile extends Tile
+{
+	VulcanicTile(int x, int y)
+	{
+		super(x, y);
 
-  VulcanicTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("VulcanicTile");
-  }
+		image = ResourceManager.getImage("VulcanicTile");
+	}
 }
