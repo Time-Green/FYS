@@ -1,67 +1,77 @@
-public class Bird extends Mob {
+public class Bird extends Mob
+{
+	AnimatedImage animatedImage;
+	boolean flyingLeft = true;
 
-  AnimatedImage animatedImage;
-  boolean flyingLeft = true;
+	final float MINSPEED = 2.0f;
+	final float MAXSPEED = 5.0f;
 
-  final float MINSPEED = 2.0f;
-  final float MAXSPEED = 5.0f;
+	public Bird(World world)
+	{
+		//some birds will fly right
+		if (random(0, 2) < 1)
+		{
+			flyingLeft = false;
+		}
 
-  public Bird(World world) {
+		//set spawn position and velocity
+		position.set(random(0, world.getWidth()), random(100, 350));
+		velocity.set(random(MINSPEED, MAXSPEED), 0);
 
-    //some birds will fly right
-    if (random(0, 2) < 1) {
-      flyingLeft = false;
-    }
+		if (flyingLeft)
+		{
+			flipSpriteHorizontal = true;  
+			velocity.mult(-1);
+		}
 
-    //set spawn position and velocity
-    position.set(random(0, world.getWidth()), random(100, 350));
-    velocity.set(random(MINSPEED, MAXSPEED), 0);
+		//set dragfactors to 1 so we dont slow down by drag
+		groundedDragFactor = 1f;
+		aerialDragFactor = 1f;
 
-    if (flyingLeft) {
-      flipSpriteHorizontal = true;  
-      velocity.mult(-1);
-    }
+		//disable gravity
+		gravityForce = 0f;
 
-    //set dragfactors to 1 so we dont slow down by drag
-    groundedDragFactor = 1f;
-    aerialDragFactor = 1f;
+		//allow bird to fly of the screen
+		worldBorderCheck = false;
 
-    //disable gravity
-    gravityForce = 0f;
+		PImage[] frames = new PImage[4];
 
-    //allow bird to fly of the screen
-    worldBorderCheck = false;
+		for (int i = 0; i < frames.length; i++)
+		{
+			frames[i] = ResourceManager.getImage("BirdFlying" + i);
+		}
 
-    PImage[] frames = new PImage[4];
+		//animation speed based on x velocity
+		animatedImage = new AnimatedImage(frames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+	}
 
-    for (int i = 0; i < frames.length; i++) {
-      frames[i] = ResourceManager.getImage("BirdFlying" + i);
-    }
+	void draw()
+	{
+		animatedImage.draw();
+	}
 
-    //animation speed based on x velocity
-    animatedImage = new AnimatedImage(frames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
-  }
+	void update()
+	{
+		super.update();
 
-  void draw() {
-    animatedImage.draw();
-  }
+		if (flyingLeft && position.x < -32)
+		{
+			position.x = world.getWidth() + 100;
+		}
+		else if (!flyingLeft && position.x > world.getWidth() + 100)
+		{
+			position.x = -32;
+		}
 
-  void update() {
-    super.update();
+		if (isGrounded)
+		{
+			delete(this);
+		}
+	}
 
-    if (flyingLeft && position.x < -32) {
-      position.x = world.getWidth() + 100;
-    } else if (!flyingLeft && position.x > world.getWidth() + 100) {
-      position.x = -32;
-    }
-
-    if (isGrounded) {
-      delete(this);
-    }
-  }
-
-  void takeDamage(float damageTaken) {
-    super.takeDamage(damageTaken);
-    gravityForce = 0.5f;
-  }
+	void takeDamage(float damageTaken)
+	{
+		super.takeDamage(damageTaken);
+		gravityForce = 0.5f;
+	}
 }

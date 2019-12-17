@@ -1,18 +1,24 @@
-public class DiamondTile extends ResourceTile {
+public class DiamondTile extends ResourceTile
+{
+	public DiamondTile(int x, int y, int type)
+	{
+		super(x, y);
 
-  public DiamondTile(int x, int y, int type) {
-    super(x, y);
+		value = Globals.DIAMONDVALUE;
 
-    value = Globals.DIAMONDVALUE;
+		if(type == 0)
+		{
+			image = ResourceManager.getImage("DiamondBlock");
+		}
+		else if(type == 1)
+		{
+			image = ResourceManager.getImage("ShadowDiamondBlock");
+		}
+		else
+		{
+			println("Type not found!");
+		}
 
-    if(type == 0){
-      image = ResourceManager.getImage("DiamondBlock");
-    }else if(type == 1){
-      image = ResourceManager.getImage("ShadowDiamondBlock");
-    }else{
-      println("Type not found!");
-    }
-
-    pickUpImage = ResourceManager.getImage("DiamondPickUp");
-  }
+		pickUpImage = ResourceManager.getImage("DiamondPickUp");
+	}
 }

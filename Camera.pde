@@ -4,6 +4,8 @@ public class Camera {
   private BaseObject target;
   private float lerpAmount;
 
+  private final float SPAWN_Y_POS = 190;
+
   public Camera(BaseObject targetObject) {
     position = new PVector();
 
@@ -16,9 +18,9 @@ public class Camera {
     position.x = -target.position.x + width * 0.5f - target.size.x / 2f;
 
     if(Globals.currentGameState == Globals.GameState.GameOver){
-      position.y = -190;
+      position.y = -SPAWN_Y_POS;
     }else{
-      position.y = 190;
+      position.y = SPAWN_Y_POS;
     }
     
     lerpAmount = 0.002f;

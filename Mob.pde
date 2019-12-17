@@ -1,229 +1,293 @@
-class Mob extends Movable {
+class Mob extends Movable
+{
+	//Health
+	float maxHealth = 30;
+	float currentHealth = maxHealth;
+	boolean isImmortal = false;
 
-  //Health
-  float maxHealth = 30;
-  float currentHealth = maxHealth;
-  boolean isImmortal = false;
+	//Movement
+	protected boolean isSwimming = false;
+	protected boolean canSwim = false; 
 
-  //Movement
-  protected boolean isSwimming = false;
-  protected boolean canSwim = false; 
+	//Taking damage
+	final float HURTCOOLDOWN = timeInSeconds(1);
+	float timeSinceLastHurt = 0f; 
+	boolean isHurt;
 
-  //Taking damage
-  final float HURTCOOLDOWN = timeInSeconds(1);
-  float timeSinceLastHurt = 0f; 
-  boolean isHurt;
+	//Mining
+	float miningCooldown = timeInSeconds(.1f); //cooldown in millis
+	float lastMine;
+	float baseDamage = 1;
 
-  //Mining
-  float miningCooldown = timeInSeconds(.1f); //cooldown in millis
-  float lastMine;
-  float baseDamage = 1;
+	//Inventory
+	ArrayList<Item> inventory = new ArrayList<Item>();
+	int selectedSlot = 1; //the selected slot. we'll always use this one if we can
+	int maxInventory = 3;
+	int lastUse;
+	int useCooldown = 100;
 
-  //Inventory
-  ArrayList<Item> inventory = new ArrayList<Item>();
-  int selectedSlot = 1; //the selected slot. we'll always use this one if we can
-  int maxInventory = 3;
-  int lastUse;
-  int useCooldown = 100;
+	//regen and fire
+	public float regen = 0.05f;
+	private final float fireDamage = 5;
+	public boolean canRegen = false;
+	public boolean isOnFire = false;
+	private int fireTimer;
+	private int regenTimer;
 
-  //regen and fire
-  public float regen = 0.05f;
-  private final float fireDamage = 5;
-  public boolean canRegen = false;
-  public boolean isOnFire = false;
-  private int fireTimer;
-  private int regenTimer;
+	public void update()
+	{
+		super.update();
 
-  public void update() {
-    super.update();
+		handleOnFire();
 
-    handleOnFire();
+		regenaration();
 
-    regenaration();
+		if (canSwim)
+		{
+			if (isSwimming)
+			{
+				gravityForce = 0.1f;
+			}
+			else
+			{
+				gravityForce = 1;
+			}
+		}
 
-  if (canSwim) {
-    if (isSwimming) {
-      gravityForce = 0.1f;
-    }
-    else {
-      gravityForce = 1;
-    }
-  }
+		if (isHurt == true)
+		{
+			//Count up until we can be hurt again
+			timeSinceLastHurt++;
 
-    if (isHurt == true) {
+			if (timeSinceLastHurt >= HURTCOOLDOWN)
+			{
+				timeSinceLastHurt = 0;
+				isHurt = false;
+			}
+		}
+	}
 
-      //Count up until we can be hurt again
-      timeSinceLastHurt++;
+	public void attemptMine(BaseObject object)
+	{
 
-      if (timeSinceLastHurt >= HURTCOOLDOWN) {
-        timeSinceLastHurt = 0;
-        isHurt = false;
-      }
-    }
-  }
+		// In the overworld we disable digging all together. 
+		if (Globals.currentGameState == Globals.GameState.Overworld)
+		{
+			return;
+		}
+		else
+		{
+			//ask the tile if they wanna be mined first
+			if (!object.canMine())
+			{
+				return;
+			}
 
-  public void attemptMine(BaseObject object) {
+			//simple cooldown check
+			if (millis() < lastMine + miningCooldown)
+			{
+				return;
+			}
 
-    // In the overworld we disable digging all together. 
-    if (Globals.currentGameState == Globals.GameState.Overworld) {
-      return;
-    } else {
+			if (hasHeldItem())
+			{
+				Held held = getHeldItem();
 
-      //ask the tile if they wanna be mined first
-      if (!object.canMine()) {
-        return;
-      }
+				if (!held.canMine(object, this))
+				{
+					return;
+				}
 
-      //simple cooldown check
-      if (millis() < lastMine + miningCooldown) {
-        return;
-      }
+				held.onMine(object, this);
+			}
+			else
+			{
+				object.takeDamage(getAttackPower(false)); //FIST MINING
+			}
 
-      if (hasHeldItem()) {
-        Held held = getHeldItem();
+			lastMine = millis();
+			afterMine(object);
+		}
+	}
 
-        if (!held.canMine(object, this)) {
-          return;
-        }
+	// hook, used by player to count the mined tiles
+	void afterMine(BaseObject object)
+	{
+		return;
+	}
 
-        held.onMine(object, this);
-      } else {
-        object.takeDamage(getAttackPower(false)); //FIST MINING
-      }
+	public void takeDamage(float damageTaken)
+	{
+		super.takeDamage(damageTaken);
 
-      lastMine = millis();
-      afterMine(object);
-    }
-  }
+		if (isImmortal)
+		{
+			return;
+		}
+		else
+		{
+			if (isHurt == false)
+			{
+				isHurt = true;
+				currentHealth -= damageTaken;
+				regenTimer = 0;
 
-  void afterMine(BaseObject object){ //hook, used by player to count the mined tiles
-    return;
-  }
+				if (currentHealth <= 0)
+				{
+					die();
+				}
+			}
+		}
+	}
 
-  public void takeDamage(float damageTaken) {
-    super.takeDamage(damageTaken);
+	public void die()
+	{
 
-    if (isImmortal) {
-      return;
-    } else {
+	}
 
-      if (isHurt == false) {
-        isHurt = true;
-        currentHealth -= damageTaken;
-        regenTimer = 0;
+	float getAttackPower(boolean useHeldItem)
+	{
+		if (!useHeldItem || !hasHeldItem())
+		{
+			return baseDamage;
+		}
 
-        if (currentHealth <= 0) {
-          die();
-        }
-      }
-    }
-  }
+		return baseDamage * getHeldItem().damageCoefficient;
+	}
 
-  public void die() {
-  }
+		//fire damage blocks regenaration
+	public void handleOnFire()
+	{
+		if(isOnFire)
+		{
+			if(fireTimer % 20 == 0)
+			{
+				takeDamage(fireDamage);
 
-  float getAttackPower(boolean useHeldItem) {
-    if (!useHeldItem || !hasHeldItem()) {
-      return baseDamage;
-    }
+				if(fireTimer > 180)
+				{
+					isOnFire = false;
+				}
+			}
+			
+			fireTimer++;
+		}
+	}
 
-    return baseDamage * getHeldItem().damageCoefficient;
-  }
+	void regenaration()
+	{
+		if(regenTimer > 120)
+		{
+			if(currentHealth < maxHealth)
+			{
+				currentHealth += regen;
+			}
+		}
 
-    //fire damage blocks regenaration
-  public void handleOnFire() {
-    if(isOnFire){
-      if(fireTimer % 20 == 0) {
-        takeDamage(fireDamage);
-        if(fireTimer > 180) {
-          isOnFire = false;
-        }
-      }
-      fireTimer++;
-    }
-  }
+		regenTimer++;
+	}
 
-  void regenaration(){
-    if(regenTimer > 120) {
-      if(currentHealth < maxHealth){
-        currentHealth += regen;
-      }
-    }
-    regenTimer++;
-  }
+	void setOnFire()
+	{
+		isOnFire = true;
+		fireTimer = 0;
+	}
 
-  void setOnFire() {
-    isOnFire = true;
-    fireTimer = 0;
-  }
+	void setMaxHp(float hpToSet)
+	{
+		maxHealth = hpToSet;
+		currentHealth = maxHealth;
+	}
 
-  void setMaxHp(float hpToSet) {
-    maxHealth = hpToSet;
-    currentHealth = maxHealth;
-  }
+	boolean canPickUp(PickUp pickUp)
+	{
+		return false;
+	}
 
-  boolean canPickUp(PickUp pickUp) {
-    return false;
-  }
+	boolean canAddToInventory(Item item)
+	{
+		if (inventory.contains(item))
+		{
+			return false;
+		}
 
-  boolean canAddToInventory(Item item) {
-    if (inventory.contains(item)) {
-      return false;
-    }
-    return inventory.size() < maxInventory;
-  }
+		return inventory.size() < maxInventory;
+	}
 
-  void addToInventory(Item item) {
-    rectMode(CENTER);
-    item.suspended = true;
-    inventory.add(item);
-    rectMode(CORNER);
-  }
+	void addToInventory(Item item)
+	{
+		rectMode(CENTER);
 
-  void useInventory() {
-    if (lastUse + useCooldown < millis()  && inventory.size() != 0) {
-      if (selectedSlot <= inventory.size()) {
-        Item item = inventory.get(selectedSlot - 1);
-        item.onUse(this);
-        item.suspended = false;
-        lastUse = millis();
-      }
-    }
-  }
+		item.suspended = true;
+		inventory.add(item);
 
-  void switchInventory() {
-    selectedSlot++;
-    if (selectedSlot > maxInventory) {
-      selectedSlot = 1;
-    }
-  }
+		rectMode(CORNER);
+	}
 
-  void removeFromInventory(Item item) {
-    inventory.remove(item);
-  }
-  boolean hasHeldItem() {
-    for (Item item : inventory) {
-      if (item instanceof Held) {
-        return true;
-      }
-    }
-    return false;
-  }
+	void useInventory()
+	{
+		if (lastUse + useCooldown < millis() && inventory.size() != 0)
+		{
+			if (selectedSlot <= inventory.size())
+			{
+				Item item = inventory.get(selectedSlot - 1);
 
-  Held getHeldItem() {
-    if (inventory.size() >= selectedSlot) {
-      Item item = inventory.get(selectedSlot - 1);
-      if (item instanceof Held) {
-        return (Held) inventory.get(selectedSlot - 1);
-      }
-    }
+				item.onUse(this);
+				item.suspended = false;
 
-    for (Item item : inventory) {
-      if (item instanceof Held) {
-        return (Held)item;
-      }
-    }
-    return null; //should never happen, because we should always check hasHeldItem before calling this
-  }
+				lastUse = millis();
+			}
+		}
+	}
 
+	void switchInventory()
+	{
+		selectedSlot++;
+
+		if (selectedSlot > maxInventory)
+		{
+			selectedSlot = 1;
+		}
+	}
+
+	void removeFromInventory(Item item)
+	{
+		inventory.remove(item);
+	}
+
+	boolean hasHeldItem()
+	{
+		for (Item item : inventory)
+		{
+			if (item instanceof Held)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	Held getHeldItem()
+	{
+		if (inventory.size() >= selectedSlot)
+		{
+			Item item = inventory.get(selectedSlot - 1);
+
+			if (item instanceof Held)
+			{
+				return (Held) inventory.get(selectedSlot - 1);
+			}
+		}
+
+		for (Item item : inventory)
+		{
+			if (item instanceof Held)
+			{
+				return (Held)item;
+			}
+		}
+
+		return null; //should never happen, because we should always check hasHeldItem before calling this
+	}
 }

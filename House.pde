@@ -1,65 +1,71 @@
-public class DoorBotTile extends Tile {
+public class DoorBotTile extends Tile
+{
+	public DoorBotTile(int x, int y)
+	{
+		super(x, y);
 
-  public DoorBotTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("DoorBot");
-  }
+		image = ResourceManager.getImage("DoorBot");
+	}
 }
 
-public class DoorTopTile extends Tile {
+public class DoorTopTile extends Tile
+{
+	public DoorTopTile(int x, int y)
+	{
+		super(x, y);
 
-  public DoorTopTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("DoorTop");
-  }
+		image = ResourceManager.getImage("DoorTop");
+	}
 }
 
-public class GlassTile extends Tile {
+public class GlassTile extends Tile
+{
+	public GlassTile(int x, int y)
+	{
+		super(x, y);
 
-  public GlassTile(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("Glass");
-  }
+		image = ResourceManager.getImage("Glass");
+	}
 }
 
-public class WoodPlankTile extends Tile {
+public class WoodPlankTile extends Tile
+{
+	// normal wood plank
+	public WoodPlankTile(int x, int y)
+	{
+		super(x, y);
 
-  // normal wood plank
-  public WoodPlankTile(int x, int y) {
-    super(x, y);
+		image = ResourceManager.getImage("WoodPlank");
+	}
 
-    image = ResourceManager.getImage("WoodPlank");
-  }
+	// leaderboard wood plank
+	public WoodPlankTile(int x, int y, PVector structureTilePosition)
+	{
+		super(x, y);
 
-  // leaderboard wood plank
-  public WoodPlankTile(int x, int y, PVector structureTilePosition) {
-    super(x, y);
+		PGraphics pg = createGraphics(50, 50);
 
-    PGraphics pg = createGraphics(50, 50);
+		int xPos = int(structureTilePosition.x * Globals.TILE_SIZE);
+		int yPos = int(structureTilePosition.y * Globals.TILE_SIZE);
+		int size = int(Globals.TILE_SIZE);
 
-    int xPos = int(structureTilePosition.x * Globals.TILE_SIZE);
-    int yPos = int(structureTilePosition.y * Globals.TILE_SIZE);
-    int size = int(Globals.TILE_SIZE);
+		PImage cutImage = leaderBoardGraphics.get(xPos, yPos, size, size);
 
-    PImage cutImage = leaderBoardGraphics.get(xPos, yPos, size, size);
+		pg.beginDraw();
+		pg.image(ResourceManager.getImage("WoodPlank"), 0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		pg.image(cutImage, 0, 0, size, size);
+		pg.endDraw();
 
-    pg.beginDraw();
-    pg.image(ResourceManager.getImage("WoodPlank"), 0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
-    pg.image(cutImage, 0, 0, size, size);
-    pg.endDraw();
-
-    image = pg;
-  }
+		image = pg;
+	}
 }
 
-public class Fencepost extends Tile {
+public class Fencepost extends Tile
+{
+	public Fencepost(int x, int y)
+	{
+		super(x, y);
 
-  public Fencepost(int x, int y) {
-    super(x, y);
-
-    image = ResourceManager.getImage("Fencepost");
-  }
+		image = ResourceManager.getImage("Fencepost");
+	}
 }

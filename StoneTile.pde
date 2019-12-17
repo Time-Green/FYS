@@ -1,8 +1,10 @@
-public class StoneTile extends Tile {
+public class StoneTile extends Tile
+	{
 
-  public StoneTile(int x, int y) {
-    super(x, y);
+	public StoneTile(int x, int y)
+	{
+		super(x, y);
 
-    image = ResourceManager.getImage("StoneBlock");
-  }
+		image = ResourceManager.getImage("StoneBlock");
+	}
 }
