@@ -3,6 +3,9 @@ ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and l
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
+//Parallax Layers
+ArrayList<BaseObject> parallaxList = new ArrayList<Parallax>();
+
 //These only exists as helpers. All drawing and updating is handled from objectList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
@@ -442,6 +445,8 @@ BaseObject load(BaseObject newObject, boolean priority) { //load it RIGHT NOW. O
   }
   return newObject;
 }
+
+Parallax load(Parallax lax, PVector )
 
 void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
   destroyList.add(deletingObject); //queue for deletion
