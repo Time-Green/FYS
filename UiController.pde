@@ -37,6 +37,8 @@ public class UIController {
 
   String dots = "";
 
+  int scoreDisplay = 0;
+
   //Inventory
   private float inventorySize = 50;
 
@@ -63,6 +65,8 @@ public class UIController {
   }
 
   void draw() {
+    
+    handleScore();
 
     //draw hud at center position
     rectMode(CENTER);
@@ -244,7 +248,7 @@ public class UIController {
     textAlign(LEFT);
     fill(255);
     textSize(hudFontSize);
-    text("Score: " + player.score, 10, hudTextStartX);
+    text("Score: " + scoreDisplay, 10, hudTextStartX);
 
     textAlign(LEFT);
     fill(255);
@@ -323,4 +327,21 @@ public class UIController {
 
     //imageMode(CORNER);
   }
+
+  private void handleScore(){
+		if(scoreDisplay < player.score){
+
+			int scoreToAdd = round((player.score - scoreDisplay) / 15);
+
+			if(scoreToAdd == 0){
+				scoreToAdd++;
+			}
+
+			scoreDisplay += scoreToAdd;
+
+			if(scoreDisplay > player.score){
+				scoreDisplay = player.score;
+			}
+		}
+	}
 }

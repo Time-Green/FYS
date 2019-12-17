@@ -1,22 +1,54 @@
 public class PickupText extends BaseObject {
 
-    private int score;
-    private PFont textFont;
-    private float aliveTime = timeInSeconds(3);
+  PVector velocity;
+  private int score, scoreDisplay;
+  private float lifeTime = 0;
 
-    public PickupText(int drawScore, PVector currentPos) {        
-        this.score = drawScore;
-        this.position = currentPos;
-    }
+  private color fromColor = color(#0070dd);
+  private color toColor = color(#ff8000);
 
-    void draw() {
-        textAlign(CENTER);
-        textSize(20);
-        fill(#ffffff);
-        //Draw the score text
-        text("+"+this.score, this.position.x, this.position.y);
-        //Decrease the alive counter and remove the text when it is 0
-        aliveTime--;
-        if (aliveTime <= 0) delete(this);
+  public PickupText(int scoreToDraw, PVector currentPos) {        
+    score = scoreToDraw;
+    scoreDisplay = score / 2;
+    position.set(currentPos);
+    velocity = new PVector(random(-2, 2), random(-1, -0.5));
+  }
+
+  void draw() {
+
+    position.add(velocity);
+    handleScore();
+
+    textAlign(CENTER);
+    textSize(20 + (scoreDisplay / 100));
+
+    color displayColor = lerpColor(fromColor, toColor, float(scoreDisplay) / float(score));
+    fill(displayColor);
+
+    //Draw the score text
+    text("+" + scoreDisplay, position.x, position.y);
+
+    lifeTime++;
+
+    if (lifeTime > 180){
+      delete(this);
     }
+  }
+
+  private void handleScore(){
+		if(scoreDisplay < score){
+
+			int scoreToAdd = round((score - scoreDisplay) / 10);
+
+			if(scoreToAdd == 0){
+				scoreToAdd++;
+			}
+
+			scoreDisplay += scoreToAdd;
+
+			if(scoreDisplay > score){
+				scoreDisplay = score;
+			}
+		}
+	}
 } 

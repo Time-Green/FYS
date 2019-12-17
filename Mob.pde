@@ -10,7 +10,7 @@ class Mob extends Movable {
   protected boolean canSwim = false; 
 
   //Taking damage
-  final float HURTCOOLDOWN = timeInSeconds(1);
+  final float HURTCOOLDOWN = 60;
   float timeSinceLastHurt = 0f; 
   boolean isHurt;
 
