@@ -425,7 +425,7 @@ public class DatabaseManager
     achievement.name = json.getString("name");
     achievement.description = json.getString("description");
 
-	println("Achievement: " + achievement.id + ", " + achievement.name);
+	//println("Achievement: " + achievement.id + ", " + achievement.name);
 
     return achievement;
   }

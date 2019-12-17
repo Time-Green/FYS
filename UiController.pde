@@ -11,6 +11,8 @@ public class UIController
 
 	//Achievement icon
 	private float iconFrameSize = 25; 
+	int achievementDisplayTimer = 0; 
+	int showingAchievementId; 
 
 	//Health
 	private float healthBarHeight = 30; 
@@ -277,6 +279,12 @@ public class UIController
 		textSize(hudFontSize);
 		text("Depth: " + (max(0, player.getDepth() - Globals.OVERWORLD_HEIGHT)) + "m", 10, hudTextStartX + hudFontSize + 10);
 
+		if(achievementDisplayTimer > 0)
+		{
+			displayAchievement(); 
+			achievementDisplayTimer--; 
+		}
+
 		drawInventory();
 	}
 
@@ -338,6 +346,20 @@ public class UIController
 		{
 			image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item), barX, item.size.x, item.size.y);
 		}
+	}
+
+	void startDisplayingAchievement(int id)
+	{
+		// Display the text for 2 seconds
+		achievementDisplayTimer = 120; 
+		showingAchievementId = id; 	
+	}
+
+	public void displayAchievement()
+	{	
+		textFont(instructionFont);
+		textSize(instructionFontSize);
+		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 
 	private void handleScore()

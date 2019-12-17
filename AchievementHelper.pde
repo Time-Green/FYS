@@ -2,7 +2,7 @@ public class AchievementHelper
 {
     void unlock(int id)
     {   
-        println("Player unlocked: "+ getAchievementData(id).name);
+        println("Player has unlocked: "+ getAchievementData(id).name);
         runData.unlockedAchievementIds.add(id); 
     }  
 
