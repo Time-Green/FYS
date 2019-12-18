@@ -374,8 +374,8 @@ void endRun()
 	isUploadingRunResults = true;
 	Globals.gamePaused = true;
 	Globals.currentGameState = Globals.GameState.GameOver;
-
-	ui.drawWarningOverlay = false;
+	
+	ui.setupRunEnd();
 	AudioManager.stopMusic("BackgroundMusic");
 
 	thread("startRegisterEndThread");

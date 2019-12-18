@@ -40,6 +40,7 @@ public class UIController
 	String dots = "";
 
 	int scoreDisplay = 0;
+	int depthDisplay = 0;
 
 	//Inventory
 	private float inventorySize = 50;
@@ -201,7 +202,7 @@ public class UIController
 		//sub text
 		textFont(instructionFont);
 		textSize(instructionFontSize);
-		text("Score: " + player.score + "\nDepth: " + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "m", width / 2, height / 2 + instructionFontSize);
+		text("Score: " + scoreDisplay + "\nDepth: " + depthDisplay + "m", width / 2, height / 2 + instructionFontSize);
 
 		if(isUploadingRunResults)
 		{
@@ -362,6 +363,13 @@ public class UIController
 		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 
+	public void setupRunEnd()
+	{
+		ui.scoreDisplay = 0;
+		ui.depthDisplay = 0;
+		ui.drawWarningOverlay = false;
+	}
+
 	private void handleScore()
 	{
 		if(scoreDisplay < player.score)
@@ -378,6 +386,23 @@ public class UIController
 			if(scoreDisplay > player.score)
 			{
 				scoreDisplay = player.score;
+			}
+		}
+
+		if(depthDisplay < player.getDepth() - Globals.OVERWORLD_HEIGHT)
+		{
+			int depthToAdd = round((player.getDepth() - Globals.OVERWORLD_HEIGHT - depthDisplay) / 15);
+
+			if(depthToAdd == 0)
+			{
+				depthToAdd++;
+			}
+
+			depthDisplay += depthToAdd;
+
+			if(depthDisplay > player.getDepth() - Globals.OVERWORLD_HEIGHT)
+			{
+				depthDisplay = player.getDepth() - Globals.OVERWORLD_HEIGHT;
 			}
 		}
 	}
