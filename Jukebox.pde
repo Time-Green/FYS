@@ -3,7 +3,7 @@ class Jukebox extends Obstacle
     int musicNotes = 4;
     boolean destroyed = false;
     int numbers = 4;
-    float particleVelocity;
+    float particleVelocity = 1;
     int particleDelay = 30;
     EmmitingParticleSystem particleSystem;
 
@@ -14,7 +14,7 @@ class Jukebox extends Obstacle
         image = ResourceManager.getImage("Jukebox");
 
         anchored = true;
-        //density = false;
+        collisionEnabled = false;
 
         particleSystem = new EmmitingParticleSystem(position, particleVelocity, particleDelay, true);
         load(particleSystem, position);

@@ -11,6 +11,7 @@ public class ImageParticle extends BaseParticle
         maxSize = 20;
 
 		size = random(minSize, maxSize);
+        //maxLifeTime = 1000;
 	}
 
 	void draw()
