@@ -18,9 +18,8 @@ public class BaseParticleSystem extends BaseObject
 	{
 		super();
 
-		deleteOnZeroParticles = false;
-
 		position.set(spawnPos);
+		deleteOnZeroParticles = false;
 	}
 
 	void update()

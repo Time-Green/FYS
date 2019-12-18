@@ -467,10 +467,10 @@ void startRegisterEndThread()
 {
 	databaseManager.registerRunEnd();
 
-  unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
+  	unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
 
-  //update leaderboard with new data
-  leaderBoard = databaseManager.getLeaderboard(10);
+  	//update leaderboard with new data
+  	leaderBoard = databaseManager.getLeaderboard(10);
 
 	isUploadingRunResults = false;
 }
@@ -485,30 +485,32 @@ BaseObject load(BaseObject newObject)
 
 BaseObject load(BaseObject newObject, PVector setPosition)
 {
-  loadList.add(newObject);
-  newObject.position.set(setPosition);
+	loadList.add(newObject);
+	newObject.position.set(setPosition);
 
-  return newObject;
+	return newObject;
 }
 
 // load it RIGHT NOW. Only use in specially processed objects, like world
 BaseObject load(BaseObject newObject, boolean priority)
 {
-  if (priority)
-  {
-    newObject.specialAdd();
-  }
-  else
-  {
-    load(newObject);
-  }
+	if (priority)
+	{
+		newObject.specialAdd();
+	}
+	else
+	{
+		load(newObject);
+	}
 
-  return newObject;
+	return newObject;
 }
 
-void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
-  destroyList.add(deletingObject); //queue for deletion
-  deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
+// handles removal, call delete(object) to delete that object from the world
+void delete(BaseObject deletingObject)
+{
+	destroyList.add(deletingObject); //queue for deletion
+  	deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
 }
 
 // handles reload, call delete(object) to delete that object from the world

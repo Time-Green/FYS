@@ -4,14 +4,21 @@ class Jukebox extends Obstacle
     int travelDistance = 200;
     boolean destroyed = false;
     int numbers = 4;
-    int particleVelocity = 25;
-    int particleDelay = 5;
+    int particleVelocity = 1;
+    int particleDelay = 30;
     EmmitingParticleSystem particleSystem;
 
-    Jukebox()
+    Jukebox(PVector spawnPos)
     {
+        position.set(spawnPos);
+
         image = ResourceManager.getImage("Jukebox");
-        particleSystem = new EmmitingParticleSystem(position, particleVelocity, particleDelay);
+
+        anchored = true;
+
+        particleSystem = new EmmitingParticleSystem(position, particleVelocity, particleDelay, true);
+        load(particleSystem, position);
+
         music();
     }
 
@@ -20,7 +27,7 @@ class Jukebox extends Obstacle
         super.update();
     }
     
-        //hihi super secret easter egg, groetjes Jordy :)
+    //hihi super secret easter egg, groetjes Jordy :)
 
     void music()
     {

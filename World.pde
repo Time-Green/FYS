@@ -48,8 +48,8 @@ public class World
 
 	public void spawnJukebox()
 	{
-		Jukebox jukebox = new Jukebox();
-		load(jukebox, new PVector(1200, 509));
+		Jukebox jukebox = new Jukebox(new PVector(1200, 509));
+		load(jukebox);
 	}
 
 	void drawBackgoundImage()
