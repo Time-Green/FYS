@@ -17,11 +17,7 @@ class Flower extends Mob {
         for (int i = 0; i < FLOWERFRAMES; i++) {
             flowerFrames[i] = ResourceManager.getImage("Flower" + i); 
         }
-            animatedImageFlower = new AnimatedImage(flowerFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
-    }
-
-    void update() {
-        super.update();
+            animatedImageFlower = new AnimatedImage(flowerFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
     }
 
     void draw() {

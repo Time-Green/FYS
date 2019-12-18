@@ -48,7 +48,7 @@ class Player extends Mob
 			walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i);
 		}
 
-		walkCycle = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		walkCycle = new AnimatedImage(walkFrames, 8 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < IDLEFRAMES; i++)
 		{
