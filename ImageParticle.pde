@@ -6,7 +6,7 @@ public class ImageParticle extends BaseParticle
 
 		image = ResourceManager.getImage("Note" + floor(random(4)));
 		gravityForce = 0;
-        maxLifeTime = 5000;
+        maxLifeTime = 2000;
 		minSize = 15;
         maxSize = 20;
 

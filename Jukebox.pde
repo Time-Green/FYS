@@ -1,10 +1,9 @@
 class Jukebox extends Obstacle
 {
     int musicNotes = 4;
-    int travelDistance = 200;
     boolean destroyed = false;
     int numbers = 4;
-    int particleVelocity = 1;
+    float particleVelocity;
     int particleDelay = 30;
     EmmitingParticleSystem particleSystem;
 
@@ -15,6 +14,7 @@ class Jukebox extends Obstacle
         image = ResourceManager.getImage("Jukebox");
 
         anchored = true;
+        //density = false;
 
         particleSystem = new EmmitingParticleSystem(position, particleVelocity, particleDelay, true);
         load(particleSystem, position);
@@ -34,10 +34,14 @@ class Jukebox extends Obstacle
         AudioManager.playMusic("JukeboxNum" + floor(random(numbers)) + "Music");
     }
 
+    //we need to delete the jukebox and stop all numbers from playing
     void takeDamage(float damageTaken)
     {
+        for(int i = 0; i < numbers; i++) 
+        {
+            AudioManager.stopMusic("JukeboxNum" + i + "Music");
+        }
         super.takeDamage(damageTaken);
-
         delete(this);
     }
 }

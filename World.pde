@@ -48,7 +48,7 @@ public class World
 
 	public void spawnJukebox()
 	{
-		Jukebox jukebox = new Jukebox(new PVector(1200, 509));
+		Jukebox jukebox = new Jukebox(new PVector(1250, 510));
 		load(jukebox);
 	}
 
@@ -526,7 +526,7 @@ public class World
 			break;
 
 			case "Chest" :
-				load(new Chest(0), spawnWorldPos);
+				load(new Chest(70), spawnWorldPos);
 			break;
 
 			case "Button" :
