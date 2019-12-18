@@ -15,6 +15,7 @@ class Jukebox extends Obstacle
         image = ResourceManager.getImage("Jukebox");
 
         anchored = true;
+        collisionEnabled = false;
 
         particleSystem = new EmmitingParticleSystem(position, particleVelocity, particleDelay, true);
         load(particleSystem, position);
