@@ -26,8 +26,6 @@ class Jukebox extends Obstacle
     {
         super.update();
     }
-    
-    //hihi super secret easter egg, groetjes Jordy :)
 
     void music()
     {
@@ -37,11 +35,13 @@ class Jukebox extends Obstacle
     //we need to delete the jukebox and stop all numbers from playing
     void takeDamage(float damageTaken)
     {
+        super.takeDamage(damageTaken);
+
         for(int i = 0; i < numbers; i++) 
         {
             AudioManager.stopMusic("JukeboxNum" + i + "Music");
         }
-        super.takeDamage(damageTaken);
+        
         delete(this);
     }
 }
