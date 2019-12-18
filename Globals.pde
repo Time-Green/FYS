@@ -35,6 +35,9 @@ static class Globals {
 	static final float SPEED_BOOST = 0.01f;
 	static final float LIGHT_BOOST = 10;
 
+	//Achievements
+	static final int LONEDIGGERACHIEVEMENT = 1;
+
 	//world
 	static final int OVERWORLD_HEIGHT = 10; // in grid tiles
 	static final int TILES_HORIZONTAL = 50;
