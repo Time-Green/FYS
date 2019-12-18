@@ -1,19 +1,35 @@
-// public class EmmitingParticleSystem extends BaseParticleSystem
-// {
-// 	public EmmitingParticleSystem(PVector spawnPos, int amount, float maxForce)
-// 	{
-// 		super(spawnPos, amount);
+public class EmmitingParticleSystem extends BaseParticleSystem
+{
+    int spawnDelay;
+    float maxForce;
 
-// 		for (int i = 0; i < particleAmount; i++)
-// 		{
-// 			float randomAngle = random(0, TWO_PI);
-// 			float randomRadius = random(0, maxForce);
-// 			float circleX = cos(randomAngle) * randomRadius;
-// 			float circleY = sin(randomAngle) * randomRadius;
-// 			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
+	public EmmitingParticleSystem(PVector spawnPos, float maxForce, int spawnDelay)
+	{
+		super(spawnPos);
 
-// 		    Particle particle = new ExplosionParticle(this, position, particleSpawnAcceleration);
-// 			load(particle);
-// 		}
-// 	}
-// }
+        this.spawnDelay = spawnDelay;
+        this.maxForce = maxForce;
+	}
+
+    void update()
+	{
+		super.update();
+
+        if(frameCount % spawnDelay == 0) 
+        {
+            spawnParticle();
+        }
+	}
+
+    void spawnParticle()
+    {
+        float randomAngle = random(0, TWO_PI);
+        float randomRadius = random(0, maxForce);
+        float circleX = cos(randomAngle) * randomRadius;
+        float circleY = sin(randomAngle) * randomRadius;
+        PVector particleSpawnAcceleration = new PVector(circleX, circleY);
+
+        ImageParticle particle = new ImageParticle(this, position, particleSpawnAcceleration);
+        load(particle);
+    }
+}

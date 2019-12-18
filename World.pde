@@ -33,6 +33,7 @@ public class World
 		spawnBirds();
 		spawnNpcs();
 		spawnStarterChest();
+		spawnJukebox();
 	}
 
 	public void update()
@@ -43,6 +44,12 @@ public class World
 	public void draw()
 	{
 		drawBackgoundImage();
+	}
+
+	public void spawnJukebox()
+	{
+		Jukebox jukebox = new Jukebox();
+		load(jukebox, new PVector(1200, 509));
 	}
 
 	void drawBackgoundImage()
