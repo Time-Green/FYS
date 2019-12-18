@@ -5,6 +5,7 @@ public class StoneTile extends Tile
 	{
 		super(x, y);
 
+		decalType = "DecalStone";
 		image = ResourceManager.getImage("StoneBlock");
 	}
 }

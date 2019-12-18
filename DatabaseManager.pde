@@ -180,11 +180,6 @@ public class DatabaseManager
 	{
 		returnList.add(result.getJSONObject(i).getInt("achievementid")); 
     }
-    
-	// for(int i = 0; i < returnList.size(); i++)
-	// {
-	// 	println(returnList.get(i)); 
-	// }
 
     return returnList; 
   }
@@ -425,7 +420,7 @@ public class DatabaseManager
     achievement.name = json.getString("name");
     achievement.description = json.getString("description");
 
-	println("Achievement: " + achievement.id + ", " + achievement.name);
+	//println("Achievement: " + achievement.id + ", " + achievement.name);
 
     return achievement;
   }

@@ -9,6 +9,7 @@ public class GoldTile extends ResourceTile
 		if(type == 0)
 		{
 			image = ResourceManager.getImage("IronBlock"); // ironblock for gold???
+			decalType = "DecalStone";
 		}
 		else if(type == 1)
 		{

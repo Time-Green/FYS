@@ -44,78 +44,101 @@ class Player extends Mob
     	PImage[] fireFrames = new PImage[FIREFRAMES];
 
 		for (int i = 0; i < WALKFRAMES; i++)
+		{
 			walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i);
+		}
 
-		walkCycle = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		walkCycle = new AnimatedImage(walkFrames, 8 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < IDLEFRAMES; i++)
-			idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
+		{
+			idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i);
+		}
 
 		animatedImageIdle = new AnimatedImage(idleFrames, 60 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < AIRFRAMES; i++)
+		{
 			airFrames[i] = ResourceManager.getImage("PlayerAir" + i);
+		}
 
 		animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
     	for (int i = 0; i < SHOCKFRAMES; i++)
+		{
 			shockFrames[i] = ResourceManager.getImage("PlayerShock" + i);
+		}
 
 		shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < MINEFRAMES; i++) 
+		{
 			mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
+		}
+		
 		animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
 		for (int i = 0; i < FALLFRAMES; i++) 
+		{
 			fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
+		}
+
     	animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
      	for (int i = 0; i < FIREFRAMES; i++)
-      		fireFrames[i] = ResourceManager.getImage("FireP" + i); 
+      	{
+			fireFrames[i] = ResourceManager.getImage("FireP" + i); 
+		}
+
     	animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 
-    setupLightSource(this, viewAmount, 1f);
+		setupLightSource(this, viewAmount, 1f);
 
-    applyRelicBoost();
-  }
+		applyRelicBoost();
+	}
 
-  void update() {
+	void update()
+	{
 
-    super.update();
+		if (Globals.gamePaused)
+		{  
+			return;
+		}
 
-    if (Globals.gamePaused) {  
-      return;
-    }
+		super.update();
 
-    super.update();
+		if(player.getDepth() - Globals.OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(1))
+		{
+			achievementHelper.unlock(1); 
+		}
 
-    if(player.getDepth() > 100 && !achievementHelper.hasUnlockedAchievement(1))
-    {
-      achievementHelper.unlock(1); 
-    }
+		setVisibilityBasedOnCurrentBiome();
 
-    setVisibilityBasedOnCurrentBiome();
+		checkHealthLow();
 
-    checkHealthLow();
+		statusEffects();
 
-	statusEffects();
+		if (stunTimer <= 0)
+		{
+			doPlayerMovement();
+		}
 
-    if (stunTimer <= 0) {
-      doPlayerMovement();
-    }
+		playerOnFire();
+	}
 
-    playerOnFire();
-  }
+	void checkHealthLow()
+	{
+		// if lower than 20% health, show low health overlay
+		if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f)
+		{
+			ui.drawWarningOverlay = true;
 
-  void checkHealthLow() {
-    if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f) { // if lower than 20% health, show low health overlay
-
-      ui.drawWarningOverlay = true;
-
-       if (frameCount % 60 == 0) AudioManager.playSoundEffect("LowHealth");
-	  }
-  }
+			if (frameCount % 60 == 0)
+			{
+				AudioManager.playSoundEffect("LowHealth");
+			}
+		}
+	}
 
 	void applyRelicBoost()
 	{
@@ -179,7 +202,7 @@ class Player extends Mob
 
 		handleAnimation();
 
-    playerOnFire();
+    	playerOnFire();
 
 		// player only, because we'll never bother adding a holding sprite for every mob 
 		for (Item item : inventory)
@@ -226,15 +249,18 @@ class Player extends Mob
 		}
 	}
 
-   void playerOnFire() {
-    tint(255, 200);
-    if(isOnFire == true) {
-      animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
-        animatedImageFire.draw();
+   void playerOnFire()
+   {
+		tint(255, 200);
 
-        AudioManager.playSoundEffect("FireSound");
-    }
-  }
+		if(isOnFire == true)
+		{
+			animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
+			animatedImageFire.draw();
+
+			AudioManager.playSoundEffect("FireSound");
+		}
+	}
 
 	void doPlayerMovement()
 	{

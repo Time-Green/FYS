@@ -10,6 +10,7 @@ class Tile extends BaseObject {
 
   PImage image;
   PImage destroyedImage;
+  String decalType;
 
   String breakSound;
   float damageDiscolor = 50;
@@ -54,6 +55,7 @@ class Tile extends BaseObject {
     {
       destroyed = true;
       density = false;
+      makeNeighboursAesthetic();
 
       if(random(1) < world.currentBiome.ceilingObstacleChance)
       { //do a chance check first to save time and resources
@@ -188,6 +190,7 @@ class Tile extends BaseObject {
     
     releaseRooted();
     reload(this);
+    //makeNeighboursAesthetic();
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
     if (lightSources.contains(this)) 
@@ -221,6 +224,68 @@ class Tile extends BaseObject {
     for(Movable rooted : rootedIn)
     {
       rooted.unroot(this);
+    }
+  }
+
+  void addAesthetics()
+  {
+    //get all our cardinals 
+    if(world == null) //we could pass world as a param, or we could just wait it out with the assumptions the air doesnt need decals
+    {
+      return;
+    }
+
+    if(!density || decalType == null)
+    {
+      return; //again we dont need airdecals or decals for those who dont want it
+    }
+
+    Tile tileRight = world.getTile(position.x + Globals.TILE_SIZE, position.y);
+    Tile tileLeft = world.getTile(position.x - Globals.TILE_SIZE, position.y);
+    Tile tileUp = world.getTile(position.x, position.y - Globals.TILE_SIZE);
+    Tile tileDown = world.getTile(position.x, position.y + Globals.TILE_SIZE);
+
+    if(tileRight != null && !tileRight.density)
+    {
+      rootedIn.add((Movable) load(new TileDecal(RIGHT, decalType), tileRight.position));
+    }
+    if(tileLeft != null && !tileLeft.density)
+    {
+      rootedIn.add((Movable) load(new TileDecal(LEFT, decalType), tileLeft.position));
+    }
+    if(tileUp != null && !tileUp.density)
+    {
+      rootedIn.add((Movable) load(new TileDecal(UP, decalType), tileUp.position));
+    }
+    if(tileDown != null && !tileDown.density)
+    {
+      rootedIn.add((Movable) load(new TileDecal(DOWN, decalType), tileDown.position));
+    }
+  }
+
+  void makeNeighboursAesthetic()
+  {
+    if(world == null) //we'll wait, air doesnt need decals anyway
+    {
+      return;
+    }
+
+    Tile[] tiles = {
+      world.getTile(position.x + Globals.TILE_SIZE, position.y), 
+      world.getTile(position.x - Globals.TILE_SIZE, position.y),
+      world.getTile(position.x, position.y + Globals.TILE_SIZE),
+      world.getTile(position.x, position.y - Globals.TILE_SIZE)
+    };
+
+    for(int i = 0; i < 3; i++)
+    {
+      Tile tile = tiles[i];
+      if(tile == null || !tile.density)
+      {
+        continue;
+      }
+
+      tile.addAesthetics();
     }
   }
 }

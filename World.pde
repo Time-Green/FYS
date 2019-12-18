@@ -182,6 +182,18 @@ public class World
 		{
 			spawner.trySpawn(this);
 		}
+
+		postGenerate(map.size() - 2); //tell the row of tiles above us we're finished, so they can add 'aesthetics'
+		//also minus -2 because we do -1 to get the the zero based index, and then minus -1 more to get the row above it
+	}
+
+	void postGenerate(int tilesIndex) //tell the row above is we're donzo, so they can add stuff like aesthetics
+	{
+		ArrayList<Tile> tiles = map.get(tilesIndex);
+		for(Tile tile : tiles)
+		{
+			tile.addAesthetics();
+		}
 	}
 
 	//returns an arraylist with the 8 tiles surrounding the coordinations. returns BaseObjects so that it can easily be joined with every object list
