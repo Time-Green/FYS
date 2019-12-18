@@ -46,7 +46,8 @@ public class AnimatedImage
 		{
 			scale(-1, 1);
 			image(imageToDraw, -objectWidth, 0);
-		} else
+		}
+		else
 		{
 			image(imageToDraw, 0, 0);
 		}
