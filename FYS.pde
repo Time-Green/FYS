@@ -47,16 +47,12 @@ void setup()
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
 
-  databaseManager.beginLogin();
+  	databaseManager.beginLogin();
 
-  
-  AudioManager.setup(this);
-
+  	AudioManager.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.prepareResourceLoading();
-
 	CameraShaker.setup(this);
-
 	ResourceManager.loadAll();
 }
 
