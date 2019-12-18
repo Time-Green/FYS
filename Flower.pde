@@ -3,8 +3,6 @@ class Flower extends Mob {
 	private AnimatedImage animatedImageFlower;
 	private final int FLOWERFRAMES = 4;
 
-	PImage[]  flowerFrames = new PImage[FLOWERFRAMES];
-
 	public Flower()
 	{
 		setupLightSource(this, 125f, 1f);
