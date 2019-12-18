@@ -16,8 +16,8 @@ class Jukebox extends Obstacle
         anchored = true;
         collisionEnabled = false;
 
-        particleSystem = new EmmitingParticleSystem(position, particleVelocity, particleDelay, true);
-        load(particleSystem, position);
+        particleSystem = new EmmitingParticleSystem(new PVector(position.x + 10, position.y + 5), particleVelocity, particleDelay, true);
+        load(particleSystem);
 
         music();
     }
@@ -42,6 +42,7 @@ class Jukebox extends Obstacle
             AudioManager.stopMusic("JukeboxNum" + i + "Music");
         }
         
+        delete(particleSystem);
         delete(this);
     }
 }

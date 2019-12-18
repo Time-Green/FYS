@@ -429,9 +429,20 @@ void handleLoadingScreen()
 
 	textSize(15);
 
+	int xPosMultiplier = -1;
+	int yPosMultiplier = 0;
+
 	for (int i = 0; i < currentlyLoadingResources.size(); i++)
 	{
-		text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
+		if(i % 33 == 0)
+		{
+			xPosMultiplier++;
+			yPosMultiplier = 0;
+		}
+
+		text(currentlyLoadingResources.get(i), 10 + (150 * xPosMultiplier), 40 + yPosMultiplier * 18);
+
+		yPosMultiplier++;
 	}
 }
 
