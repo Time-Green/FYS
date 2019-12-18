@@ -29,7 +29,7 @@ class Jukebox extends Obstacle
 
     void music()
     {
-        AudioManager.playMusic("JukeboxNum" + floor(random(numbers)) + "Music");
+        AudioManager.loopMusic("JukeboxNum" + floor(random(numbers)) + "Music");
     }
 
     //we need to delete the jukebox and stop all numbers from playing
