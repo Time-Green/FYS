@@ -18,15 +18,7 @@ class EnemyBomb extends Enemy
 		image = ResourceManager.getImage("BombEnemy0");
 		this.speed = 2.5f;
 
-		//Get all the animation frames and put them in the explosionSequence animation
-		PImage[] explosionFrames = new PImage[NUMBEROFSPRITES];
-
-		for (int i = 0; i < NUMBEROFSPRITES; i++) 
-		{
-			explosionFrames[i] = ResourceManager.getImage("BombEnemy" + i);
-		}
-
-		explosionSequence = new AnimatedImage(explosionFrames, explosionTimer / NUMBEROFSPRITES, position, size.x, !walkLeft);
+		explosionSequence = new AnimatedImage("BombEnemy", NUMBEROFSPRITES, explosionTimer / NUMBEROFSPRITES, position, size.x, !walkLeft);
 	}
 
 	void update()
