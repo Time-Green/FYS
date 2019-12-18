@@ -25,6 +25,12 @@ class Jukebox extends Obstacle
     void update()
     {
         super.update();
+
+        // cheeky fix for audio not stopping
+        if(position.y < wallOfDeath.position.y)
+        {
+            takeDamage(1.0f);
+        }
     }
 
     void music()
