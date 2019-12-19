@@ -4,7 +4,7 @@ class EnemyGhost extends Enemy
 	{
 		super(spawnPos);
 
-		image = ResourceManager.getImage("GhostEnemy");
+		image = ResourceManager.getImage("GhostEnemy2");
 		setupLightSource(this, 125f, 1f);
 		setMaxHp(1000);
 

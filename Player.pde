@@ -16,15 +16,18 @@ class Player extends Mob
 	private AnimatedImage animatedImageFire;
 	private final int FIREFRAMES = 4;
 
+	//Camera
 	private float viewAmount = 400;
 	private float viewTarget = viewAmount;
 	private float easing = 0.025f;
 
+	private color particleColor = color(255);
+
 	//Status effects
 	public float stunTimer;
 
-	PVector spawnPosition = new PVector(1300, 509);
-	int score = 0;
+	private PVector spawnPosition = new PVector(1300, 509);
+	public int score = 0;
 
 	public Player()
 	{
@@ -73,7 +76,6 @@ class Player extends Mob
 			doPlayerMovement();
 		}
 
-		playerOnFire();
 	}
 
 	void checkHealthLow()
@@ -152,8 +154,6 @@ class Player extends Mob
 
 		handleAnimation();
 
-    	playerOnFire();
-
 		// player only, because we'll never bother adding a holding sprite for every mob 
 		for (Item item : inventory)
 		{
@@ -163,6 +163,15 @@ class Player extends Mob
 
 	private void handleAnimation()
 	{
+		if(isOnFire == true)
+		{
+			tint(255, 200);
+			animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
+			animatedImageFire.draw();
+
+			AudioManager.playSoundEffect("FireSound");
+		}
+
 		// Am I stunned?
 		if (stunTimer > 0f)
 		{
@@ -175,6 +184,10 @@ class Player extends Mob
 			{
 				walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
 				walkCycle.draw();
+
+				//create particle system
+				PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(position, 1, 2, particleColor);
+				load(particleSystem);
 			}
 			else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) //Jumping
 			{
@@ -196,19 +209,6 @@ class Player extends Mob
 				animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageIdle.draw();
 			}
-		}
-	}
-
-   void playerOnFire()
-   {
-		tint(255, 200);
-
-		if(isOnFire == true)
-		{
-			animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
-			animatedImageFire.draw();
-
-			AudioManager.playSoundEffect("FireSound");
 		}
 	}
 
@@ -282,19 +282,6 @@ class Player extends Mob
 		{ 
 			useInventory();
 			InputHelper.onKeyReleased(Globals.INVENTORYKEY);
-		}
-		
-		//for testing
-		if (InputHelper.isKeyDown('g'))
-		{
-			load(new Dynamite(), new PVector(position.x + 100, position.y));
-			InputHelper.onKeyReleased('g');
-		}
-
-		if (InputHelper.isKeyDown('h'))
-		{
-			load(new Spike(), new PVector(position.x + 100, position.y));
-			InputHelper.onKeyReleased('h');
 		}
 
 		if (InputHelper.isKeyDown(Globals.ITEMKEY))

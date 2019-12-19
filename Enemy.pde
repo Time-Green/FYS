@@ -1,6 +1,11 @@
 class Enemy extends Mob
 {
-	protected float playerDamage = 10;
+	//Damage
+	protected float playerDamage = 10f;
+
+	//Digging
+	protected float digTimer = timeInSeconds(5f);
+	protected float timeLeftToDig;
 
 	public Enemy(PVector spawnPos)
 	{
@@ -11,9 +16,6 @@ class Enemy extends Mob
 		this.position.set(spawnPos);
 		this.velocity.set(-speed, 0);
 
-		//set dragfactors to 1 so we dont slow down by drag
-		this.groundedDragFactor = 1f;
-		this.aerialDragFactor = 1f;
 	}
 
 	void specialAdd()
@@ -39,26 +41,31 @@ class Enemy extends Mob
 
 		handleCollision();
 
+		movement();
+
+		//Dying
+		if (currentHealth <= 0)
+		{
+			delete(this);
+		}
+			
+	}
+
+	protected void movement() {
 		//Can you please stop removing this bool from this script please?
 		if (this.walkLeft == true)
 		{
 			this.velocity.set(-speed, 0);
-			//Flip the image if we are on the ground
 
-			if (this.isGrounded)
-			{
-				this.flipSpriteHorizontal = false;
-			}
+			//Flip the image
+			this.flipSpriteHorizontal = false;
 		}
 		else
 		{
 			this.velocity.set(speed, 0);
-			//Flip the image if we are on the ground
 
-			if (this.isGrounded)
-			{
-				this.flipSpriteHorizontal = true;
-			}
+			//Flip the image
+			this.flipSpriteHorizontal = true;
 		}
 
 		//Stop the enemies from walking outside the screen
@@ -72,12 +79,28 @@ class Enemy extends Mob
 			walkLeft = true;
 		}
 
-		//Dying
-		if (currentHealth <= 0)
+		if (timesCollided >= MAXCOLLISIONS) 
 		{
-			delete(this);
+			timeLeftToDig = digTimer;
+			if (timeLeftToDig > 0) 
+			{
+				timeLeftToDig--;
+				isMiningDown = true;
+				isMiningUp = true;
+				isMiningLeft = true;
+				isMiningRight = true;
+			}
+			else 
+			{
+				isMiningDown = false;
+				isMiningUp = false;
+				isMiningLeft = false;
+				isMiningRight = false;
+				timesCollided = 0;				
+			}
 		}
 	}
+	
 
 	protected void handleCollision()
 	{

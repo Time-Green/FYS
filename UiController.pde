@@ -69,8 +69,6 @@ public class UIController
 
 	void draw()
 	{
-		handleScore();
-
 		//draw hud at center position
 		rectMode(CENTER);
 		textAlign(CENTER, CENTER);
@@ -202,7 +200,7 @@ public class UIController
 		//sub text
 		textFont(instructionFont);
 		textSize(instructionFontSize);
-		text("Score: " + scoreDisplay + "\nDepth: " + depthDisplay + "m", width / 2, height / 2 + instructionFontSize);
+		text("Score: " + player.score + "\nDepth: " + player.getDepth() + "m", width / 2, height / 2 + instructionFontSize);
 
 		if(isUploadingRunResults)
 		{
@@ -273,12 +271,12 @@ public class UIController
 		textAlign(LEFT);
 		fill(255);
 		textSize(hudFontSize);
-		text("Score: " + scoreDisplay, 10, hudTextStartX);
+		text("Score: " + player.score, 10, hudTextStartX);
 
 		textAlign(LEFT);
 		fill(255);
 		textSize(hudFontSize);
-		text("Depth: " + (max(0, player.getDepth() - Globals.OVERWORLD_HEIGHT)) + "m", 10, hudTextStartX + hudFontSize + 10);
+		text("Depth: " + player.getDepth() + "m", 10, hudTextStartX + hudFontSize + 10);
 
 		if(achievementDisplayTimer > 0)
 		{
@@ -370,40 +368,40 @@ public class UIController
 		ui.drawWarningOverlay = false;
 	}
 
-	private void handleScore()
-	{
-		if(scoreDisplay < player.score)
-		{
-			int scoreToAdd = round((player.score - scoreDisplay) / 15);
+	// private void handleScore()
+	// {
+	// 	if(scoreDisplay < player.score)
+	// 	{
+	// 		int scoreToAdd = round((player.score - scoreDisplay) / 15);
 
-			if(scoreToAdd == 0)
-			{
-				scoreToAdd++;
-			}
+	// 		if(scoreToAdd == 0)
+	// 		{
+	// 			scoreToAdd++;
+	// 		}
 
-			scoreDisplay += scoreToAdd;
+	// 		scoreDisplay += scoreToAdd;
 
-			if(scoreDisplay > player.score)
-			{
-				scoreDisplay = player.score;
-			}
-		}
+	// 		if(scoreDisplay > player.score)
+	// 		{
+	// 			scoreDisplay = player.score;
+	// 		}
+	// 	}
 
-		if(depthDisplay < player.getDepth() - Globals.OVERWORLD_HEIGHT)
-		{
-			int depthToAdd = round((player.getDepth() - Globals.OVERWORLD_HEIGHT - depthDisplay) / 15);
+	// 	if(depthDisplay < player.getDepth() - Globals.OVERWORLD_HEIGHT)
+	// 	{
+	// 		int depthToAdd = round((player.getDepth() - Globals.OVERWORLD_HEIGHT - depthDisplay) / 15);
 
-			if(depthToAdd == 0)
-			{
-				depthToAdd++;
-			}
+	// 		if(depthToAdd == 0)
+	// 		{
+	// 			depthToAdd++;
+	// 		}
 
-			depthDisplay += depthToAdd;
+	// 		depthDisplay += depthToAdd;
 
-			if(depthDisplay > player.getDepth() - Globals.OVERWORLD_HEIGHT)
-			{
-				depthDisplay = player.getDepth() - Globals.OVERWORLD_HEIGHT;
-			}
-		}
-	}
+	// 		if(depthDisplay > player.getDepth() - Globals.OVERWORLD_HEIGHT)
+	// 		{
+	// 			depthDisplay = player.getDepth() - Globals.OVERWORLD_HEIGHT;
+	// 		}
+	// 	}
+	// }
 }

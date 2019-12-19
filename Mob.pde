@@ -10,21 +10,21 @@ class Mob extends Movable
 	protected boolean canSwim = false; 
 
 	//Taking damage
-	final float HURTCOOLDOWN = timeInSeconds(1);
-	float timeSinceLastHurt = 0f; 
-	boolean isHurt;
+	protected final float HURTCOOLDOWN = timeInSeconds(1f);
+	protected float timeSinceLastHurt = 0f; 
+	protected boolean isHurt;
 
 	//Mining
-	float miningCooldown = timeInSeconds(.1f); //cooldown in millis
-	float lastMine;
-	float baseDamage = 1;
+	protected float miningCooldown = timeInSeconds(.1f); //cooldown in millis
+	protected float lastMine;
+	protected float baseDamage = 1;
 
 	//Inventory
-	ArrayList<Item> inventory = new ArrayList<Item>();
-	int selectedSlot = 1; //the selected slot. we'll always use this one if we can
-	int maxInventory = 3;
-	int lastUse;
-	int useCooldown = 100;
+	protected ArrayList<Item> inventory = new ArrayList<Item>();
+	protected int selectedSlot = 1; //the selected slot. we'll always use this one if we can
+	protected int maxInventory = 3;
+	protected int lastUse;
+	protected int useCooldown = 100;
 
 	//regen and fire
 	public float regen = 0.05f;
