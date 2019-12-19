@@ -1,8 +1,10 @@
 class TileDecal extends Movable
 { //those little spikes on tiless
 
-    TileDecal(int dir, String decalType){
-        switch(dir){
+    TileDecal(int dir, String decalType)
+    {
+        switch(dir)
+        {
             case UP : 
                 decalType += "_u";
                 break;

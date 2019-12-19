@@ -1,40 +1,54 @@
 class Jukebox extends Obstacle
 {
     int musicNotes = 4;
-    int travelDistance = 200;
     boolean destroyed = false;
-    int numbers = 3;
+    int numbers = 4;
+    float particleVelocity = 1;
+    int particleDelay = 30;
+    EmmitingParticleSystem particleSystem;
 
-    Jukebox()
+    Jukebox(PVector spawnPos)
     {
+        position.set(spawnPos);
+
         image = ResourceManager.getImage("Jukebox");
+
+        anchored = true;
+        collisionEnabled = false;
+
+        particleSystem = new EmmitingParticleSystem(new PVector(position.x + 10, position.y + 5), particleVelocity, particleDelay, true);
+        load(particleSystem);
+
+        music();
     }
 
     void update()
     {
         super.update();
 
-        spreadNotes();
-        music();
-    }
-
-    void spreadNotes()
-    {
-        //hihi super secret easter egg, groetjes Jordy :)
+        // cheeky fix for audio not stopping
+        if(position.y < wallOfDeath.position.y)
+        {
+            takeDamage(1.0f);
+        }
     }
 
     void music()
     {
-        for (int i = 0; i < numbers; i++)
-        {
-            AudioManager.playSoundEffect("JukeboxNum" + i);
-        }
+        AudioManager.loopMusic("JukeboxNum" + floor(random(numbers)) + "Music");
     }
 
+    //we need to delete the jukebox and stop all numbers from playing
     void takeDamage(float damageTaken)
     {
         super.takeDamage(damageTaken);
 
+        for(int i = 0; i < numbers; i++) 
+        {
+            AudioManager.stopMusic("JukeboxNum" + i + "Music");
+        }
+        
+        delete(particleSystem);
         delete(this);
     }
 }

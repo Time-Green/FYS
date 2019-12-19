@@ -1,31 +1,21 @@
 public class ImageParticle extends BaseParticle
 {
-	float sizeDegrade;
-    
-
 	public ImageParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc)
 	{
-		super(parentParticleSystem, spawnLocation, spawnAcc);
-		sizeDegrade = random(0.5, 1);
+        super(parentParticleSystem, spawnLocation, spawnAcc);
 
-        maxLifeTime = 5000;
-        minSize = 15;
+		image = ResourceManager.getImage("Note" + floor(random(4)));
+		gravityForce = 0;
+        maxLifeTime = 2000;
+		minSize = 15;
         maxSize = 20;
+
+		size = random(minSize, maxSize);
+        //maxLifeTime = 1000;
 	}
 
-	void update()
+	void draw()
 	{
-		super.update();
-
-		updateSize();
-	}
-
-	private void updateSize()
-	{
-		size -= sizeDegrade;
-
-		if (size <= 0) {
-			cleanup();
-		}
+		image(image, position.x, position.y, size, size);
 	}
 }

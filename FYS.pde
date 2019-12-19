@@ -12,6 +12,8 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
 //database variables
+LoginScreen loginScreen;
+boolean userInLoginScreen;
 AchievementHelper achievementHelper = new AchievementHelper(); 
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
@@ -47,17 +49,35 @@ void setup()
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
 
-  databaseManager.beginLogin();
+	checkUser();
 
-  
-  AudioManager.setup(this);
-
+  	AudioManager.setup(this);
+	CameraShaker.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.prepareResourceLoading();
-
-	CameraShaker.setup(this);
-
 	ResourceManager.loadAll();
+}
+
+void checkUser()
+{
+	String[] userName = loadStrings("DbUser.txt");
+
+	if(userName.length == 1 && !userName[0].equals(""))
+	{
+		databaseManager.beginLogin(userName[0]);
+	}
+	else if(userName.length == 1 && !userName[0].equals(""))
+	{
+		// if no name was filled in, show login screen
+		loginScreen = new LoginScreen();
+		userInLoginScreen = true;
+	}
+	else
+	{
+		// should not happan...
+		println("WARNING DbUser.txt not setup correctly, logging in using username in first line");
+		databaseManager.beginLogin(userName[0]);
+	}
 }
 
 void login() 
@@ -378,8 +398,8 @@ void endRun()
 	isUploadingRunResults = true;
 	Globals.gamePaused = true;
 	Globals.currentGameState = Globals.GameState.GameOver;
-
-	ui.drawWarningOverlay = false;
+	
+	ui.setupRunEnd();
 	AudioManager.stopMusic("BackgroundMusic");
 
 	thread("startRegisterEndThread");
@@ -433,9 +453,20 @@ void handleLoadingScreen()
 
 	textSize(15);
 
+	int xPosMultiplier = -1;
+	int yPosMultiplier = 0;
+
 	for (int i = 0; i < currentlyLoadingResources.size(); i++)
 	{
-		text(currentlyLoadingResources.get(i), 10, 40 + i * 18);
+		if(i % 33 == 0)
+		{
+			xPosMultiplier++;
+			yPosMultiplier = 0;
+		}
+
+		text(currentlyLoadingResources.get(i), 10 + (150 * xPosMultiplier), 40 + yPosMultiplier * 18);
+
+		yPosMultiplier++;
 	}
 }
 
@@ -471,10 +502,10 @@ void startRegisterEndThread()
 {
 	databaseManager.registerRunEnd();
 
-  unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
+  	unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
 
-  //update leaderboard with new data
-  leaderBoard = databaseManager.getLeaderboard(10);
+  	//update leaderboard with new data
+  	leaderBoard = databaseManager.getLeaderboard(10);
 
 	isUploadingRunResults = false;
 }
@@ -489,30 +520,32 @@ BaseObject load(BaseObject newObject)
 
 BaseObject load(BaseObject newObject, PVector setPosition)
 {
-  loadList.add(newObject);
-  newObject.position.set(setPosition);
+	loadList.add(newObject);
+	newObject.position.set(setPosition);
 
-  return newObject;
+	return newObject;
 }
 
 // load it RIGHT NOW. Only use in specially processed objects, like world
 BaseObject load(BaseObject newObject, boolean priority)
 {
-  if (priority)
-  {
-    newObject.specialAdd();
-  }
-  else
-  {
-    load(newObject);
-  }
+	if (priority)
+	{
+		newObject.specialAdd();
+	}
+	else
+	{
+		load(newObject);
+	}
 
-  return newObject;
+	return newObject;
 }
 
-void delete(BaseObject deletingObject) { //handles removal, call delete(object) to delete that object from the world
-  destroyList.add(deletingObject); //queue for deletion
-  deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
+// handles removal, call delete(object) to delete that object from the world
+void delete(BaseObject deletingObject)
+{
+	destroyList.add(deletingObject); //queue for deletion
+  	deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
 }
 
 // handles reload, call delete(object) to delete that object from the world
@@ -546,6 +579,18 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
 	}
 
 	return objectsInRadius;
+}
+
+// seconds to vsync framerate
+int timeInSeconds(int seconds)
+{
+	return seconds *= 60;
+}
+
+// seconds to vsync framerate
+float timeInSeconds(float seconds)
+{
+	return seconds *= 60;
 }
 
 void keyPressed()

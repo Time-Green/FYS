@@ -34,15 +34,8 @@ public class Bird extends Mob
 		//allow bird to fly of the screen
 		worldBorderCheck = false;
 
-		PImage[] frames = new PImage[4];
-
-		for (int i = 0; i < frames.length; i++)
-		{
-			frames[i] = ResourceManager.getImage("BirdFlying" + i);
-		}
-
 		//animation speed based on x velocity
-		animatedImage = new AnimatedImage(frames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		animatedImage = new AnimatedImage("BirdFlying", 4, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
 	}
 
 	void draw()

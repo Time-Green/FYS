@@ -73,9 +73,12 @@ class BaseObject
 		return;
 	}
 
-  void onDeleteQueued(){ //event for when we were QUEUED to be deleted. If our deletion meant deletion of others, it would cause
-                         //a concurrentmodificationexception, so we need to do it instantly
-  }
+	//event for when we were QUEUED to be deleted. If our deletion meant deletion of others, it would cause
+	//a concurrentmodificationexception, so we need to do it instantly
+	void onDeleteQueued()
+	{
+
+	}
 
 	// add to certain lists
 	void specialAdd()
@@ -117,22 +120,6 @@ class BaseObject
 
 	void collidedWith(BaseObject object)
 	{
-
-	}
-
-	protected int timeInSeconds(int seconds)
-	{
-		//* 60 milli seconds, 60 milliseconds is 1 second
-		seconds *= 60;
-
-		return seconds;
-	}
-
-	protected float timeInSeconds(float seconds)
-	{
-		//* 60 milli seconds, 60 milliseconds is 1 second
-		seconds *= 60;
-
-		return seconds;
+		
 	}
 }

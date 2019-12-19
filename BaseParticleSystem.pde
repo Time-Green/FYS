@@ -3,6 +3,8 @@ public class BaseParticleSystem extends BaseObject
 	protected int particleAmount;
 	protected int currentParticleAmount;
 
+	private boolean deleteOnZeroParticles = true;
+
 	public BaseParticleSystem(PVector spawnPos, int amount)
 	{
 		super();
@@ -12,11 +14,19 @@ public class BaseParticleSystem extends BaseObject
 		currentParticleAmount = amount;
 	}
 
+	public BaseParticleSystem(PVector spawnPos)
+	{
+		super();
+
+		position.set(spawnPos);
+		deleteOnZeroParticles = false;
+	}
+
 	void update()
 	{
 		super.update();
 
-		if (currentParticleAmount <= 0)
+		if (deleteOnZeroParticles && currentParticleAmount <= 0)
 		{
 			delete(this);
 		}
