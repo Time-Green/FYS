@@ -239,30 +239,54 @@ class Tile extends BaseObject {
     {
       return; //again we dont need airdecals or decals for those who dont want it
     }
+    //cardinals
+    Tile tileEast = world.getTile(position.x + Globals.TILE_SIZE, position.y);
+    Tile tileWest = world.getTile(position.x - Globals.TILE_SIZE, position.y);
+    Tile tileNorth = world.getTile(position.x, position.y - Globals.TILE_SIZE);
+    Tile tileSouth = world.getTile(position.x, position.y + Globals.TILE_SIZE);
 
-    Tile tileRight = world.getTile(position.x + Globals.TILE_SIZE, position.y);
-    Tile tileLeft = world.getTile(position.x - Globals.TILE_SIZE, position.y);
-    Tile tileUp = world.getTile(position.x, position.y - Globals.TILE_SIZE);
-    Tile tileDown = world.getTile(position.x, position.y + Globals.TILE_SIZE);
+    //diagonals
+    Tile tileNorthEast = world.getTile(position.x + Globals.TILE_SIZE, position.y - Globals.TILE_SIZE);
+    Tile tileNorthWest = world.getTile(position.x - Globals.TILE_SIZE, position.y - Globals.TILE_SIZE);
+    Tile tileSouthEast = world.getTile(position.x + Globals.TILE_SIZE, position.y + Globals.TILE_SIZE);
+    Tile tileSouthWest = world.getTile(position.x - Globals.TILE_SIZE, position.y + Globals.TILE_SIZE);
 
     decals = new boolean[8];
 
-    if(tileRight != null && !tileRight.density)
+    if(tileEast != null && !tileEast.density)
     {
       decals[EAST] = true;
     }
-    if(tileLeft != null && !tileLeft.density)
+    if(tileWest != null && !tileWest.density)
     {
       decals[WEST] = true;    
     }
-    if(tileUp != null && !tileUp.density)
+    if(tileNorth != null && !tileNorth.density)
     {
       decals[NORTH] = true;
     }
-    if(tileDown != null && !tileDown.density)
+    if(tileSouth != null && !tileSouth.density)
     {
       decals[SOUTH] = true;
     }
+
+    if(tileNorthWest != null && !tileNorthWest.density)
+    {
+      decals[NORTHWEST] = true;
+    }
+    if(tileNorthEast != null && !tileNorthEast.density)
+    {
+      decals[NORTHEAST] = true;
+    }
+    if(tileSouthWest != null && !tileSouthWest.density)
+    {
+      decals[SOUTHWEST] = true;
+    }
+    if(tileSouthEast != null && !tileSouthEast.density)
+    {
+      decals[SOUTHEAST] = true;
+    }
+
   }
 
   void makeNeighboursAesthetic()
@@ -303,6 +327,19 @@ class Tile extends BaseObject {
     }
     if(decals[EAST]){
       image(ResourceManager.getImage(decalType + "_e"), position.x  + Globals.TILE_SIZE, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+    }
+
+    if(decals[NORTHEAST]){
+      image(ResourceManager.getImage(decalType + "_ne"), position.x + Globals.TILE_SIZE, position.y - Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+    }
+    if(decals[SOUTHEAST]){
+      image(ResourceManager.getImage(decalType + "_se"), position.x + Globals.TILE_SIZE, position.y + Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+    }
+    if(decals[NORTHWEST]){
+      image(ResourceManager.getImage(decalType + "_nw"), position.x  - Globals.TILE_SIZE, position.y - Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+    }
+    if(decals[SOUTHEAST]){
+      image(ResourceManager.getImage(decalType + "_se"), position.x  + Globals.TILE_SIZE, position.y + Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
     }
   }
 }
