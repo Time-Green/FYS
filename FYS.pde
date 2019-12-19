@@ -640,44 +640,20 @@ void keyPressed()
 		load(new EnemyGhost(new PVector(player.position.x + 200,player.position.y)));
 	}
 
-	// if (key == 'I' || key == 'i')
-	// {
-	// 	load(new Icicle(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
+	if (key == 'I' || key == 'i')
+	{
+		load(new Icicle(), new PVector(player.position.x + 200, player.position.y - 200));
+	}
 
-	// if (key == 'G' || key == 'g')
-	// {
-	// 	load(new Dynamite(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
+	if (key == 'G' || key == 'g')
+	{
+		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y - 200));
+	}
 
-	// if (key == 'H' || key == 'h')
-	// {
-	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
-
-		if (key == 'I' || key == 'i')
-		{ 
-			for(BaseObject object : drawBackgroundList){
-				println(object);
-			}
-		}
-		if (key == 'O' || key == 'o')
-		{ 
-			for(BaseObject object : drawMiddlegroundList){
-				println(object);
-			}
-		}
-		if (key == 'P' || key == 'p')
-		{ 
-			for(BaseObject object : drawForegroundList){
-				println(object);
-			}
-		}
-		if (key == 'L' || key == 'l')
-		{ 
-			drawLayer = FRONT;
-			reload(this);
-		}
+	if (key == 'H' || key == 'h')
+	{
+		load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
+	}
 }
 
 void keyReleased()
