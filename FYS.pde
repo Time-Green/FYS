@@ -30,6 +30,7 @@ ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
+ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
@@ -114,6 +115,7 @@ void login()
   loginStatus = "Getting leaderboard";
   leaderBoard = databaseManager.getLeaderboard(10);
   loginStatus = "";
+  vars = databaseManager.getAllVars();
 }
 
 private void generateLeaderboardGraphics()

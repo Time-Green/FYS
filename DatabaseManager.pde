@@ -533,4 +533,20 @@ public class DatabaseManager
 			return 0;
 		}
 	}
+
+	public ArrayList<Integer> getAllVars()
+	{
+
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables");
+		//ArrayList<DbUser> returnList = new ArrayList<DbUser>();
+
+		for (int i = 0; i < result.size(); i++) {
+			println(result.getJSONObject(i));
+			//returnList.add(buildUser(result.getJSONObject(i)));
+		}
+
+		return null;
+	}
+
+	// public 
 }
