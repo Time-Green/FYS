@@ -18,7 +18,6 @@ class Movable extends BaseObject
 	protected boolean isGrounded;
 	protected boolean isMiningDown, isMiningUp, isMiningLeft, isMiningRight;
 	protected boolean collisionEnabled = true;
-	protected boolean walkLeft;
 	protected boolean worldBorderCheck = true;
 	protected boolean flipSpriteHorizontal;
 	protected boolean flipSpriteVertical;
@@ -29,6 +28,11 @@ class Movable extends BaseObject
 	protected int miningcolor = #DC143C;
 	protected PImage image;
 	protected Tile standingOn;
+
+	//Enemies
+	protected boolean walkLeft;
+	protected int timesCollided;
+	protected final int MAXCOLLISIONS = 5;
 
 	Movable()
 	{
@@ -83,9 +87,8 @@ class Movable extends BaseObject
 				if (isMiningUp)
 				{
 					attemptMine(object);
-				}
-			} 
-
+				} 
+			}
 			velocity.y = max(velocity.y, 0);
 		}
 
@@ -124,7 +127,10 @@ class Movable extends BaseObject
 			// left
 			if (colliders.size() != 0)
 			{
+
+				//Enemy collision
 				walkLeft = !walkLeft;
+				timesCollided++;
 
 				for (BaseObject object : colliders)
 				{
@@ -137,8 +143,8 @@ class Movable extends BaseObject
 				}
 
 				velocity.x = 0;
+				}
 			}
-		}
 		else if (velocity.x > 0)
 		{
 			colliders = checkCollision(world, max(velocity.x, 0), 0);
@@ -146,7 +152,9 @@ class Movable extends BaseObject
 			// right
 			if (colliders.size() != 0)
 			{
+				//Enemy collision
 				walkLeft =!walkLeft;
+				timesCollided++;
 
 				for (BaseObject object : colliders)
 				{
@@ -159,9 +167,9 @@ class Movable extends BaseObject
 				}
 
 				velocity.x = 0;
+				}
 			}
 		}
-	}
 
 	void draw()
 	{

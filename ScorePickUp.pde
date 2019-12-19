@@ -16,10 +16,13 @@ public class ScorePickUp extends PickUp
 		this.image = image;
 	}
 
+	//This pickup is collected by the player
 	void pickedUp(Mob mob)
 	{
 		player.addScore(score);
 		load(new PickupText(score, position));
+		//TODO: find and add sound effect, do not remove comment yet
+		// AudioManager.playSoundEffect(pickupSound, position);
 
 		super.pickedUp(mob);
 	}

@@ -598,11 +598,25 @@ void keyPressed()
 	InputHelper.onKeyPressed(keyCode);
 	InputHelper.onKeyPressed(key);
 
-	// TEMPORARY (duh)
+	// Test spawns
 	if(key == 'E' || key == 'e')
 	{
-		load(new EnemyShocker(new PVector(1000, 500)));
-		// load(new Explosion(new PVector(1000, 500),1,5,false));
+		load(new EnemyGhost(new PVector(player.position.x + 200,player.position.y)));
+	}
+
+	if (key == 'I' || key == 'i')
+	{
+		load(new Icicle(), new PVector(player.position.x + 200, player.position.y - 200));
+	}
+
+	if (key == 'G' || key == 'g')
+	{
+		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y - 200));
+	}
+
+	if (key == 'H' || key == 'h')
+	{
+		load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
 	}
 }
 
