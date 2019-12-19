@@ -24,7 +24,8 @@ public class ExplosionParticle extends BaseParticle
 	{
 		size -= sizeDegrade;
 
-		if (size <= 0) {
+		if (size <= 0)
+		{
 			cleanup();
 		}
 	}

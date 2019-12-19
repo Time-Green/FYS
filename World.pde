@@ -33,6 +33,7 @@ public class World
 		spawnBirds();
 		spawnNpcs();
 		spawnStarterChest();
+		spawnJukebox();
 	}
 
 	public void update()
@@ -43,6 +44,12 @@ public class World
 	public void draw()
 	{
 		drawBackgoundImage();
+	}
+
+	public void spawnJukebox()
+	{
+		Jukebox jukebox = new Jukebox(new PVector(1250, 510));
+		load(jukebox);
 	}
 
 	void drawBackgoundImage()
@@ -519,7 +526,7 @@ public class World
 			break;
 
 			case "Chest" :
-				load(new Chest(0), spawnWorldPos);
+				load(new Chest(70), spawnWorldPos);
 			break;
 
 			case "Button" :

@@ -3,7 +3,6 @@ class Movable extends BaseObject
 	//Vectors
 	protected PVector velocity = new PVector();
 	protected PVector acceleration = new PVector();
-	protected PVector maxVelocity = new PVector(40, 40);
 
 	//Movement
 	protected float speed = 1f;
@@ -221,16 +220,6 @@ class Movable extends BaseObject
 		velocity.limit(20);
 
 		acceleration.mult(0);
-
-		if (velocity.x > maxVelocity.x)
-		{
-			velocity.x = maxVelocity.x;
-		}
-
-		if (velocity.y > maxVelocity.y)
-		{
-			velocity.y = maxVelocity.y;
-		}
 
 		if (isGrounded())
 		{

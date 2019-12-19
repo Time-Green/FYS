@@ -4,7 +4,7 @@ public class BaseParticle extends Movable
 	PVector spawnAcceleration;
 	float size, spawnTime;
 
-	float maxLifeTime = 2000; //max 2000ms life time
+	float maxLifeTime = 2000; //max 2 seconds life time
 
 	float minSize = 15;
 	float maxSize = 30;
@@ -61,6 +61,6 @@ public class BaseParticle extends Movable
 
 	void takeDamage(float damageTaken)
 	{
-		
+		// don't take any damage
 	}
 }

@@ -23,4 +23,11 @@ class EnemyGhost extends Enemy
 		gravityForce = 0;
 		canSwim = false;
 	}
+
+	void update()
+	{
+		super.update();
+
+		flipSpriteHorizontal = velocity.x > 0;
+	}
 }

@@ -35,85 +35,60 @@ class Player extends Mob
 		canRegen = true;
 		jumpForce = 21f;
 
-		PImage[] walkFrames = new PImage[WALKFRAMES];
-		PImage[] idleFrames = new PImage[IDLEFRAMES];
-		PImage[] airFrames = new PImage[AIRFRAMES];
-		PImage[] mineFrames = new PImage[MINEFRAMES];
-		PImage[] shockFrames = new PImage[SHOCKFRAMES];
-		PImage[] fallFrames = new PImage[FALLFRAMES];
-    	PImage[] fireFrames = new PImage[FIREFRAMES];
+		walkCycle = new AnimatedImage("PlayerWalk", WALKFRAMES, 8, position, size.x, flipSpriteHorizontal);
+		animatedImageIdle = new AnimatedImage("PlayerIdle", IDLEFRAMES, 60, position, size.x, flipSpriteHorizontal);
+		animatedImageAir = new AnimatedImage("PlayerAir", AIRFRAMES, 10, position, size.x, flipSpriteHorizontal);
+		shockedCycle = new AnimatedImage("PlayerShock", SHOCKFRAMES, 10, position, size.x, flipSpriteHorizontal);
+		animatedImageMine = new AnimatedImage("PlayerMine", MINEFRAMES, 5, position, size.x, flipSpriteHorizontal);
+    	animatedImageFall = new AnimatedImage("PlayerFall", FALLFRAMES, 20, position, size.x, flipSpriteHorizontal);
+    	animatedImageFire = new AnimatedImage("FireP", FIREFRAMES, 10, position, size.x, flipSpriteHorizontal);
 
-		for (int i = 0; i < WALKFRAMES; i++)
-			walkFrames[i] = ResourceManager.getImage("PlayerWalk" + i);
+		setupLightSource(this, viewAmount, 1f);
 
-		walkCycle = new AnimatedImage(walkFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		applyRelicBoost();
+	}
 
-		for (int i = 0; i < IDLEFRAMES; i++)
-			idleFrames[i] = ResourceManager.getImage("PlayerIdle" + i); 
+	void update()
+	{
+		if (Globals.gamePaused)
+		{  
+			return;
+		}
 
-		animatedImageIdle = new AnimatedImage(idleFrames, 60 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		super.update();
 
-		for (int i = 0; i < AIRFRAMES; i++)
-			airFrames[i] = ResourceManager.getImage("PlayerAir" + i);
+		if(player.getDepth() - Globals.OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(Globals.LONEDIGGERACHIEVEMENT))
+		{
+			achievementHelper.unlock(Globals.LONEDIGGERACHIEVEMENT); 
+		}
 
-		animatedImageAir = new AnimatedImage(airFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		setVisibilityBasedOnCurrentBiome();
 
-    	for (int i = 0; i < SHOCKFRAMES; i++)
-			shockFrames[i] = ResourceManager.getImage("PlayerShock" + i);
+		checkHealthLow();
 
-		shockedCycle = new AnimatedImage(shockFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		statusEffects();
 
-		for (int i = 0; i < MINEFRAMES; i++) 
-			mineFrames[i] = ResourceManager.getImage("PlayerMine" + i);
-		animatedImageMine = new AnimatedImage(mineFrames, 5 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		if (stunTimer <= 0)
+		{
+			doPlayerMovement();
+		}
 
-		for (int i = 0; i < FALLFRAMES; i++) 
-			fallFrames[i] = ResourceManager.getImage("PlayerFall" + i);
-    	animatedImageFall = new AnimatedImage(fallFrames, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+		playerOnFire();
+	}
 
-     	for (int i = 0; i < FIREFRAMES; i++)
-      		fireFrames[i] = ResourceManager.getImage("FireP" + i); 
-    	animatedImageFire = new AnimatedImage(fireFrames, 10 - abs(velocity.x), position, size.x, flipSpriteHorizontal);
+	void checkHealthLow()
+	{
+		// if lower than 20% health, show low health overlay
+		if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f)
+		{
+			ui.drawWarningOverlay = true;
 
-    setupLightSource(this, viewAmount, 1f);
-
-    applyRelicBoost();
-  }
-
-  void update() {
-
-    if (Globals.gamePaused) {  
-      return;
-    }
-
-    super.update();
-
-    if(player.getDepth() - Globals.OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(1))
-    {
-      achievementHelper.unlock(1); 
-    }
-
-    setVisibilityBasedOnCurrentBiome();
-
-    checkHealthLow();
-
-	statusEffects();
-
-    if (stunTimer <= 0) {
-      doPlayerMovement();
-    }
-
-    playerOnFire();
-  }
-
-  void checkHealthLow() {
-    if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f) { // if lower than 20% health, show low health overlay
-
-      ui.drawWarningOverlay = true;
-
-       if (frameCount % 60 == 0) AudioManager.playSoundEffect("LowHealth");
-	  }
-  }
+			if (frameCount % 60 == 0)
+			{
+				AudioManager.playSoundEffect("LowHealth");
+			}
+		}
+	}
 
 	void applyRelicBoost()
 	{
@@ -177,7 +152,7 @@ class Player extends Mob
 
 		handleAnimation();
 
-    playerOnFire();
+    	playerOnFire();
 
 		// player only, because we'll never bother adding a holding sprite for every mob 
 		for (Item item : inventory)
@@ -224,15 +199,18 @@ class Player extends Mob
 		}
 	}
 
-   void playerOnFire() {
-    tint(255, 200);
-    if(isOnFire == true) {
-      animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
-        animatedImageFire.draw();
+   void playerOnFire()
+   {
+		tint(255, 200);
 
-        AudioManager.playSoundEffect("FireSound");
-    }
-  }
+		if(isOnFire == true)
+		{
+			animatedImageFire.flipSpriteHorizontal = flipSpriteHorizontal;
+			animatedImageFire.draw();
+
+			AudioManager.playSoundEffect("FireSound");
+		}
+	}
 
 	void doPlayerMovement()
 	{

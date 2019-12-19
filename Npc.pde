@@ -39,9 +39,6 @@ public class Npc extends Mob
 	private final float MAX_X = 1650;
 	private boolean isWalking;
 
-	PImage[] walkFrames = new PImage[WALKFRAMES];
-	PImage[] idleFrames = new PImage[IDLEFRAMES];
-
 	public Npc(World world, String name, String[] genericTexts, String[] panicTexts, String[] personalTexts)
 	{
 		this.name = name;
@@ -58,19 +55,8 @@ public class Npc extends Mob
 
 	private void loadFrames()
 	{
-		for (int i = 0; i < WALKFRAMES; i++)
-		{
-			walkFrames[i] = ResourceManager.getImage(name + "Walk" + i);
-		}
-
-		walkCycle = new AnimatedImage(walkFrames, 10, position, size.x, flipSpriteHorizontal);
-
-		for (int i = 0; i < IDLEFRAMES; i++)
-		{
-			idleFrames[i] = ResourceManager.getImage(name + "Idle" + i);
-		}
-
-		animatedImageIdle = new AnimatedImage(idleFrames, 60, position, size.x, flipSpriteHorizontal);
+		walkCycle = new AnimatedImage(name + "Walk", WALKFRAMES, 10, position, size.x, flipSpriteHorizontal);
+		animatedImageIdle = new AnimatedImage(name + "Idle", IDLEFRAMES, 60, position, size.x, flipSpriteHorizontal);
 	}
 
 	void update()
