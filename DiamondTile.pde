@@ -4,6 +4,8 @@ public class DiamondTile extends ResourceTile
 	{
 		super(x, y);
 
+		particleColor = color(#0997b0);
+
 		value = Globals.DIAMONDVALUE;
 
 		if(type == 0)

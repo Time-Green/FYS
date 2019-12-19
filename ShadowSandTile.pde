@@ -4,6 +4,8 @@ public class ShadowSandTile extends Tile
 	{
 		super(x, y);
 
+		particleColor = color(#5e360d);
+
 		healthMultiplier = 0.75f;
 		slipperiness = 0.5;
 
