@@ -675,8 +675,8 @@ void keyPressed()
 		}
 		if (key == 'L' || key == 'l')
 		{ 
-			drawLayer = FRONT;
-			reload(this);
+			player.drawLayer = FRONT;
+			reload(player);
 		}
 }
 
