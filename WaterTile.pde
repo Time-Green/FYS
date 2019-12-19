@@ -6,7 +6,6 @@ public class WaterTile extends Tile
 
 		//Act as water
 		density = false;
-		// loadInBack = false;
 
 		image = ResourceManager.getImage("WaterBlock");
 	}

@@ -1,9 +1,16 @@
-ArrayList<BaseObject> objectList = new ArrayList<BaseObject>(); //<>//
-ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the objectList,
+//List of everything we need to update
+ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
+
+ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
-//These only exists as helpers. All drawing and updating is handled from objectList
+//Lists we draw from
+ArrayList<BaseObject> drawForegroundList = new ArrayList<BaseObject>(); 
+ArrayList<BaseObject> drawMiddlegroundList = new ArrayList<BaseObject>(); 
+ArrayList<BaseObject> drawBackgroundList = new ArrayList<BaseObject>(); 
+
+//These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
 ArrayList<Mob> mobList = new ArrayList<Mob>();
@@ -39,6 +46,21 @@ boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
 
 PGraphics leaderBoardGraphics;
+
+//god i wish java had defines
+final int NORTH = 0;
+final int SOUTH = 1;
+final int EAST = 2;
+final int WEST = 3;
+final int NORTHEAST = 4;
+final int SOUTHEAST = 5;
+final int NORTHWEST = 6;
+final int SOUTHWEST = 7;
+
+//for drawlayers
+final int FRONT = 1;
+final int MIDDLE = 2;
+final int BACK = 3;
 
 void setup()
 {
@@ -181,7 +203,10 @@ void afterResouceLoadingSetup()
 void setupGame()
 {
 	player = null; //fixed world generation bug on restart
-	objectList.clear();
+	updateList.clear();
+	drawForegroundList.clear();
+	drawMiddlegroundList.clear();
+	drawBackgroundList.clear();
 	destroyList.clear();
 	loadList.clear();
 	tileList.clear();
@@ -272,15 +297,18 @@ void updateObjects()
 
 	loadList.clear();
 
-	for (BaseObject object : objectList)
+	for (BaseObject object : updateList)
 	{
 		object.update();
 	}
 
 	for (BaseObject object : reloadList)
 	{
-		tileList.remove((Tile)object);
-		tileList.add((Tile)object);
+		drawForegroundList.remove(object); //remove from all since it's inherently sane to use remove proc 
+		drawBackgroundList.remove(object);
+		drawMiddlegroundList.remove(object);
+
+		object.insertIntoLayer(object.drawLayer);
 	}
 
 	reloadList.clear();
@@ -295,7 +323,15 @@ void updateObjects()
 
 void drawObjects()
 {
-	for (BaseObject object : objectList)
+	for (BaseObject object : drawBackgroundList)
+	{
+		object.draw();
+	}
+	for (BaseObject object : drawMiddlegroundList)
+	{
+		object.draw();
+	}
+	for (BaseObject object : drawForegroundList)
 	{
 		object.draw();
 	}
@@ -565,7 +601,7 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
 {
 	ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
 
-	for (BaseObject object : objectList)
+	for (BaseObject object : updateList)
 	{
 		if (object.suspended)
 		{
@@ -625,3 +661,4 @@ void keyReleased()
 	InputHelper.onKeyReleased(keyCode);
 	InputHelper.onKeyReleased(key);
 }
+

@@ -4,6 +4,8 @@ public class GoldTile extends ResourceTile
 	{
 		super(x, y);
 
+		particleColor = color(#bdaf13);
+
 		value = Globals.GOLDVALUE;
 
 		if(type == 0)
