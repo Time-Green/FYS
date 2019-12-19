@@ -657,29 +657,35 @@ void keyPressed()
 	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
 	// }
 
-		if (key == 'I' || key == 'i')
-		{ 
-			for(BaseObject object : drawBackgroundList){
-				println(object);
-			}
+	if (key == 'I' || key == 'i')
+	{ 
+		for(BaseObject object : drawBackgroundList)
+		{
+			println(object);
 		}
-		if (key == 'O' || key == 'o')
-		{ 
-			for(BaseObject object : drawMiddlegroundList){
-				println(object);
-			}
+	}
+
+	if (key == 'O' || key == 'o')
+	{ 
+		for(BaseObject object : drawMiddlegroundList)
+		{
+			println(object);
 		}
-		if (key == 'P' || key == 'p')
-		{ 
-			for(BaseObject object : drawForegroundList){
-				println(object);
-			}
+	}
+
+	if (key == 'P' || key == 'p')
+	{ 
+		for(BaseObject object : drawForegroundList)
+		{
+			println(object);
 		}
-		if (key == 'L' || key == 'l')
-		{ 
-			player.drawLayer = FRONT;
-			reload(player);
-		}
+	}
+	
+	if (key == 'L' || key == 'l')
+	{ 
+		player.drawLayer = FRONT;
+		reload(player);
+	}
 }
 
 void keyReleased()
