@@ -150,7 +150,6 @@ class Tile extends BaseObject
 		{
 			if (this instanceof ResourceTile) 
 			{
-
 				ResourceTile thisTile = (ResourceTile) this;
 
 				thisTile.mine(playBreakSound, false);
@@ -290,7 +289,7 @@ class Tile extends BaseObject
 		for(int i = 0; i < 3; i++)
 		{
 			Tile tile = tiles[i];
-			
+
 			if(tile == null || !tile.density)
 			{
 				continue;

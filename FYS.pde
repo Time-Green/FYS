@@ -12,6 +12,8 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
 //database variables
+LoginScreen loginScreen;
+boolean userInLoginScreen;
 AchievementHelper achievementHelper = new AchievementHelper(); 
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
@@ -47,13 +49,35 @@ void setup()
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
 
-  	databaseManager.beginLogin();
+	checkUser();
 
   	AudioManager.setup(this);
+	CameraShaker.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.prepareResourceLoading();
-	CameraShaker.setup(this);
 	ResourceManager.loadAll();
+}
+
+void checkUser()
+{
+	String[] userName = loadStrings("DbUser.txt");
+
+	if(userName.length == 1 && !userName[0].equals(""))
+	{
+		databaseManager.beginLogin(userName[0]);
+	}
+	else if(userName.length == 1 && !userName[0].equals(""))
+	{
+		// if no name was filled in, show login screen
+		loginScreen = new LoginScreen();
+		userInLoginScreen = true;
+	}
+	else
+	{
+		// should not happan...
+		println("WARNING DbUser.txt not setup correctly, logging in using username in first line");
+		databaseManager.beginLogin(userName[0]);
+	}
 }
 
 void login() 
@@ -555,6 +579,18 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
 	}
 
 	return objectsInRadius;
+}
+
+// seconds to vsync framerate
+int timeInSeconds(int seconds)
+{
+	return seconds *= 60;
+}
+
+// seconds to vsync framerate
+float timeInSeconds(float seconds)
+{
+	return seconds *= 60;
 }
 
 void keyPressed()
