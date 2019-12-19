@@ -10,18 +10,21 @@ class Tile extends BaseObject {
 
   PImage image;
   PImage destroyedImage;
-  String decalType;
 
   String breakSound;
   float damageDiscolor = 50;
 
   color particleColor = color(#45403d);
 
+  //Decals - I'm so sorry, but I really don't know any other way that doesn't involve adding more objects
+  String decalType;
+  boolean[] decals = new boolean[8]; //for all cardinal and diagonal directions
+
   ArrayList<Movable> rootedIn = new ArrayList<Movable>();
 
   Tile(int x, int y) 
   {
-    loadInBack = true;
+    drawLayer = FRONT;
     movableCollision = true;
 
     position.x = x * Globals.TILE_SIZE;
@@ -53,20 +56,11 @@ class Tile extends BaseObject {
     //11 is grass layer + transition layer
     if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
     {
-      destroyed = true;
-      density = false;
-      makeNeighboursAesthetic();
+      breakTile();
 
       if(random(1) < world.currentBiome.ceilingObstacleChance)
       { //do a chance check first to save time and resources
         world.currentBiome.prepareCeilingObstacle(this, world);
-      }
-      
-
-      if (loadInBack == false) 
-      {
-        loadInBack = true;
-        reload(this);
       }
 
       //1% change to spawn torch
@@ -118,6 +112,7 @@ class Tile extends BaseObject {
 
       tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
       image(image, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      drawDecals();
       tint(255);
     } else 
     {
@@ -184,19 +179,24 @@ class Tile extends BaseObject {
 		load(particleSystem);
     }
 
-    destroyed = true;
-    density = false;
-    loadInBack = true;
-    
-    releaseRooted();
-    reload(this);
-    //makeNeighboursAesthetic();
+    breakTile();
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
     if (lightSources.contains(this)) 
     {
       lightSources.remove(this);
     }
+  }
+
+  void breakTile() //collection of what mining and generating a cave have in common so we dont copypaste it everywhere
+  {
+    destroyed = true;
+    density = false;
+    drawLayer = BACK;
+
+    releaseRooted();
+    reload(this);
+    makeNeighboursAesthetic();
   }
 
   private void playBreakSound() 
@@ -245,21 +245,23 @@ class Tile extends BaseObject {
     Tile tileUp = world.getTile(position.x, position.y - Globals.TILE_SIZE);
     Tile tileDown = world.getTile(position.x, position.y + Globals.TILE_SIZE);
 
+    decals = new boolean[8];
+
     if(tileRight != null && !tileRight.density)
     {
-      rootedIn.add((Movable) load(new TileDecal(RIGHT, decalType), tileRight.position));
+      decals[EAST] = true;
     }
     if(tileLeft != null && !tileLeft.density)
     {
-      rootedIn.add((Movable) load(new TileDecal(LEFT, decalType), tileLeft.position));
+      decals[WEST] = true;    
     }
     if(tileUp != null && !tileUp.density)
     {
-      rootedIn.add((Movable) load(new TileDecal(UP, decalType), tileUp.position));
+      decals[NORTH] = true;
     }
     if(tileDown != null && !tileDown.density)
     {
-      rootedIn.add((Movable) load(new TileDecal(DOWN, decalType), tileDown.position));
+      decals[SOUTH] = true;
     }
   }
 
@@ -286,6 +288,21 @@ class Tile extends BaseObject {
       }
 
       tile.addAesthetics();
+    }
+  }
+
+  void drawDecals(){
+    if(decals[NORTH]){
+      image(ResourceManager.getImage(decalType + "_n"), position.x, position.y - Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+    }
+    if(decals[SOUTH]){
+      image(ResourceManager.getImage(decalType + "_s"), position.x, position.y + Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+    }
+    if(decals[WEST]){
+      image(ResourceManager.getImage(decalType + "_w"), position.x  - Globals.TILE_SIZE, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+    }
+    if(decals[EAST]){
+      image(ResourceManager.getImage(decalType + "_e"), position.x  + Globals.TILE_SIZE, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
     }
   }
 }
