@@ -302,34 +302,6 @@ class Player extends Mob
 			switchInventory();
 			InputHelper.onKeyReleased(Globals.ITEMKEY);
 		}
-
-		if (InputHelper.isKeyDown('i'))
-		{ 
-			for(BaseObject object : drawBackgroundList){
-				println(object);
-			}
-			InputHelper.onKeyReleased('i');
-		}
-		if (InputHelper.isKeyDown('o'))
-		{ 
-			for(BaseObject object : drawMiddlegroundList){
-				println(object);
-			}
-			InputHelper.onKeyReleased('o');
-		}
-		if (InputHelper.isKeyDown('p'))
-		{ 
-			for(BaseObject object : drawForegroundList){
-				println(object);
-			}
-			InputHelper.onKeyReleased('p');
-		}
-		if (InputHelper.isKeyDown('l'))
-		{ 
-			drawLayer = FRONT;
-			reload(this);
-			InputHelper.onKeyReleased('l');
-		}
 	}
 
 	void addScore(int scoreToAdd)

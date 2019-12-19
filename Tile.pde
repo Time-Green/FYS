@@ -303,7 +303,7 @@ class Tile extends BaseObject {
       world.getTile(position.x, position.y - Globals.TILE_SIZE)
     };
 
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < tiles.length; i++)
     {
       Tile tile = tiles[i];
       if(tile == null || !tile.density)
