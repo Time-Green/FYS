@@ -20,6 +20,8 @@ class Player extends Mob
 	private float viewTarget = viewAmount;
 	private float easing = 0.025f;
 
+	private color particleColor = color(255);
+
 	//Status effects
 	public float stunTimer;
 
@@ -175,6 +177,10 @@ class Player extends Mob
 			{
 				walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
 				walkCycle.draw();
+
+				//create particle system
+				PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(position, 1, 2, particleColor);
+				load(particleSystem);
 			}
 			else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) //Jumping
 			{
