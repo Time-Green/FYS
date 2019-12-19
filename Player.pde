@@ -311,8 +311,30 @@ class Player extends Mob
 
 		if (InputHelper.isKeyDown('i'))
 		{ 
-			load(new Icicle(), new PVector (player.position.x + 200, player.position.y - 200));
+			for(BaseObject object : drawBackgroundList){
+				println(object);
+			}
 			InputHelper.onKeyReleased('i');
+		}
+		if (InputHelper.isKeyDown('o'))
+		{ 
+			for(BaseObject object : drawMiddlegroundList){
+				println(object);
+			}
+			InputHelper.onKeyReleased('o');
+		}
+		if (InputHelper.isKeyDown('p'))
+		{ 
+			for(BaseObject object : drawForegroundList){
+				println(object);
+			}
+			InputHelper.onKeyReleased('p');
+		}
+		if (InputHelper.isKeyDown('l'))
+		{ 
+			drawLayer = FRONT;
+			reload(this);
+			InputHelper.onKeyReleased('l');
 		}
 	}
 

@@ -297,7 +297,7 @@ public class UIController
 		textSize(20);
 
 		text(round(frameRate) + " FPS", width - 10, 140);
-		text(objectList.size() + " objects", width - 10, 120);
+		text(updateList.size() + " objects", width - 10, 120);
 		text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 100);
 		text(round(player.position.x) + " Player X Pos", width - 10, 80);
 		text(round(player.position.y) + " Player Y Pos", width - 10, 60);

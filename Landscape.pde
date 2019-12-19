@@ -3,6 +3,7 @@ public class LeafTile extends Tile
 	public LeafTile(int x, int y)
 	{
 		super(x, y);
+		drawLayer = BACK;
 
 		image = ResourceManager.getImage("Leaf");
 	}
@@ -13,6 +14,7 @@ public class WoodTile extends Tile
 	public WoodTile(int x, int y)
 	{
 		super(x, y);
+		drawLayer = BACK;
 
 		image = ResourceManager.getImage("Wood");
 		density = false; 
@@ -25,6 +27,7 @@ public class WoodBirchTile extends Tile
 	public WoodBirchTile(int x, int y)
 	{
 		super(x, y);
+		drawLayer = BACK;
 
 		image = ResourceManager.getImage("WoodBirch");
 		density = false; 
