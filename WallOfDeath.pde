@@ -183,7 +183,7 @@ class WallOfDeath extends Movable
 
 	private void cleanUpObjects()
 	{
-		for (BaseObject object : objectList)
+		for (BaseObject object : updateList)
 		{
 			//is the object above the wall of death..
 			if (object.position.y < position.y - DESTROYTILESAFTER * Globals.TILE_SIZE)

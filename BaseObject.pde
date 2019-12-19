@@ -5,7 +5,7 @@ class BaseObject
 	protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
 	protected boolean density = true;
 
-	protected boolean loadInBack = false; //true to insert at the front of draw, so player doesn't get loaded behind tiles
+	protected int drawLayer = MIDDLE; //true to insert at the front of draw, so player doesn't get loaded behind tiles
 	protected boolean movableCollision = false; //do we collide with movables themselves?
 
 	boolean suspended = false; //set to true to stop drawing and updating, practically 'suspending' it outside of the game
@@ -68,8 +68,11 @@ class BaseObject
 	// this is what you make a child proc from in-case you want to do something special on deletion
 	void destroyed()
 	{
-		objectList.remove(this);
+		updateList.remove(this);
 
+		drawForegroundList.remove(this);
+		drawMiddlegroundList.remove(this);
+		drawBackgroundList.remove(this);
 		return;
 	}
 
@@ -80,15 +83,24 @@ class BaseObject
 	// add to certain lists
 	void specialAdd()
 	{
-		if (loadInBack)
+		updateList.add(this);
+		insertIntoLayer(drawLayer);
+
+	}
+
+	void insertIntoLayer(int layer)
+	{
+		switch(drawLayer)
 		{
-			//println("adding: " + name);
-			objectList.add(0, this);
-		}
-		else
-		{
-			//println("adding: " + name);
-			objectList.add(this);
+			case FRONT:
+				drawForegroundList.add(this);
+				break;
+			case BACK:
+				drawBackgroundList.add(this);
+				break;
+			default: //automaticly includes MIDDLE
+				drawMiddlegroundList.add(this);
+				break;
 		}
 	}
 
