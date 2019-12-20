@@ -1,24 +1,24 @@
-//List of everything we need to update
+// List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
 
 ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
-//Lists we draw from
-ArrayList<BaseObject> drawForegroundList = new ArrayList<BaseObject>(); 
-ArrayList<BaseObject> drawMiddlegroundList = new ArrayList<BaseObject>(); 
-ArrayList<BaseObject> drawBackgroundList = new ArrayList<BaseObject>(); 
+// Lists we draw from
+ArrayList<BaseObject> drawForegroundList = new ArrayList<BaseObject>();
+ArrayList<BaseObject> drawMiddlegroundList = new ArrayList<BaseObject>();
+ArrayList<BaseObject> drawBackgroundList = new ArrayList<BaseObject>();
 
-//These only exists as helpers. All updating is handled from updateList
+// These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
 ArrayList<Mob> mobList = new ArrayList<Mob>();
 
-//list of all objects that emit light
+// list of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
-//database variables
+// database variables
 LoginScreen loginScreen;
 boolean userInLoginScreen;
 AchievementHelper achievementHelper = new AchievementHelper(); 
@@ -34,6 +34,7 @@ ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
+// used to run code on closing game
 DisposeHandler dh;
 
 World world;
