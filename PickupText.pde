@@ -1,8 +1,12 @@
 public class PickupText extends BaseObject
 {
 	private int score;
-	private PFont textFont;
 	private float aliveTime = timeInSeconds(3f);
+
+	//Text
+	private PFont textFont;
+	private color textColor = #ffffff;
+	private final int FONTSIZE = 20;
 
 	public PickupText(int drawScore, PVector currentPos)
 	{
@@ -15,13 +19,14 @@ public class PickupText extends BaseObject
 	void draw()
 	{
 		textAlign(CENTER);
-		textSize(20);
-		fill(#ffffff);
+		textSize(FONTSIZE);
+		fill(textColor);
 
 		//Draw the score text
 		text("+" + score, position.x, position.y);
+	}
 
-		position.y--;
+	void update() {
 		
 		//Decrease the alive counter and remove the text when it is 0
 		aliveTime--;

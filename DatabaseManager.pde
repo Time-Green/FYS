@@ -576,7 +576,7 @@ public class DatabaseManager
 	public ArrayList<Integer> getAllVars()
 	{
 
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables");
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name");
 		//ArrayList<DbUser> returnList = new ArrayList<DbUser>();
 
 		for (int i = 0; i < result.size(); i++) {
@@ -587,5 +587,14 @@ public class DatabaseManager
 		return null;
 	}
 
-	// public 
+	//Get a specific value from the database
+	public float getValue(String variableName) {
+
+		//Select the row we need
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name = " + variableName + ";");
+		//Get the float from that row and return it
+		float value = result.getJSONObject(0).getFloat("value");
+
+		return value;
+	}
 }

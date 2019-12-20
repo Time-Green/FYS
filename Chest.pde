@@ -144,7 +144,7 @@ class Chest extends Obstacle
 
 		for (Movable movable : contents)
 		{
-			println("Dropping: " + movable);
+			// println("Dropping: " + movable);
 
 			movable.position.set(new PVector(position.x, position.y - Globals.TILE_SIZE));
 			movable.suspended = false;
