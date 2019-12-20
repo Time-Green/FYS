@@ -19,8 +19,9 @@ static class Globals {
 	//Ore values (later to be set in database?, yes)
 	static final int COALVALUE = 50;
 	static final int IRONVALUE = 100;
-	static final int GREENICEVALUE = 300;
+	static final int GREENICEVALUE = 250;
 	static final int REDICEVALUE = 300;
+	static final int BLUEICEVALUE = 350;
   	static final int REDSTONEVALUE = 400;
 	static final int GOLDVALUE = 500;
 	static final int LAPISVALUE = 750;
