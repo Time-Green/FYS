@@ -253,6 +253,7 @@ void draw()
 
 	world.updateDepth();
 
+	// needs to happan here because we are inside the push and pop matrix functions
 	if (currentGameState == GameState.InGame && player.position.y < (OVERWORLD_HEIGHT + 5) * TILE_SIZE)
 	{
 		ui.drawArrows();
