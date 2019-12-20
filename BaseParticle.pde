@@ -49,8 +49,12 @@ public class BaseParticle extends Movable
 		}
 
 		fill(particleColor);
+		tint(lightningAmount);
+
 		rect(position.x - size / 2, position.y - size / 2, size, size);
+
 		fill(255);
+		tint(255);
 	}
 
 	void cleanup()

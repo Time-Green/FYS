@@ -16,6 +16,10 @@ public class ImageParticle extends BaseParticle
 
 	void draw()
 	{
+		tint(lightningAmount);
+
 		image(image, position.x, position.y, size, size);
+
+		tint(255);
 	}
 }
