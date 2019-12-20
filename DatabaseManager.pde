@@ -523,11 +523,11 @@ public class DatabaseManager
 		loginStartTime = millis();
 
 		// calls login function in FYS main file
-		thread("login");
+		thread("loginThread");
 	}
 
   	// used to log in using its own thread
-  	void login()
+  	void loginUser()
   	{
 		try
 		{

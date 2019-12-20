@@ -20,6 +20,10 @@ ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 // database variables
 LoginScreen loginScreen;
 boolean userInLoginScreen;
+boolean loadedPlayerInventory = false;
+boolean loadedAllAchievements = false;
+boolean loadedPlayerAchievements = false;
+boolean loadedLeaderboard = false;
 AchievementHelper achievementHelper = new AchievementHelper(); 
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
@@ -88,28 +92,6 @@ void checkUser()
 	}
 }
 
-void login() 
-{
-	loginStatus = "Logging in";
-	databaseManager.login();
-
-	loginStatus = "Getting player inventory";
-	totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
-
-	loginStatus = "Getting achievement data";
-	allAchievements = databaseManager.getAllAchievements();
-
-	loginStatus = "Getting player achievements";
-	unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
-
-	loginStatus = "Getting leaderboard";
-	leaderBoard = databaseManager.getLeaderboard(10);
-
-	loginStatus = "Logged in";
-
-	vars = databaseManager.getAllVars();
-}
-
 private void generateLeaderboardGraphics()
 {
 	leaderBoardGraphics = createGraphics(int(TILE_SIZE * 9), int(TILE_SIZE * 5));
@@ -163,7 +145,7 @@ private void generateLeaderboardGraphics()
   leaderBoardGraphics.endDraw();
 }
 
-// gets called when all resources are loaded
+// used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
 	AudioManager.setMaxVolume("Siren", 0.6f);
@@ -224,8 +206,10 @@ void setupGame()
 	AudioManager.loopMusic("ForestAmbianceMusic"); 
 }
 
-void prepareDrawingLayers(){
+void prepareDrawingLayers()
+{
 	drawList = new ArrayList<ArrayList>();
+
 	for(int i = 0; i < drawingLayers; i++)
 	{
 		drawList.add(new ArrayList<BaseObject>());
@@ -243,7 +227,7 @@ void draw()
 	}
 
 	//wait until all resources are loaded and we are logged in
-	if (!ResourceManager.isAllLoaded() || loginStatus != "Logged in")
+	if (!ResourceManager.isAllLoaded() || !loadedPlayerInventory || !loadedAllAchievements || !loadedPlayerAchievements || !loadedLeaderboard)
 	{
 		handleLoadingScreen();
 
@@ -508,33 +492,6 @@ private void handleDots()
 	{
 		dots = "";
 	}
-}
-
-// start a thread to load 1 resource
-void startLoaderThread(String currentResourceName, String currentResourceFileName)
-{
-	LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
-	ResourceManager.loaderThreads.add(loaderThread);
-	loaderThread.start();
-}
-
-// start a thread that registers a run start
-void startRegisterRunThread()
-{
-  	databaseManager.registerRunStart();
-}
-
-// start a thread that registers a run end
-void startRegisterEndThread()
-{
-	databaseManager.registerRunEnd();
-
-  	unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
-
-  	//update leaderboard with new data
-  	leaderBoard = databaseManager.getLeaderboard(10);
-
-	isUploadingRunResults = false;
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
