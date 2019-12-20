@@ -88,7 +88,6 @@ class BaseObject
 	{
 		updateList.add(this);
 		insertIntoLayer(drawLayer);
-
 	}
 
 	void insertIntoLayer(int layer)

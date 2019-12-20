@@ -3,7 +3,13 @@ public class AchievementHelper
     // 1 - Lone Digger (player has dug more than 100 tiles)
 
     void unlock(int id)
-    {   
+    {
+        // when we are not connected to the database, we cant unlock achievements
+        if(databaseManager.currentSessionId == -1)
+        {
+            return;
+        }
+
         if(achievementExists(id))
         {
              println("Player " + dbUser.userName + " has unlocked: "+ getAchievementData(id).name);

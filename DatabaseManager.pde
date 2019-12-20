@@ -197,6 +197,11 @@ public class DatabaseManager
 	//get all the currently available achievements
 	public ArrayList<Achievement> getAllAchievements() 
 	{
+		if (currentSessionId < 0) 
+		{
+			return new ArrayList<Achievement>();
+		}
+
 		JSONArray result = doDatabaseRequest("SELECT * FROM Achievement");
 
 		ArrayList<Achievement> returnList = new ArrayList<Achievement>(); 
@@ -214,49 +219,14 @@ public class DatabaseManager
 	{
 		JSONArray result = doDatabaseRequest("INSERT INTO UnlockedAchievement (`playerid`, `achievementid`) VALUES ('" + dbUser.id + "', '" + unlockedAchievementId + "')");
 		
-		return true; 
-	}
+		int newId = -1;
 
-	// upload gained achievements to the database
-	public boolean updatePlayerAchievements() 
-	{
-		if (currentSessionId < 0) 
+		if (result.size() == 1)
 		{
-			return false;
-		}
+			newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+		} 
 
-		ArrayList<Integer> unlockedAchievementIds = runData.unlockedAchievementIds;
-		boolean success = true;
-
-		for(int unlockedAchievementId : unlockedAchievementIds)
-		{
-			boolean result = insertNewAchievement(unlockedAchievementId);
-			
-			if(result == false)
-			{
-				success = false;
-			}
-		}
-		
-		return success;
-	}
-
-	public ArrayList<PlayerRelicInventory> getPlayerRelicInventory()
-	{
-		if (currentSessionId < 0)
-		{
-			return new ArrayList<PlayerRelicInventory>();
-		}
-
-		JSONArray result = doDatabaseRequest("SELECT * FROM Relicinventory WHERE userid = " + dbUser.id);
-		ArrayList<PlayerRelicInventory> returnList = new ArrayList<PlayerRelicInventory>();
-
-		for (int i = 0; i < result.size(); i++)
-		{
-			returnList.add(buildPlayerRelicInventory(result.getJSONObject(i)));
-		}
-
-		return returnList;
+		return newId > -1;
 	}
 
 	// get the top 'amount' leaderboard rows
@@ -314,6 +284,25 @@ public class DatabaseManager
 		}
 
 		return success == 1;
+	}
+
+	// get all relics this player has collected
+	public ArrayList<PlayerRelicInventory> getPlayerRelicInventory()
+	{
+		if (currentSessionId < 0)
+		{
+			return new ArrayList<PlayerRelicInventory>();
+		}
+
+		JSONArray result = doDatabaseRequest("SELECT * FROM Relicinventory WHERE userid = " + dbUser.id);
+		ArrayList<PlayerRelicInventory> returnList = new ArrayList<PlayerRelicInventory>();
+
+		for (int i = 0; i < result.size(); i++)
+		{
+			returnList.add(buildPlayerRelicInventory(result.getJSONObject(i)));
+		}
+
+		return returnList;
 	}
 
 	// get a user by id
@@ -377,6 +366,30 @@ public class DatabaseManager
 				{
 					success = false;
 				}
+			}
+		}
+		
+		return success;
+	}
+
+	// upload gained achievements to the database
+	public boolean updatePlayerAchievements() 
+	{
+		if (currentSessionId < 0) 
+		{
+			return false;
+		}
+
+		ArrayList<Integer> unlockedAchievementIds = runData.unlockedAchievementIds;
+		boolean success = true;
+
+		for(int unlockedAchievementId : unlockedAchievementIds)
+		{
+			boolean result = insertNewAchievement(unlockedAchievementId);
+			
+			if(result == false)
+			{
+				success = false;
 			}
 		}
 		
@@ -533,12 +546,16 @@ public class DatabaseManager
 		println("Successfully logged in as '" + dbUser.userName + "', took " + (millis() - loginStartTime) + " ms");
   	}
 
+	// when we cant log in, set the dbUser to a temporary user
 	void setTempUser()
 	{
 		dbUser = new DbUser();
 
 		dbUser.id = -1;
 		dbUser.userName = "TempUser";
+
+		// set currentSessionId to -1 to indicate this session is invalid/offline
+		currentSessionId = -1;
 	}
 
 	// get a given userid's total data. like total amount of jumps across all games

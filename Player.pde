@@ -75,7 +75,6 @@ class Player extends Mob
 		{
 			doPlayerMovement();
 		}
-
 	}
 
 	void checkHealthLow()
