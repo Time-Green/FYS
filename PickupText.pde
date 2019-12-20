@@ -5,9 +5,11 @@ public class PickupText extends BaseObject
 	private float aliveTime = timeInSeconds(3f);
 
 	public PickupText(int drawScore, PVector currentPos)
-	{        
-		this.score = drawScore;
-		this.position = currentPos;
+	{
+		drawLayer = FRONT;
+
+		score = drawScore;
+		position.set(currentPos);
 	}
 
 	void draw()
@@ -17,8 +19,9 @@ public class PickupText extends BaseObject
 		fill(#ffffff);
 
 		//Draw the score text
-		text("+"+this.score, this.position.x, this.position.y);
-		this.position.y--;
+		text("+" + score, position.x, position.y);
+
+		position.y--;
 		
 		//Decrease the alive counter and remove the text when it is 0
 		aliveTime--;

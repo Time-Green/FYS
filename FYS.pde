@@ -1,4 +1,4 @@
-//List of everything we need to update
+// List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
 
 ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
@@ -9,15 +9,15 @@ ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise w
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
 int drawingLayers = 10; //increase if you add more layers
 
-//These only exists as helpers. All updating is handled from updateList
+// These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
 ArrayList<Mob> mobList = new ArrayList<Mob>();
 
-//list of all objects that emit light
+// list of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
-//database variables
+// database variables
 LoginScreen loginScreen;
 boolean userInLoginScreen;
 AchievementHelper achievementHelper = new AchievementHelper(); 
@@ -29,9 +29,11 @@ ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
+ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
+// used to run code on closing game
 DisposeHandler dh;
 
 World world;
@@ -63,20 +65,21 @@ final int OBJECT_LAYER = 2;
 final int MOB_LAYER = 3;
 final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
+final int PRIORITY_LAYER = 6;
 
 void setup()
 {
-	this.surface.setTitle("Rocky Rain");
-
 	dh = new DisposeHandler(this);
 
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
 
+	surface.setResizable(true);
+	surface.setTitle("Rocky Rain");
+
 	checkUser();
 
   	AudioManager.setup(this);
-	CameraShaker.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.prepareResourceLoading();
 	ResourceManager.loadAll();
@@ -106,16 +109,24 @@ void checkUser()
 
 void login() 
 {
-  databaseManager.login();
-  loginStatus = "Getting player inventory";
-  totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
-  loginStatus = "Getting achievement data";
-  allAchievements = databaseManager.getAllAchievements();
-  loginStatus = "Getting player achievements";
-  unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
-  loginStatus = "Getting leaderboard";
-  leaderBoard = databaseManager.getLeaderboard(10);
-  loginStatus = "";
+	loginStatus = "Logging in";
+	databaseManager.login();
+
+	loginStatus = "Getting player inventory";
+	totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+
+	loginStatus = "Getting achievement data";
+	allAchievements = databaseManager.getAllAchievements();
+
+	loginStatus = "Getting player achievements";
+	unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
+
+	loginStatus = "Getting leaderboard";
+	leaderBoard = databaseManager.getLeaderboard(10);
+
+	loginStatus = "Logged in";
+
+	vars = databaseManager.getAllVars();
 }
 
 private void generateLeaderboardGraphics()
@@ -227,7 +238,6 @@ void setupGame()
 	wallOfDeath = new WallOfDeath();
 	load(wallOfDeath);
 
-	CameraShaker.reset();
 	camera = new Camera(player);
 
 	AudioManager.loopMusic("ForestAmbianceMusic"); 
@@ -243,8 +253,16 @@ void prepareDrawingLayers(){
 
 void draw()
 {
+	if(userInLoginScreen)
+	{
+		loginScreen.update();
+		loginScreen.draw();
+
+		return;
+	}
+
 	//wait until all resources are loaded and we are logged in
-	if (!ResourceManager.isAllLoaded() || loginStatus != "")
+	if (!ResourceManager.isAllLoaded() || loginStatus != "Logged in")
 	{
 		handleLoadingScreen();
 
@@ -260,7 +278,6 @@ void draw()
 	//push and pop are needed so the hud can be correctly drawn
 	pushMatrix();
 
-	CameraShaker.update();
 	camera.update();
 
 	world.update();
@@ -457,7 +474,7 @@ void handleLoadingScreen()
 	}
 
 	//login
-	if(loginStatus != "")
+	if(loginStatus != "Logged in")
 	{
 		//handleDots();
 		text(loginStatus + dots, width / 2, height - 55);

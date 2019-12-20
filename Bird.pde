@@ -3,8 +3,8 @@ public class Bird extends Mob
 	AnimatedImage animatedImage;
 	boolean flyingLeft = true;
 
-	final float MINSPEED = 2.0f;
-	final float MAXSPEED = 5.0f;
+	final float MIN_SPEED = 2.0f;
+	final float MAX_SPEED = 5.0f;
 
 	public Bird(World world)
 	{
@@ -16,7 +16,7 @@ public class Bird extends Mob
 
 		//set spawn position and velocity
 		position.set(random(0, world.getWidth()), random(100, 350));
-		velocity.set(random(MINSPEED, MAXSPEED), 0);
+		velocity.set(random(MIN_SPEED, MAX_SPEED), 0);
 
 		if (flyingLeft)
 		{

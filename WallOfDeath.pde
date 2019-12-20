@@ -88,7 +88,7 @@ class WallOfDeath extends Movable
 	{
 		if (Globals.currentGameState == Globals.GameState.InGame && isInBeginfase)
 		{
-			CameraShaker.induceStress(1f - gameStartSpawnMult * 1.5f);
+			camera.induceStress(1f - gameStartSpawnMult * 1.5f);
 		}
 	}
 

@@ -69,6 +69,8 @@ public class UIController
 
 	void draw()
 	{
+		handleScore();
+		
 		//draw hud at center position
 		rectMode(CENTER);
 		textAlign(CENTER, CENTER);
@@ -200,7 +202,7 @@ public class UIController
 		//sub text
 		textFont(instructionFont);
 		textSize(instructionFontSize);
-		text("Score: " + player.score + "\nDepth: " + player.getDepth() + "m", width / 2, height / 2 + instructionFontSize);
+		text("Score: " + scoreDisplay + "\nDepth: " + depthDisplay + "m", width / 2, height / 2 + instructionFontSize);
 
 		if(isUploadingRunResults)
 		{
@@ -226,12 +228,14 @@ public class UIController
 		}
 	}
 
+	int subTextCounter = -60;
+
 	void startMenu()
 	{
 		//background rect pos & size
 		float rectXPos = width / 2;
 		float rectYPos = (float)height / 4.15;
-		float rectWidth = width - titleFontSize * 4;
+		float rectWidth = width;
 		float rectHeight = titleFontSize * 2.5;
 
 		//title background
@@ -245,11 +249,18 @@ public class UIController
 		text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
 		//sub text
-		if (Globals.currentGameState == Globals.GameState.MainMenu)
+		subTextCounter++;
+
+		if (subTextCounter >= 0)
 		{
 			textFont(instructionFont);
 			textSize(instructionFontSize);
-			text("Press Start to start", width / 2, (height / 2) + (titleFontSize/2));
+			text("Press Start", width / 2, (height / 1.5) + (titleFontSize/2));
+
+			if(subTextCounter > 60)
+			{
+				subTextCounter = -60;
+			}
 		}
 	}
 
@@ -368,40 +379,40 @@ public class UIController
 		ui.drawWarningOverlay = false;
 	}
 
-	// private void handleScore()
-	// {
-	// 	if(scoreDisplay < player.score)
-	// 	{
-	// 		int scoreToAdd = round((player.score - scoreDisplay) / 15);
+	private void handleScore()
+	{
+		if(scoreDisplay < player.score)
+		{
+			int scoreToAdd = round((player.score - scoreDisplay) / 15);
 
-	// 		if(scoreToAdd == 0)
-	// 		{
-	// 			scoreToAdd++;
-	// 		}
+			if(scoreToAdd == 0)
+			{
+				scoreToAdd++;
+			}
 
-	// 		scoreDisplay += scoreToAdd;
+			scoreDisplay += scoreToAdd;
 
-	// 		if(scoreDisplay > player.score)
-	// 		{
-	// 			scoreDisplay = player.score;
-	// 		}
-	// 	}
+			if(scoreDisplay > player.score)
+			{
+				scoreDisplay = player.score;
+			}
+		}
 
-	// 	if(depthDisplay < player.getDepth() - Globals.OVERWORLD_HEIGHT)
-	// 	{
-	// 		int depthToAdd = round((player.getDepth() - Globals.OVERWORLD_HEIGHT - depthDisplay) / 15);
+		if(depthDisplay < player.getDepth() - Globals.OVERWORLD_HEIGHT)
+		{
+			int depthToAdd = round((player.getDepth() - Globals.OVERWORLD_HEIGHT - depthDisplay) / 15);
 
-	// 		if(depthToAdd == 0)
-	// 		{
-	// 			depthToAdd++;
-	// 		}
+			if(depthToAdd == 0)
+			{
+				depthToAdd++;
+			}
 
-	// 		depthDisplay += depthToAdd;
+			depthDisplay += depthToAdd;
 
-	// 		if(depthDisplay > player.getDepth() - Globals.OVERWORLD_HEIGHT)
-	// 		{
-	// 			depthDisplay = player.getDepth() - Globals.OVERWORLD_HEIGHT;
-	// 		}
-	// 	}
-	// }
+			if(depthDisplay > player.getDepth() - Globals.OVERWORLD_HEIGHT)
+			{
+				depthDisplay = player.getDepth() - Globals.OVERWORLD_HEIGHT;
+			}
+		}
+	}
 }

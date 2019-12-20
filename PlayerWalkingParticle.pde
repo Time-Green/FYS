@@ -15,7 +15,6 @@ public class PlayerWalkingParticle extends BaseParticle
 		particleColor = tileColor;
 
         sizeDegrade = random(0.3, 0.5);
-
 	}
 
 	void update()

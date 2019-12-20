@@ -22,7 +22,7 @@ class Tile extends BaseObject {
 
   int destroyedLayer = BACKGROUND_LAYER;
 
-  ArrayList<Movable> rootedIn = new ArrayList<Movable>();
+  ArrayList<BaseObject> rootedIn = new ArrayList<BaseObject>();
 
   Tile(int x, int y) 
   {
@@ -222,7 +222,7 @@ class Tile extends BaseObject {
 
   void releaseRooted()
   { //destroy plants, drop icicles etc
-    for(Movable rooted : rootedIn)
+    for(BaseObject rooted : rootedIn)
     {
       rooted.unroot(this);
     }
@@ -251,8 +251,6 @@ class Tile extends BaseObject {
     Tile tileNorthWest = world.getTile(position.x - Globals.TILE_SIZE, position.y - Globals.TILE_SIZE);
     Tile tileSouthEast = world.getTile(position.x + Globals.TILE_SIZE, position.y + Globals.TILE_SIZE);
     Tile tileSouthWest = world.getTile(position.x - Globals.TILE_SIZE, position.y + Globals.TILE_SIZE);
-
-    decals = new boolean[8];
 
     if(tileEast != null && !tileEast.density)
     {

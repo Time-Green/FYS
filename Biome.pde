@@ -162,9 +162,11 @@ class Biome
 	void prepareGroundObstacle(Tile target, World world)
 	{
 		Tile above = world.getTile(target.position.x, target.position.y - Globals.TILE_SIZE); //get the tile above us
+
     	if(random(1) < groundObstacleChance && above != null && !above.density)
 		{
-			Movable rooter = (Movable) spawnGroundObstacle(above);
+			BaseObject rooter = spawnGroundObstacle(above);
+
 			if(rooter != null)
 			{
 				target.rootedIn.add(rooter);
