@@ -72,6 +72,7 @@ class BaseObject
 		drawForegroundList.remove(this);
 		drawMiddlegroundList.remove(this);
 		drawBackgroundList.remove(this);
+		
 		return;
 	}
 
@@ -100,7 +101,7 @@ class BaseObject
 			case BACK:
 				drawBackgroundList.add(this);
 				break;
-				
+
 			default: //automaticly includes MIDDLE
 				drawMiddlegroundList.add(this);
 				break;
