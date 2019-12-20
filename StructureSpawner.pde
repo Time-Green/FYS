@@ -50,7 +50,7 @@ class StructureSpawner extends Movable
 		{
 			for (int y = 0; y <= structureSize.y; y++)
 			{
-				Tile tile = world.getTile((spawnAt.x + x) * Globals.TILE_SIZE, (spawnAt.y + y) * Globals.TILE_SIZE);
+				Tile tile = world.getTile((spawnAt.x + x) * TILE_SIZE, (spawnAt.y + y) * TILE_SIZE);
 
 				if (tile == null)
 				{

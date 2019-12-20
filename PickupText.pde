@@ -10,7 +10,7 @@ public class PickupText extends BaseObject
 
 	public PickupText(int drawScore, PVector currentPos)
 	{
-		drawLayer = FRONT;
+		drawLayer = PRIORITY_LAYER;
 
 		score = drawScore;
 		position.set(currentPos);

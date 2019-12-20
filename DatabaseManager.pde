@@ -2,6 +2,8 @@ import http.requests.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//jonah needs help
+
 public class DatabaseManager
 {
 	private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
@@ -274,7 +276,7 @@ public class DatabaseManager
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 
-		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - Globals.OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
+		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
 
 		int success = -1;
 
@@ -521,11 +523,11 @@ public class DatabaseManager
 		loginStartTime = millis();
 
 		// calls login function in FYS main file
-		thread("login");
+		thread("loginThread");
 	}
 
   	// used to log in using its own thread
-  	void login()
+  	void loginUser()
   	{
 		try
 		{

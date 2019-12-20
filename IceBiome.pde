@@ -27,7 +27,7 @@ class IceBiome extends Biome
 				}
 				else if (orechance <=12)
 				{
-					return new SaphireIceTile(x, depth);
+					return new BlueIceTile(x, depth);
 				}
 			}
 		}

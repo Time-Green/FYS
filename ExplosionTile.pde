@@ -71,7 +71,7 @@ public class ExplosionTile extends Tile
 	{
 		super.update();
 
-		if(Globals.currentGameState != Globals.GameState.InGame)
+		if(currentGameState != GameState.InGame)
 		{
 			return;
 		}
@@ -114,27 +114,27 @@ public class ExplosionTile extends Tile
 
 	private void doDynamiteExplosion()
 	{
-		load(new Explosion(new PVector(position.x + currentExplosion * Globals.TILE_SIZE, position.y), DYNAMITE_EXPLOSION_SIZE, 5, false));
-		load(new Explosion(new PVector(position.x - currentExplosion * Globals.TILE_SIZE, position.y), DYNAMITE_EXPLOSION_SIZE, 5, false));
+		load(new Explosion(new PVector(position.x + currentExplosion * TILE_SIZE, position.y), DYNAMITE_EXPLOSION_SIZE, 5, false));
+		load(new Explosion(new PVector(position.x - currentExplosion * TILE_SIZE, position.y), DYNAMITE_EXPLOSION_SIZE, 5, false));
 	}
 
 	private void doDirectionalExplosion()
 	{
 		if(currentRotation == 0) // down
 		{
-			load(new Explosion(new PVector(position.x, position.y + currentExplosion * Globals.TILE_SIZE), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
+			load(new Explosion(new PVector(position.x, position.y + currentExplosion * TILE_SIZE), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
 		}
 		else if(currentRotation == 1) // left
 		{
-			load(new Explosion(new PVector(position.x - currentExplosion * Globals.TILE_SIZE, position.y), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
+			load(new Explosion(new PVector(position.x - currentExplosion * TILE_SIZE, position.y), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
 		}
 		else if(currentRotation == 2) // up
 		{
-			load(new Explosion(new PVector(position.x, position.y - currentExplosion * Globals.TILE_SIZE), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
+			load(new Explosion(new PVector(position.x, position.y - currentExplosion * TILE_SIZE), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
 		}
 		else if(currentRotation == 3) // right
 		{
-			load(new Explosion(new PVector(position.x + currentExplosion * Globals.TILE_SIZE, position.y), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
+			load(new Explosion(new PVector(position.x + currentExplosion * TILE_SIZE, position.y), DIRECTIONAL_EXPLOSION_SIZE, 5, false));
 		}
 	}
 

@@ -6,7 +6,7 @@ public class GoldTile extends ResourceTile
 
 		particleColor = color(#bdaf13);
 
-		value = Globals.GOLDVALUE;
+		value = GOLD_VALUE;
 
 		if(type == 0)
 		{

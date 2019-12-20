@@ -26,11 +26,11 @@ class Biome
       		float orechance = random(100);
 
 			//spawn air at surface
-			if (depth <= Globals.OVERWORLD_HEIGHT)
+			if (depth <= OVERWORLD_HEIGHT)
 			{
 				return new AirTile(x, depth);
 			}
-			else if (depth <= Globals.OVERWORLD_HEIGHT + 1)
+			else if (depth <= OVERWORLD_HEIGHT + 1)
 			{
 				return new GrassTile(x, depth);
 			}
@@ -89,7 +89,7 @@ class Biome
   	// Never spawn resources directly underneath the player, to discourage the player from just digging straight down
   	public boolean spawnResourceTileAllowed(int x, int depth)
 	{
-		if(player != null && depth > Globals.OVERWORLD_HEIGHT + 11 && abs(x * Globals.TILE_SIZE - player.position.x) < Globals.TILE_SIZE * 3)
+		if(player != null && depth > OVERWORLD_HEIGHT + 11 && abs(x * TILE_SIZE - player.position.x) < TILE_SIZE * 3)
 		{
 			return false;
 		}
@@ -104,7 +104,7 @@ class Biome
 
   	void placeStructure(World world, int depth)
 	{
-    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(Globals.TILES_HORIZONTAL * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
+    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
   	}
 
 	// a function so we can give some different probabilities
@@ -141,7 +141,7 @@ class Biome
 
   	void prepareCeilingObstacle(Tile target, World world)
 	{
-    	Tile above = world.getTile(target.position.x, target.position.y - Globals.TILE_SIZE);
+    	Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE);
 
     	if(above == null)
 		{
@@ -161,7 +161,7 @@ class Biome
 	
 	void prepareGroundObstacle(Tile target, World world)
 	{
-		Tile above = world.getTile(target.position.x, target.position.y - Globals.TILE_SIZE); //get the tile above us
+		Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE); //get the tile above us
 
     	if(random(1) < groundObstacleChance && above != null && !above.density)
 		{

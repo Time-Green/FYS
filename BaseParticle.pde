@@ -4,7 +4,8 @@ public class BaseParticle extends Movable
 	PVector spawnAcceleration;
 	float size, spawnTime;
 
-	float maxLifeTime = 2000; //max 2 seconds life time
+	int maxLifeTime = 120; //max 120 frames life time
+	int currentLifeTime = 0;
 
 	float minSize = 15;
 	float maxSize = 30;
@@ -35,13 +36,20 @@ public class BaseParticle extends Movable
 
 	void update()
 	{
+		if(gamePaused)
+		{
+			return;
+		}
+
 		super.update();
 
 		//if the particle is to old..
-		if (millis() > spawnTime + maxLifeTime)
+		if (currentLifeTime > maxLifeTime)
 		{
 			cleanup();
 		}
+
+		currentLifeTime++;
 	}
 
 	void draw()

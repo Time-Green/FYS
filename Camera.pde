@@ -1,7 +1,7 @@
 public class Camera
 {
 	private PVector position;
-	private BaseObject target;
+	private Movable target;
 	private float lerpAmount;
 
 	private final float SPAWN_Y_POS = 190;
@@ -32,7 +32,7 @@ public class Camera
 
 	private float seed;
 
-	public Camera(BaseObject targetObject)
+	public Camera(Movable targetObject)
 	{
 		position = new PVector();
 
@@ -45,8 +45,9 @@ public class Camera
 	{
 		position.x = -target.position.x + width * 0.5f - target.size.x / 2f;
 
-		if(Globals.currentGameState == Globals.GameState.GameOver){
-			position.y = -SPAWN_Y_POS;
+		if(currentGameState == GameState.GameOver)
+		{
+			position.y = -SPAWN_Y_POS * 5;
 		}
 		else
 		{
@@ -56,7 +57,7 @@ public class Camera
 		lerpAmount = 0.002f;
 	}
 
-	public void setTarget(BaseObject targetObject)
+	public void setTarget(Movable targetObject)
 	{
 		target = targetObject;
 	}
@@ -76,13 +77,21 @@ public class Camera
 
 		PVector targetPosition = new PVector(targetX, targetY);
 
+		//targetPosition.x += -target.velocity.x * 15;
+
+		// println(-target.velocity.y);
+
+		// if(target.velocity.y >= 17.5f)
+		// {
+		// 	targetPosition.y -= target.velocity.y * 50;
+		// }
+
 		targetPosition.add(currentShakeOffset);
 
-		//position.set(targetPosition);
 		position.lerp(targetPosition, lerpAmount);
 
 		//limit x position so the camera doesent go to far to the left or right
-		float minXposotion = -(Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE - width);
+		float minXposotion = -(TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE - width);
 		position.x = constrain(position.x, minXposotion, 0);
 
 		translate(position.x, position.y);

@@ -4,7 +4,7 @@ public class CoalTile extends ResourceTile
 	{
 		super(x, y);
 
-		value = Globals.COALVALUE;
+		value = COAL_VALUE;
 
 		particleColor = color(#262625);
 

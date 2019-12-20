@@ -5,10 +5,9 @@ ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and l
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
-// Lists we draw from
-ArrayList<BaseObject> drawForegroundList = new ArrayList<BaseObject>();
-ArrayList<BaseObject> drawMiddlegroundList = new ArrayList<BaseObject>();
-ArrayList<BaseObject> drawBackgroundList = new ArrayList<BaseObject>();
+//Drawing
+ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
+int drawingLayers = 10; //increase if you add more layers
 
 // These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -21,6 +20,10 @@ ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 // database variables
 LoginScreen loginScreen;
 boolean userInLoginScreen;
+boolean loadedPlayerInventory = false;
+boolean loadedAllAchievements = false;
+boolean loadedPlayerAchievements = false;
+boolean loadedLeaderboard = false;
 AchievementHelper achievementHelper = new AchievementHelper(); 
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
@@ -48,21 +51,6 @@ boolean hasCalledAfterResourceLoadSetup = false;
 boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
 
 PGraphics leaderBoardGraphics;
-
-//god i wish java had defines
-final int NORTH = 0;
-final int SOUTH = 1;
-final int EAST = 2;
-final int WEST = 3;
-final int NORTHEAST = 4;
-final int SOUTHEAST = 5;
-final int NORTHWEST = 6;
-final int SOUTHWEST = 7;
-
-//for drawlayers
-final int FRONT = 1;
-final int MIDDLE = 2;
-final int BACK = 3;
 
 void setup()
 {
@@ -104,38 +92,16 @@ void checkUser()
 	}
 }
 
-void login() 
-{
-	loginStatus = "Logging in";
-	databaseManager.login();
-
-	loginStatus = "Getting player inventory";
-	totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
-
-	loginStatus = "Getting achievement data";
-	allAchievements = databaseManager.getAllAchievements();
-
-	loginStatus = "Getting player achievements";
-	unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
-
-	loginStatus = "Getting leaderboard";
-	leaderBoard = databaseManager.getLeaderboard(10);
-
-	loginStatus = "Logged in";
-
-	vars = databaseManager.getAllVars();
-}
-
 private void generateLeaderboardGraphics()
 {
-	leaderBoardGraphics = createGraphics(int(Globals.TILE_SIZE * 9), int(Globals.TILE_SIZE * 5));
+	leaderBoardGraphics = createGraphics(int(TILE_SIZE * 9), int(TILE_SIZE * 5));
 
 	leaderBoardGraphics.beginDraw();
 
 	leaderBoardGraphics.textAlign(CENTER, CENTER);
 	leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
 	leaderBoardGraphics.textSize(25);
-	leaderBoardGraphics.text("Leaderboard", (Globals.TILE_SIZE * 9) / 2, 20);
+	leaderBoardGraphics.text("Leaderboard", (TILE_SIZE * 9) / 2, 20);
 
 	leaderBoardGraphics.textSize(12);
 
@@ -179,7 +145,7 @@ private void generateLeaderboardGraphics()
   leaderBoardGraphics.endDraw();
 }
 
-// gets called when all resources are loaded
+// used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
 	AudioManager.setMaxVolume("Siren", 0.6f);
@@ -214,15 +180,14 @@ void setupGame()
 {
 	player = null; //fixed world generation bug on restart
 	updateList.clear();
-	drawForegroundList.clear();
-	drawMiddlegroundList.clear();
-	drawBackgroundList.clear();
 	destroyList.clear();
 	loadList.clear();
 	tileList.clear();
 	movableList.clear();
 	mobList.clear();
 	lightSources.clear();
+
+	prepareDrawingLayers();
 
 	runData = new RunData();
 
@@ -241,6 +206,16 @@ void setupGame()
 	AudioManager.loopMusic("ForestAmbianceMusic"); 
 }
 
+void prepareDrawingLayers()
+{
+	drawList = new ArrayList<ArrayList>();
+
+	for(int i = 0; i < drawingLayers; i++)
+	{
+		drawList.add(new ArrayList<BaseObject>());
+	}
+}
+
 void draw()
 {
 	if(userInLoginScreen)
@@ -252,7 +227,7 @@ void draw()
 	}
 
 	//wait until all resources are loaded and we are logged in
-	if (!ResourceManager.isAllLoaded() || loginStatus != "Logged in")
+	if (!ResourceManager.isAllLoaded() || !loadedPlayerInventory || !loadedAllAchievements || !loadedPlayerAchievements || !loadedLeaderboard)
 	{
 		handleLoadingScreen();
 
@@ -278,7 +253,8 @@ void draw()
 
 	world.updateDepth();
 
-	if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE)
+	// needs to happan here because we are inside the push and pop matrix functions
+	if (currentGameState == GameState.InGame && player.position.y < (OVERWORLD_HEIGHT + 5) * TILE_SIZE)
 	{
 		ui.drawArrows();
 	}
@@ -318,17 +294,6 @@ void updateObjects()
 		object.update();
 	}
 
-	for (BaseObject object : reloadList)
-	{
-		drawForegroundList.remove(object); //remove from all since it's inherently sane to use remove proc 
-		drawBackgroundList.remove(object);
-		drawMiddlegroundList.remove(object);
-
-		object.insertIntoLayer(object.drawLayer);
-	}
-
-	reloadList.clear();
-
 	//used to start the game with the button
 	if (startGame)
 	{
@@ -339,27 +304,22 @@ void updateObjects()
 
 void drawObjects()
 {
-	for (BaseObject object : drawBackgroundList)
+	for(ArrayList<BaseObject> drawUs : drawList)
 	{
-		object.draw();
-	}
-	for (BaseObject object : drawMiddlegroundList)
-	{
-		object.draw();
-	}
-	for (BaseObject object : drawForegroundList)
-	{
-		object.draw();
+		for(BaseObject object : drawUs)
+		{
+			object.draw();
+		}
 	}
 }
 
 void handleGameFlow()
 {
-  switch (Globals.currentGameState)
+  switch (currentGameState)
   {
 	case MainMenu:
 		//if we are in the main menu we start the game by pressing enter
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
 			enterOverWorld(false);
 		}
@@ -368,40 +328,40 @@ void handleGameFlow()
 
 	case InGame:
 		//Pauze the game
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
-			Globals.currentGameState = Globals.GameState.GamePaused;
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			currentGameState = GameState.GamePaused;
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		break;
 
 	case GameOver:
-		Globals.gamePaused = true;
+		gamePaused = true;
 
 		//if we died and we uploaded the run stats, we restart the game by pressing enter
-		if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults)
+		if (InputHelper.isKeyDown(START_KEY) && !isUploadingRunResults)
 		{
 			generateLeaderboardGraphics();
 			enterOverWorld(true);
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		break;
 
 	case GamePaused:
-		Globals.gamePaused = true;
+		gamePaused = true;
 
 		//if the game has been paused the player can contineu the game
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
-			Globals.gamePaused = false;
-			Globals.currentGameState = Globals.GameState.InGame;
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			gamePaused = false;
+			currentGameState = GameState.InGame;
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		//Reset game to over world
-		if (InputHelper.isKeyDown(Globals.BACKKEY))
+		if (InputHelper.isKeyDown(BACK_KEY))
 		{
 			enterOverWorld(true);
 		}
@@ -419,8 +379,8 @@ void enterOverWorld(boolean reloadGame)
 	}
 
 	//AudioManager.loopMusic("ForestAmbianceMusic"); 
-	Globals.gamePaused = false;
-	Globals.currentGameState = Globals.GameState.Overworld;
+	gamePaused = false;
+	currentGameState = GameState.Overworld;
 	camera.lerpAmount = 0.075f;
 }
 
@@ -434,8 +394,8 @@ void startAsteroidRain()
 {
 	thread("startRegisterRunThread");
 
-	Globals.gamePaused = false;
-	Globals.currentGameState = Globals.GameState.InGame;
+	gamePaused = false;
+	currentGameState = GameState.InGame;
 
 	AudioManager.stopMusic("ForestAmbianceMusic");
 	AudioManager.loopMusic("BackgroundMusic");
@@ -448,8 +408,8 @@ void startAsteroidRain()
 void endRun()
 {
 	isUploadingRunResults = true;
-	Globals.gamePaused = true;
-	Globals.currentGameState = Globals.GameState.GameOver;
+	gamePaused = true;
+	currentGameState = GameState.GameOver;
 	
 	ui.setupRunEnd();
 	AudioManager.stopMusic("BackgroundMusic");
@@ -533,33 +493,6 @@ private void handleDots()
 	{
 		dots = "";
 	}
-}
-
-// start a thread to load 1 resource
-void startLoaderThread(String currentResourceName, String currentResourceFileName)
-{
-	LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
-	ResourceManager.loaderThreads.add(loaderThread);
-	loaderThread.start();
-}
-
-// start a thread that registers a run start
-void startRegisterRunThread()
-{
-  	databaseManager.registerRunStart();
-}
-
-// start a thread that registers a run end
-void startRegisterEndThread()
-{
-	databaseManager.registerRunEnd();
-
-  	unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
-
-  	//update leaderboard with new data
-  	leaderBoard = databaseManager.getLeaderboard(10);
-
-	isUploadingRunResults = false;
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
@@ -670,36 +603,6 @@ void keyPressed()
 	// {
 	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
 	// }
-
-	if (key == 'I' || key == 'i')
-	{ 
-		for(BaseObject object : drawBackgroundList)
-		{
-			println(object);
-		}
-	}
-
-	if (key == 'O' || key == 'o')
-	{ 
-		for(BaseObject object : drawMiddlegroundList)
-		{
-			println(object);
-		}
-	}
-
-	if (key == 'P' || key == 'p')
-	{ 
-		for(BaseObject object : drawForegroundList)
-		{
-			println(object);
-		}
-	}
-	
-	if (key == 'L' || key == 'l')
-	{ 
-		player.drawLayer = FRONT;
-		reload(player);
-	}
 }
 
 void keyReleased()

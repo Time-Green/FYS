@@ -76,7 +76,7 @@ public class UIController
 		textAlign(CENTER, CENTER);
 
 		// draw hud based on current gamestate
-		switch (Globals.currentGameState)
+		switch (currentGameState)
 		{
 			default :
 				//println("Something went wrong with the game state");
@@ -154,7 +154,7 @@ public class UIController
 		{
 			if (arrowYTarget == 0)
 			{
-				arrowYTarget = Globals.TILE_SIZE;
+				arrowYTarget = TILE_SIZE;
 			}
 			else
 			{
@@ -170,7 +170,7 @@ public class UIController
 		textFont(instructionFont);
 		textSize(instructionFontSize / 2);
 
-		for (int i = 0; i < Globals.TILES_HORIZONTAL + 1; i++)
+		for (int i = 0; i < TILES_HORIZONTAL + 1; i++)
 		{
 
 			if (i % 2 == 0)
@@ -178,8 +178,8 @@ public class UIController
 				continue;
 			}
 
-			text("Dig!", i * Globals.TILE_SIZE, Globals.OVERWORLD_HEIGHT * Globals.TILE_SIZE + arrowYOffset - 15);
-			image(arrowImage, i * Globals.TILE_SIZE, Globals.OVERWORLD_HEIGHT * Globals.TILE_SIZE + arrowYOffset);
+			text("Dig!", i * TILE_SIZE, OVERWORLD_HEIGHT * TILE_SIZE + arrowYOffset - 15);
+			image(arrowImage, i * TILE_SIZE, OVERWORLD_HEIGHT * TILE_SIZE + arrowYOffset);
 		}
 
 		tint(255);
@@ -398,9 +398,9 @@ public class UIController
 			}
 		}
 
-		if(depthDisplay < player.getDepth() - Globals.OVERWORLD_HEIGHT)
+		if(depthDisplay < player.getDepth() - OVERWORLD_HEIGHT)
 		{
-			int depthToAdd = round((player.getDepth() - Globals.OVERWORLD_HEIGHT - depthDisplay) / 15);
+			int depthToAdd = round((player.getDepth() - OVERWORLD_HEIGHT - depthDisplay) / 15);
 
 			if(depthToAdd == 0)
 			{
@@ -409,9 +409,9 @@ public class UIController
 
 			depthDisplay += depthToAdd;
 
-			if(depthDisplay > player.getDepth() - Globals.OVERWORLD_HEIGHT)
+			if(depthDisplay > player.getDepth() - OVERWORLD_HEIGHT)
 			{
-				depthDisplay = player.getDepth() - Globals.OVERWORLD_HEIGHT;
+				depthDisplay = player.getDepth() - OVERWORLD_HEIGHT;
 			}
 		}
 	}

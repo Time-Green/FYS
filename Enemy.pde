@@ -32,7 +32,7 @@ class Enemy extends Mob
 
 	void update()
 	{
-		if (Globals.gamePaused)
+		if (gamePaused)
 		{
 			return;
 		}
