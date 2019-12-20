@@ -1,5 +1,5 @@
-class Flower extends Mob {
-
+class Flower extends BaseObject
+{
 	private AnimatedImage animatedImageFlower;
 	private final int FLOWERFRAMES = 4;
 
@@ -8,8 +8,7 @@ class Flower extends Mob {
 		setupLightSource(this, 125f, 1f);
 		size.set(Globals.TILE_SIZE, Globals.TILE_SIZE);
 
-		setMaxHp(20);
-		animatedImageFlower = new AnimatedImage("Flower", FLOWERFRAMES, 20, position, size.x, flipSpriteHorizontal);
+		animatedImageFlower = new AnimatedImage("Flower", FLOWERFRAMES, 20, position, size.x, false);
 	}
 
 	void draw()

@@ -4,14 +4,14 @@ public class LoginScreen
     {
         
     }
+    
+    public void update()
+    {
+        
+    }
 
     public void draw()
     {
 
-    }
-
-    public void update()
-    {
-        
     }
 }

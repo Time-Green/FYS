@@ -35,6 +35,7 @@ public class WoodPlankTile extends Tile
 	{
 		super(x, y);
 
+		drawLayer = BACK;
 		image = ResourceManager.getImage("WoodPlank");
 	}
 
@@ -42,7 +43,14 @@ public class WoodPlankTile extends Tile
 	public WoodPlankTile(int x, int y, PVector structureTilePosition)
 	{
 		super(x, y);
+		
+		drawLayer = BACK;
 
+		setLeaderboardImage(structureTilePosition);
+	}
+
+	private void setLeaderboardImage(PVector structureTilePosition)
+	{
 		PGraphics pg = createGraphics(50, 50);
 
 		int xPos = int(structureTilePosition.x * Globals.TILE_SIZE);
@@ -66,6 +74,7 @@ public class Fencepost extends Tile
 	{
 		super(x, y);
 
+		drawLayer = BACK;
 		image = ResourceManager.getImage("Fencepost");
 	}
 }

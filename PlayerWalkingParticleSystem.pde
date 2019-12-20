@@ -1,10 +1,5 @@
 public class PlayerWalkingParticleSystem extends BaseParticleSystem
 {
-
-    int particleWalkingLeftX = 30;
-    int particleWalkingRightX = 5;
-    int particleDirectionX;
-
 	public PlayerWalkingParticleSystem(PVector spawnPos, int amount, float maxForce, color tileColor)
 	{
 		super(spawnPos, amount);
@@ -22,17 +17,7 @@ public class PlayerWalkingParticleSystem extends BaseParticleSystem
                 circleY *= -1;
             }
 
-            if(InputHelper.isKeyDown(Globals.LEFTKEY))
-            {
-                particleDirectionX = particleWalkingLeftX;
-            } 
-            else if(InputHelper.isKeyDown(Globals.RIGHTKEY))
-            {
-                particleDirectionX = particleWalkingRightX;
-            }
-
-            PVector particleSpawnPosition = new PVector(position.x + particleDirectionX, position.y + 35);
-
+            PVector particleSpawnPosition = new PVector(position.x + 20, position.y + 35);
 
 			PlayerWalkingParticle particle = new PlayerWalkingParticle(this, particleSpawnPosition, particleSpawnAcceleration, tileColor);
 			load(particle);

@@ -1,4 +1,4 @@
-class Jukebox extends Obstacle
+class Jukebox extends Movable
 {
     int musicNotes = 4;
     boolean destroyed = false;
@@ -12,9 +12,6 @@ class Jukebox extends Obstacle
         position.set(spawnPos);
 
         image = ResourceManager.getImage("Jukebox");
-
-        anchored = true;
-        collisionEnabled = false;
 
         particleSystem = new EmmitingParticleSystem(new PVector(position.x + 10, position.y + 5), particleVelocity, particleDelay, true);
         load(particleSystem);

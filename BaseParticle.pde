@@ -21,6 +21,9 @@ public class BaseParticle extends Movable
 		groundedDragFactor = 1.0f;
 		aerialDragFactor = 1.0f;
 
+		// many performance, such wow
+		enableLightning = false;
+
 		spawnAcceleration = spawnAcc;
 		particleSystem = parentParticleSystem;
 
@@ -49,8 +52,12 @@ public class BaseParticle extends Movable
 		}
 
 		fill(particleColor);
+		tint(lightningAmount);
+
 		rect(position.x - size / 2, position.y - size / 2, size, size);
+
 		fill(255);
+		tint(255);
 	}
 
 	void cleanup()

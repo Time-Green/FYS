@@ -21,8 +21,6 @@ class Player extends Mob
 	private float viewTarget = viewAmount;
 	private float easing = 0.025f;
 
-	private color particleColor = color(255);
-
 	//Status effects
 	public float stunTimer;
 
@@ -75,13 +73,12 @@ class Player extends Mob
 		{
 			doPlayerMovement();
 		}
-
 	}
 
 	void checkHealthLow()
 	{
 		// if lower than 20% health, show low health overlay
-		if (currentHealth < maxHealth / 5f && currentHealth > maxHealth / 10f)
+		if (currentHealth < maxHealth / 5f)
 		{
 			ui.drawWarningOverlay = true;
 
@@ -186,7 +183,7 @@ class Player extends Mob
 				walkCycle.draw();
 
 				//create particle system
-				PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(position, 1, 2, particleColor);
+				PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(position, 1, 2, standingOn.particleColor);
 				load(particleSystem);
 			}
 			else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) //Jumping
@@ -307,7 +304,7 @@ class Player extends Mob
 		{
 			// if the player has taken damage, add camera shake
 			//40 is about max damage
-			CameraShaker.induceStress(damageTaken / 40);
+			camera.induceStress(damageTaken / 40);
 
 			AudioManager.playSoundEffect("HurtSound");
 		}

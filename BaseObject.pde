@@ -10,13 +10,17 @@ class BaseObject
 
 	boolean suspended = false; //set to true to stop drawing and updating, practically 'suspending' it outside of the game
 
+	boolean enableLightning = true;
 	float lightningAmount = 255.0f; // the amount this object is lit up (0-255)
 	float lightEmitAmount = 0.0f; // the amount of light this object emits
 	float distanceDimFactor = 1;
 
 	void update()
 	{
-		updateLightning();
+		if(enableLightning)
+		{
+			updateLightning();
+		}
 	}
 
 	void draw()
@@ -38,7 +42,6 @@ class BaseObject
 
 		for(BaseObject lightSource : lightSources)
 		{
-
 			float distanceToLightSource = dist(position.x, position.y, lightSource.position.x, lightSource.position.y);
 
 			//make sure we dont add to much light or remove brightness
@@ -55,9 +58,9 @@ class BaseObject
 		PVector camPos = camera.getPosition();
 
 		if (position.y > -camPos.y - Globals.TILE_SIZE
-		&& position.y < -camPos.y + height
-		&& position.x > -camPos.x - Globals.TILE_SIZE
-		&& position.x < -camPos.x + width)
+			&& position.y < -camPos.y + height
+			&& position.x > -camPos.x - Globals.TILE_SIZE
+			&& position.x < -camPos.x + width)
 		{
 			return true;
 		}
@@ -73,6 +76,7 @@ class BaseObject
 		drawForegroundList.remove(this);
 		drawMiddlegroundList.remove(this);
 		drawBackgroundList.remove(this);
+
 		return;
 	}
 
@@ -88,7 +92,6 @@ class BaseObject
 	{
 		updateList.add(this);
 		insertIntoLayer(drawLayer);
-
 	}
 
 	void insertIntoLayer(int layer)
@@ -98,9 +101,11 @@ class BaseObject
 			case FRONT:
 				drawForegroundList.add(this);
 				break;
+
 			case BACK:
 				drawBackgroundList.add(this);
 				break;
+
 			default: //automaticly includes MIDDLE
 				drawMiddlegroundList.add(this);
 				break;
@@ -133,5 +138,11 @@ class BaseObject
 	void collidedWith(BaseObject object)
 	{
 		
+	}
+
+	// called upon being released from a tile, like icicles or flowers
+	void unroot(Tile tile)
+	{
+		delete(this);
 	}
 }

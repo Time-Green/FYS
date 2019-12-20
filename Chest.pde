@@ -10,14 +10,23 @@ class Chest extends Obstacle
 
 	ArrayList<Movable> contents = new ArrayList<Movable>();
 
+	Chest()
+	{
+		setup();
+	}
+
 	Chest(int forcedKey)
 	{
-
 		if(forcedKey > 0)
 		{
 			this.forcedKey = forcedKey;
 		}
 
+		setup();
+	}
+
+	private void setup()
+	{
 		populateContents();
 		anchored = false;
 
@@ -27,43 +36,57 @@ class Chest extends Obstacle
 	// only load childtypes of Movable
 	void populateContents()
 	{
-		ArrayList<BaseObject> newContents = new ArrayList<BaseObject>();
+		ArrayList<Movable> newContents = new ArrayList<Movable>();
 
-		int randomKey = int(random(1, 3));
+		int randomKey = floor(random(2));
 
 		if (forcedKey >= 0)
 		{
 			randomKey = forcedKey;
 		}
 
+		println("randomKey: " + randomKey);
+
 		switch(randomKey)
 		{
-			case 1:
-				newContents.add(load(new RelicShard(), new PVector(200, 200)));
-				addRandomLoot(newContents, 12);
+			case 0:
+				RelicShard relicShard = new RelicShard();
+				load(relicShard);
+
+				newContents.add(relicShard);
+				addRandomLoot(newContents, 18);
 			break;
 
-			case 2:
-				for (int i = 0; i < 3; i++) {
-				newContents.add(load(new Dynamite(), new PVector(200, 200)));
+			case 1:
+				for (int i = 0; i < 3; i++)
+				{
+					Dynamite dynamite = new Dynamite();
+					load(dynamite);
+
+					newContents.add(dynamite);
 				}
 
-				addRandomLoot(newContents, 12);
+				addRandomLoot(newContents, 18);
 			break;
 
 			case 69:
-				newContents.add(load(new Pickaxe(), new PVector(200, 200)));
-				//please don't remove this for relic testing
+				Pickaxe pickaxe = new Pickaxe();
+				load(pickaxe);
+
+				newContents.add(pickaxe);
 			case 70:
-				newContents.add(load(new RelicShard(), new PVector(200, 200)));
+				RelicShard testRelicShard = new RelicShard();
+				load(testRelicShard);
+
+				newContents.add(testRelicShard);
 				addRandomLoot(newContents, 6);
 			break;
 		}
 
 		// I dont want to force every new content thingy to Movable seperately, so do it here
-		for (BaseObject object : newContents)
+		for (Movable newContent : newContents)
 		{
-			contents.add((Movable) object);
+			contents.add(newContent);
 		}
 
 		for (Movable movable : contents)
@@ -72,31 +95,30 @@ class Chest extends Obstacle
 		}
 	}
 
-	void addRandomLoot(ArrayList<BaseObject> newContents, int maxAmount)
+	void addRandomLoot(ArrayList<Movable> newContents, int maxAmount)
 	{
-		int randomLootAmount = (int) random(maxAmount / 2, maxAmount);
+		int randomLootAmount = floor(random(maxAmount / 2, maxAmount));
 
 		for(int i = 0; i < randomLootAmount; i++)
 		{
-			int lootType = (int) random(3);
+			int lootType = floor(random(3));
+			ScorePickUp scorePickUp = null;
 
-			switch (lootType)
+			if(lootType == 0)
 			{
-				case 0:
-				// iron
-					newContents.add(load(new ScorePickUp(Globals.IRONVALUE, ResourceManager.getImage("IronPickUp")), new PVector(200, 200)));
-				break;
-
-				case 1:
-				// gold
-					newContents.add(load(new ScorePickUp(Globals.GOLDVALUE, ResourceManager.getImage("GoldPickUp")), new PVector(200, 200)));
-				break;
-
-				case 2:
-				// diamond
-					newContents.add(load(new ScorePickUp(Globals.DIAMONDVALUE, ResourceManager.getImage("DiamondPickUp")), new PVector(200, 200)));
-				break;
+				scorePickUp = new ScorePickUp(Globals.IRONVALUE, ResourceManager.getImage("IronPickUp"));
 			}
+			else if(lootType == 1)
+			{
+				scorePickUp = new ScorePickUp(Globals.GOLDVALUE, ResourceManager.getImage("GoldPickUp"));
+			}
+			else if(lootType == 2)
+			{
+				scorePickUp = new ScorePickUp(Globals.DIAMONDVALUE, ResourceManager.getImage("DiamondPickUp"));
+			}
+
+			load(scorePickUp);
+			newContents.add(scorePickUp);
 		}
 	}
 
@@ -122,6 +144,8 @@ class Chest extends Obstacle
 
 		for (Movable movable : contents)
 		{
+			println("Dropping: " + movable);
+
 			movable.position.set(new PVector(position.x, position.y - Globals.TILE_SIZE));
 			movable.suspended = false;
 

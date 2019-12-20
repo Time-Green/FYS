@@ -1,24 +1,24 @@
-//List of everything we need to update
+// List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
 
 ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
-//Lists we draw from
-ArrayList<BaseObject> drawForegroundList = new ArrayList<BaseObject>(); 
-ArrayList<BaseObject> drawMiddlegroundList = new ArrayList<BaseObject>(); 
-ArrayList<BaseObject> drawBackgroundList = new ArrayList<BaseObject>(); 
+// Lists we draw from
+ArrayList<BaseObject> drawForegroundList = new ArrayList<BaseObject>();
+ArrayList<BaseObject> drawMiddlegroundList = new ArrayList<BaseObject>();
+ArrayList<BaseObject> drawBackgroundList = new ArrayList<BaseObject>();
 
-//These only exists as helpers. All updating is handled from updateList
+// These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
 ArrayList<Mob> mobList = new ArrayList<Mob>();
 
-//list of all objects that emit light
+// list of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
-//database variables
+// database variables
 LoginScreen loginScreen;
 boolean userInLoginScreen;
 AchievementHelper achievementHelper = new AchievementHelper(); 
@@ -30,9 +30,11 @@ ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<LeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
+ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
+// used to run code on closing game
 DisposeHandler dh;
 
 World world;
@@ -64,17 +66,17 @@ final int BACK = 3;
 
 void setup()
 {
-	this.surface.setTitle("Rocky Rain");
-
 	dh = new DisposeHandler(this);
 
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
 
+	surface.setResizable(true);
+	surface.setTitle("Rocky Rain");
+
 	checkUser();
 
   	AudioManager.setup(this);
-	CameraShaker.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.prepareResourceLoading();
 	ResourceManager.loadAll();
@@ -104,16 +106,24 @@ void checkUser()
 
 void login() 
 {
-  databaseManager.login();
-  loginStatus = "Getting player inventory";
-  totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
-  loginStatus = "Getting achievement data";
-  allAchievements = databaseManager.getAllAchievements();
-  loginStatus = "Getting player achievements";
-  unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
-  loginStatus = "Getting leaderboard";
-  leaderBoard = databaseManager.getLeaderboard(10);
-  loginStatus = "";
+	loginStatus = "Logging in";
+	databaseManager.login();
+
+	loginStatus = "Getting player inventory";
+	totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+
+	loginStatus = "Getting achievement data";
+	allAchievements = databaseManager.getAllAchievements();
+
+	loginStatus = "Getting player achievements";
+	unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
+
+	loginStatus = "Getting leaderboard";
+	leaderBoard = databaseManager.getLeaderboard(10);
+
+	loginStatus = "Logged in";
+
+	vars = databaseManager.getAllVars();
 }
 
 private void generateLeaderboardGraphics()
@@ -226,7 +236,6 @@ void setupGame()
 	wallOfDeath = new WallOfDeath();
 	load(wallOfDeath);
 
-	CameraShaker.reset();
 	camera = new Camera(player);
 
 	AudioManager.loopMusic("ForestAmbianceMusic"); 
@@ -234,8 +243,16 @@ void setupGame()
 
 void draw()
 {
+	if(userInLoginScreen)
+	{
+		loginScreen.update();
+		loginScreen.draw();
+
+		return;
+	}
+
 	//wait until all resources are loaded and we are logged in
-	if (!ResourceManager.isAllLoaded() || loginStatus != "")
+	if (!ResourceManager.isAllLoaded() || loginStatus != "Logged in")
 	{
 		handleLoadingScreen();
 
@@ -251,7 +268,6 @@ void draw()
 	//push and pop are needed so the hud can be correctly drawn
 	pushMatrix();
 
-	CameraShaker.update();
 	camera.update();
 
 	world.update();
@@ -464,7 +480,7 @@ void handleLoadingScreen()
 	}
 
 	//login
-	if(loginStatus != "")
+	if(loginStatus != "Logged in")
 	{
 		//handleDots();
 		text(loginStatus + dots, width / 2, height - 55);
@@ -655,29 +671,35 @@ void keyPressed()
 	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
 	// }
 
-		if (key == 'I' || key == 'i')
-		{ 
-			for(BaseObject object : drawBackgroundList){
-				println(object);
-			}
+	if (key == 'I' || key == 'i')
+	{ 
+		for(BaseObject object : drawBackgroundList)
+		{
+			println(object);
 		}
-		if (key == 'O' || key == 'o')
-		{ 
-			for(BaseObject object : drawMiddlegroundList){
-				println(object);
-			}
+	}
+
+	if (key == 'O' || key == 'o')
+	{ 
+		for(BaseObject object : drawMiddlegroundList)
+		{
+			println(object);
 		}
-		if (key == 'P' || key == 'p')
-		{ 
-			for(BaseObject object : drawForegroundList){
-				println(object);
-			}
+	}
+
+	if (key == 'P' || key == 'p')
+	{ 
+		for(BaseObject object : drawForegroundList)
+		{
+			println(object);
 		}
-		if (key == 'L' || key == 'l')
-		{ 
-			player.drawLayer = FRONT;
-			reload(player);
-		}
+	}
+	
+	if (key == 'L' || key == 'l')
+	{ 
+		player.drawLayer = FRONT;
+		reload(player);
+	}
 }
 
 void keyReleased()
