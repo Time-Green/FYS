@@ -6,7 +6,7 @@ public class ImageParticle extends BaseParticle
 
 		image = ResourceManager.getImage("Note" + floor(random(4)));
 		gravityForce = 0;
-        maxLifeTime = 2000;
+        maxLifeTime = 120;
 		minSize = 15;
         maxSize = 20;
 
@@ -14,8 +14,23 @@ public class ImageParticle extends BaseParticle
         //maxLifeTime = 1000;
 	}
 
+	void update()
+	{
+		if(Globals.gamePaused)
+		{
+			return;
+		}
+
+		super.update();
+	}
+
 	void draw()
 	{
+		if (!inCameraView())
+		{
+			return;
+		}
+
 		tint(lightningAmount);
 
 		image(image, position.x, position.y, size, size);

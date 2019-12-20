@@ -15,6 +15,11 @@ public class ExplosionParticle extends BaseParticle
 
 	void update()
 	{
+		if(Globals.gamePaused)
+		{
+			return;
+		}
+		
 		super.update();
 
 		updateSize();

@@ -16,6 +16,11 @@ public class EmmitingParticleSystem extends BaseParticleSystem
 
     void update()
 	{
+        if(Globals.gamePaused)
+		{
+			return;
+		}
+
 		super.update();
 
         if(frameCount % spawnDelay == 0) 
