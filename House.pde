@@ -43,6 +43,8 @@ public class WoodPlankTile extends Tile
 	{
 		super(x, y);
 
+		drawLayer = BACKWALL_LAYER;
+
 		PGraphics pg = createGraphics(50, 50);
 
 		int xPos = int(structureTilePosition.x * Globals.TILE_SIZE);
@@ -66,6 +68,7 @@ public class Fencepost extends Tile
 	{
 		super(x, y);
 
+		drawLayer = BACKWALL_LAYER;
 		image = ResourceManager.getImage("Fencepost");
 	}
 }

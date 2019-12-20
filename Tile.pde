@@ -20,11 +20,13 @@ class Tile extends BaseObject {
   String decalType;
   boolean[] decals = new boolean[8]; //for all cardinal and diagonal directions
 
+  int destroyedLayer = BACKGROUND_LAYER;
+
   ArrayList<Movable> rootedIn = new ArrayList<Movable>();
 
   Tile(int x, int y) 
   {
-    drawLayer = FRONT;
+    drawLayer = TILE_LAYER;
     movableCollision = true;
 
     position.x = x * Globals.TILE_SIZE;
@@ -192,10 +194,9 @@ class Tile extends BaseObject {
   {
     destroyed = true;
     density = false;
-    drawLayer = BACK;
 
     releaseRooted();
-    reload(this);
+    moveLayer(destroyedLayer);
     makeNeighboursAesthetic();
   }
 
