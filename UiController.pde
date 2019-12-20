@@ -235,7 +235,7 @@ public class UIController
 		//background rect pos & size
 		float rectXPos = width / 2;
 		float rectYPos = (float)height / 4.15;
-		float rectWidth = width - titleFontSize * 4;
+		float rectWidth = width;
 		float rectHeight = titleFontSize * 2.5;
 
 		//title background

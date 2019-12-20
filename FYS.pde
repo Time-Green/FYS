@@ -76,7 +76,6 @@ void setup()
 	checkUser();
 
   	AudioManager.setup(this);
-	CameraShaker.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.prepareResourceLoading();
 	ResourceManager.loadAll();
@@ -236,7 +235,6 @@ void setupGame()
 	wallOfDeath = new WallOfDeath();
 	load(wallOfDeath);
 
-	CameraShaker.reset();
 	camera = new Camera(player);
 
 	AudioManager.loopMusic("ForestAmbianceMusic"); 
@@ -253,7 +251,7 @@ void draw()
 	}
 
 	//wait until all resources are loaded and we are logged in
-	if (!ResourceManager.isAllLoaded() || loginStatus == "Logged in")
+	if (!ResourceManager.isAllLoaded() || loginStatus != "Logged in")
 	{
 		handleLoadingScreen();
 
@@ -269,7 +267,6 @@ void draw()
 	//push and pop are needed so the hud can be correctly drawn
 	pushMatrix();
 
-	CameraShaker.update();
 	camera.update();
 
 	world.update();
