@@ -2,7 +2,7 @@ import processing.sound.*;
 
 public static class AudioManager
 {
-	private static final boolean AUDIO_ENABLED = true;
+	private static final boolean AUDIO_ENABLED = false;
 
 	private static FYS game;
 

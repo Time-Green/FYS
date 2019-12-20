@@ -228,6 +228,8 @@ public class UIController
 		}
 	}
 
+	int subTextCounter = -60;
+
 	void startMenu()
 	{
 		//background rect pos & size
@@ -247,11 +249,18 @@ public class UIController
 		text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
 
 		//sub text
-		if (Globals.currentGameState == Globals.GameState.MainMenu)
+		subTextCounter++;
+
+		if (subTextCounter >= 0)
 		{
 			textFont(instructionFont);
 			textSize(instructionFontSize);
-			text("Press Start to start", width / 2, (height / 2) + (titleFontSize/2));
+			text("Press Start", width / 2, (height / 1.5) + (titleFontSize/2));
+
+			if(subTextCounter > 60)
+			{
+				subTextCounter = -60;
+			}
 		}
 	}
 
