@@ -25,7 +25,8 @@ public class PlayerWalkingParticleSystem extends BaseParticleSystem
             if(InputHelper.isKeyDown(Globals.LEFTKEY))
             {
                 particleDirectionX = particleWalkingLeftX;
-            } else if(InputHelper.isKeyDown(Globals.RIGHTKEY))
+            } 
+            else if(InputHelper.isKeyDown(Globals.RIGHTKEY))
             {
                 particleDirectionX = particleWalkingRightX;
             }
