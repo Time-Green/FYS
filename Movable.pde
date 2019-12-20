@@ -89,7 +89,7 @@ class Movable extends BaseObject
 					attemptMine(object);
 				} 
 			}
-			
+
 			velocity.y = max(velocity.y, 0);
 		}
 
@@ -341,13 +341,9 @@ class Movable extends BaseObject
 		return movableCollision || object.movableCollision;
 	}
 
-	//looks better than instanceof
+	// looks better than instanceof
 	public boolean canPlayerInteract()
 	{
 		return false;
 	}
-
-  void unroot(Tile tile){ //called upon being released from a tile, like icicles or flowers
-    delete(this);
-  }
 }

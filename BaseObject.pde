@@ -133,4 +133,10 @@ class BaseObject
 	{
 		
 	}
+
+	// called upon being released from a tile, like icicles or flowers
+	void unroot(Tile tile)
+	{
+		delete(this);
+	}
 }

@@ -21,7 +21,7 @@ class Tile extends BaseObject
 	String decalType;
 	boolean[] decals = new boolean[8]; //for all cardinal and diagonal directions
 
-	ArrayList<Movable> rootedIn = new ArrayList<Movable>();
+	ArrayList<BaseObject> rootedIn = new ArrayList<BaseObject>();
 
 	Tile(int x, int y) 
 	{
@@ -228,7 +228,7 @@ class Tile extends BaseObject
 	// destroy plants, drop icicles etc
 	void releaseRooted()
 	{
-		for(Movable rooted : rootedIn)
+		for(BaseObject rooted : rootedIn)
 		{
 			rooted.unroot(this);
 		}
