@@ -28,11 +28,16 @@ class Mob extends Movable
 
 	//regen and fire
 	public float regen = 0.05f;
-	private final float fireDamage = 5;
+	private final float fireDamage = 8;
 	public boolean canRegen = false;
 	public boolean isOnFire = false;
 	private int fireTimer;
 	private int regenTimer;
+
+	Mob(){
+		super();
+		drawLayer = MOB_LAYER;
+	}
 
 	public void update()
 	{

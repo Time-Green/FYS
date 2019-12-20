@@ -18,6 +18,7 @@ class Flower extends BaseObject
 
 	void takeDamage(float damageTaken)
 	{
+		//super secret codes 
 		super.takeDamage(damageTaken);
 		AudioManager.playSoundEffect("HurtSound", position);
 		delete(this);

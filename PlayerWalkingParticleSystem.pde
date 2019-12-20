@@ -10,12 +10,13 @@ public class PlayerWalkingParticleSystem extends BaseParticleSystem
 			float randomRadius = random(0, maxForce);
 			float circleX = cos(randomAngle) * randomRadius;
 			float circleY = sin(randomAngle) * randomRadius;
-			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
-
+            
             if(circleY > 0)
             {
                 circleY *= -1;
             }
+
+			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
 
             PVector particleSpawnPosition = new PVector(position.x + 20, position.y + 35);
 
