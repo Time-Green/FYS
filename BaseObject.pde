@@ -38,7 +38,6 @@ class BaseObject
 
 		for(BaseObject lightSource : lightSources)
 		{
-
 			float distanceToLightSource = dist(position.x, position.y, lightSource.position.x, lightSource.position.y);
 
 			//make sure we dont add to much light or remove brightness
@@ -55,9 +54,9 @@ class BaseObject
 		PVector camPos = camera.getPosition();
 
 		if (position.y > -camPos.y - Globals.TILE_SIZE
-		&& position.y < -camPos.y + height
-		&& position.x > -camPos.x - Globals.TILE_SIZE
-		&& position.x < -camPos.x + width)
+			&& position.y < -camPos.y + height
+			&& position.x > -camPos.x - Globals.TILE_SIZE
+			&& position.x < -camPos.x + width)
 		{
 			return true;
 		}
@@ -97,9 +96,11 @@ class BaseObject
 			case FRONT:
 				drawForegroundList.add(this);
 				break;
+
 			case BACK:
 				drawBackgroundList.add(this);
 				break;
+				
 			default: //automaticly includes MIDDLE
 				drawMiddlegroundList.add(this);
 				break;
