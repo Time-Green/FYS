@@ -16,7 +16,7 @@ public class EmmitingParticleSystem extends BaseParticleSystem
 
     void update()
 	{
-        if(Globals.gamePaused)
+        if(gamePaused)
 		{
 			return;
 		}

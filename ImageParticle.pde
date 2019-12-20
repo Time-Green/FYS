@@ -16,7 +16,7 @@ public class ImageParticle extends BaseParticle
 
 	void update()
 	{
-		if(Globals.gamePaused)
+		if(gamePaused)
 		{
 			return;
 		}

@@ -4,7 +4,7 @@ public class IronTile extends ResourceTile
 	{
 		super(x, y);
 
-		value = Globals.IRONVALUE;
+		value = IRON_VALUE;
 		
 		particleColor = color(#ccccc6);
 

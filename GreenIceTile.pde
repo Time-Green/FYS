@@ -6,7 +6,7 @@ public class GreenIceTile extends ResourceTile
 		
 		particleColor = color(#24d12b);
 
-		value = Globals.GREENICEVALUE;
+		value = GREEN_ICE_VALUE;
 		slipperiness = 1.1;
 
 		image = ResourceManager.getImage("GreenIceBlock");

@@ -48,25 +48,6 @@ boolean startGame = false; //start the game on next tick. needed to avoid concur
 
 PGraphics leaderBoardGraphics;
 
-//god i wish java had defines
-final int NORTH = 0;
-final int SOUTH = 1;
-final int EAST = 2;
-final int WEST = 3;
-final int NORTHEAST = 4;
-final int SOUTHEAST = 5;
-final int NORTHWEST = 6;
-final int SOUTHWEST = 7;
-
-//drawing layers
-final int BACKGROUND_LAYER = 0;
-final int BACKWALL_LAYER = 1;
-final int OBJECT_LAYER = 2;
-final int MOB_LAYER = 3;
-final int PLAYER_LAYER = 4;
-final int TILE_LAYER = 5;
-final int PRIORITY_LAYER = 6;
-
 void setup()
 {
 	dh = new DisposeHandler(this);
@@ -131,14 +112,14 @@ void login()
 
 private void generateLeaderboardGraphics()
 {
-	leaderBoardGraphics = createGraphics(int(Globals.TILE_SIZE * 9), int(Globals.TILE_SIZE * 5));
+	leaderBoardGraphics = createGraphics(int(TILE_SIZE * 9), int(TILE_SIZE * 5));
 
 	leaderBoardGraphics.beginDraw();
 
 	leaderBoardGraphics.textAlign(CENTER, CENTER);
 	leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
 	leaderBoardGraphics.textSize(25);
-	leaderBoardGraphics.text("Leaderboard", (Globals.TILE_SIZE * 9) / 2, 20);
+	leaderBoardGraphics.text("Leaderboard", (TILE_SIZE * 9) / 2, 20);
 
 	leaderBoardGraphics.textSize(12);
 
@@ -288,7 +269,7 @@ void draw()
 
 	world.updateDepth();
 
-	if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE)
+	if (currentGameState == GameState.InGame && player.position.y < (OVERWORLD_HEIGHT + 5) * TILE_SIZE)
 	{
 		ui.drawArrows();
 	}
@@ -349,11 +330,11 @@ void drawObjects()
 
 void handleGameFlow()
 {
-  switch (Globals.currentGameState)
+  switch (currentGameState)
   {
 	case MainMenu:
 		//if we are in the main menu we start the game by pressing enter
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
 			enterOverWorld(false);
 		}
@@ -362,40 +343,40 @@ void handleGameFlow()
 
 	case InGame:
 		//Pauze the game
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
-			Globals.currentGameState = Globals.GameState.GamePaused;
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			currentGameState = GameState.GamePaused;
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		break;
 
 	case GameOver:
-		Globals.gamePaused = true;
+		gamePaused = true;
 
 		//if we died and we uploaded the run stats, we restart the game by pressing enter
-		if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults)
+		if (InputHelper.isKeyDown(START_KEY) && !isUploadingRunResults)
 		{
 			generateLeaderboardGraphics();
 			enterOverWorld(true);
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		break;
 
 	case GamePaused:
-		Globals.gamePaused = true;
+		gamePaused = true;
 
 		//if the game has been paused the player can contineu the game
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
-			Globals.gamePaused = false;
-			Globals.currentGameState = Globals.GameState.InGame;
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			gamePaused = false;
+			currentGameState = GameState.InGame;
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		//Reset game to over world
-		if (InputHelper.isKeyDown(Globals.BACKKEY))
+		if (InputHelper.isKeyDown(BACK_KEY))
 		{
 			enterOverWorld(true);
 		}
@@ -413,8 +394,8 @@ void enterOverWorld(boolean reloadGame)
 	}
 
 	//AudioManager.loopMusic("ForestAmbianceMusic"); 
-	Globals.gamePaused = false;
-	Globals.currentGameState = Globals.GameState.Overworld;
+	gamePaused = false;
+	currentGameState = GameState.Overworld;
 	camera.lerpAmount = 0.075f;
 }
 
@@ -428,8 +409,8 @@ void startAsteroidRain()
 {
 	thread("startRegisterRunThread");
 
-	Globals.gamePaused = false;
-	Globals.currentGameState = Globals.GameState.InGame;
+	gamePaused = false;
+	currentGameState = GameState.InGame;
 
 	AudioManager.stopMusic("ForestAmbianceMusic");
 	AudioManager.loopMusic("BackgroundMusic");
@@ -442,8 +423,8 @@ void startAsteroidRain()
 void endRun()
 {
 	isUploadingRunResults = true;
-	Globals.gamePaused = true;
-	Globals.currentGameState = Globals.GameState.GameOver;
+	gamePaused = true;
+	currentGameState = GameState.GameOver;
 	
 	ui.setupRunEnd();
 	AudioManager.stopMusic("BackgroundMusic");

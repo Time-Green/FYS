@@ -6,7 +6,7 @@ public class BlueIceTile extends ResourceTile
 
 		particleColor = color(#0d7fdb);
 
-		value = Globals.BLUEICEVALUE;
+		value = BLUE_ICE_VALUE;
 
 		slipperiness = 1.1;
 

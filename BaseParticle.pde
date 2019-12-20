@@ -36,7 +36,7 @@ public class BaseParticle extends Movable
 
 	void update()
 	{
-		if(Globals.gamePaused)
+		if(gamePaused)
 		{
 			return;
 		}

@@ -51,16 +51,16 @@ class Player extends Mob
 
 	void update()
 	{
-		if (Globals.gamePaused)
+		if (gamePaused)
 		{  
 			return;
 		}
 
 		super.update();
 
-		if(player.getDepth() - Globals.OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(Globals.LONEDIGGERACHIEVEMENT))
+		if(player.getDepth() - OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(LONE_DIGGER_ACHIEVEMENT))
 		{
-			achievementHelper.unlock(Globals.LONEDIGGERACHIEVEMENT); 
+			achievementHelper.unlock(LONE_DIGGER_ACHIEVEMENT); 
 		}
 
 		setVisibilityBasedOnCurrentBiome();
@@ -95,24 +95,24 @@ class Player extends Mob
 		{
 			if(collectedRelicShardInventory.relicshardid == 0)
 			{
-				baseDamage += Globals.DAMAGE_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				baseDamage += DAMAGE_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 1)
 			{
-				maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
-				currentHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				maxHealth += HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				currentHealth += HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 2)
 			{
-				regen += Globals.REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				regen += REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 3)
 			{
-				this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				this.speed += SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 4)
 			{
-				viewAmount += Globals.LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				viewAmount += LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 		}
 	}
@@ -135,13 +135,13 @@ class Player extends Mob
 
 	void draw()
 	{
-		if(Globals.currentGameState == Globals.GameState.GameOver)
+		if(currentGameState == GameState.GameOver)
 		{
 			// dont draw when we are dead
 			return;
 		}
 
-		if(Globals.gamePaused)
+		if(gamePaused)
 		{
 			animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
 			animatedImageIdle.draw();
@@ -177,7 +177,7 @@ class Player extends Mob
 		}
 		else // Play the other animations when we are not stunned
 		{
-			if ((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) // Walking
+			if ((InputHelper.isKeyDown(LEFT_KEY) || InputHelper.isKeyDown(RIGHT_KEY)) && isGrounded()) // Walking
 			{
 				walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
 				walkCycle.draw();
@@ -186,12 +186,12 @@ class Player extends Mob
 				PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(position, 1, 2, standingOn.particleColor);
 				load(particleSystem);
 			}
-			else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) //Jumping
+			else if ((InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2))) //Jumping
 			{
 				animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageAir.draw();
 			}
-			else if (InputHelper.isKeyDown(Globals.DIGKEY) && Globals.currentGameState == Globals.GameState.InGame) //Digging
+			else if (InputHelper.isKeyDown(DIG_KEY) && currentGameState == GameState.InGame) //Digging
 			{
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();
@@ -219,7 +219,7 @@ class Player extends Mob
 
 		gravityForce = 1f;
 
-		if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded())
+		if ((InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2)) && isGrounded())
 		{
 			if (!isSwimming)
 			{
@@ -232,13 +232,13 @@ class Player extends Mob
 			}
 
 		}
-		else if(!InputHelper.isKeyDown(Globals.JUMPKEY1) && !InputHelper.isKeyDown(Globals.JUMPKEY2) && !isGrounded())
+		else if(!InputHelper.isKeyDown(JUMP_KEY_1) && !InputHelper.isKeyDown(JUMP_KEY_2) && !isGrounded())
 		{
 			//allow for short jumps
 			gravityForce = 1.8f;
 		}
 
-		if (InputHelper.isKeyDown(Globals.DIGKEY))
+		if (InputHelper.isKeyDown(DIG_KEY))
 		{
 			isMiningDown = true;
 
@@ -253,7 +253,7 @@ class Player extends Mob
 			isMiningDown = false;
 		}
 
-		if (InputHelper.isKeyDown(Globals.LEFTKEY))
+		if (InputHelper.isKeyDown(LEFT_KEY))
 		{
 			addForce(new PVector(-speed, 0));
 			isMiningLeft = true;
@@ -264,7 +264,7 @@ class Player extends Mob
 			isMiningLeft = false;
 		}
 
-		if (InputHelper.isKeyDown(Globals.RIGHTKEY))
+		if (InputHelper.isKeyDown(RIGHT_KEY))
 		{
 			addForce(new PVector(speed, 0));
 			isMiningRight = true;
@@ -275,16 +275,16 @@ class Player extends Mob
 			isMiningRight = false;
 		}
 
-		if (InputHelper.isKeyDown(Globals.INVENTORYKEY))
+		if (InputHelper.isKeyDown(INVENTORY_KEY))
 		{ 
 			useInventory();
-			InputHelper.onKeyReleased(Globals.INVENTORYKEY);
+			InputHelper.onKeyReleased(INVENTORY_KEY);
 		}
 
-		if (InputHelper.isKeyDown(Globals.ITEMKEY))
+		if (InputHelper.isKeyDown(ITEM_KEY))
 		{
 			switchInventory();
-			InputHelper.onKeyReleased(Globals.ITEMKEY);
+			InputHelper.onKeyReleased(ITEM_KEY);
 		}
 	}
 

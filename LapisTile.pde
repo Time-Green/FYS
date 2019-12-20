@@ -4,7 +4,7 @@ public class LapisTile extends ResourceTile
 	{
 		super(x, y);
 
-		value = Globals.LAPISVALUE;
+		value = LAPIS_VALUE;
 
 		image = ResourceManager.getImage("LapisBlock");
 		breakSound = "GlassBreak" + floor(random(1, 4));

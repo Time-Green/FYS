@@ -15,7 +15,7 @@ public class ExplosionParticle extends BaseParticle
 
 	void update()
 	{
-		if(Globals.gamePaused)
+		if(gamePaused)
 		{
 			return;
 		}

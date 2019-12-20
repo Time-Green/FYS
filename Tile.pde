@@ -29,11 +29,11 @@ class Tile extends BaseObject {
     drawLayer = TILE_LAYER;
     movableCollision = true;
 
-    position.x = x * Globals.TILE_SIZE;
-    position.y = y * Globals.TILE_SIZE;
+    position.x = x * TILE_SIZE;
+    position.y = y * TILE_SIZE;
 
-    size.x = Globals.TILE_SIZE;
-    size.y = Globals.TILE_SIZE;
+    size.x = TILE_SIZE;
+    size.y = TILE_SIZE;
 
     gridPosition.x = x;
     gridPosition.y = y;
@@ -43,7 +43,7 @@ class Tile extends BaseObject {
 
     breakSound = "StoneBreak" + floor(random(1, 5));
 
-    if (y > Globals.OVERWORLD_HEIGHT) 
+    if (y > OVERWORLD_HEIGHT) 
     {
       destroyedImage = ResourceManager.getImage("DestroyedBlock");
     } else 
@@ -56,7 +56,7 @@ class Tile extends BaseObject {
   private void setupCave(World world) {
 
     //11 is grass layer + transition layer
-    if (gridPosition.y > Globals.OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
+    if (gridPosition.y > OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
     {
       breakTile();
 
@@ -113,7 +113,7 @@ class Tile extends BaseObject {
       }
 
       tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
-      image(image, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(image, position.x, position.y, TILE_SIZE, TILE_SIZE);
       drawDecals();
       tint(255);
     } else 
@@ -121,7 +121,7 @@ class Tile extends BaseObject {
       if (destroyedImage != null) 
       {
         tint(lightningAmount);
-        image(destroyedImage, position.x, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+        image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
         tint(255);
       }
     }
@@ -241,16 +241,16 @@ class Tile extends BaseObject {
       return; //again we dont need airdecals or decals for those who dont want it
     }
     //cardinals
-    Tile tileEast = world.getTile(position.x + Globals.TILE_SIZE, position.y);
-    Tile tileWest = world.getTile(position.x - Globals.TILE_SIZE, position.y);
-    Tile tileNorth = world.getTile(position.x, position.y - Globals.TILE_SIZE);
-    Tile tileSouth = world.getTile(position.x, position.y + Globals.TILE_SIZE);
+    Tile tileEast = world.getTile(position.x + TILE_SIZE, position.y);
+    Tile tileWest = world.getTile(position.x - TILE_SIZE, position.y);
+    Tile tileNorth = world.getTile(position.x, position.y - TILE_SIZE);
+    Tile tileSouth = world.getTile(position.x, position.y + TILE_SIZE);
 
     //diagonals
-    Tile tileNorthEast = world.getTile(position.x + Globals.TILE_SIZE, position.y - Globals.TILE_SIZE);
-    Tile tileNorthWest = world.getTile(position.x - Globals.TILE_SIZE, position.y - Globals.TILE_SIZE);
-    Tile tileSouthEast = world.getTile(position.x + Globals.TILE_SIZE, position.y + Globals.TILE_SIZE);
-    Tile tileSouthWest = world.getTile(position.x - Globals.TILE_SIZE, position.y + Globals.TILE_SIZE);
+    Tile tileNorthEast = world.getTile(position.x + TILE_SIZE, position.y - TILE_SIZE);
+    Tile tileNorthWest = world.getTile(position.x - TILE_SIZE, position.y - TILE_SIZE);
+    Tile tileSouthEast = world.getTile(position.x + TILE_SIZE, position.y + TILE_SIZE);
+    Tile tileSouthWest = world.getTile(position.x - TILE_SIZE, position.y + TILE_SIZE);
 
     if(tileEast != null && !tileEast.density)
     {
@@ -296,10 +296,10 @@ class Tile extends BaseObject {
     }
 
     Tile[] tiles = {
-      world.getTile(position.x + Globals.TILE_SIZE, position.y), 
-      world.getTile(position.x - Globals.TILE_SIZE, position.y),
-      world.getTile(position.x, position.y + Globals.TILE_SIZE),
-      world.getTile(position.x, position.y - Globals.TILE_SIZE)
+      world.getTile(position.x + TILE_SIZE, position.y), 
+      world.getTile(position.x - TILE_SIZE, position.y),
+      world.getTile(position.x, position.y + TILE_SIZE),
+      world.getTile(position.x, position.y - TILE_SIZE)
     };
 
     for(int i = 0; i < tiles.length; i++)
@@ -316,29 +316,29 @@ class Tile extends BaseObject {
 
   void drawDecals(){
     if(decals[NORTH]){
-      image(ResourceManager.getImage(decalType + "_n"), position.x, position.y - Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_n"), position.x, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
     if(decals[SOUTH]){
-      image(ResourceManager.getImage(decalType + "_s"), position.x, position.y + Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_s"), position.x, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
     if(decals[WEST]){
-      image(ResourceManager.getImage(decalType + "_w"), position.x  - Globals.TILE_SIZE, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_w"), position.x  - TILE_SIZE, position.y, TILE_SIZE, TILE_SIZE);
     }
     if(decals[EAST]){
-      image(ResourceManager.getImage(decalType + "_e"), position.x  + Globals.TILE_SIZE, position.y, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_e"), position.x  + TILE_SIZE, position.y, TILE_SIZE, TILE_SIZE);
     }
 
     if(decals[NORTHEAST]){
-      image(ResourceManager.getImage(decalType + "_ne"), position.x + Globals.TILE_SIZE, position.y - Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_ne"), position.x + TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
     if(decals[SOUTHEAST]){
-      image(ResourceManager.getImage(decalType + "_se"), position.x + Globals.TILE_SIZE, position.y + Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_se"), position.x + TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
     if(decals[NORTHWEST]){
-      image(ResourceManager.getImage(decalType + "_nw"), position.x  - Globals.TILE_SIZE, position.y - Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_nw"), position.x  - TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
     if(decals[SOUTHEAST]){
-      image(ResourceManager.getImage(decalType + "_se"), position.x  + Globals.TILE_SIZE, position.y + Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
+      image(ResourceManager.getImage(decalType + "_se"), position.x  + TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
   }
 }

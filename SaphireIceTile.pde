@@ -6,7 +6,7 @@ public class SaphireIceTile extends ResourceTile
 
 		particleColor = color(#152fd6);
 
-		value = Globals.GREENICEVALUE;
+		value = GREEN_ICE_VALUE;
 		slipperiness = 1.1;
 
 		image = ResourceManager.getImage("IceBlock2");

@@ -18,9 +18,9 @@ class WallOfDeath extends Movable
 
 	WallOfDeath()
 	{
-		float worldWidth = Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE;
+		float worldWidth = TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE;
 
-		size.set(worldWidth, Globals.TILE_SIZE * 2);
+		size.set(worldWidth, TILE_SIZE * 2);
 		position.y = player.position.y - maxDistanceFromPlayer;
 
 		//for debug only, Remove this line of code when puplishing
@@ -33,7 +33,7 @@ class WallOfDeath extends Movable
 
 	void update()
 	{
-		if (Globals.gamePaused || Globals.currentGameState == Globals.GameState.Overworld)
+		if (gamePaused || currentGameState == GameState.Overworld)
 		{
 			return;
 		}
@@ -86,7 +86,7 @@ class WallOfDeath extends Movable
 
 	private void doStartingCameraShake()
 	{
-		if (Globals.currentGameState == Globals.GameState.InGame && isInBeginfase)
+		if (currentGameState == GameState.InGame && isInBeginfase)
 		{
 			camera.induceStress(1f - gameStartSpawnMult * 1.5f);
 		}
@@ -97,8 +97,8 @@ class WallOfDeath extends Movable
 	{
 		if (CollisionHelper.rectRect(position, size, player.position, player.size))
 		{
-			Globals.gamePaused = true;
-			Globals.currentGameState = Globals.GameState.GameOver;
+			gamePaused = true;
+			currentGameState = GameState.GameOver;
 		}
 	}
 
@@ -157,25 +157,25 @@ class WallOfDeath extends Movable
 
 	private void spawnTargetedMeteor(float targetPosX)
 	{
-		float spawnPosX = targetPosX + random(-Globals.TILE_SIZE * 2, Globals.TILE_SIZE * 2);
+		float spawnPosX = targetPosX + random(-TILE_SIZE * 2, TILE_SIZE * 2);
 
 		load(new Meteor(), new PVector(spawnPosX, position.y));
 	}
 
 	private void spawnMeteorAbovePlayer()
 	{
-		float spawnPosX = player.position.x + random(-Globals.TILE_SIZE * 2, Globals.TILE_SIZE * 2);
+		float spawnPosX = player.position.x + random(-TILE_SIZE * 2, TILE_SIZE * 2);
 
 		load(new Meteor(), new PVector(spawnPosX, position.y));
 	}
 
 	private void spawnRandomTargetedMeteor()
 	{
-		float spawnX = random(Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE); 
+		float spawnX = random(TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE); 
 
 		while (abs(player.position.x - spawnX) < BEGINFASE_OVERWORLD_HEIGHT)
 		{
-			spawnX = random(Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE);
+			spawnX = random(TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE);
 		}
 
 		load(new Meteor(), new PVector(spawnX, position.y));
@@ -186,7 +186,7 @@ class WallOfDeath extends Movable
 		for (BaseObject object : updateList)
 		{
 			//is the object above the wall of death..
-			if (object.position.y < position.y - DESTROYTILESAFTER * Globals.TILE_SIZE)
+			if (object.position.y < position.y - DESTROYTILESAFTER * TILE_SIZE)
 			{
 				//..and its not the player..
 				if (object instanceof Player)

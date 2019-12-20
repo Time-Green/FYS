@@ -21,7 +21,7 @@ class DungeonBlock1 extends Tile
     setMaxHp(30);
 
 		//make it a lightsource if it is the button altar, "sun"
-		if(y == Globals.OVERWORLD_HEIGHT)
+		if(y == OVERWORLD_HEIGHT)
 		{
 			setupLightSource(this, 600f, 0.03f);
 		}

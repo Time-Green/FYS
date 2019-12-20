@@ -43,7 +43,7 @@ class EnemyBomb extends Enemy
 	void draw()
 	{
 		//Do nothing while paused
-		if (Globals.gamePaused)
+		if (gamePaused)
 		{
 			return;
 		}
