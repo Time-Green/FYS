@@ -66,12 +66,13 @@ final int BACK = 3;
 
 void setup()
 {
-	this.surface.setTitle("Rocky Rain");
-
 	dh = new DisposeHandler(this);
 
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
+
+	surface.setResizable(true);
+	surface.setTitle("Rocky Rain");
 
 	checkUser();
 

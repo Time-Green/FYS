@@ -89,6 +89,7 @@ class Movable extends BaseObject
 					attemptMine(object);
 				} 
 			}
+			
 			velocity.y = max(velocity.y, 0);
 		}
 
@@ -143,8 +144,8 @@ class Movable extends BaseObject
 				}
 
 				velocity.x = 0;
-				}
 			}
+		}
 		else if (velocity.x > 0)
 		{
 			colliders = checkCollision(world, max(velocity.x, 0), 0);
@@ -167,9 +168,9 @@ class Movable extends BaseObject
 				}
 
 				velocity.x = 0;
-				}
 			}
 		}
+	}
 
 	void draw()
 	{
