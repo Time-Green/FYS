@@ -34,6 +34,11 @@ class Mob extends Movable
 	private int fireTimer;
 	private int regenTimer;
 
+	Mob(){
+		super();
+		drawLayer = MOB_LAYER;
+	}
+
 	public void update()
 	{
 		super.update();

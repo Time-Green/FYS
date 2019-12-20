@@ -35,7 +35,7 @@ public class WoodPlankTile extends Tile
 	{
 		super(x, y);
 
-		drawLayer = BACK;
+		drawLayer = BACKWALL_LAYER;
 		image = ResourceManager.getImage("WoodPlank");
 	}
 
@@ -44,7 +44,7 @@ public class WoodPlankTile extends Tile
 	{
 		super(x, y);
 		
-		drawLayer = BACK;
+		drawLayer = BACKWALL_LAYER;
 
 		setLeaderboardImage(structureTilePosition);
 	}
@@ -74,7 +74,7 @@ public class Fencepost extends Tile
 	{
 		super(x, y);
 
-		drawLayer = BACK;
+		drawLayer = BACKWALL_LAYER;
 		image = ResourceManager.getImage("Fencepost");
 	}
 }

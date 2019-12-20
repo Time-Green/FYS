@@ -5,10 +5,9 @@ ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and l
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
-// Lists we draw from
-ArrayList<BaseObject> drawForegroundList = new ArrayList<BaseObject>();
-ArrayList<BaseObject> drawMiddlegroundList = new ArrayList<BaseObject>();
-ArrayList<BaseObject> drawBackgroundList = new ArrayList<BaseObject>();
+//Drawing
+ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
+int drawingLayers = 10; //increase if you add more layers
 
 // These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -59,10 +58,14 @@ final int SOUTHEAST = 5;
 final int NORTHWEST = 6;
 final int SOUTHWEST = 7;
 
-//for drawlayers
-final int FRONT = 1;
-final int MIDDLE = 2;
-final int BACK = 3;
+//drawing layers
+final int BACKGROUND_LAYER = 0;
+final int BACKWALL_LAYER = 1;
+final int OBJECT_LAYER = 2;
+final int MOB_LAYER = 3;
+final int PLAYER_LAYER = 4;
+final int TILE_LAYER = 5;
+final int PRIORITY_LAYER = 6;
 
 void setup()
 {
@@ -214,15 +217,14 @@ void setupGame()
 {
 	player = null; //fixed world generation bug on restart
 	updateList.clear();
-	drawForegroundList.clear();
-	drawMiddlegroundList.clear();
-	drawBackgroundList.clear();
 	destroyList.clear();
 	loadList.clear();
 	tileList.clear();
 	movableList.clear();
 	mobList.clear();
 	lightSources.clear();
+
+	prepareDrawingLayers();
 
 	runData = new RunData();
 
@@ -239,6 +241,14 @@ void setupGame()
 	camera = new Camera(player);
 
 	AudioManager.loopMusic("ForestAmbianceMusic"); 
+}
+
+void prepareDrawingLayers(){
+	drawList = new ArrayList<ArrayList>();
+	for(int i = 0; i < drawingLayers; i++)
+	{
+		drawList.add(new ArrayList<BaseObject>());
+	}
 }
 
 void draw()
@@ -318,17 +328,6 @@ void updateObjects()
 		object.update();
 	}
 
-	for (BaseObject object : reloadList)
-	{
-		drawForegroundList.remove(object); //remove from all since it's inherently sane to use remove proc 
-		drawBackgroundList.remove(object);
-		drawMiddlegroundList.remove(object);
-
-		object.insertIntoLayer(object.drawLayer);
-	}
-
-	reloadList.clear();
-
 	//used to start the game with the button
 	if (startGame)
 	{
@@ -339,17 +338,12 @@ void updateObjects()
 
 void drawObjects()
 {
-	for (BaseObject object : drawBackgroundList)
+	for(ArrayList<BaseObject> drawUs : drawList)
 	{
-		object.draw();
-	}
-	for (BaseObject object : drawMiddlegroundList)
-	{
-		object.draw();
-	}
-	for (BaseObject object : drawForegroundList)
-	{
-		object.draw();
+		for(BaseObject object : drawUs)
+		{
+			object.draw();
+		}
 	}
 }
 
@@ -670,36 +664,6 @@ void keyPressed()
 	// {
 	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
 	// }
-
-	if (key == 'I' || key == 'i')
-	{ 
-		for(BaseObject object : drawBackgroundList)
-		{
-			println(object);
-		}
-	}
-
-	if (key == 'O' || key == 'o')
-	{ 
-		for(BaseObject object : drawMiddlegroundList)
-		{
-			println(object);
-		}
-	}
-
-	if (key == 'P' || key == 'p')
-	{ 
-		for(BaseObject object : drawForegroundList)
-		{
-			println(object);
-		}
-	}
-	
-	if (key == 'L' || key == 'l')
-	{ 
-		player.drawLayer = FRONT;
-		reload(player);
-	}
 }
 
 void keyReleased()

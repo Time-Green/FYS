@@ -5,7 +5,7 @@ class BaseObject
 	protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
 	protected boolean density = true;
 
-	protected int drawLayer = MIDDLE; //true to insert at the front of draw, so player doesn't get loaded behind tiles
+	protected int drawLayer = OBJECT_LAYER; //true to insert at the front of draw, so player doesn't get loaded behind tiles
 	protected boolean movableCollision = false; //do we collide with movables themselves?
 
 	boolean suspended = false; //set to true to stop drawing and updating, practically 'suspending' it outside of the game
@@ -26,6 +26,32 @@ class BaseObject
 	void draw()
 	{
 
+	}
+
+	void moveLayer(int newLayer)
+	{
+		removeFromDrawLayer();
+		insertIntoDrawLayer(newLayer);
+
+		drawLayer = newLayer;
+	}
+
+	void removeFromDrawLayer()
+	{
+		ArrayList<BaseObject> removeFrom = drawList.get(drawLayer);
+		removeFrom.remove(this);
+	}
+
+	void insertIntoDrawLayer(int layer)
+	{
+		if(layer > drawingLayers)
+		{
+			println("ERROR: Attempted to draw " + this + " on a layer that doesn't exist! Increse drawingLayer in main.pde");
+			return;
+		}
+
+		ArrayList<BaseObject> targetList = drawList.get(layer); //get the list inside the list on the right layer
+		targetList.add(this);
 	}
 
 	private void updateLightning()
@@ -72,10 +98,7 @@ class BaseObject
 	void destroyed()
 	{
 		updateList.remove(this);
-
-		drawForegroundList.remove(this);
-		drawMiddlegroundList.remove(this);
-		drawBackgroundList.remove(this);
+		removeFromDrawLayer();
 
 		return;
 	}
@@ -91,25 +114,8 @@ class BaseObject
 	void specialAdd()
 	{
 		updateList.add(this);
-		insertIntoLayer(drawLayer);
-	}
+		insertIntoDrawLayer(drawLayer);
 
-	void insertIntoLayer(int layer)
-	{
-		switch(drawLayer)
-		{
-			case FRONT:
-				drawForegroundList.add(this);
-				break;
-
-			case BACK:
-				drawBackgroundList.add(this);
-				break;
-
-			default: //automaticly includes MIDDLE
-				drawMiddlegroundList.add(this);
-				break;
-		}
 	}
 
 	// could be useful for attacking

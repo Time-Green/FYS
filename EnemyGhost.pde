@@ -7,7 +7,7 @@ class EnemyGhost extends Enemy
 		image = ResourceManager.getImage("GhostEnemy2");
 		setupLightSource(this, 125f, 1f);
 		setMaxHp(1000);
-		drawLayer = FRONT;
+		drawLayer = PRIORITY_LAYER;
 
 		speed = random(2.5f, 7.5f);
 
