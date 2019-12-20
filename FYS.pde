@@ -106,17 +106,24 @@ void checkUser()
 
 void login() 
 {
-  databaseManager.login();
-  loginStatus = "Getting player inventory";
-  totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
-  loginStatus = "Getting achievement data";
-  allAchievements = databaseManager.getAllAchievements();
-  loginStatus = "Getting player achievements";
-  unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
-  loginStatus = "Getting leaderboard";
-  leaderBoard = databaseManager.getLeaderboard(10);
-  loginStatus = "";
-  vars = databaseManager.getAllVars();
+	loginStatus = "Logging in";
+	databaseManager.login();
+
+	loginStatus = "Getting player inventory";
+	totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
+
+	loginStatus = "Getting achievement data";
+	allAchievements = databaseManager.getAllAchievements();
+
+	loginStatus = "Getting player achievements";
+	unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
+
+	loginStatus = "Getting leaderboard";
+	leaderBoard = databaseManager.getLeaderboard(10);
+
+	loginStatus = "Logged in";
+
+	vars = databaseManager.getAllVars();
 }
 
 private void generateLeaderboardGraphics()
@@ -237,8 +244,16 @@ void setupGame()
 
 void draw()
 {
+	if(userInLoginScreen)
+	{
+		loginScreen.update();
+		loginScreen.draw();
+
+		return;
+	}
+
 	//wait until all resources are loaded and we are logged in
-	if (!ResourceManager.isAllLoaded() || loginStatus != "")
+	if (!ResourceManager.isAllLoaded() || loginStatus == "Logged in")
 	{
 		handleLoadingScreen();
 
@@ -467,7 +482,7 @@ void handleLoadingScreen()
 	}
 
 	//login
-	if(loginStatus != "")
+	if(loginStatus != "Logged in")
 	{
 		//handleDots();
 		text(loginStatus + dots, width / 2, height - 55);
