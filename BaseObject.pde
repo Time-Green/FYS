@@ -10,13 +10,17 @@ class BaseObject
 
 	boolean suspended = false; //set to true to stop drawing and updating, practically 'suspending' it outside of the game
 
+	boolean enableLightning = true;
 	float lightningAmount = 255.0f; // the amount this object is lit up (0-255)
 	float lightEmitAmount = 0.0f; // the amount of light this object emits
 	float distanceDimFactor = 1;
 
 	void update()
 	{
-		updateLightning();
+		if(enableLightning)
+		{
+			updateLightning();
+		}
 	}
 
 	void draw()
@@ -72,7 +76,7 @@ class BaseObject
 		drawForegroundList.remove(this);
 		drawMiddlegroundList.remove(this);
 		drawBackgroundList.remove(this);
-		
+
 		return;
 	}
 

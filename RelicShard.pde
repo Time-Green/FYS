@@ -4,7 +4,6 @@ class RelicShard extends PickUp
 
 	RelicShard()
 	{
-
 		// 0: mine boost
 		// 1: healthboost
 		// 2: regenboost

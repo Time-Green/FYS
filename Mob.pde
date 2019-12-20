@@ -181,6 +181,11 @@ class Mob extends Movable
 			if(currentHealth < maxHealth)
 			{
 				currentHealth += regen;
+
+				if(this == player && currentHealth >= maxHealth / 5f)
+				{
+					ui.drawWarningOverlay = false;
+				}
 			}
 		}
 
