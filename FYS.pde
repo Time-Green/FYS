@@ -40,17 +40,15 @@ boolean isUploadingRunResults = false;
 // used to run code on closing game
 DisposeHandler dh;
 
+// global game objects
 World world;
 Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
-Enemy[] enemies;
 
-boolean hasCalledAfterResourceLoadSetup = false;
-boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
-
-PGraphics leaderBoardGraphics;
+boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
+boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
 
 void setup()
 {
@@ -92,59 +90,6 @@ void checkUser()
 	}
 }
 
-private void generateLeaderboardGraphics()
-{
-	leaderBoardGraphics = createGraphics(int(TILE_SIZE * 9), int(TILE_SIZE * 5));
-
-	leaderBoardGraphics.beginDraw();
-
-	leaderBoardGraphics.textAlign(CENTER, CENTER);
-	leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
-	leaderBoardGraphics.textSize(25);
-	leaderBoardGraphics.text("Leaderboard", (TILE_SIZE * 9) / 2, 20);
-
-	leaderBoardGraphics.textSize(12);
-
-	int i = 0;
-
-	leaderBoardGraphics.textAlign(LEFT, CENTER);
-
-	for (LeaderboardRow leaderboardRow : leaderBoard)
-	{
-		if(i == 0)
-		{
-			leaderBoardGraphics.fill(#C98910);
-		}
-		else if(i == 1)
-		{
-			leaderBoardGraphics.fill(#A8A8A8);
-		}
-		else if(i == 2)
-		{
-			leaderBoardGraphics.fill(#cd7f32);
-		}
-		else if(leaderboardRow.userName.equals(dbUser.userName))
-		{
-			leaderBoardGraphics.fill(255); // WIP
-		}
-		else
-		{
-			leaderBoardGraphics.fill(255);
-		}
-		
-		leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
-
-		//println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
-
-		i++;
-  }
-
-  leaderBoardGraphics.endDraw();
-}
-
 // used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
@@ -169,8 +114,6 @@ void afterResouceLoadingSetup()
 	{
 		AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
 	}
-
-	generateLeaderboardGraphics();
 
 	//setup game and show title screen
 	setupGame();
@@ -203,7 +146,10 @@ void setupGame()
 
 	camera = new Camera(player);
 
-	AudioManager.loopMusic("ForestAmbianceMusic"); 
+	AudioManager.loopMusic("ForestAmbianceMusic");
+
+	// update leaderboard texture with new scores
+	ui.generateLeaderboardGraphics();
 }
 
 void prepareDrawingLayers()
@@ -342,7 +288,6 @@ void handleGameFlow()
 		//if we died and we uploaded the run stats, we restart the game by pressing enter
 		if (InputHelper.isKeyDown(START_KEY) && !isUploadingRunResults)
 		{
-			generateLeaderboardGraphics();
 			enterOverWorld(true);
 			InputHelper.onKeyReleased(START_KEY);
 		}
