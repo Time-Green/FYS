@@ -58,6 +58,9 @@ public class UIController
 	private PFont hudFont;
 	private float hudFontSize = 30;
 
+	// graphics
+	PGraphics leaderBoardGraphics;
+
 	UIController()
 	{
 		titleFont = ResourceManager.getFont("Block Stock");
@@ -65,6 +68,8 @@ public class UIController
 		hudFont = ResourceManager.getFont("Block Stock");
 		healthBarImage = ResourceManager.getImage("health-bar");
 		arrowImage = ResourceManager.getImage("RedArrow");
+
+		generateLeaderboardGraphics();
 	}
 
 	void draw()
@@ -414,5 +419,58 @@ public class UIController
 				depthDisplay = player.getDepth() - OVERWORLD_HEIGHT;
 			}
 		}
+	}
+
+	private void generateLeaderboardGraphics()
+	{
+		leaderBoardGraphics = createGraphics(int(TILE_SIZE * 9), int(TILE_SIZE * 5));
+
+		leaderBoardGraphics.beginDraw();
+
+		leaderBoardGraphics.textAlign(CENTER, CENTER);
+		leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
+		leaderBoardGraphics.textSize(25);
+		leaderBoardGraphics.text("Leaderboard", (TILE_SIZE * 9) / 2, 20);
+
+		leaderBoardGraphics.textSize(12);
+
+		int i = 0;
+
+		leaderBoardGraphics.textAlign(LEFT, CENTER);
+
+		for (LeaderboardRow leaderboardRow : leaderBoard)
+		{
+			if(i == 0)
+			{
+				leaderBoardGraphics.fill(#C98910);
+			}
+			else if(i == 1)
+			{
+				leaderBoardGraphics.fill(#A8A8A8);
+			}
+			else if(i == 2)
+			{
+				leaderBoardGraphics.fill(#cd7f32);
+			}
+			else if(leaderboardRow.userName.equals(dbUser.userName))
+			{
+				leaderBoardGraphics.fill(255); // WIP
+			}
+			else
+			{
+				leaderBoardGraphics.fill(255);
+			}
+			
+			leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
+			leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
+			leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
+			leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
+
+			//println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
+
+			i++;
+		}
+
+		leaderBoardGraphics.endDraw();
 	}
 }
