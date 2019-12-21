@@ -68,6 +68,8 @@ public class UIController
 		hudFont = ResourceManager.getFont("Block Stock");
 		healthBarImage = ResourceManager.getImage("health-bar");
 		arrowImage = ResourceManager.getImage("RedArrow");
+
+		generateLeaderboardGraphics();
 	}
 
 	void draw()

@@ -147,9 +147,6 @@ void setupGame()
 	camera = new Camera(player);
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
-
-	// update leaderboard texture with new scores
-	ui.generateLeaderboardGraphics();
 }
 
 void prepareDrawingLayers()
