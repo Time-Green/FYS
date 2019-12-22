@@ -1,6 +1,7 @@
 class MagmaRock extends Tile
 {
-	float damage = 14;
+	//we want enough damage so the player won't mine trough it
+	float damage = 18;
 
 	MagmaRock(int x, int y)
 	{    
@@ -11,7 +12,7 @@ class MagmaRock extends Tile
 
 		slipperiness = 0.1;
 		healthMultiplier = 3f;
-		setMaxHp(30);
+		setMaxHp(40);
 	}
 
 	void collidedWith(BaseObject object)
