@@ -24,6 +24,15 @@ public class UIController
 	private float slotSize = 60;
 	private float slotOffsetX = slotSize * 1.5f;
 
+	//Healthbar white flashy thing
+	private color flashColor = color(255, 0, 0);
+
+	private float maxBarOffset = 15; //how much we're bigger than the healthbar
+	private float barOffset = 0;    //starts at maxBarOffset and then goes down
+
+	private float tweenFactor = 0.98; //like a coefficient but for tweening
+	private float killFactor = 0.01; //we stop the tweening at 0.01 of maxBarOffet
+
 	//arrows
 	float arrowYTarget = 0;
 	float arrowYOffset = 0;
@@ -271,18 +280,7 @@ public class UIController
 
 	void gameHUD()
 	{
-		rectMode(CORNER); 
-		fill(255, 0, 0);
-		rect(barX, barY, healthBarWidth, healthBarHeight); 
-		fill(0, 255, 0);
-		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
-
-		textFont(hudFont);
-
-		textAlign(CENTER);
-		fill(255);
-		textSize(hudFontSize / 2);
-		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
+		drawHealthBar();
 
 		textAlign(LEFT);
 		fill(255);
@@ -301,6 +299,41 @@ public class UIController
 		}
 
 		drawInventory();
+	}
+
+	void drawHealthBar()
+	{
+		rectMode(CORNER); 
+
+		//the flash thing when you get hurt
+		if(barOffset > maxBarOffset * killFactor) //it'll never truly hit 0, but 0.01 is close enough for us
+		{
+			fill(flashColor);
+			//*2 because we also moved 10 to the left and up, so otherwise we'll just end up on the exact same lower right corner as the bar 
+			rect(barX - barOffset, barY - barOffset, healthBarWidth + barOffset * 2, healthBarHeight + barOffset * 2); 
+
+			barOffset *= tweenFactor; //bootleg tweening
+			noStroke();
+		}
+
+		fill(255, 0, 0);
+		rect(barX, barY, healthBarWidth, healthBarHeight); 
+		fill(0, 255, 0);
+		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
+
+		stroke(0); //we may've changed the stroke in the flashy thing olf the healthbar
+
+		textFont(hudFont);
+
+		textAlign(CENTER);
+		fill(255);
+		textSize(hudFontSize / 2);
+		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
+	}
+
+	public void prepareHealthFlash()
+	{
+		barOffset = maxBarOffset;
 	}
 
 	void drawStats()
