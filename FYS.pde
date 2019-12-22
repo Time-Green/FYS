@@ -72,21 +72,15 @@ void checkUser()
 {
 	String[] userName = loadStrings("DbUser.txt");
 
-	if(userName.length == 1 && !userName[0].equals(""))
+	if(userName.length > 0)
 	{
 		databaseManager.beginLogin(userName[0]);
 	}
-	else if(userName.length == 1 && !userName[0].equals(""))
+	else if(userName.length == 0)
 	{
 		// if no name was filled in, show login screen
 		loginScreen = new LoginScreen();
 		userInLoginScreen = true;
-	}
-	else
-	{
-		// should not happan...
-		println("WARNING DbUser.txt not setup correctly, logging in using username in first line");
-		databaseManager.beginLogin(userName[0]);
 	}
 }
 
@@ -166,6 +160,12 @@ void draw()
 		loginScreen.update();
 		loginScreen.draw();
 
+		// when the filled in name is not empty, we close the login screen
+		if(!loginScreen.enteredName.equals(""))
+		{
+			userFilledInName();
+		}
+
 		return;
 	}
 
@@ -208,6 +208,23 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
+}
+
+void userFilledInName()
+{
+	// tell the game we dont need to show the login screen anymore
+	userInLoginScreen = false;
+
+	// save username for next time the game starts
+	String[] saveData = new String[1];
+	saveData[0] = loginScreen.enteredName;
+	saveStrings("DbUser.txt", saveData);
+
+	// begin login with filled in name
+	databaseManager.beginLogin(saveData[0]);
+
+	// clean up
+	loginScreen = null;
 }
 
 void updateObjects()

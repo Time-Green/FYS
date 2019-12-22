@@ -61,6 +61,9 @@ final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
 
+//login
+final int MAX_LOGIN_NAME_SIZE = 20;
+
 //Gamestate
 boolean gamePaused = true;
 GameState currentGameState = GameState.MainMenu;
