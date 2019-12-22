@@ -1,6 +1,11 @@
 class MagmaRock extends Tile
 {
-	float damage = 14;
+	//we want enough damage so the player won't mine trough it
+	float damage = 18;
+
+	float particleVelocity = -3;
+    int particleDelay = 20;
+	SmokeParticleSystem particleSystem;
 
 	MagmaRock(int x, int y)
 	{    
@@ -11,7 +16,10 @@ class MagmaRock extends Tile
 
 		slipperiness = 0.1;
 		healthMultiplier = 3f;
-		setMaxHp(30);
+		setMaxHp(40);
+
+        particleSystem = new SmokeParticleSystem(position, particleVelocity, particleDelay, false);
+        load(particleSystem);
 	}
 
 	void collidedWith(BaseObject object)
@@ -24,5 +32,12 @@ class MagmaRock extends Tile
 
 			mob.setOnFire();
 		}
+	}
+
+	void breakTile()
+	{
+		delete(particleSystem);
+
+		super.breakTile();
 	}
 }

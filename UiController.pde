@@ -10,11 +10,18 @@ public class UIController
 	private PFont hudFont;
 	private float hudFontSize = 30;
 
+	//Title position
+	private float titleXPos;
+	private float titleYPos;
+
 	//Colors
 	private color titleColor = #ffa259;
 	private color titleBackground = #FFA500;
 	private color inventoryColor = #FBB65E;
 	private color inventorySelectedColor = #56BACF;
+
+	private final color WHITE = #FFFFFF;
+	private final color RED = #FF0000;
 
 	//Game HUD
 	private float hudTextDistanceFromLeft = 10; //The distance from the left side of the screen 
@@ -25,6 +32,7 @@ public class UIController
 	String scoreText = "Score: ";
 	private float extraScoreLiveTimer;
 	private int collectedPoints;
+	int scoreDisplay = 0;
 
 	//Achievement icon
 	private float iconFrameSize = 25; 
@@ -41,7 +49,16 @@ public class UIController
 	private float slotSize = 60;
 	private float slotOffsetX = slotSize * 1.5f;
 
-	//Arrows
+	//Healthbar white flashy thing
+	private color flashColor = color(255, 0, 0);
+
+	private float maxBarOffset = 15; //how much we're bigger than the healthbar
+	private float barOffset = 0;    //starts at maxBarOffset and then goes down
+
+	private float tweenFactor = 0.98; //like a coefficient but for tweening
+	private float killFactor = 0.01; //we stop the tweening at 0.01 of maxBarOffet
+
+	//arrows
 	float arrowYTarget = 0;
 	float arrowYOffset = 0;
 	float easing = 0.05f;
@@ -56,14 +73,14 @@ public class UIController
 
 	String dots = "";
 
-	int scoreDisplay = 0;
-	int depthDisplay = 0;
-
 	//Inventory
 	private float inventorySize = 50;
 
 	private PImage healthBarImage;
 	private PImage arrowImage;
+
+	// graphics
+	PGraphics leaderBoardGraphics;
 
 	UIController()
 	{
@@ -71,14 +88,19 @@ public class UIController
 		instructionFont = ResourceManager.getFont("Block Stock");
 		hudFont = ResourceManager.getFont("Block Stock");
 		healthBarImage = ResourceManager.getImage("health-bar");
-		arrowImage = ResourceManager.getImage("RedArrow");	
+		arrowImage = ResourceManager.getImage("RedArrow");
 
+		generateLeaderboardGraphics();
+
+		//Draw the title in the middle of the screen
+		titleXPos = width / 2;
+		//Draw the title about a third of the screen
+		float distanceFromTheTop = 4.15;
+		titleYPos = (float)height / distanceFromTheTop;
 	}
 
 	void draw()
 	{
-		handleScore();
-		
 		//draw hud at center position
 		rectMode(CENTER);
 		textAlign(CENTER, CENTER);
@@ -153,7 +175,7 @@ public class UIController
 
 		fill(255, 0, 0, currentOverlayFill);
 		rect(0, 0, width, height);
-		fill(255);
+		fill(WHITE);
 	}
 
 	void drawArrows()
@@ -190,27 +212,21 @@ public class UIController
 			image(arrowImage, i * TILE_SIZE, OVERWORLD_HEIGHT * TILE_SIZE + arrowYOffset);
 		}
 
-		tint(255);
+		tint(WHITE);
 	}
 
 	void gameOver()
 	{
-		//background rect pos & size
-		float rectXPos = width / 2;
-		float rectYPos = (float)height / 4.15;
-		float rectWidth = width - titleFontSize * 4;
-		float rectHeight = titleFontSize * 2.5;
-
 		//title
 		fill(titleColor);
 		textFont(titleFont);
 		textSize(titleFontSize);
-		text("Game Over", rectXPos, rectYPos, rectWidth, rectHeight);
+		text("GAME OVER", titleXPos, titleYPos);
 
 		//sub text
 		textFont(instructionFont);
 		textSize(instructionFontSize);
-		text("Score: " + scoreDisplay + "\nDepth: " + depthDisplay + "m", width / 2, height / 2 + instructionFontSize);
+		text("Score: " + scoreDisplay + "\nDepth: " + player.getDepth() + "m", width / 2, height / 2 + instructionFontSize);
 
 		if(isUploadingRunResults)
 		{
@@ -240,12 +256,6 @@ public class UIController
 
 	void startMenu()
 	{
-		//background rect pos & size
-		float rectXPos = width / 2;
-		float rectYPos = (float)height / 4.15;
-		float rectWidth = width;
-		float rectHeight = titleFontSize * 2.5;
-
 		//title background
 		textFont(titleFont);
 		fill(titleBackground);
@@ -254,7 +264,7 @@ public class UIController
 		fill(titleColor);
 		textFont(titleFont);
 		textSize(titleFontSize);
-		text("ROCKY RAIN", rectXPos, rectYPos, rectWidth, rectHeight);
+		text("ROCKY RAIN", titleXPos, titleYPos);
 
 		//sub text
 		subTextCounter++;
@@ -274,20 +284,7 @@ public class UIController
 
 	void gameHUD()
 	{
-		//Draw the health bar
-		rectMode(CORNER); 
-		fill(255, 0, 0);
-		rect(barX, barY, healthBarWidth, healthBarHeight); 
-		fill(0, 255, 0);
-		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
-
-		//Draw text
-		//Draw the health text in the health bar
-		textFont(hudFont);
-		textAlign(CENTER);
-		fill(255);
-		textSize(hudFontSize / 2);
-		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
+		drawHealthBar();
 
 		//Draw the score and depth display
 		textAlign(LEFT);
@@ -305,7 +302,9 @@ public class UIController
 		if (extraScoreLiveTimer > 0)
 		{
 			extraScoreLiveTimer--;
-		} else {
+		}
+		else
+		{
 			float pointMoveSpeed = 15f;
 			//Move the entire collected score display to the left
 			extraBonusX -= pointMoveSpeed;
@@ -326,15 +325,18 @@ public class UIController
 		drawInventory();
 	}
 
-	public float getExtraBonusX() {
-		//Get the displayscore and get the amount of digits
+	public float getExtraBonusX()
+	{
+		//Get the amount of digits in the score display,
+		//then draw the extra score based on the distance
 		String scoreDigits = str(scoreDisplay);
 		int numberOfScoreDigits = scoreDigits.length();
 		float bonusX = hudTextDistanceFromLeft + (hudFontSize * (scoreText.length() + numberOfScoreDigits));
 		return bonusX;
 	}
 
-	public void drawExtraPoints(int scoreToAdd) {
+	public void drawExtraPoints(int scoreToAdd)
+	{
 		//Get a new postion if we need to
 		extraBonusX = getExtraBonusX();
 		//Reset the collected score counter
@@ -343,11 +345,46 @@ public class UIController
 		collectedPoints += scoreToAdd;
 	}
 
+	void drawHealthBar()
+	{
+		rectMode(CORNER); 
+
+		//the flash thing when you get hurt
+		if(barOffset > maxBarOffset * killFactor) //it'll never truly hit 0, but 0.01 is close enough for us
+		{
+			fill(flashColor);
+			//*2 because we also moved 10 to the left and up, so otherwise we'll just end up on the exact same lower right corner as the bar 
+			rect(barX - barOffset, barY - barOffset, healthBarWidth + barOffset * 2, healthBarHeight + barOffset * 2); 
+
+			barOffset *= tweenFactor; //bootleg tweening
+			noStroke();
+		}
+
+		fill(WHITE);
+		rect(barX, barY, healthBarWidth, healthBarHeight); 
+		fill(0, 255, 0);
+		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
+
+		stroke(0); //we may've changed the stroke in the flashy thing olf the healthbar
+
+		textFont(hudFont);
+
+		textAlign(CENTER);
+		fill(WHITE);
+		textSize(hudFontSize / 2);
+		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
+	}
+
+	public void prepareHealthFlash()
+	{
+		barOffset = maxBarOffset;
+	}
+
 	void drawStats()
 	{
 		textFont(hudFont);
 		textAlign(RIGHT);
-		fill(255);
+		fill(WHITE);
 		textSize(20);
 
 		text(round(frameRate) + " FPS", width - 10, 140);
@@ -361,17 +398,11 @@ public class UIController
 
 	void pauseScreen()
 	{
-		//background rect pos & size
-		float rectXPos = width / 2;
-		float rectYPos = (float)height / 4.15;
-		float rectWidth = width - titleFontSize * 4;
-		float rectHeight = titleFontSize * 2.5;
-
 		//title
 		textFont(titleFont);
 		fill(titleColor);
 		textSize(titleFontSize);
-		text("Paused", rectXPos, rectYPos, rectWidth, rectHeight);
+		text("Paused", titleXPos, titleYPos);
 
 		//sub text
 		textFont(instructionFont);
@@ -417,4 +448,56 @@ public class UIController
 		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 
+	private void generateLeaderboardGraphics()
+	{
+		leaderBoardGraphics = createGraphics(int(TILE_SIZE * 9), int(TILE_SIZE * 5));
+
+		leaderBoardGraphics.beginDraw();
+
+		leaderBoardGraphics.textAlign(CENTER, CENTER);
+		leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
+		leaderBoardGraphics.textSize(25);
+		leaderBoardGraphics.text("Leaderboard", (TILE_SIZE * 9) / 2, 20);
+
+		leaderBoardGraphics.textSize(12);
+
+		int i = 0;
+
+		leaderBoardGraphics.textAlign(LEFT, CENTER);
+
+		for (LeaderboardRow leaderboardRow : leaderBoard)
+		{
+			if(i == 0)
+			{
+				leaderBoardGraphics.fill(#C98910);
+			}
+			else if(i == 1)
+			{
+				leaderBoardGraphics.fill(#A8A8A8);
+			}
+			else if(i == 2)
+			{
+				leaderBoardGraphics.fill(#cd7f32);
+			}
+			else if(leaderboardRow.userName.equals(dbUser.userName))
+			{
+				leaderBoardGraphics.fill(WHITE); // WIP
+			}
+			else
+			{
+				leaderBoardGraphics.fill(WHITE);
+			}
+			
+			leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
+			leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
+			leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
+			leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
+
+			//println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
+
+			i++;
+		}
+
+		leaderBoardGraphics.endDraw();
+	}
 }

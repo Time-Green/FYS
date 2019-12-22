@@ -305,6 +305,7 @@ class Player extends Mob
 			// if the player has taken damage, add camera shake
 			//40 is about max damage
 			camera.induceStress(damageTaken / 40);
+			ui.prepareHealthFlash();
 
 			AudioManager.playSoundEffect("HurtSound");
 		}

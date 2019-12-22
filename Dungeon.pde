@@ -37,6 +37,7 @@ class DungeonBlock2 extends Tile
 		image = ResourceManager.getImage("DungeonBlock2");
 		density = false;
 		healthMultiplier = 2;
+		drawLayer = BACKWALL_LAYER;
 	}
 }
 

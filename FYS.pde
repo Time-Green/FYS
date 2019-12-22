@@ -40,6 +40,7 @@ boolean isUploadingRunResults = false;
 // used to run code on closing game
 DisposeHandler dh;
 
+// global game objects
 World world;
 Player player;
 WallOfDeath wallOfDeath;
@@ -47,10 +48,8 @@ Camera camera;
 public UIController ui;
 Enemy[] enemies;
 
-boolean hasCalledAfterResourceLoadSetup = false;
-boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
-
-PGraphics leaderBoardGraphics;
+boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
+boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
 
 void setup()
 {
@@ -74,75 +73,16 @@ void checkUser()
 {
 	String[] userName = loadStrings("DbUser.txt");
 
-	if(userName.length == 1 && !userName[0].equals(""))
+	if(userName.length > 0)
 	{
 		databaseManager.beginLogin(userName[0]);
 	}
-	else if(userName.length == 1 && !userName[0].equals(""))
+	else if(userName.length == 0)
 	{
 		// if no name was filled in, show login screen
 		loginScreen = new LoginScreen();
 		userInLoginScreen = true;
 	}
-	else
-	{
-		// should not happan...
-		println("WARNING DbUser.txt not setup correctly, logging in using username in first line");
-		databaseManager.beginLogin(userName[0]);
-	}
-}
-
-private void generateLeaderboardGraphics()
-{
-	leaderBoardGraphics = createGraphics(int(TILE_SIZE * 9), int(TILE_SIZE * 5));
-
-	leaderBoardGraphics.beginDraw();
-
-	leaderBoardGraphics.textAlign(CENTER, CENTER);
-	leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
-	leaderBoardGraphics.textSize(25);
-	leaderBoardGraphics.text("Leaderboard", (TILE_SIZE * 9) / 2, 20);
-
-	leaderBoardGraphics.textSize(12);
-
-	int i = 0;
-
-	leaderBoardGraphics.textAlign(LEFT, CENTER);
-
-	for (LeaderboardRow leaderboardRow : leaderBoard)
-	{
-		if(i == 0)
-		{
-			leaderBoardGraphics.fill(#C98910);
-		}
-		else if(i == 1)
-		{
-			leaderBoardGraphics.fill(#A8A8A8);
-		}
-		else if(i == 2)
-		{
-			leaderBoardGraphics.fill(#cd7f32);
-		}
-		else if(leaderboardRow.userName.equals(dbUser.userName))
-		{
-			leaderBoardGraphics.fill(255); // WIP
-		}
-		else
-		{
-			leaderBoardGraphics.fill(255);
-		}
-		
-		leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
-
-		//println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
-
-		i++;
-  }
-
-  leaderBoardGraphics.endDraw();
 }
 
 // used for initialisation that need loaded resources
@@ -169,8 +109,6 @@ void afterResouceLoadingSetup()
 	{
 		AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
 	}
-
-	generateLeaderboardGraphics();
 
 	//setup game and show title screen
 	setupGame();
@@ -203,7 +141,7 @@ void setupGame()
 
 	camera = new Camera(player);
 
-	AudioManager.loopMusic("ForestAmbianceMusic"); 
+	AudioManager.loopMusic("ForestAmbianceMusic");
 }
 
 void prepareDrawingLayers()
@@ -222,6 +160,12 @@ void draw()
 	{
 		loginScreen.update();
 		loginScreen.draw();
+
+		// when the filled in name is not empty, we close the login screen
+		if(!loginScreen.enteredName.equals(""))
+		{
+			userFilledInName();
+		}
 
 		return;
 	}
@@ -265,6 +209,23 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
+}
+
+void userFilledInName()
+{
+	// tell the game we dont need to show the login screen anymore
+	userInLoginScreen = false;
+
+	// save username for next time the game starts
+	String[] saveData = new String[1];
+	saveData[0] = loginScreen.enteredName;
+	saveStrings("DbUser.txt", saveData);
+
+	// begin login with filled in name
+	databaseManager.beginLogin(saveData[0]);
+
+	// clean up
+	loginScreen = null;
 }
 
 void updateObjects()
@@ -342,7 +303,6 @@ void handleGameFlow()
 		//if we died and we uploaded the run stats, we restart the game by pressing enter
 		if (InputHelper.isKeyDown(START_KEY) && !isUploadingRunResults)
 		{
-			generateLeaderboardGraphics();
 			enterOverWorld(true);
 			InputHelper.onKeyReleased(START_KEY);
 		}
@@ -529,14 +489,12 @@ BaseObject load(BaseObject newObject, boolean priority)
 // handles removal, call delete(object) to delete that object from the world
 void delete(BaseObject deletingObject)
 {
+	if(deletingObject == null)
+	{
+		return;
+	}
 	destroyList.add(deletingObject); //queue for deletion
   	deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
-}
-
-// handles reload, call delete(object) to delete that object from the world
-void reload(BaseObject reloadingObject)
-{
-	reloadList.add(reloadingObject); //queue for reloading
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
