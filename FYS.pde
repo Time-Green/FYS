@@ -44,7 +44,7 @@ World world;
 Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
-UIController ui;
+public UIController ui;
 Enemy[] enemies;
 
 boolean hasCalledAfterResourceLoadSetup = false;
@@ -411,7 +411,7 @@ void endRun()
 	gamePaused = true;
 	currentGameState = GameState.GameOver;
 	
-	ui.setupRunEnd();
+	//ui.setupRunEnd();
 	AudioManager.stopMusic("BackgroundMusic");
 
 	thread("startRegisterEndThread");

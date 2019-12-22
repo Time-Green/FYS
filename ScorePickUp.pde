@@ -1,7 +1,6 @@
 public class ScorePickUp extends PickUp
 {
-	int score;
-	boolean pickedUp;
+	private int score;
 
 	// drop based on tile
 	public ScorePickUp(ResourceTile tile)
@@ -20,35 +19,20 @@ public class ScorePickUp extends PickUp
 	//This pickup is collected by the player
 	void pickedUp(Mob mob)
 	{
-		if (!pickedUp) //The player hasn't collected this puckup yet
-		{
-			player.addScore(score);
-			load(new PickupText(score, position));
-			//Prevent the player from picking us up again
-			// pickedUp = true;
-			//TODO: find and add sound effect, do not remove comment yet
-			// AudioManager.playSoundEffect(pickupSound, position);
+		//Score
+		player.addScore(score);
+		//Draw the pickup text
+		load(new PickupText(score, position));
+		ui.drawExtraPoints(this.score);
 
-			//I'm keeping this around until i'm done with the pickup rework
-			super.pickedUp(mob);
-		}
+		//Effects
+		//TODO: find and add sound effect, do not remove comment yet
+		// AudioManager.playSoundEffect(pickupSound, position);
+		// Insert particle code here
+
+		//Delete this object
+		super.pickedUp(mob);
 		
 	}
 
-	void update() 
-	{
-
-		//This pickup has been collected by the player
-		if (pickedUp)
-		{
-			collisionEnabled = false;
-			gravityForce = 0;
-			position.x-=5;
-			position.y-=5;
-		}
-		else 
-		{
-			super.update();
-		}
-	}
 }

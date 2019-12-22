@@ -1,5 +1,15 @@
 public class UIController
 {
+	//Text
+	private PFont titleFont;
+	private float titleFontSize = 120;
+
+	private PFont instructionFont;
+	private float instructionFontSize = 40;
+
+	private PFont hudFont;
+	private float hudFontSize = 30;
+
 	//Colors
 	private color titleColor = #ffa259;
 	private color titleBackground = #FFA500;
@@ -7,7 +17,14 @@ public class UIController
 	private color inventorySelectedColor = #56BACF;
 
 	//Game HUD
-	private float hudTextStartX = 90;
+	private float hudTextDistanceFromLeft = 10; //The distance from the left side of the screen 
+	private float hudTextStartY = 90; //The height from with the hub start
+
+	//Extra score to add
+	private float extraBonusX;
+	String scoreText = "Score: ";
+	private float extraScoreLiveTimer;
+	private int collectedPoints;
 
 	//Achievement icon
 	private float iconFrameSize = 25; 
@@ -24,12 +41,12 @@ public class UIController
 	private float slotSize = 60;
 	private float slotOffsetX = slotSize * 1.5f;
 
-	//arrows
+	//Arrows
 	float arrowYTarget = 0;
 	float arrowYOffset = 0;
 	float easing = 0.05f;
 
-	//overlay
+	//Overlay
 	boolean drawWarningOverlay = false;
 	final float MAX_OVERLAY_FILL = 30f;
 	float currentOverlayFill = 0;
@@ -48,23 +65,14 @@ public class UIController
 	private PImage healthBarImage;
 	private PImage arrowImage;
 
-	//Text
-	private PFont titleFont;
-	private float titleFontSize = 120;
-
-	private PFont instructionFont;
-	private float instructionFontSize = 40;
-
-	private PFont hudFont;
-	private float hudFontSize = 30;
-
 	UIController()
 	{
 		titleFont = ResourceManager.getFont("Block Stock");
 		instructionFont = ResourceManager.getFont("Block Stock");
 		hudFont = ResourceManager.getFont("Block Stock");
 		healthBarImage = ResourceManager.getImage("health-bar");
-		arrowImage = ResourceManager.getImage("RedArrow");
+		arrowImage = ResourceManager.getImage("RedArrow");	
+
 	}
 
 	void draw()
@@ -266,28 +274,48 @@ public class UIController
 
 	void gameHUD()
 	{
+		//Draw the health bar
 		rectMode(CORNER); 
 		fill(255, 0, 0);
 		rect(barX, barY, healthBarWidth, healthBarHeight); 
 		fill(0, 255, 0);
 		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
 
+		//Draw text
+		//Draw the health text in the health bar
 		textFont(hudFont);
-
 		textAlign(CENTER);
 		fill(255);
 		textSize(hudFontSize / 2);
 		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
 
+		//Draw the score and depth display
 		textAlign(LEFT);
-		fill(255);
 		textSize(hudFontSize);
-		text("Score: " + player.score, 10, hudTextStartX);
+		text(scoreText + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
+		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + hudFontSize + 10);
 
-		textAlign(LEFT);
-		fill(255);
-		textSize(hudFontSize);
-		text("Depth: " + player.getDepth() + "m", 10, hudTextStartX + hudFontSize + 10);
+		//Collected points display
+		//Draw the collected score if we have some
+		if (collectedPoints > 0)
+		{
+			text("+ " + collectedPoints, extraBonusX, hudTextStartY);
+		}
+
+		if (extraScoreLiveTimer > 0)
+		{
+			extraScoreLiveTimer--;
+		} else {
+			float pointMoveSpeed = 15f;
+			//Move the entire collected score display to the left
+			extraBonusX -= pointMoveSpeed;
+			//Add the score when it is beyond the display
+			if (extraBonusX <= hudTextDistanceFromLeft)
+			{
+				scoreDisplay += collectedPoints;
+				collectedPoints = 0;
+			}
+		}
 
 		if(achievementDisplayTimer > 0)
 		{
@@ -296,6 +324,23 @@ public class UIController
 		}
 
 		drawInventory();
+	}
+
+	public float getExtraBonusX() {
+		//Get the displayscore and get the amount of digits
+		String scoreDigits = str(scoreDisplay);
+		int numberOfScoreDigits = scoreDigits.length();
+		float bonusX = hudTextDistanceFromLeft + (hudFontSize * (scoreText.length() + numberOfScoreDigits));
+		return bonusX;
+	}
+
+	public void drawExtraPoints(int scoreToAdd) {
+		//Get a new postion if we need to
+		extraBonusX = getExtraBonusX();
+		//Reset the collected score counter
+		float resetTimer = timeInSeconds(1f);
+		extraScoreLiveTimer = resetTimer;
+		collectedPoints += scoreToAdd;
 	}
 
 	void drawStats()
@@ -372,47 +417,4 @@ public class UIController
 		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 
-	public void setupRunEnd()
-	{
-		ui.scoreDisplay = 0;
-		ui.depthDisplay = 0;
-		ui.drawWarningOverlay = false;
-	}
-
-	private void handleScore()
-	{
-		if(scoreDisplay < player.score)
-		{
-			int scoreToAdd = round((player.score - scoreDisplay) / 15);
-
-			if(scoreToAdd == 0)
-			{
-				scoreToAdd++;
-			}
-
-			scoreDisplay += scoreToAdd;
-
-			if(scoreDisplay > player.score)
-			{
-				scoreDisplay = player.score;
-			}
-		}
-
-		if(depthDisplay < player.getDepth() - OVERWORLD_HEIGHT)
-		{
-			int depthToAdd = round((player.getDepth() - OVERWORLD_HEIGHT - depthDisplay) / 15);
-
-			if(depthToAdd == 0)
-			{
-				depthToAdd++;
-			}
-
-			depthDisplay += depthToAdd;
-
-			if(depthDisplay > player.getDepth() - OVERWORLD_HEIGHT)
-			{
-				depthDisplay = player.getDepth() - OVERWORLD_HEIGHT;
-			}
-		}
-	}
 }
