@@ -3,7 +3,7 @@ final boolean PRINT_LOADING_DEBUG = false;
 // used to login the user and start loading resources
 void loginThread() 
 {
-	loginStatus = "Logging in";
+	loginStatus = "Logging in as " + databaseManager.userNameToLogin;
 	databaseManager.loginUser();
 
 	loginStatus = "Loading data";

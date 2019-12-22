@@ -9,10 +9,10 @@ public class DatabaseManager
 	private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
 	private final boolean PRINT_DATABASE_DEBUG = false;
 
+	public String userNameToLogin;
+
 	private int currentSessionId = -1;
 	private int currentRunId = -1;
-
-	private String userNameToLogin;
 
 	//get all data from all users
 	public ArrayList<DbUser> getAllUsers()

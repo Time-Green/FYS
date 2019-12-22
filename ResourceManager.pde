@@ -194,9 +194,20 @@ public static class ResourceManager
 
 		if (image == null)
 		{
-			println("Image '" + name + "' not found!");
+			println("Image '" + name + "' not found! Trying to load it again...");
 
-			return null;
+			int resourceIndex = resourcesToLoadNames.indexOf(name);
+
+			if(resourceIndex < 0)
+			{
+				// resource not found in dictionary
+				return null;
+			}
+
+			load(resourcesToLoadNames.get(resourceIndex), resourcesToLoadFileNames.get(resourceIndex));
+
+			// retry
+			return getImage(name);
 		}
 
 		return image;
