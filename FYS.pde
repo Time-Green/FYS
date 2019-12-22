@@ -488,14 +488,12 @@ BaseObject load(BaseObject newObject, boolean priority)
 // handles removal, call delete(object) to delete that object from the world
 void delete(BaseObject deletingObject)
 {
+	if(deletingObject == null)
+	{
+		return;
+	}
 	destroyList.add(deletingObject); //queue for deletion
   	deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
-}
-
-// handles reload, call delete(object) to delete that object from the world
-void reload(BaseObject reloadingObject)
-{
-	reloadList.add(reloadingObject); //queue for reloading
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)

@@ -17,6 +17,9 @@ class MagmaRock extends Tile
 		slipperiness = 0.1;
 		healthMultiplier = 3f;
 		setMaxHp(40);
+
+        particleSystem = new SmokeParticleSystem(position, particleVelocity, particleDelay, false);
+        load(particleSystem);
 	}
 
 	void collidedWith(BaseObject object)
