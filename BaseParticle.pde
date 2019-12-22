@@ -21,6 +21,7 @@ public class BaseParticle extends Movable
 		worldBorderCheck = false;
 		groundedDragFactor = 1.0f;
 		aerialDragFactor = 1.0f;
+		drawLayer = PRIORITY_LAYER;
 
 		// many performance, such wow
 		enableLightning = false;
