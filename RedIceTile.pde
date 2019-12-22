@@ -11,6 +11,6 @@ public class RedIceTile extends ResourceTile
 		slipperiness = 1.1;
 
 		image = ResourceManager.getImage("RedIceBlock");
-		pickUpImage = ResourceManager.getImage("RubyPickup");
+		pickUpImage = ResourceManager.getImage("RubyPickUp");
 	}
 }

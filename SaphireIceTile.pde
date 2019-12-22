@@ -9,8 +9,8 @@ public class SaphireIceTile extends ResourceTile
 		value = GREEN_ICE_VALUE;
 		slipperiness = 1.1;
 
-		image = ResourceManager.getImage("IceBlock2");
-		pickUpImage = ResourceManager.getImage("SaphirePickup");
+		image = ResourceManager.getImage("BlueIceBlock");
+		pickUpImage = ResourceManager.getImage("SaphirePickUp");
 		breakSound = "GlassBreak" + floor(random(1, 4));
 	}
 }

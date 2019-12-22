@@ -25,7 +25,7 @@ final int GOLD_VALUE = 500;
 final int LAPIS_VALUE = 750;
 final int DIAMOND_VALUE = 1000;
 final int AMETHYST_VALUE = 2500;
-final int EMERALD_VALUE = 5000;
+final int METEORITE_VALUE = 5000;
 
 //relicboost
 final int HEALTH_BOOST = 10;
