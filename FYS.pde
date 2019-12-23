@@ -45,8 +45,7 @@ World world;
 Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
-public UIController ui;
-Enemy[] enemies;
+UIController ui;
 
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
@@ -128,18 +127,14 @@ void setupGame()
 	prepareDrawingLayers();
 
 	runData = new RunData();
-
 	ui = new UIController();
-
 	world = new World();
-
 	player = new Player();
-	load(player);
-
 	wallOfDeath = new WallOfDeath();
-	load(wallOfDeath);
-
 	camera = new Camera(player);
+	
+	load(player);
+	load(wallOfDeath);
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
 }
@@ -489,12 +484,14 @@ BaseObject load(BaseObject newObject, boolean priority)
 // handles removal, call delete(object) to delete that object from the world
 void delete(BaseObject deletingObject)
 {
-	if(deletingObject == null)
-	{
-		return;
-	}
 	destroyList.add(deletingObject); //queue for deletion
   	deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
+}
+
+// handles reload, call delete(object) to delete that object from the world
+void reload(BaseObject reloadingObject)
+{
+	reloadList.add(reloadingObject); //queue for reloading
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
