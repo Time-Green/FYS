@@ -91,19 +91,16 @@ public class UIController
 		arrowImage = ResourceManager.getImage("RedArrow");
 
 		generateLeaderboardGraphics();
-
-		//Draw the title in the middle of the screen
-		titleXPos = width / 2;
-		//Draw the title about a third of the screen
-		float distanceFromTheTop = 4.15;
-		titleYPos = (float)height / distanceFromTheTop;
+		updateTitlePosition();
 	}
 
 	void draw()
 	{
+		updateTitlePosition();
+
 		//draw hud at center position
 		rectMode(CENTER);
-		textAlign(CENTER, CENTER);
+		textAlign(CENTER);
 
 		// draw hud based on current gamestate
 		switch (currentGameState)
@@ -139,6 +136,16 @@ public class UIController
 		{
 			drawStats();
 		}
+	}
+
+	void updateTitlePosition()
+	{
+		//Draw the title in the middle of the screen
+		titleXPos = width / 2;
+
+		//Draw the title about a third of the screen
+		float distanceFromTheTop = 4.15;
+		titleYPos = (float)height / distanceFromTheTop;
 	}
 
 	void drawWarningOverlay()
@@ -221,6 +228,7 @@ public class UIController
 		fill(titleColor);
 		textFont(titleFont);
 		textSize(titleFontSize);
+		textAlign(CENTER);
 		text("GAME OVER", titleXPos, titleYPos);
 
 		//sub text
@@ -264,6 +272,7 @@ public class UIController
 		fill(titleColor);
 		textFont(titleFont);
 		textSize(titleFontSize);
+		textAlign(CENTER);
 		text("ROCKY RAIN", titleXPos, titleYPos);
 
 		//sub text
@@ -332,6 +341,7 @@ public class UIController
 		String scoreDigits = str(scoreDisplay);
 		int numberOfScoreDigits = scoreDigits.length();
 		float bonusX = hudTextDistanceFromLeft + (hudFontSize * (scoreText.length() + numberOfScoreDigits));
+
 		return bonusX;
 	}
 
@@ -402,6 +412,7 @@ public class UIController
 		textFont(titleFont);
 		fill(titleColor);
 		textSize(titleFontSize);
+		textAlign(CENTER);
 		text("Paused", titleXPos, titleYPos);
 
 		//sub text
@@ -445,6 +456,7 @@ public class UIController
 	{	
 		textFont(instructionFont);
 		textSize(instructionFontSize);
+		textAlign(CENTER);
 		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 
