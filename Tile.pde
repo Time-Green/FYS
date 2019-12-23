@@ -59,6 +59,10 @@ class Tile extends BaseObject {
     if (gridPosition.y > OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
     {
       breakTile();
+      if(world.currentBiome.parallaxImage != null)
+      {
+        destroyedImage = ResourceManager.getImage("Invisible");
+      }
 
       if(random(1) < world.currentBiome.ceilingObstacleChance)
       { //do a chance check first to save time and resources

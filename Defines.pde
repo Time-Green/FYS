@@ -61,6 +61,9 @@ final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
 
+//Smoothing
+final float PARALLAX_INTENSITY = 0.05;
+
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;
 

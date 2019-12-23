@@ -18,6 +18,8 @@ class Biome
 	float playerVisibilityScale = 1;
 
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
+	PImage parallaxImage;
+	PImage defaultParallaxImage = ResourceManager.getImage("Parallax_Rock"); //we always draw a parallax image to maintain continuety with biome switching
 
   	Tile getTileToGenerate(int x, int depth)
   	{
@@ -177,5 +179,15 @@ class Biome
 	BaseObject spawnGroundObstacle(Tile target) //please return movable type, since that's the only sensible obstacle
 	{
 		return null;
+	}
+
+	Parallax getParallax()
+	{
+		PImage newImage = parallaxImage;
+		if(newImage == null)
+		{
+			newImage = defaultParallaxImage;
+		}
+		return new Parallax(newImage);
 	}
 }
