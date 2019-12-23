@@ -68,12 +68,7 @@ class Chest extends Obstacle
 
 				addRandomLoot(newContents, 18);
 			break;
-
-			case 69:
-				Pickaxe pickaxe = new Pickaxe();
-				load(pickaxe);
-
-				newContents.add(pickaxe);
+			
 			case 70:
 				RelicShard testRelicShard = new RelicShard();
 				load(testRelicShard);

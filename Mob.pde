@@ -94,21 +94,7 @@ class Mob extends Movable
 				return;
 			}
 
-			if (hasHeldItem())
-			{
-				Held held = getHeldItem();
-
-				if (!held.canMine(object, this))
-				{
-					return;
-				}
-
-				held.onMine(object, this);
-			}
-			else
-			{
-				object.takeDamage(getAttackPower(false)); //FIST MINING
-			}
+			object.takeDamage(getAttackPower()); 
 
 			lastMine = millis();
 			afterMine(object);
@@ -150,14 +136,10 @@ class Mob extends Movable
 
 	}
 
-	float getAttackPower(boolean useHeldItem)
+	float getAttackPower()
 	{
-		if (!useHeldItem || !hasHeldItem())
-		{
-			return baseDamage;
-		}
 
-		return baseDamage * getHeldItem().damageCoefficient;
+		return baseDamage;
 	}
 
 		//fire damage blocks regenaration
@@ -263,41 +245,5 @@ class Mob extends Movable
 	void removeFromInventory(Item item)
 	{
 		inventory.remove(item);
-	}
-
-	boolean hasHeldItem()
-	{
-		for (Item item : inventory)
-		{
-			if (item instanceof Held)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	Held getHeldItem()
-	{
-		if (inventory.size() >= selectedSlot)
-		{
-			Item item = inventory.get(selectedSlot - 1);
-
-			if (item instanceof Held)
-			{
-				return (Held) inventory.get(selectedSlot - 1);
-			}
-		}
-
-		for (Item item : inventory)
-		{
-			if (item instanceof Held)
-			{
-				return (Held)item;
-			}
-		}
-
-		return null; //should never happen, because we should always check hasHeldItem before calling this
 	}
 }

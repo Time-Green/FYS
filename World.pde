@@ -32,7 +32,6 @@ public class World
 		spawnOverworldStructures();
 		spawnBirds();
 		spawnNpcs();
-		spawnStarterChest();
 		spawnJukebox();
 	}
 
@@ -117,11 +116,6 @@ public class World
 
 			load(npc, new PVector(random(50, 1650), 509));
 		}
-	}
-
-	void spawnStarterChest()
-	{
-		load(new Chest(69), new PVector(36 * TILE_SIZE, 10 * TILE_SIZE)); //69 is the forcedKey for an always pickaxe spawn
 	}
 
 	//return tile you're currently on

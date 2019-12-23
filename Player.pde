@@ -31,7 +31,7 @@ class Player extends Mob
 	{
 		position = spawnPosition;
 		setMaxHp(100);
-		baseDamage = 0.1; //low basedamage without pickaxe
+		baseDamage = 10; //low basedamage without pickaxe
 		isSwimming = false;
 		canRegen = true;
 		jumpForce = 21f;
