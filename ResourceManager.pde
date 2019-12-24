@@ -10,7 +10,6 @@ public static class ResourceManager
 
 	private static boolean isAllLoaded = false;
 	public static ArrayList<LoaderThread> loaderThreads = new ArrayList<LoaderThread>();
-	private static String lastLoadedResource = "";
 
 	public static void setup(FYS game)
 	{
@@ -105,11 +104,6 @@ public static class ResourceManager
 		return 1 - (totalThreadsCompleted / float(loaderThreads.size()));
 	}
 
-	public static String getLastLoadedResource()
-	{
-		return lastLoadedResource;
-	}
-
 	public static ArrayList<String> getLoadingResources()
 	{
 		ArrayList<String> currentlyLoadingResources = new ArrayList<String>();
@@ -141,8 +135,6 @@ public static class ResourceManager
 		{
 			loadFont(name, fileName);
 		}
-
-		lastLoadedResource = name;
 	}
 
 	private static void loadImage(String name, String fileName)
@@ -191,7 +183,7 @@ public static class ResourceManager
 
 		if (image == null)
 		{
-			println("Image '" + name + "' not found! Trying to load it again...");
+			println("WARNING Image '" + name + "' not found! Trying to load it again...");
 
 			int resourceIndex = resourcesToLoadNames.indexOf(name);
 
@@ -208,6 +200,26 @@ public static class ResourceManager
 		}
 
 		return image;
+	}
+
+	public static PImage getRandomFlippedImage(String name)
+	{
+		PImage image = imageMap.get(name);
+
+		if (image == null)
+		{
+			println("WARNING Random image '" + name + "' not found! Returning normal image...");
+
+			// return normal image
+			return getImage(name);
+		}
+
+		return image;
+	}
+
+	public void generateRandomFlippedImages(String name)
+	{
+
 	}
 
 	public static PFont getFont(String name)
