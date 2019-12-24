@@ -87,26 +87,31 @@ void checkUser()
 // used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
-	AudioManager.setMaxVolume("Siren", 0.6f);
-	AudioManager.setMaxVolume("BackgroundMusic", 0.75f);
+	AudioManager.setMaxVolume("Siren", 0.55f);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
 	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
-	AudioManager.setMaxVolume("DirtBreak", 0.5f);
+	AudioManager.setMaxVolume("DirtBreak", 0.7f);
 	AudioManager.setMaxVolume("HurtSound", 0.75f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.2f);
+		AudioManager.setMaxVolume("Explosion" + i, 0.7f);
 	}
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.5f);
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f);
+	}
+
+	for (int i = 1; i < 4; i++)
+	{
+		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f);
 	}
 
 	//setup game and show title screen

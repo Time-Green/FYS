@@ -19,9 +19,6 @@ public static class ResourceManager
 
 	public static void prepareResourceLoading()
 	{
-		//needs to happan to set up the sound library before actual loading begins!
-		SoundFile temp = new SoundFile(game, "Sound/DirtBreak.wav");
-
 		String dataPath = game.sketchPath("data");
 		File dataFolder = new File(dataPath);
 
@@ -159,7 +156,6 @@ public static class ResourceManager
 			return;
 		}
 
-		println("added " + name + " to imageMap");
 		imageMap.put(name, image);
 	}
 
