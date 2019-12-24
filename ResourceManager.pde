@@ -159,6 +159,7 @@ public static class ResourceManager
 			return;
 		}
 
+		println("added " + name + " to imageMap");
 		imageMap.put(name, image);
 	}
 

@@ -11,6 +11,6 @@ public class BlueIceTile extends ResourceTile
 		slipperiness = 1.1;
 
 		image = ResourceManager.getImage("BlueIceBlock");
-		pickUpImage = ResourceManager.getImage("SaphirePickUp");
+		pickUpImage = ResourceManager.getImage("SaphirePickup");
 	}
 }
