@@ -500,6 +500,7 @@ public class DatabaseManager
 		//encode
 		url = url.replace(' ', '+');
 		url = url.replace("`", "%60");
+		url = url.replace("%", "%25");
 
 		GetRequest get = new GetRequest(url);
 
@@ -575,28 +576,64 @@ public class DatabaseManager
 		}
 	}
 
-	public ArrayList<Integer> getAllVars()
+	//Get variables from database
+
+	//Get all variables
+	public void getAllVariable()
 	{
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables");
 
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name");
-		//ArrayList<DbUser> returnList = new ArrayList<DbUser>();
-
-		for (int i = 0; i < result.size(); i++) {
-			//println(result.getJSONObject(i));
-			//returnList.add(buildUser(result.getJSONObject(i)));
+		for (int i = 0; i < result.size(); i++)
+		{
+			println(result.getJSONObject(i));
 		}
 
-		return null;
 	}
 
 	//Get a specific value from the database
-	public float getValue(String variableName) {
-
-		//Select the row we need
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name = " + variableName + ";");
-		//Get the float from that row and return it
+	public float getValue(String variableName)
+	{
+		// Select the row we need
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name LIKE " + variableName + ";");
+		// Get the float from that row and return it
 		float value = result.getJSONObject(0).getFloat("value");
 
 		return value;
 	}
+
+	public void updateVariable(String variableName, float newValue)
+	{
+		// Update the value of the selected variable
+		JSONArray result = doDatabaseRequest("UPDATE Intvariables SET value = " + newValue + " WHERE Intvariables.name = '" + variableName + "';");
+	}
+
+	public void insertVariable(String variableName, int value)
+	{
+		//Insert a new row in the database
+		JSONArray result = doDatabaseRequest("INSERT INTO Intvariables (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '0');");
+	}
+
+	//over
+	public void insertVariable(String variableName, int value, int allowEdit)
+	{
+		//Insert a new row in the database
+		JSONArray result = doDatabaseRequest("INSERT INTO `Intvariables` (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '"+allowEdit+"');");
+	}
+
+	public void deleteVariable(String variableName)
+	{
+		//Insert a new row in the database
+		JSONArray result = doDatabaseRequest("DELETE FROM Intvariables WHERE name = '"+variableName+"';");
+	}
+
+	public void getAllPickupScores()
+	{
+		//Insert a new row in the database
+		JSONArray result = doDatabaseRequest("SELECT left(name, LOCATE('value', name) - 1) as Stone, value as Points FROM Intvariables WHERE name LIKE '%PickupValue' ORDER BY Intvariables.value ASC;");
+		for (int i = 0; i < result.size(); i++)
+		{
+			println(result.getJSONObject(i));
+		}
+	}
+	
 }

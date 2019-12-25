@@ -538,31 +538,44 @@ void keyPressed()
 	InputHelper.onKeyPressed(keyCode);
 	InputHelper.onKeyPressed(key);
 
-	// Test spawns
-	if(key == 'E' || key == 'e')
-	{
-		load(new EnemyGhost(new PVector(player.position.x + 200,player.position.y)));
-	}
-
-	// if (key == 'I' || key == 'i')
-	// {
-	// 	load(new Icicle(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
-
-	// if (key == 'G' || key == 'g')
-	// {
-	// 	load(new Dynamite(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
-
-	// if (key == 'H' || key == 'h')
-	// {
-	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
+	//Debug code
+	debugInput();
 }
 
 void keyReleased()
 {
 	InputHelper.onKeyReleased(keyCode);
 	InputHelper.onKeyReleased(key);
+}
+
+void debugInput()
+{
+	// Test spawns
+	// if(key == 'E' || key == 'e')
+	// {
+	// 	// load(new EnemyGhost(new PVector(player.position.x + 200,player.position.y)));
+	// 	databaseManager.getAllVariable();
+	// }
+
+	// if(key == 'R' || key == 'r')
+	// {
+	// 	databaseManager.updateVariable("poop", 500);
+	// }
+
+	// if (key == 'T' || key == 't')
+	// {
+	// 	databaseManager.insertVariable("poop", 500);
+	// }
+
+	// if (key == 'Y' || key == 'y')
+	// {
+	// 	//Doesn't work right now
+	// 	databaseManager.deleteVariable("poop");
+	// }
+
+	// if (key == 'U' || key == 'u')
+	// {
+	// 	databaseManager.getAllPickupScores();	
+	// }
 }
 
