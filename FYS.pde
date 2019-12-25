@@ -37,6 +37,9 @@ ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
+//Scores
+ArrayList<ScoreboardRow> scoreboard;
+
 // used to run code on closing game
 DisposeHandler dh;
 
@@ -578,9 +581,9 @@ void debugInput()
 	// 	databaseManager.deleteVariable("poop");
 	// }
 
-	// if (key == 'U' || key == 'u')
-	// {
-	// 	databaseManager.getAllPickupScores();	
-	// }
+	if (key == 'U' || key == 'u')
+	{
+		databaseManager.getAllPickupScores();	
+	}
 }
 

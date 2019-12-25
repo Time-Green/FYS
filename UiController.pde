@@ -224,12 +224,7 @@ public class UIController
 
 	void gameOver()
 	{
-		//title
-		fill(titleColor);
-		textFont(titleFont);
-		textSize(titleFontSize);
-		textAlign(CENTER);
-		text("GAME OVER", titleXPos, titleYPos);
+		drawTitle("GAME OVER");
 
 		//sub text
 		textFont(instructionFont);
@@ -264,16 +259,7 @@ public class UIController
 
 	void startMenu()
 	{
-		//title background
-		textFont(titleFont);
-		fill(titleBackground);
-
-		//title
-		fill(titleColor);
-		textFont(titleFont);
-		textSize(titleFontSize);
-		textAlign(CENTER);
-		text("ROCKY RAIN", titleXPos, titleYPos);
+		drawTitle("ROCKY RAIN");
 
 		//sub text
 		subTextCounter++;
@@ -334,6 +320,19 @@ public class UIController
 		drawInventory();
 	}
 
+	//Draw functions
+
+	private void drawTitle(String menuText)
+	{
+		//Update the posotopn of the title,this will prefent the title from moving while the screenszie changes
+		updateTitlePosition();
+		fill(titleColor);
+		textFont(titleFont);
+		textSize(titleFontSize);
+		textAlign(CENTER);
+		text(menuText, titleXPos, titleYPos);
+	}
+
 	public float getExtraBonusX()
 	{
 		//Get the amount of digits in the score display,
@@ -345,6 +344,7 @@ public class UIController
 		return bonusX;
 	}
 
+	//This function draws the extra scored points right to the normal point counter
 	public void drawExtraPoints(int scoreToAdd)
 	{
 		//Get a new postion if we need to
@@ -408,12 +408,7 @@ public class UIController
 
 	void pauseScreen()
 	{
-		//title
-		textFont(titleFont);
-		fill(titleColor);
-		textSize(titleFontSize);
-		textAlign(CENTER);
-		text("Paused", titleXPos, titleYPos);
+		drawTitle("Paused");
 
 		//sub text
 		textFont(instructionFont);
@@ -512,4 +507,7 @@ public class UIController
 
 		leaderBoardGraphics.endDraw();
 	}
+
+
+	// private generateLeaderboardGraphics
 }

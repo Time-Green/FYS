@@ -626,14 +626,30 @@ public class DatabaseManager
 		JSONArray result = doDatabaseRequest("DELETE FROM Intvariables WHERE name = '"+variableName+"';");
 	}
 
-	public void getAllPickupScores()
+	public ArrayList<ScoreboardRow> getAllPickupScores()
 	{
-		//Insert a new row in the database
+		//Get all rows that have PickupValue in their name,
+		//We also remove 'value'  from their name because we can use that to get images
 		JSONArray result = doDatabaseRequest("SELECT left(name, LOCATE('value', name) - 1) as Stone, value as Points FROM Intvariables WHERE name LIKE '%PickupValue' ORDER BY Intvariables.value ASC;");
+		ArrayList<ScoreboardRow> returnList = new ArrayList<ScoreboardRow>();
+		//Add all returbn word into a arraylist
 		for (int i = 0; i < result.size(); i++)
 		{
-			println(result.getJSONObject(i));
+			returnList.add(buildScoreboardRow(result.getJSONObject(i)));
 		}
+
+		return returnList;
+
+	}
+
+	private ScoreboardRow buildScoreboardRow(JSONObject json)
+	{
+		ScoreboardRow scoreboardRow = new ScoreboardRow();
+
+		scoreboardRow.imageName = json.getString("Stone");
+		scoreboardRow.score = json.getInt("Points");
+
+		return scoreboardRow;
 	}
 	
 }
