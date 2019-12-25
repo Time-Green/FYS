@@ -184,14 +184,12 @@ public class LoginLetter
 
         if(index < 0)
         {
-            //index = allChars.length() + offset;
-            index = 0;
+            index = allChars.length() + index;
         }
 
         if(index > allChars.length() - 1)
         {
-            //index = allChars.length() - charIndex + offset - 2;
-            index = 0;
+            index = index - allChars.length();
         }
 
         return allChars.charAt(index);

@@ -1,16 +1,17 @@
-import processing.sound.*;
+import ddf.minim.*;
 
 public static class AudioManager
 {
-	private static final boolean AUDIO_ENABLED = false;
+	private static final boolean AUDIO_ENABLED = true;
 
-	private static FYS game;
-
-	private final static int AUDIO_AMOUNT = 1;
+	private final static int SEQUENTIAL_AUDIO_AMOUNT = 10;
 	private final static float AUDIO_DISTSANCE_FALLOFF = 1500;
 
-	private static HashMap<String, SoundFile> musicMap = new HashMap<String, SoundFile>();
-	private static HashMap<String, SoundFile[]> soundEffectMap = new HashMap<String, SoundFile[]>();
+	private static FYS game;
+	private static Minim minim;
+
+	private static HashMap<String, AudioPlayer> musicMap = new HashMap<String, AudioPlayer>();
+	private static HashMap<String, AudioPlayer[]> soundEffectMap = new HashMap<String, AudioPlayer[]>();
 	private static IntDict soundEffectMapIndex = new IntDict();
 	private static FloatDict maxAudioVolumes = new FloatDict();
 
@@ -22,6 +23,8 @@ public static class AudioManager
 		}
 
 		AudioManager.game = game;
+
+		minim = new Minim(game);
 	}
 
 	public static void loadMusic(String name, String fileName)
@@ -31,7 +34,7 @@ public static class AudioManager
 			return;
 		}
 
-		SoundFile music = new SoundFile(game, fileName);
+		AudioPlayer music = minim.loadFile(fileName);
 
 		if (music == null)
 		{
@@ -56,11 +59,11 @@ public static class AudioManager
 
 		try
 		{
-			SoundFile[] soundArray = new SoundFile[AUDIO_AMOUNT];
+			AudioPlayer[] soundArray = new AudioPlayer[SEQUENTIAL_AUDIO_AMOUNT];
 
-			for (int i = 0; i < AUDIO_AMOUNT; i++)
+			for (int i = 0; i < SEQUENTIAL_AUDIO_AMOUNT; i++)
 			{
-				SoundFile sound = new SoundFile(game, fileName);
+				AudioPlayer sound = minim.loadFile(fileName);
 
 				if (sound == null)
 				{
@@ -97,18 +100,18 @@ public static class AudioManager
 			return;
 		}
 
-		SoundFile[] soundEffects = soundEffectMap.get(name);
+		AudioPlayer[] soundEffects = soundEffectMap.get(name);
 		int playAtIndex = soundEffectMapIndex.get(name);
-		SoundFile soundToPlay = soundEffects[playAtIndex];
+		AudioPlayer soundToPlay = soundEffects[playAtIndex];
 
 		if(soundToPlay == null)
 		{
-			println("SoundFile '" + name + "' not found!");
+			println("AudioPlayer '" + name + "' not found!");
 
 			return;
 		}
 
-		if(playAtIndex < AUDIO_AMOUNT - 1)
+		if(playAtIndex < SEQUENTIAL_AUDIO_AMOUNT - 1)
 		{
 			soundEffectMapIndex.set(name, playAtIndex + 1);
 		}
@@ -117,9 +120,8 @@ public static class AudioManager
 			soundEffectMapIndex.set(name, 0);
 		}
 
-		soundToPlay.stop();
-		soundToPlay.amp(maxAudioVolumes.get(name));
-		soundToPlay.play();
+		setVolume(soundToPlay, maxAudioVolumes.get(name));
+		soundToPlay.play(0);
 	}
 
 	public static void playSoundEffect(String name, PVector atLocation)
@@ -129,17 +131,18 @@ public static class AudioManager
 			return;
 		}
 
-		SoundFile[] soundEffects = soundEffectMap.get(name);
+		AudioPlayer[] soundEffects = soundEffectMap.get(name);
 		int playAtIndex = soundEffectMapIndex.get(name);
-		SoundFile soundToPlay = soundEffects[playAtIndex];
+		AudioPlayer soundToPlay = soundEffects[playAtIndex];
 
-		if(soundToPlay == null){
-			println("SoundFile '" + name + "' not found!");
+		if(soundToPlay == null)
+		{
+			println("AudioPlayer '" + name + "' not found!");
 
 			return;
 		}
 
-		if (playAtIndex < AUDIO_AMOUNT - 1)
+		if (playAtIndex < SEQUENTIAL_AUDIO_AMOUNT - 1)
 		{
 			soundEffectMapIndex.set(name, playAtIndex + 1);
 		}
@@ -156,9 +159,8 @@ public static class AudioManager
 
 		if(volumeBasedOnDistance > 0)
 		{
-			soundToPlay.stop();
-			soundToPlay.amp(volumeBasedOnDistance * maxAudioVolumes.get(name));
-			soundToPlay.play();
+			setVolume(soundToPlay, volumeBasedOnDistance * maxAudioVolumes.get(name));
+			soundToPlay.play(0);
 		}
 	}
 
@@ -169,18 +171,17 @@ public static class AudioManager
 			return;
 		}
 
-		SoundFile soundToPlay = musicMap.get(name);
+		AudioPlayer soundToPlay = musicMap.get(name);
 
 		if(soundToPlay == null)
 		{
-			println("SoundFile '" + name + "' not found!");
+			println("AudioPlayer '" + name + "' not found!");
 
 			return;
 		}
 
-		soundToPlay.stop();
-		soundToPlay.amp(maxAudioVolumes.get(name));
-		soundToPlay.play();
+		setVolume(soundToPlay, maxAudioVolumes.get(name));
+		soundToPlay.play(0);
 	}
 
 	public static void stopMusic(String name)
@@ -190,16 +191,17 @@ public static class AudioManager
 			return;
 		}
 
-		SoundFile soundToStop = musicMap.get(name);
+		AudioPlayer soundToStop = musicMap.get(name);
 
 		if(soundToStop == null)
 		{
-			println("SoundFile '" + name + "' not found!");
+			println("AudioPlayer '" + name + "' not found!");
 
 			return;
 		}
-
-		soundToStop.stop();
+		
+		soundToStop.pause();
+    	soundToStop.cue(0);
 	}
 
 	public static void loopMusic(String name)
@@ -209,17 +211,17 @@ public static class AudioManager
 			return;
 		}
 
-		SoundFile soundToPlay = musicMap.get(name);
+		AudioPlayer soundToPlay = musicMap.get(name);
 
 		if(soundToPlay == null)
 		{
-			println("SoundFile '" + name + "' not found!");
+			println("AudioPlayer '" + name + "' not found!");
 
 			return;
 		}
 
-		soundToPlay.stop();
-		soundToPlay.amp(maxAudioVolumes.get(name));
+        soundToPlay.cue(0);
+		setVolume(soundToPlay, maxAudioVolumes.get(name));
 		soundToPlay.loop();
 	}
 
@@ -231,24 +233,30 @@ public static class AudioManager
 			return;
 		}
 
-		SoundFile music = musicMap.get(name);
+		AudioPlayer music = musicMap.get(name);
 
 		if(music != null)
 		{
 			maxAudioVolumes.set(name, volume);
-			music.amp(volume);
+			setVolume(music, volume);
 		}
 
-		SoundFile[] soundEffects = soundEffectMap.get(name);
+		AudioPlayer[] soundEffects = soundEffectMap.get(name);
 
 		if(soundEffects != null)
 		{
 			maxAudioVolumes.set(name, volume);
 
-			for (SoundFile soundFile : soundEffects)
+			for (AudioPlayer soundFile : soundEffects)
 			{
-				soundFile.amp(volume);
+				setVolume(soundFile, volume);
 			}
 		}
+	}
+
+	// convert volume to gain
+	private static void setVolume(AudioPlayer audio, float volume)
+	{
+		audio.setGain(-60 + volume * 60);
 	}
 }
