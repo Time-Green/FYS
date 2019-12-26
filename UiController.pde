@@ -106,7 +106,7 @@ public class UIController
 		switch (currentGameState)
 		{
 			default :
-				//println("Something went wrong with the game state");
+				println("Something went wrong with the game state");
 			break;
 
 			case MainMenu:
@@ -117,8 +117,12 @@ public class UIController
 				gameOver();
 			break;
 
+			//Temp
+			// case Overworld :
+			// 	generateScoreboardGraphic();
+			// break;
+
 			case InGame :
-			//case Overworld :
 				gameHUD();
 			break;
 
@@ -509,15 +513,21 @@ public class UIController
 	}
 
 
+	//This is basic and full of magic numbers, remove them
+	//I will write comment later i'm in a hurry atm
 	public void generateScoreboardGraphic()
 	{
-		// for (int i = 0; i < scoreboard.size(); ++i) {
-		// 	ScoreboardRow currentRow = scoreboard.get(i);
-		// 	PImage pickupImage = ResourceManager.getImage(currentRow.imageName);
-		// 	image(pickupImage, 50, 0 + (20*i));
-		// 	textSize(20);
-		// 	text(currentRow.score, 50, 0 + (20*i));
-		// 	// println(currentRow.imageName + "...." + currentRow.score);
-		// }
+		for (int i = 0; i < scoreboard.size(); ++i)
+		{
+			ScoreboardRow currentRow = scoreboard.get(i);
+			PImage pickupImage = ResourceManager.getImage(currentRow.imageName);
+			image(pickupImage, 50, 0 + (40*i), 40, 40);
+			fill(WHITE);
+			int ts = 20;
+			textSize(ts);
+			textAlign(LEFT);
+			text(currentRow.score, 100, 30 + 40*i);
+			// println(currentRow.imageName + "...." + currentRow.score);
+		}
 	}
 }

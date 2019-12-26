@@ -586,7 +586,7 @@ void debugInput()
 	if (key == 'U' || key == 'u')
 	{
 		// databaseManager.getAllPickupScores();
-		ui.generateScoreboardGraphic();
+		// ui.generateScoreboardGraphic();
 	}
 }
 
