@@ -474,15 +474,15 @@ public class UIController
 
 		for (LeaderboardRow leaderboardRow : leaderBoard)
 		{
-			if(i == 0)
+			if(i == 0) //First place
 			{
 				leaderBoardGraphics.fill(#C98910);
 			}
-			else if(i == 1)
+			else if(i == 1) //Second place
 			{
 				leaderBoardGraphics.fill(#A8A8A8);
 			}
-			else if(i == 2)
+			else if(i == 2) //Third place
 			{
 				leaderBoardGraphics.fill(#cd7f32);
 			}
@@ -509,5 +509,15 @@ public class UIController
 	}
 
 
-	// private generateLeaderboardGraphics
+	public void generateScoreboardGraphic()
+	{
+		// for (int i = 0; i < scoreboard.size(); ++i) {
+		// 	ScoreboardRow currentRow = scoreboard.get(i);
+		// 	PImage pickupImage = ResourceManager.getImage(currentRow.imageName);
+		// 	image(pickupImage, 50, 0 + (20*i));
+		// 	textSize(20);
+		// 	text(currentRow.score, 50, 0 + (20*i));
+		// 	// println(currentRow.imageName + "...." + currentRow.score);
+		// }
+	}
 }

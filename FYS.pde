@@ -18,6 +18,7 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
 // database variables
+//this is a mess, we need to orginaze more in groups
 LoginScreen loginScreen;
 boolean userInLoginScreen;
 boolean loadedPlayerInventory = false;
@@ -39,6 +40,7 @@ boolean isUploadingRunResults = false;
 
 //Scores
 ArrayList<ScoreboardRow> scoreboard;
+boolean loadedScores = false;
 
 // used to run code on closing game
 DisposeHandler dh;
@@ -583,7 +585,8 @@ void debugInput()
 
 	if (key == 'U' || key == 'u')
 	{
-		databaseManager.getAllPickupScores();	
+		// databaseManager.getAllPickupScores();
+		ui.generateScoreboardGraphic();
 	}
 }
 
