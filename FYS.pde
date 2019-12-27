@@ -328,6 +328,7 @@ void handleGameFlow()
 		//Reset game to over world
 		if (InputHelper.isKeyDown(BACK_KEY))
 		{
+			AudioManager.stopMusic("BackgroundMusic");
 			enterOverWorld(true);
 		}
 
@@ -343,7 +344,6 @@ void enterOverWorld(boolean reloadGame)
 		setupGame();
 	}
 
-	//AudioManager.loopMusic("ForestAmbianceMusic"); 
 	gamePaused = false;
 	currentGameState = GameState.Overworld;
 	camera.lerpAmount = 0.075f;

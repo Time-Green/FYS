@@ -106,7 +106,7 @@ public class UIController
 		switch (currentGameState)
 		{
 			default :
-				println("Something went wrong with the game state");
+				//println("Something went wrong with the game state");
 			break;
 
 			case MainMenu:
@@ -517,15 +517,16 @@ public class UIController
 	//I will write comment later i'm in a hurry atm
 	public void generateScoreboardGraphic()
 	{
-		for (int i = 0; i < scoreboard.size(); ++i)
+		textSize(20);
+		textAlign(LEFT);
+		fill(WHITE);
+
+		for (int i = 0; i < scoreboard.size(); i++)
 		{
 			ScoreboardRow currentRow = scoreboard.get(i);
 			PImage pickupImage = ResourceManager.getImage(currentRow.imageName);
+
 			image(pickupImage, 50, 0 + (40*i), 40, 40);
-			fill(WHITE);
-			int ts = 20;
-			textSize(ts);
-			textAlign(LEFT);
 			text(currentRow.score, 100, 30 + 40*i);
 			// println(currentRow.imageName + "...." + currentRow.score);
 		}

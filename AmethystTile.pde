@@ -6,6 +6,6 @@ public class AmethystTile extends ResourceTile {
     value = AMETHYST_VALUE;
 
     image = ResourceManager.getImage("AmethystBlock");
-    pickUpImage = ResourceManager.getImage("AmethystPickUp");
+    pickupImage = ResourceManager.getImage("AmethystPickup");
   }
 }

@@ -333,7 +333,7 @@ class Player extends Mob
 		endRun();
 	}
 
-	boolean canPickUp(PickUp pickUp)
+	boolean canPickup(Pickup pickup)
 	{
 		return true;
 	}

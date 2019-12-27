@@ -1,8 +1,8 @@
-public class PickUp extends Movable
+public class Pickup extends Movable
 {
 	boolean canTake = true; //in-case we need an override to stop people picking stuff up, like thrown dynamite
 
-	PickUp()
+	Pickup()
 	{ 
 		size.set(30, 30);
 	}
@@ -18,17 +18,17 @@ public class PickUp extends Movable
 		{
 			Mob mob = (Mob) object;
 
-			//maybe replace with canPickUp?
-			if (canTake && mob.canPickUp(this))
+			//maybe replace with canPickup?
+			if (canTake && mob.canPickup(this))
 			{
 				pickedUp(mob);
-				runData.pickUpsPickedUp++;
+				runData.pickupsPickedUp++;
 
 				return false;
 			}
 		}
 
-		if (object instanceof PickUp) {
+		if (object instanceof Pickup) {
 			return false;
 		}
 

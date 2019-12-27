@@ -276,7 +276,7 @@ public class DatabaseManager
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 
-		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
+		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', Pickups = '" + runData.pickupsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
 
 		int success = -1;
 
@@ -499,8 +499,8 @@ public class DatabaseManager
 
 		//encode
 		url = url.replace(' ', '+');
-		url = url.replace("`", "%60");
 		url = url.replace("%", "%25");
+		url = url.replace("`", "%60");
 
 		GetRequest get = new GetRequest(url);
 

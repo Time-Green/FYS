@@ -191,7 +191,7 @@ class Mob extends Movable
 		currentHealth = maxHealth;
 	}
 
-	boolean canPickUp(PickUp pickUp)
+	boolean canPickup(Pickup Pickup)
 	{
 		return false;
 	}

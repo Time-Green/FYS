@@ -9,6 +9,6 @@ public class LapisTile extends ResourceTile
 		image = ResourceManager.getImage("LapisBlock");
 		breakSound = "GlassBreak" + floor(random(1, 4));
 	
-		pickUpImage = ResourceManager.getImage("LapisPickup");
+		pickupImage = ResourceManager.getImage("LapisPickup");
 	}
 }

@@ -10,7 +10,7 @@ public class CoalTile extends ResourceTile
 
 		//image = ResourceManager.getRandomFlippedImage("CoalBlock"); WIP
 		image = ResourceManager.getImage("CoalBlock");
-		pickUpImage = ResourceManager.getImage("CoalPickUp");
+		pickupImage = ResourceManager.getImage("CoalPickup");
 		decalType = "DecalStone";
 	}
 }

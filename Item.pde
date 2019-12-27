@@ -1,4 +1,4 @@
-class Item extends PickUp
+class Item extends Pickup
 {
 	int throwSpeed = 50; // throw speed, for when you use it
 	Mob thrower; // whoever threw us, if we're even throwable
@@ -8,7 +8,7 @@ class Item extends PickUp
 
 	Item()
 	{
-		image = ResourceManager.getImage("DiamondPickUp");
+		image = ResourceManager.getImage("DiamondPickup");
 	}
 
 	void update()

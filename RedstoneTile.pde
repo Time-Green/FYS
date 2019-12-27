@@ -6,6 +6,6 @@ public class RedstoneTile extends ResourceTile {
     value = REDSTONE_VALUE;
 
     image = ResourceManager.getImage("RedstoneBlock");
-    pickUpImage = ResourceManager.getImage("RedstonePickUp");
+    pickupImage = ResourceManager.getImage("RedstonePickup");
   }
 }

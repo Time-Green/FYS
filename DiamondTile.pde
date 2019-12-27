@@ -22,6 +22,6 @@ public class DiamondTile extends ResourceTile
 			println("Type not found!");
 		}
 
-		pickUpImage = ResourceManager.getImage("DiamondPickUp");
+		pickupImage = ResourceManager.getImage("DiamondPickup");
 	}
 }
