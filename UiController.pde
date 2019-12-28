@@ -433,6 +433,8 @@ public class UIController
 			ellipse(width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), inventorySize, inventorySize);
 		}
 
+		imageMode(CENTER);
+		
 		for (int i = 0; i < player.inventory.length; i++)
 		{
 			if(player.inventory[i] != null)
@@ -441,6 +443,8 @@ public class UIController
 				image(item.image, width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), item.size.x, item.size.y);
 			}
 		}
+
+		imageMode(CORNER); 
 	}
 
 	void startDisplayingAchievement(int id)

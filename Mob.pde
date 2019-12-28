@@ -198,41 +198,35 @@ class Mob extends Movable
 
 	boolean canAddToInventory(Item item)
 	{
-		for(int i = 0; i < inventory.length - 1; i++)
+		for(int i = 0; i < inventory.length; i++)
 		{
 			if(inventory[i] == item) //cant have the same item in both hands
 			{
-				println("aaa", i);
 				return false;
 			}
 		}
 
-		for(int i = 0; i < inventory.length - 1; i++)
+		for(int i = 0; i < inventory.length; i++)
 		{
 			if(inventory[i] == null) //cant have the same item in both hands
 			{
 				return true;
 			}
 		}
-
 		return false;
 	}
 
 	void addToInventory(Item item)
 	{
-		rectMode(CENTER);
-
 		item.suspended = true;
 		for(int i = 0; i < inventory.length; i++)
 			{
 				if(inventory[i] == null)
 				{
 					inventory[i] = item;
+					break;
 				}
-				break;
 			}
-
-		rectMode(CORNER);
 	}
 
 	void useInventory(int slot)

@@ -281,19 +281,13 @@ class Player extends Mob
 		if (InputHelper.isKeyDown(INVENTORY_KEY_A))
 		{ 
 			useInventory(0);
-			InputHelper.onKeyReleased(INVENTORY_KEY_B);
+			InputHelper.onKeyReleased(INVENTORY_KEY_A);
 		}
 		
 		if (InputHelper.isKeyDown(INVENTORY_KEY_B))
 		{ 
 			useInventory(1);
 			InputHelper.onKeyReleased(INVENTORY_KEY_B);
-		}
-
-		if (InputHelper.isKeyDown('k'))
-		{ 
-			load(new Dynamite(), new PVector(position.x + 200, position.y - 50));
-			InputHelper.onKeyReleased('k');
 		}
 	}
 

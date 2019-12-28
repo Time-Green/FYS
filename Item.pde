@@ -1,6 +1,6 @@
 class Item extends Pickup
 {
-	int throwSpeed = 50; // throw speed, for when you use it
+	float throwSpeed = SPEED_LIMIT; // throw speed, for when you use it
 	Mob thrower; // whoever threw us, if we're even throwable
 
 	float cooldown = 0;
@@ -37,7 +37,7 @@ class Item extends Pickup
 
 	void pickedUp(Mob mob)
 	{
-		if (mob.canAddToInventory(this))
+		if (!suspended && mob.canAddToInventory(this))
 		{
 			mob.addToInventory(this);
 		}
@@ -46,23 +46,16 @@ class Item extends Pickup
 	void onUse(Mob mob)
 	{
 		mob.removeFromInventory(this);
-		int direction = 0;
+		int direction;
 
-		if (mob.isMiningLeft)
-		{
-			direction = LEFT;
-		}
-		else if (mob.isMiningRight)
+		if(mob.flipSpriteHorizontal) //sprite defaults to pointing left, so if this is true he's standing still and looking to the right
 		{
 			direction = RIGHT;
 		}
 
-		if (mob.isMiningUp) {
-			direction = UP;
-		}
-
-		if (mob.isMiningDown) {
-			direction = DOWN;
+		else
+		{
+			direction = LEFT;
 		}
 
 		throwItem(mob, direction);

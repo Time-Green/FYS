@@ -7,7 +7,7 @@ final int JUMP_KEY_1 = UP;
 final int JUMP_KEY_2 = 32; // spacebar
 
 //inventory
-final int INVENTORY_KEY_A = 'z';
+final int INVENTORY_KEY_A = CONTROL;
 final int INVENTORY_KEY_B = ALT;
 
 //Menus
@@ -67,6 +67,9 @@ final int MAX_LOGIN_NAME_SIZE = 20;
 //Gamestate
 boolean gamePaused = true;
 GameState currentGameState = GameState.MainMenu;
+
+//Movement
+final float SPEED_LIMIT = TILE_SIZE; //otherwise we can phase through tiles like the flash, because we only check the closest tiles and not the ones BEHIND them
 
 enum GameState
 {
