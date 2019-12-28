@@ -20,11 +20,11 @@ class Mob extends Movable
 	protected float baseDamage = 1;
 
 	//Inventory
-	protected ArrayList<Item> inventory = new ArrayList<Item>();
-	protected int selectedSlot = 1; //the selected slot. we'll always use this one if we can
-	protected int maxInventory = 3;
+	protected int maxInventory = 2;
 	protected int lastUse;
 	protected int useCooldown = 100;
+	//we use an array here, because position matters and arraylist will shift it
+	protected Item[] inventory = new Item[maxInventory]; 
 
 	//regen and fire
 	public float regen = 0.05f;
@@ -198,12 +198,24 @@ class Mob extends Movable
 
 	boolean canAddToInventory(Item item)
 	{
-		if (inventory.contains(item))
+		for(int i = 0; i < inventory.length - 1; i++)
 		{
-			return false;
+			if(inventory[i] == item) //cant have the same item in both hands
+			{
+				println("aaa", i);
+				return false;
+			}
 		}
 
-		return inventory.size() < maxInventory;
+		for(int i = 0; i < inventory.length - 1; i++)
+		{
+			if(inventory[i] == null) //cant have the same item in both hands
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void addToInventory(Item item)
@@ -211,39 +223,39 @@ class Mob extends Movable
 		rectMode(CENTER);
 
 		item.suspended = true;
-		inventory.add(item);
+		for(int i = 0; i < inventory.length; i++)
+			{
+				if(inventory[i] == null)
+				{
+					inventory[i] = item;
+				}
+				break;
+			}
 
 		rectMode(CORNER);
 	}
 
-	void useInventory()
+	void useInventory(int slot)
 	{
-		if (lastUse + useCooldown < millis() && inventory.size() != 0)
+		if (lastUse + useCooldown < millis() && inventory[slot] != null)
 		{
-			if (selectedSlot <= inventory.size())
-			{
-				Item item = inventory.get(selectedSlot - 1);
+			Item item = inventory[slot];
 
-				item.onUse(this);
-				item.suspended = false;
+			item.onUse(this);
+			item.suspended = false;
 
-				lastUse = millis();
-			}
-		}
-	}
-
-	void switchInventory()
-	{
-		selectedSlot++;
-
-		if (selectedSlot > maxInventory)
-		{
-			selectedSlot = 1;
+			lastUse = millis();
 		}
 	}
 
 	void removeFromInventory(Item item)
 	{
-		inventory.remove(item);
+		for(int i = 0; i < inventory.length; i++)
+			{
+				if(inventory[i] == item)
+					{
+						inventory[i] = null;
+					}
+			}
 	}
 }

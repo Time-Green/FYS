@@ -7,8 +7,8 @@ final int JUMP_KEY_1 = UP;
 final int JUMP_KEY_2 = 32; // spacebar
 
 //inventory
-final int INVENTORY_KEY = ALT;
-final int ITEM_KEY = CONTROL;
+final int INVENTORY_KEY_A = 'z';
+final int INVENTORY_KEY_B = ALT;
 
 //Menus
 final int START_KEY = ENTER;
