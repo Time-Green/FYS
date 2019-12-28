@@ -74,9 +74,9 @@ public class UIController
 	String dots = "";
 
 	//Inventory
-	private float inventorySize = 50;
+	private float inventorySize = 80;
 	private float xSlot = 0.9; //these are all done in percentage of screen width/height so they can properly size with the screen
-	private float ySlot = 0.05;
+	private float ySlot = 0.08;
 	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
 	private float slotYIncrement = 0.07;
 
