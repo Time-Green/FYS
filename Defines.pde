@@ -74,6 +74,7 @@ GameState currentGameState = GameState.MainMenu;
 
 //Movement
 final float SPEED_LIMIT = TILE_SIZE; //otherwise we can phase through tiles like the flash, because we only check the closest tiles and not the ones BEHIND them
+final float GRAVITY_LIMIT = 20;
 
 enum GameState
 {
