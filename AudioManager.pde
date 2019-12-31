@@ -126,10 +126,10 @@ public static class AudioManager
 
 	public static void playSoundEffect(String name, PVector atLocation)
 	{
-		if(!AUDIO_ENABLED)
-		{
-			return;
-		}
+		// if(!AUDIO_ENABLED)
+		// {
+		// 	return;
+		// }
 
 		AudioPlayer[] soundEffects = soundEffectMap.get(name);
 		int playAtIndex = soundEffectMapIndex.get(name);

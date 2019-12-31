@@ -1,6 +1,8 @@
 public class ScorePickup extends Pickup
 {
 	private int score;
+	//Placeholder sound
+	private String soundName = "gem";
 
 	// drop based on tile
 	public ScorePickup(ResourceTile tile)
@@ -27,7 +29,8 @@ public class ScorePickup extends Pickup
 
 		//Effects
 		//TODO: find and add sound effect, do not remove comment yet
-		// AudioManager.playSoundEffect(PickupSound, position);
+		AudioManager.setMaxVolume(soundName, 0.8f);
+		AudioManager.playSoundEffect(soundName, position);
 		// Insert particle code here
 
 		//Delete this object

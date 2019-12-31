@@ -27,6 +27,10 @@ final int DIAMOND_VALUE = 1000;
 final int AMETHYST_VALUE = 2500;
 final int METEORITE_VALUE = 5000;
 
+//Dig bonuses
+final int BONUSDEPTH = 50;
+
+
 //relicboost
 final int HEALTH_BOOST = 10;
 final float DAMAGE_BOOST = 0.01f;

@@ -2,19 +2,12 @@ class Player extends Mob
 {
 	//Animation
 	private AnimatedImage walkCycle;
-	private final int WALKFRAMES = 4;
 	private AnimatedImage animatedImageIdle;
-	private final int IDLEFRAMES = 3;
 	private AnimatedImage animatedImageAir;
-	private final int AIRFRAMES = 3;
-	private AnimatedImage shockedCycle;
-	private final int SHOCKFRAMES = 2;
+	private AnimatedImage animatedImageShocked;
 	private AnimatedImage animatedImageMine;
-	private final int MINEFRAMES = 3;
 	private AnimatedImage animatedImageFall;
-	private final int FALLFRAMES = 4;
 	private AnimatedImage animatedImageFire;
-	private final int FIREFRAMES = 4;
 
 	//Camera
 	private float viewAmount = 400;
@@ -23,6 +16,10 @@ class Player extends Mob
 
 	//Status effects
 	public float stunTimer;
+	private float shieldTimer;
+
+	boolean gotbonus1;
+	Shield myShield;
 
 	private PVector spawnPosition = new PVector(1300, 509);
 	public int score = 0;
@@ -32,21 +29,16 @@ class Player extends Mob
 		position = spawnPosition;
 		setMaxHp(100);
 		baseDamage = 1.4;
-		isSwimming = false;
 		canRegen = true;
 		jumpForce = 21f;
 
-		walkCycle = new AnimatedImage("PlayerWalk", WALKFRAMES, 8, position, size.x, flipSpriteHorizontal);
-		animatedImageIdle = new AnimatedImage("PlayerIdle", IDLEFRAMES, 60, position, size.x, flipSpriteHorizontal);
-		animatedImageAir = new AnimatedImage("PlayerAir", AIRFRAMES, 10, position, size.x, flipSpriteHorizontal);
-		shockedCycle = new AnimatedImage("PlayerShock", SHOCKFRAMES, 10, position, size.x, flipSpriteHorizontal);
-		animatedImageMine = new AnimatedImage("PlayerMine", MINEFRAMES, 5, position, size.x, flipSpriteHorizontal);
-    	animatedImageFall = new AnimatedImage("PlayerFall", FALLFRAMES, 20, position, size.x, flipSpriteHorizontal);
-    	animatedImageFire = new AnimatedImage("FireP", FIREFRAMES, 10, position, size.x, flipSpriteHorizontal);
+		setUpAnimation();
 
 		setupLightSource(this, viewAmount, 1f);
 
 		applyRelicBoost();
+
+		// myShield = new Shield();
 	}
 
 	void update()
@@ -68,6 +60,8 @@ class Player extends Mob
 		checkHealthLow();
 
 		statusEffects();
+
+		digBonuses();
 
 		if (stunTimer <= 0)
 		{
@@ -156,6 +150,29 @@ class Player extends Mob
 		{
 			item.drawOnPlayer(this);
 		}
+ 
+	}
+
+	private void setUpAnimation()
+	{
+		//Movement animation
+		int walkFrames = 4, idleFrames = 3, mineFrames = 3;
+		int walkAnimSpeed = 8, idleAnimSpeed = 1, mineAnimSpeed = 5;
+		walkCycle = new AnimatedImage("PlayerWalk", walkFrames, walkAnimSpeed, position, size.x, flipSpriteHorizontal);
+		animatedImageIdle = new AnimatedImage("PlayerIdle", idleFrames, idleAnimSpeed, position, size.x, flipSpriteHorizontal);
+		animatedImageMine = new AnimatedImage("PlayerMine", mineFrames, mineAnimSpeed, position, size.x, flipSpriteHorizontal);
+		
+		//Jumping animation
+		int airFrames = 3, fallFrames = 4;
+		int airAnimSpeed = 10, fallAnimSpeed = 20;
+		animatedImageAir = new AnimatedImage("PlayerAir", airFrames, airAnimSpeed, position, size.x, flipSpriteHorizontal);
+    	animatedImageFall = new AnimatedImage("PlayerFall", fallFrames, fallAnimSpeed, position, size.x, flipSpriteHorizontal);
+
+		//Status effects
+		int shockFrames = 2, fireFrames = 4;
+		int statusEffectAnimSpeed = 10;
+		animatedImageShocked = new AnimatedImage("PlayerShock", shockFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
+		animatedImageFire = new AnimatedImage("FireP", fireFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
 	}
 
 	private void handleAnimation()
@@ -169,11 +186,21 @@ class Player extends Mob
 			AudioManager.playSoundEffect("FireSound");
 		}
 
+		//Draw the shield
+		// if (this.shieldTimer > 0f)
+		// {
+		// 	// myShield.drawShield();
+		// 	// PImage shieldImage = ResourceManager.getImage("Umberla");
+		// 	// // shieldImage
+
+		// 	// image(shieldImage, this.position.x, this.position.y, 40, 40);
+		// }
+
 		// Am I stunned?
 		if (stunTimer > 0f)
 		{
-			shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
-			shockedCycle.draw();
+			animatedImageShocked.flipSpriteHorizontal = flipSpriteHorizontal;
+			animatedImageShocked.draw();
 		}
 		else // Play the other animations when we are not stunned
 		{
@@ -293,6 +320,18 @@ class Player extends Mob
 		score += scoreToAdd;
 	}
 
+	private void digBonuses()
+	{
+		float extraShieldTime = timeInSeconds(10f);
+		if (getDepth() > BONUSDEPTH && gotbonus1 == false)
+		{
+			shieldTimer += extraShieldTime;
+			gotbonus1 = true;
+			
+		}
+		// println("shieldTimer: " + shieldTimer);
+	}
+
 	public void takeDamage(float damageTaken)
 	{
 		if (isImmortal || damageTaken == 0.0)
@@ -324,6 +363,16 @@ class Player extends Mob
 			isMiningLeft = false;
 			isMiningRight = false;
 		}
+
+		if (shieldTimer > 0f)
+		{
+			shieldTimer--;
+			this.isImmortal = true;	
+		}
+		else
+		{
+			this.isImmortal = false;
+		}
 	}
 
 	public void die()
@@ -343,8 +392,9 @@ class Player extends Mob
 		return true;
 	}
 
-	void afterMine(BaseObject object)
+	protected void afterMine(BaseObject object)
 	{
 		runData.playerBlocksMined++;
 	}
+
 }

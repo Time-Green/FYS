@@ -354,7 +354,7 @@ public class UIController
 		//Get a new postion if we need to
 		extraBonusX = getExtraBonusX();
 		//Reset the collected score counter
-		float resetTimer = timeInSeconds(1f);
+		float resetTimer = timeInSeconds(0.5f);
 		extraScoreLiveTimer = resetTimer;
 		collectedPoints += scoreToAdd;
 	}
@@ -514,7 +514,7 @@ public class UIController
 
 
 	//This is basic and full of magic numbers, remove them
-	//I will write comment later i'm in a hurry atm
+	//I will write comments later i'm in a hurry atm
 	public void generateScoreboardGraphic()
 	{
 		textSize(20);

@@ -102,7 +102,7 @@ class Mob extends Movable
 	}
 
 	// hook, used by player to count the mined tiles
-	void afterMine(BaseObject object)
+	protected void afterMine(BaseObject object)
 	{
 		return;
 	}

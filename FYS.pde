@@ -561,11 +561,10 @@ void keyReleased()
 void debugInput()
 {
 	// Test spawns
-	// if(key == 'E' || key == 'e')
-	// {
-	// 	// load(new EnemyGhost(new PVector(player.position.x + 200,player.position.y)));
-	// 	databaseManager.getAllVariable();
-	// }
+	if(key == 'E' || key == 'e')
+	{
+		load(new EnemyBomb(new PVector(player.position.x + 200,player.position.y)));
+	}
 
 	// if(key == 'R' || key == 'r')
 	// {
