@@ -2,7 +2,7 @@ public class ScorePickup extends Pickup
 {
 	private int score;
 	//Placeholder sound
-	private String soundName = "gem";
+	private String soundName = "treasure";
 
 	// drop based on tile
 	public ScorePickup(ResourceTile tile)
