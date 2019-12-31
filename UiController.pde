@@ -74,7 +74,11 @@ public class UIController
 	String dots = "";
 
 	//Inventory
-	private float inventorySize = 50;
+	private float inventorySize = 80;
+	private float xSlot = 0.9; //these are all done in percentage of screen width/height so they can properly size with the screen
+	private float ySlot = 0.08;
+	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
+	private float slotYIncrement = 0.07;
 
 	private PImage healthBarImage;
 	private PImage arrowImage;
@@ -425,23 +429,22 @@ public class UIController
 	{
 		for (int i = 0; i < player.maxInventory; i++)
 		{
-			if (i == player.selectedSlot - 1)
-			{
-				fill(inventorySelectedColor);
-			}
-			else
-			{
-				fill(inventoryColor);
-			}
-
 			//Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-			rect(width * 0.95 - inventorySize * i, barX, inventorySize, inventorySize);
+			ellipse(width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), inventorySize, inventorySize);
 		}
 
-		for (Item item : player.inventory)
+		imageMode(CENTER);
+		
+		for (int i = 0; i < player.inventory.length; i++)
 		{
-			image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item), barX, item.size.x, item.size.y);
+			if(player.inventory[i] != null)
+			{
+				Item item = player.inventory[i];
+				image(item.image, width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), item.size.x, item.size.y);
+			}
 		}
+
+		imageMode(CORNER); 
 	}
 
 	void startDisplayingAchievement(int id)

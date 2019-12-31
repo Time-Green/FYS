@@ -146,9 +146,12 @@ class Player extends Mob
 		handleAnimation();
 
 		// player only, because we'll never bother adding a holding sprite for every mob 
-		for (Item item : inventory)
+		for (int i = 0; i < inventory.length; i++)
 		{
-			item.drawOnPlayer(this);
+			if(inventory[i] != null)
+			{
+				inventory[i].drawOnPlayer(this);
+			}
 		}
  
 	}
@@ -302,16 +305,16 @@ class Player extends Mob
 			isMiningRight = false;
 		}
 
-		if (InputHelper.isKeyDown(INVENTORY_KEY))
+		if (InputHelper.isKeyDown(INVENTORY_KEY_A))
 		{ 
-			useInventory();
-			InputHelper.onKeyReleased(INVENTORY_KEY);
+			useInventory(0);
+			InputHelper.onKeyReleased(INVENTORY_KEY_A);
 		}
-
-		if (InputHelper.isKeyDown(ITEM_KEY))
-		{
-			switchInventory();
-			InputHelper.onKeyReleased(ITEM_KEY);
+		
+		if (InputHelper.isKeyDown(INVENTORY_KEY_B))
+		{ 
+			useInventory(1);
+			InputHelper.onKeyReleased(INVENTORY_KEY_B);
 		}
 	}
 

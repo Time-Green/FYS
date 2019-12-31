@@ -226,7 +226,7 @@ class Movable extends BaseObject
 		acceleration.add(new PVector(0, gravityForce));
 
 		velocity.add(acceleration);
-		velocity.limit(20);
+		velocity.limit(SPEED_LIMIT); //prevents us from going so fast we start ignoring collision
 
 		acceleration.mult(0);
 

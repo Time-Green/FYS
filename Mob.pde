@@ -20,11 +20,11 @@ class Mob extends Movable
 	protected float baseDamage = 1;
 
 	//Inventory
-	protected ArrayList<Item> inventory = new ArrayList<Item>();
-	protected int selectedSlot = 1; //the selected slot. we'll always use this one if we can
-	protected int maxInventory = 3;
+	protected int maxInventory = 2;
 	protected int lastUse;
 	protected int useCooldown = 100;
+	//we use an array here, because position matters and arraylist will shift it
+	protected Item[] inventory = new Item[maxInventory]; 
 
 	//regen and fire
 	public float regen = 0.05f;
@@ -198,52 +198,58 @@ class Mob extends Movable
 
 	boolean canAddToInventory(Item item)
 	{
-		if (inventory.contains(item))
+		for(int i = 0; i < inventory.length; i++)
 		{
-			return false;
+			if(inventory[i] == item) //cant have the same item in both hands
+			{
+				return false;
+			}
 		}
 
-		return inventory.size() < maxInventory;
+		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] == null) //cant have the same item in both hands
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	void addToInventory(Item item)
 	{
-		rectMode(CENTER);
-
 		item.suspended = true;
-		inventory.add(item);
-
-		rectMode(CORNER);
-	}
-
-	void useInventory()
-	{
-		if (lastUse + useCooldown < millis() && inventory.size() != 0)
-		{
-			if (selectedSlot <= inventory.size())
+		for(int i = 0; i < inventory.length; i++)
 			{
-				Item item = inventory.get(selectedSlot - 1);
-
-				item.onUse(this);
-				item.suspended = false;
-
-				lastUse = millis();
+				if(inventory[i] == null)
+				{
+					inventory[i] = item;
+					break;
+				}
 			}
-		}
 	}
 
-	void switchInventory()
+	void useInventory(int slot)
 	{
-		selectedSlot++;
-
-		if (selectedSlot > maxInventory)
+		if (lastUse + useCooldown < millis() && inventory[slot] != null)
 		{
-			selectedSlot = 1;
+			Item item = inventory[slot];
+
+			item.onUse(this);
+			item.suspended = false;
+
+			lastUse = millis();
 		}
 	}
 
 	void removeFromInventory(Item item)
 	{
-		inventory.remove(item);
+		for(int i = 0; i < inventory.length; i++)
+			{
+				if(inventory[i] == item)
+					{
+						inventory[i] = null;
+					}
+			}
 	}
 }
