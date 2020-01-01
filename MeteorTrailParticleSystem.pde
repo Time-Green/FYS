@@ -16,7 +16,6 @@ public class MeteorTrailParticleSystem extends BaseParticleSystem
                 circleY *= -1;
             }
 
-            println("iets");
 
 			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
 

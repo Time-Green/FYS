@@ -24,7 +24,8 @@ class Mob extends Movable
 	protected int lastUse;
 	protected int useCooldown = 100;
 	//we use an array here, because position matters and arraylist will shift it
-	protected Item[] inventory = new Item[maxInventory]; 
+	protected Item[] inventory = new Item[maxInventory];
+	protected boolean[] inventoryDrawable = new boolean[maxInventory]; //set to false on specific location to stop drawing, like the homing item thing
 
 	//regen and fire
 	public float regen = 0.05f;
@@ -34,7 +35,8 @@ class Mob extends Movable
 	private int fireTimer;
 	private int regenTimer;
 
-	Mob(){
+	Mob()
+	{
 		super();
 		drawLayer = MOB_LAYER;
 	}
@@ -219,11 +221,14 @@ class Mob extends Movable
 	void addToInventory(Item item)
 	{
 		item.suspended = true;
+		load(new ItemParticleSystem(new PVector().set(position), 1, item));
+
 		for(int i = 0; i < inventory.length; i++)
 			{
 				if(inventory[i] == null)
 				{
 					inventory[i] = item;
+					inventoryDrawable[i] = false; //we set this to true again once the homing particle hits
 					break;
 				}
 			}
@@ -245,11 +250,24 @@ class Mob extends Movable
 	void removeFromInventory(Item item)
 	{
 		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] == item)
 			{
-				if(inventory[i] == item)
-					{
-						inventory[i] = null;
-					}
+				inventory[i] = null;
 			}
+		}
+	}
+
+	int getFirstEmptyInventorySlot()
+	{
+		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] == null)
+			{
+				return i;
+			}
+		}
+
+		return 0;
 	}
 }

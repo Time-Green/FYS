@@ -80,6 +80,8 @@ public class UIController
 	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
 	private float slotYIncrement = 0.07;
 
+	private float imageEnlargement = 2; //how much we grow the item in our inventory
+
 	private PImage healthBarImage;
 	private PImage arrowImage;
 
@@ -430,21 +432,29 @@ public class UIController
 		for (int i = 0; i < player.maxInventory; i++)
 		{
 			//Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-			ellipse(width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), inventorySize, inventorySize);
+			PVector slotLocation = getInventorySlotLocation(i);
+			ellipse(slotLocation.x, slotLocation.y, inventorySize, inventorySize);
 		}
 
 		imageMode(CENTER);
 		
 		for (int i = 0; i < player.inventory.length; i++)
 		{
-			if(player.inventory[i] != null)
+			if(player.inventory[i] != null && player.inventoryDrawable[i])
 			{
 				Item item = player.inventory[i];
-				image(item.image, width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), item.size.x, item.size.y);
+				PVector slotLocation = getInventorySlotLocation(i);
+				image(item.image, slotLocation.x, slotLocation.y, item.size.x * imageEnlargement, item.size.y * imageEnlargement);
 			}
 		}
 
 		imageMode(CORNER); 
+	}
+
+	PVector getInventorySlotLocation(int slot)
+	{
+		return new PVector(width * (xSlot + slot * slotXIncrement), height * (ySlot + slot * slotYIncrement));
+		
 	}
 
 	void startDisplayingAchievement(int id)
