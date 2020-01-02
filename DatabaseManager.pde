@@ -170,11 +170,10 @@ public class DatabaseManager
 
 		for (int i = 0; i < result.size(); i++) 
 		{
-			returnList.add(buildAchievement(result.getJSONObject(i)));
+			returnList.add(buildAchievement(result.getJSONObject(i)));		
 		}
-		
-		return returnList;
-		
+				
+		return returnList;			
 	}
 
 	// get all the unlocked achievement ids from the current player
@@ -216,7 +215,7 @@ public class DatabaseManager
 		return returnList; 
 	}
 
-	//if not insert new row with this user id and achievement id
+	//insert new row with this user id and achievement id
 	private boolean insertNewAchievement(int unlockedAchievementId) 
 	{
 		JSONArray result = doDatabaseRequest("INSERT INTO UnlockedAchievement (`playerid`, `achievementid`) VALUES ('" + dbUser.id + "', '" + unlockedAchievementId + "')");
