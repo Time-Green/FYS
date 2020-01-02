@@ -16,6 +16,8 @@ public class ItemParticle extends BaseParticle
         targetSlot = player.getFirstEmptyInventorySlot();
         uiLocation = ui.getInventorySlotLocation(targetSlot);
 
+        maxLifeTime = 480;
+
         size = 2;
 	}
 
