@@ -12,7 +12,7 @@ public class TileBreakParticleSystem extends BaseParticleSystem
 			float circleY = sin(randomAngle) * randomRadius;
 			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
 
-            PVector particleSpawnPosition = new PVector(position.x + random(Globals.TILE_SIZE), position.y + random(Globals.TILE_SIZE));
+            PVector particleSpawnPosition = new PVector(position.x + random(TILE_SIZE), position.y + random(TILE_SIZE));
 
 			TileBreakParticle particle = new TileBreakParticle(this, particleSpawnPosition, particleSpawnAcceleration, tileColor);
 			load(particle);

@@ -15,12 +15,16 @@ class BaseObject
 	float lightEmitAmount = 0.0f; // the amount of light this object emits
 	float distanceDimFactor = 1;
 
+	protected boolean inWater;
+
 	void update()
 	{
 		if(enableLightning)
 		{
 			updateLightning();
 		}
+
+		// this.inWater = true;
 	}
 
 	void draw()
@@ -57,7 +61,7 @@ class BaseObject
 	private void updateLightning()
 	{
 		//if in overworld, fully lit up object
-		if(position.y <= Globals.OVERWORLD_HEIGHT * Globals.TILE_SIZE + Globals.TILE_SIZE)
+		if(position.y <= OVERWORLD_HEIGHT * TILE_SIZE + TILE_SIZE)
 		{
 			lightningAmount = 255;
 
@@ -83,9 +87,9 @@ class BaseObject
 	{
 		PVector camPos = camera.getPosition();
 
-		if (position.y > -camPos.y - Globals.TILE_SIZE
+		if (position.y > -camPos.y - TILE_SIZE
 			&& position.y < -camPos.y + height
-			&& position.x > -camPos.x - Globals.TILE_SIZE
+			&& position.x > -camPos.x - TILE_SIZE
 			&& position.x < -camPos.x + width)
 		{
 			return true;

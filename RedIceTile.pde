@@ -6,11 +6,11 @@ public class RedIceTile extends ResourceTile
 
 		particleColor = color(#c70c22);
 
-		value = Globals.REDICEVALUE;
+		value = RED_ICE_VALUE;
 
 		slipperiness = 1.1;
 
 		image = ResourceManager.getImage("RedIceBlock");
-		pickUpImage = ResourceManager.getImage("RubyPickup");
+		pickupImage = ResourceManager.getImage("RubyPickup");
 	}
 }

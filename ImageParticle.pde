@@ -9,6 +9,7 @@ public class ImageParticle extends BaseParticle
         maxLifeTime = 120;
 		minSize = 15;
         maxSize = 20;
+		drawLayer = PRIORITY_LAYER;
 
 		size = random(minSize, maxSize);
         //maxLifeTime = 1000;
@@ -16,7 +17,7 @@ public class ImageParticle extends BaseParticle
 
 	void update()
 	{
-		if(Globals.gamePaused)
+		if(gamePaused)
 		{
 			return;
 		}

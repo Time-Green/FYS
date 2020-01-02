@@ -6,11 +6,11 @@ public class BlueIceTile extends ResourceTile
 
 		particleColor = color(#0d7fdb);
 
-		value = Globals.BLUEICEVALUE;
+		value = BLUE_ICE_VALUE;
 
 		slipperiness = 1.1;
 
 		image = ResourceManager.getImage("BlueIceBlock");
-		pickUpImage = ResourceManager.getImage("RubyPickup");
+		pickupImage = ResourceManager.getImage("SaphirePickup");
 	}
 }

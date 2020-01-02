@@ -1,11 +1,11 @@
 // spawn particles over time
-public class EmmitingParticleSystem extends BaseParticleSystem
+public class EmittingParticleSystem extends BaseParticleSystem
 {
     int spawnDelay;
     float maxForce;
     boolean onlyUpwardsParticles;
 
-	public EmmitingParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles)
+	public EmittingParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles)
 	{
 		super(spawnPos);
 
@@ -16,7 +16,7 @@ public class EmmitingParticleSystem extends BaseParticleSystem
 
     void update()
 	{
-        if(Globals.gamePaused)
+        if(gamePaused)
 		{
 			return;
 		}

@@ -6,11 +6,11 @@ public class GoldTile extends ResourceTile
 
 		particleColor = color(#bdaf13);
 
-		value = Globals.GOLDVALUE;
+		value = GOLD_VALUE;
 
 		if(type == 0)
 		{
-			image = ResourceManager.getImage("IronBlock"); // ironblock for gold???
+			image = ResourceManager.getImage("GoldBlock");
 			decalType = "DecalStone";
 		}
 		else if(type == 1)
@@ -22,6 +22,6 @@ public class GoldTile extends ResourceTile
 			println("Type not found!");
 		}
 
-		pickUpImage = ResourceManager.getImage("GoldPickUp");
+		pickupImage = ResourceManager.getImage("GoldPickup");
 	}
 }

@@ -32,7 +32,6 @@ public class World
 		spawnOverworldStructures();
 		spawnBirds();
 		spawnNpcs();
-		spawnStarterChest();
 		spawnJukebox();
 	}
 
@@ -48,7 +47,7 @@ public class World
 
 	public void spawnJukebox()
 	{
-		Jukebox jukebox = new Jukebox(new PVector(int(random(5, 25)) * Globals.TILE_SIZE, 510));
+		Jukebox jukebox = new Jukebox(new PVector(int(random(5, 25)) * TILE_SIZE, 510));
 		load(jukebox);
 	}
 
@@ -57,7 +56,7 @@ public class World
 		float xPos = -camera.position.x - width * 0.1;
 		float yPos = -camera.position.y * 0.5 - 200;
 
-		float worldWidth = Globals.TILES_HORIZONTAL * Globals.TILE_SIZE + Globals.TILE_SIZE;
+		float worldWidth = TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE;
 
 		pushMatrix();
 
@@ -73,7 +72,7 @@ public class World
 
 		int lastSpawnX = -4;
 		final int MIN_DISTANCE_INBETWEEN_TREE = 4;
-		final int MAX_XSPAWNPOS = Globals.TILES_HORIZONTAL - 13;
+		final int MAX_XSPAWNPOS = TILES_HORIZONTAL - 13;
 
 		for (int i = 1; i < MAX_XSPAWNPOS; i++)
 		{
@@ -119,15 +118,10 @@ public class World
 		}
 	}
 
-	void spawnStarterChest()
-	{
-		load(new Chest(69), new PVector(36 * Globals.TILE_SIZE, 10 * Globals.TILE_SIZE)); //69 is the forcedKey for an always pickaxe spawn
-	}
-
 	//return tile you're currently on
 	Tile getTile(float x, float y)
 	{
-		int yGridPos = floor(y / Globals.TILE_SIZE);
+		int yGridPos = floor(y / TILE_SIZE);
 
 		if (yGridPos < 0 || yGridPos > map.size() - 1)
 		{
@@ -136,7 +130,7 @@ public class World
 
 		ArrayList<Tile> subList = map.get(yGridPos); //map.size() instead of tilesVertical, because the value can change and map.size() is always the most current
 
-		int xGridPos = floor(x / Globals.TILE_SIZE);
+		int xGridPos = floor(x / TILE_SIZE);
 
 		if (xGridPos < 0 || xGridPos >= subList.size())
 		{
@@ -150,7 +144,7 @@ public class World
 	{
 		int mapDepth = map.size();
 
-		int playerDepth = Globals.OVERWORLD_HEIGHT;
+		int playerDepth = OVERWORLD_HEIGHT;
 
 		if(player != null)
 		{
@@ -166,12 +160,12 @@ public class World
 				switchBiome(y);
 			}
 
-			if (y > Globals.OVERWORLD_HEIGHT + 11 && currentBiome.structureChance > random(1))
+			if (y > OVERWORLD_HEIGHT + 11 && currentBiome.structureChance > random(1))
 			{
 				currentBiome.placeStructure(this, y);
 			}
 
-			for (int x = 0; x <= Globals.TILES_HORIZONTAL; x++)
+			for (int x = 0; x <= TILES_HORIZONTAL; x++)
 			{
 				Tile tile = currentBiome.getTileToGenerate(x, y);
 				tile.destroyedImage = currentBiome.destroyedImage;
@@ -213,28 +207,28 @@ public class World
 		float middleY = y + collider.size.y * 0.5f;
 
 		//cardinals
-		Tile topTile = getTile(middleX, middleY - Globals.TILE_SIZE);
+		Tile topTile = getTile(middleX, middleY - TILE_SIZE);
 
 		if (topTile != null)
 		{
 			surrounding.add(topTile);
 		}
 
-		Tile botTile = getTile(middleX, middleY + Globals.TILE_SIZE);
+		Tile botTile = getTile(middleX, middleY + TILE_SIZE);
 
 		if (botTile != null)
 		{
 			surrounding.add(botTile);
 		}
 
-		Tile leftTile = getTile(middleX - Globals.TILE_SIZE, middleY);
+		Tile leftTile = getTile(middleX - TILE_SIZE, middleY);
 
 		if (leftTile != null)
 		{
 			surrounding.add(leftTile);
 		}
 
-		Tile rightTile = getTile(middleX + Globals.TILE_SIZE, middleY);
+		Tile rightTile = getTile(middleX + TILE_SIZE, middleY);
 
 		if (rightTile != null)
 		{
@@ -242,28 +236,28 @@ public class World
 		}
 
 		//diagonals
-		Tile botRightTile = getTile(middleX + Globals.TILE_SIZE, middleY + Globals.TILE_SIZE);
+		Tile botRightTile = getTile(middleX + TILE_SIZE, middleY + TILE_SIZE);
 
 		if (botRightTile != null)
 		{
 			surrounding.add(botRightTile);
 		}
 
-		Tile botLeftTile = getTile(middleX - Globals.TILE_SIZE, middleY + Globals.TILE_SIZE);
+		Tile botLeftTile = getTile(middleX - TILE_SIZE, middleY + TILE_SIZE);
 
 		if (botLeftTile != null)
 		{
 			surrounding.add(botLeftTile);
 		}
 
-		Tile topLeftTile = getTile(middleX - Globals.TILE_SIZE, middleY - Globals.TILE_SIZE);
+		Tile topLeftTile = getTile(middleX - TILE_SIZE, middleY - TILE_SIZE);
 
 		if (topLeftTile != null)
 		{
 			surrounding.add(topLeftTile);
 		}
 
-		Tile topRightTile = getTile(middleX + Globals.TILE_SIZE, middleY - Globals.TILE_SIZE);
+		Tile topRightTile = getTile(middleX + TILE_SIZE, middleY - TILE_SIZE);
 
 		if (topRightTile != null)
 		{
@@ -309,12 +303,12 @@ public class World
 	// return the X and Y in tiles
 	PVector getGridPosition(Movable movable)
 	{
-		return new PVector(floor(movable.position.x / Globals.TILE_SIZE), floor(movable.position.y / Globals.TILE_SIZE));
+		return new PVector(floor(movable.position.x / TILE_SIZE), floor(movable.position.y / TILE_SIZE));
 	}
 
 	float getWidth()
 	{
-		return Globals.TILES_HORIZONTAL * Globals.TILE_SIZE;
+		return TILES_HORIZONTAL * TILE_SIZE;
 	}
 
 	boolean canBiomeSwitch(int depth)
@@ -370,7 +364,7 @@ public class World
 
 	void safeSpawnStructure(String structureName, PVector gridSpawnPos)
 	{
-		load(new StructureSpawner(this, structureName, gridSpawnPos), gridSpawnPos.mult(Globals.TILE_SIZE));
+		load(new StructureSpawner(this, structureName, gridSpawnPos), gridSpawnPos.mult(TILE_SIZE));
 	}
 
 	void spawnStructure(String structureName, PVector gridSpawnPos)
@@ -415,7 +409,7 @@ public class World
 
 	private void replaceObject(PVector relaceAtGridPos, String newObjectName, String structureName, PVector structureTilePosition)
 	{
-		Tile tileToReplace = getTile(relaceAtGridPos.x * Globals.TILE_SIZE, relaceAtGridPos.y * Globals.TILE_SIZE);
+		Tile tileToReplace = getTile(relaceAtGridPos.x * TILE_SIZE, relaceAtGridPos.y * TILE_SIZE);
 
 		String stripedObjectName = stripName(newObjectName);
 		Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos, structureName, structureTilePosition);
@@ -513,7 +507,7 @@ public class World
 		PVector spawnWorldPos = new PVector();
 
 		spawnWorldPos.set(spawnAtGridPos);
-		spawnWorldPos.mult(Globals.TILE_SIZE);
+		spawnWorldPos.mult(TILE_SIZE);
 
 		switch(stripedObjectName)
 		{

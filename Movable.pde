@@ -223,10 +223,13 @@ class Movable extends BaseObject
 	private void prepareMovement()
 	{
 		//gravity
-		acceleration.add(new PVector(0, gravityForce));
+		if(velocity.y < GRAVITY_LIMIT) //we have a special speed limit for gravity
+		{
+			acceleration.add(new PVector(0, gravityForce));
+		}
 
 		velocity.add(acceleration);
-		velocity.limit(20);
+		velocity.limit(SPEED_LIMIT); //prevents us from going so fast we start ignoring collision
 
 		acceleration.mult(0);
 
@@ -317,7 +320,7 @@ class Movable extends BaseObject
 
 	int getDepth()
 	{
-		return int(position.y / Globals.TILE_SIZE);
+		return int(position.y / TILE_SIZE);
 	}
 
 	void attemptMine(BaseObject object)

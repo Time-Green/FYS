@@ -68,12 +68,7 @@ class Chest extends Obstacle
 
 				addRandomLoot(newContents, 18);
 			break;
-
-			case 69:
-				Pickaxe pickaxe = new Pickaxe();
-				load(pickaxe);
-
-				newContents.add(pickaxe);
+			
 			case 70:
 				RelicShard testRelicShard = new RelicShard();
 				load(testRelicShard);
@@ -102,23 +97,23 @@ class Chest extends Obstacle
 		for(int i = 0; i < randomLootAmount; i++)
 		{
 			int lootType = floor(random(3));
-			ScorePickUp scorePickUp = null;
+			ScorePickup scorePickup = null;
 
 			if(lootType == 0)
 			{
-				scorePickUp = new ScorePickUp(Globals.IRONVALUE, ResourceManager.getImage("IronPickUp"));
+				scorePickup = new ScorePickup(IRON_VALUE, ResourceManager.getImage("IronPickup"));
 			}
 			else if(lootType == 1)
 			{
-				scorePickUp = new ScorePickUp(Globals.GOLDVALUE, ResourceManager.getImage("GoldPickUp"));
+				scorePickup = new ScorePickup(GOLD_VALUE, ResourceManager.getImage("GoldPickup"));
 			}
 			else if(lootType == 2)
 			{
-				scorePickUp = new ScorePickUp(Globals.DIAMONDVALUE, ResourceManager.getImage("DiamondPickUp"));
+				scorePickup = new ScorePickup(DIAMOND_VALUE, ResourceManager.getImage("DiamondPickup"));
 			}
 
-			load(scorePickUp);
-			newContents.add(scorePickUp);
+			load(scorePickup);
+			newContents.add(scorePickup);
 		}
 	}
 
@@ -146,7 +141,7 @@ class Chest extends Obstacle
 		{
 			//println("Dropping: " + movable);
 
-			movable.position.set(new PVector(position.x, position.y - Globals.TILE_SIZE));
+			movable.position.set(new PVector(position.x, position.y - TILE_SIZE));
 			movable.suspended = false;
 
 			movable.velocity.y = random(jumpiness / 4, jumpiness);

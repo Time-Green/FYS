@@ -12,7 +12,7 @@ class Meteor extends Movable
 		worldBorderCheck = false;
 
 		sizeModifier = random(MINSIZE, MAXSIZE);
-		size.set(Globals.TILE_SIZE * sizeModifier, Globals.TILE_SIZE * sizeModifier);
+		size.set(TILE_SIZE * sizeModifier, TILE_SIZE * sizeModifier);
 
 		aerialDragFactor = 1.0f;
 		gravityForce = 0.75f;
@@ -25,7 +25,7 @@ class Meteor extends Movable
 
 	void update()
 	{
-		if (Globals.gamePaused)
+		if (gamePaused)
 		{  
 			return;
 		}
@@ -40,6 +40,11 @@ class Meteor extends Movable
 		else if (position.x < -size.x / 2 || position.x > world.getWidth() + size.x / 2)
 		{
 			delete(this);
+		} 
+		else
+		{
+            MeteorTrailParticleSystem particleSystem = new MeteorTrailParticleSystem(position, 10, 5, size);
+			load(particleSystem);
 		}
 	}
 }

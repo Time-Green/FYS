@@ -4,9 +4,11 @@ public class WaterTile extends Tile
 	{
 		super(x, y);
 
+		drawLayer = BACKWALL_LAYER ;
+
 		//Act as water
 		density = false;
 
-		image = ResourceManager.getImage("WaterBlock");
+		image = ResourceManager.getImage("MagmaTile");
 	}
 }

@@ -18,8 +18,13 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
 // database variables
+//this is a mess, we need to orginaze more in groups
 LoginScreen loginScreen;
 boolean userInLoginScreen;
+boolean loadedPlayerInventory = false;
+boolean loadedAllAchievements = false;
+boolean loadedPlayerAchievements = false;
+boolean loadedLeaderboard = false;
 AchievementHelper achievementHelper = new AchievementHelper(); 
 DatabaseManager databaseManager = new DatabaseManager();
 DbUser dbUser;
@@ -33,39 +38,22 @@ ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
+//Scores
+ArrayList<ScoreboardRow> scoreboard;
+boolean loadedScores = false;
+
 // used to run code on closing game
 DisposeHandler dh;
 
+// global game objects
 World world;
 Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
-Enemy[] enemies;
 
-boolean hasCalledAfterResourceLoadSetup = false;
-boolean startGame = false; //start the game on next tick. needed to avoid concurrentmodificationexceptions
-
-PGraphics leaderBoardGraphics;
-
-//god i wish java had defines
-final int NORTH = 0;
-final int SOUTH = 1;
-final int EAST = 2;
-final int WEST = 3;
-final int NORTHEAST = 4;
-final int SOUTHEAST = 5;
-final int NORTHWEST = 6;
-final int SOUTHWEST = 7;
-
-//drawing layers
-final int BACKGROUND_LAYER = 0;
-final int BACKWALL_LAYER = 1;
-final int OBJECT_LAYER = 2;
-final int MOB_LAYER = 3;
-final int PLAYER_LAYER = 4;
-final int TILE_LAYER = 5;
-final int PRIORITY_LAYER = 6;
+boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
+boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
 
 void setup()
 {
@@ -89,125 +77,47 @@ void checkUser()
 {
 	String[] userName = loadStrings("DbUser.txt");
 
-	if(userName.length == 1 && !userName[0].equals(""))
+	if(userName.length > 0)
 	{
 		databaseManager.beginLogin(userName[0]);
 	}
-	else if(userName.length == 1 && !userName[0].equals(""))
+	else if(userName.length == 0)
 	{
 		// if no name was filled in, show login screen
 		loginScreen = new LoginScreen();
 		userInLoginScreen = true;
 	}
-	else
-	{
-		// should not happan...
-		println("WARNING DbUser.txt not setup correctly, logging in using username in first line");
-		databaseManager.beginLogin(userName[0]);
-	}
 }
 
-void login() 
-{
-	loginStatus = "Logging in";
-	databaseManager.login();
-
-	loginStatus = "Getting player inventory";
-	totalCollectedRelicShards = databaseManager.getPlayerRelicInventory();
-
-	loginStatus = "Getting achievement data";
-	allAchievements = databaseManager.getAllAchievements();
-
-	loginStatus = "Getting player achievements";
-	unlockedAchievementIds = databaseManager.getPlayerUnlockedAchievementIds();
-
-	loginStatus = "Getting leaderboard";
-	leaderBoard = databaseManager.getLeaderboard(10);
-
-	loginStatus = "Logged in";
-
-	vars = databaseManager.getAllVars();
-}
-
-private void generateLeaderboardGraphics()
-{
-	leaderBoardGraphics = createGraphics(int(Globals.TILE_SIZE * 9), int(Globals.TILE_SIZE * 5));
-
-	leaderBoardGraphics.beginDraw();
-
-	leaderBoardGraphics.textAlign(CENTER, CENTER);
-	leaderBoardGraphics.textFont(ResourceManager.getFont("Block Stock"));
-	leaderBoardGraphics.textSize(25);
-	leaderBoardGraphics.text("Leaderboard", (Globals.TILE_SIZE * 9) / 2, 20);
-
-	leaderBoardGraphics.textSize(12);
-
-	int i = 0;
-
-	leaderBoardGraphics.textAlign(LEFT, CENTER);
-
-	for (LeaderboardRow leaderboardRow : leaderBoard)
-	{
-		if(i == 0)
-		{
-			leaderBoardGraphics.fill(#C98910);
-		}
-		else if(i == 1)
-		{
-			leaderBoardGraphics.fill(#A8A8A8);
-		}
-		else if(i == 2)
-		{
-			leaderBoardGraphics.fill(#cd7f32);
-		}
-		else if(leaderboardRow.userName.equals(dbUser.userName))
-		{
-			leaderBoardGraphics.fill(255); // WIP
-		}
-		else
-		{
-			leaderBoardGraphics.fill(255);
-		}
-		
-		leaderBoardGraphics.text("#" + (i + 1), 20, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.userName, 60, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.score, 260, 53 + i * 20);
-		leaderBoardGraphics.text(leaderboardRow.depth + "m", 370, 53 + i * 20);
-
-		//println("#" + (i + 1) + " " + leaderboardRow.userName + ": " + leaderboardRow.score + ", " + leaderboardRow.depth + "m");
-
-		i++;
-  }
-
-  leaderBoardGraphics.endDraw();
-}
-
-// gets called when all resources are loaded
+// used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
-	AudioManager.setMaxVolume("Siren", 0.6f);
-	AudioManager.setMaxVolume("BackgroundMusic", 0.75f);
+	AudioManager.setMaxVolume("Siren", 0.55f);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
 	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
-	AudioManager.setMaxVolume("DirtBreak", 0.5f);
+	AudioManager.setMaxVolume("DirtBreak", 0.7f);
 	AudioManager.setMaxVolume("HurtSound", 0.75f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.2f);
+		AudioManager.setMaxVolume("Explosion" + i, 0.7f);
 	}
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.5f);
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f);
 	}
 
-	generateLeaderboardGraphics();
+	for (int i = 1; i < 4; i++)
+	{
+		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f);
+	}
 
 	//setup game and show title screen
 	setupGame();
@@ -227,24 +137,22 @@ void setupGame()
 	prepareDrawingLayers();
 
 	runData = new RunData();
-
 	ui = new UIController();
-
 	world = new World();
-
 	player = new Player();
-	load(player);
-
 	wallOfDeath = new WallOfDeath();
+	camera = new Camera(player);
+	
+	load(player);
 	load(wallOfDeath);
 
-	camera = new Camera(player);
-
-	AudioManager.loopMusic("ForestAmbianceMusic"); 
+	AudioManager.loopMusic("ForestAmbianceMusic");
 }
 
-void prepareDrawingLayers(){
+void prepareDrawingLayers()
+{
 	drawList = new ArrayList<ArrayList>();
+
 	for(int i = 0; i < drawingLayers; i++)
 	{
 		drawList.add(new ArrayList<BaseObject>());
@@ -258,11 +166,17 @@ void draw()
 		loginScreen.update();
 		loginScreen.draw();
 
+		// when the filled in name is not empty, we close the login screen
+		if(!loginScreen.enteredName.equals(""))
+		{
+			userFilledInName();
+		}
+
 		return;
 	}
 
 	//wait until all resources are loaded and we are logged in
-	if (!ResourceManager.isAllLoaded() || loginStatus != "Logged in")
+	if (!ResourceManager.isAllLoaded() || !loadedPlayerInventory || !loadedAllAchievements || !loadedPlayerAchievements || !loadedLeaderboard)
 	{
 		handleLoadingScreen();
 
@@ -288,7 +202,8 @@ void draw()
 
 	world.updateDepth();
 
-	if (Globals.currentGameState == Globals.GameState.InGame && player.position.y < (Globals.OVERWORLD_HEIGHT + 5) * Globals.TILE_SIZE)
+	// needs to happan here because we are inside the push and pop matrix functions
+	if (currentGameState == GameState.InGame && player.position.y < (OVERWORLD_HEIGHT + 5) * TILE_SIZE)
 	{
 		ui.drawArrows();
 	}
@@ -299,6 +214,23 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
+}
+
+void userFilledInName()
+{
+	// tell the game we dont need to show the login screen anymore
+	userInLoginScreen = false;
+
+	// save username for next time the game starts
+	String[] saveData = new String[1];
+	saveData[0] = loginScreen.enteredName;
+	saveStrings("DbUser.txt", saveData);
+
+	// begin login with filled in name
+	databaseManager.beginLogin(saveData[0]);
+
+	// clean up
+	loginScreen = null;
 }
 
 void updateObjects()
@@ -349,11 +281,11 @@ void drawObjects()
 
 void handleGameFlow()
 {
-  switch (Globals.currentGameState)
+  switch (currentGameState)
   {
 	case MainMenu:
 		//if we are in the main menu we start the game by pressing enter
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
 			enterOverWorld(false);
 		}
@@ -362,41 +294,41 @@ void handleGameFlow()
 
 	case InGame:
 		//Pauze the game
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
-			Globals.currentGameState = Globals.GameState.GamePaused;
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			currentGameState = GameState.GamePaused;
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		break;
 
 	case GameOver:
-		Globals.gamePaused = true;
+		gamePaused = true;
 
 		//if we died and we uploaded the run stats, we restart the game by pressing enter
-		if (InputHelper.isKeyDown(Globals.STARTKEY) && !isUploadingRunResults)
+		if (InputHelper.isKeyDown(START_KEY) && !isUploadingRunResults)
 		{
-			generateLeaderboardGraphics();
 			enterOverWorld(true);
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		break;
 
 	case GamePaused:
-		Globals.gamePaused = true;
+		gamePaused = true;
 
 		//if the game has been paused the player can contineu the game
-		if (InputHelper.isKeyDown(Globals.STARTKEY))
+		if (InputHelper.isKeyDown(START_KEY))
 		{
-			Globals.gamePaused = false;
-			Globals.currentGameState = Globals.GameState.InGame;
-			InputHelper.onKeyReleased(Globals.STARTKEY);
+			gamePaused = false;
+			currentGameState = GameState.InGame;
+			InputHelper.onKeyReleased(START_KEY);
 		}
 
 		//Reset game to over world
-		if (InputHelper.isKeyDown(Globals.BACKKEY))
+		if (InputHelper.isKeyDown(BACK_KEY))
 		{
+			AudioManager.stopMusic("BackgroundMusic");
 			enterOverWorld(true);
 		}
 
@@ -412,9 +344,8 @@ void enterOverWorld(boolean reloadGame)
 		setupGame();
 	}
 
-	//AudioManager.loopMusic("ForestAmbianceMusic"); 
-	Globals.gamePaused = false;
-	Globals.currentGameState = Globals.GameState.Overworld;
+	gamePaused = false;
+	currentGameState = GameState.Overworld;
 	camera.lerpAmount = 0.075f;
 }
 
@@ -428,8 +359,8 @@ void startAsteroidRain()
 {
 	thread("startRegisterRunThread");
 
-	Globals.gamePaused = false;
-	Globals.currentGameState = Globals.GameState.InGame;
+	gamePaused = false;
+	currentGameState = GameState.InGame;
 
 	AudioManager.stopMusic("ForestAmbianceMusic");
 	AudioManager.loopMusic("BackgroundMusic");
@@ -442,10 +373,10 @@ void startAsteroidRain()
 void endRun()
 {
 	isUploadingRunResults = true;
-	Globals.gamePaused = true;
-	Globals.currentGameState = Globals.GameState.GameOver;
+	gamePaused = true;
+	currentGameState = GameState.GameOver;
 	
-	ui.setupRunEnd();
+	//ui.setupRunEnd();
 	AudioManager.stopMusic("BackgroundMusic");
 
 	thread("startRegisterEndThread");
@@ -527,33 +458,6 @@ private void handleDots()
 	{
 		dots = "";
 	}
-}
-
-// start a thread to load 1 resource
-void startLoaderThread(String currentResourceName, String currentResourceFileName)
-{
-	LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
-	ResourceManager.loaderThreads.add(loaderThread);
-	loaderThread.start();
-}
-
-// start a thread that registers a run start
-void startRegisterRunThread()
-{
-  	databaseManager.registerRunStart();
-}
-
-// start a thread that registers a run end
-void startRegisterEndThread()
-{
-	databaseManager.registerRunEnd();
-
-  	unlockedAchievementIds.addAll(runData.unlockedAchievementIds); 
-
-  	//update leaderboard with new data
-  	leaderBoard = databaseManager.getLeaderboard(10);
-
-	isUploadingRunResults = false;
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
@@ -644,31 +548,50 @@ void keyPressed()
 	InputHelper.onKeyPressed(keyCode);
 	InputHelper.onKeyPressed(key);
 
-	// Test spawns
-	if(key == 'E' || key == 'e')
-	{
-		load(new EnemyGhost(new PVector(player.position.x + 200,player.position.y)));
-	}
-
-	// if (key == 'I' || key == 'i')
-	// {
-	// 	load(new Icicle(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
-
-	// if (key == 'G' || key == 'g')
-	// {
-	// 	load(new Dynamite(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
-
-	// if (key == 'H' || key == 'h')
-	// {
-	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
+	//Debug code
+	debugInput();
 }
 
 void keyReleased()
 {
 	InputHelper.onKeyReleased(keyCode);
 	InputHelper.onKeyReleased(key);
+}
+
+void debugInput()
+{
+	// Test spawns
+	if(key == 'E' || key == 'e')
+	{
+		load(new EnemyBomb(new PVector(player.position.x + 200,player.position.y)));
+	}
+
+	// if(key == 'R' || key == 'r')
+	// {
+	// 	databaseManager.updateVariable("poop", 500);
+	// }
+
+	// if (key == 'T' || key == 't')
+	// {
+	// 	databaseManager.insertVariable("poop", 500);
+	// }
+
+	// if (key == 'Y' || key == 'y')
+	// {
+	// 	//Doesn't work right now
+	// 	databaseManager.deleteVariable("poop");
+	// }
+
+	if (key == 'U' || key == 'u')
+	{
+		// databaseManager.getAllPickupScores();
+		// ui.generateScoreboardGraphic();
+	}
+
+	if(key == 'l')
+	{
+		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y));
+	}
+
 }
 

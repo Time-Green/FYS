@@ -20,7 +20,7 @@ class FireBiome extends Biome
 
 			if (random(1) < oreChance)
 			{
-				return new EmeraldTile(x, depth);
+				return new MeteoriteTile(x, depth);
 			}
 		}
 	

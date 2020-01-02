@@ -5,7 +5,7 @@ class Jukebox extends Movable
     int numbers = 4;
     float particleVelocity = 1;
     int particleDelay = 30;
-    EmmitingParticleSystem particleSystem;
+    EmittingParticleSystem particleSystem;
 
     Jukebox(PVector spawnPos)
     {
@@ -13,7 +13,7 @@ class Jukebox extends Movable
 
         image = ResourceManager.getImage("Jukebox");
 
-        particleSystem = new EmmitingParticleSystem(new PVector(position.x + 10, position.y + 5), particleVelocity, particleDelay, true);
+        particleSystem = new EmittingParticleSystem(new PVector(position.x + 10, position.y + 5), particleVelocity, particleDelay, true);
         load(particleSystem);
 
         music();

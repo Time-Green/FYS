@@ -1,8 +1,8 @@
 public class ResourceTile extends Tile
 {
 	int value;
-	int pickUpDropAmountValue = 1;
-	PImage pickUpImage;
+	int pickupDropAmountValue = 1;
+	PImage pickupImage;
 	boolean hasDroppedResources;
 
 	public ResourceTile(int x, int y)
@@ -24,9 +24,9 @@ public class ResourceTile extends Tile
 		hasDroppedResources = true;
 
 		//Drop the ores give them the position
-		for (int i = 0; i < pickUpDropAmountValue; i++)
+		for (int i = 0; i < pickupDropAmountValue; i++)
 		{
-			load(new ScorePickUp(this), new PVector(position.x + 10 + random(size.x - 60), position.y + 10 + random(size.y - 60)));
+			load(new ScorePickup(this), new PVector(position.x + 10 + random(size.x - 60), position.y + 10 + random(size.y - 60)));
 		}
 	}
 
@@ -49,9 +49,9 @@ public class ResourceTile extends Tile
 		}
 
 		//Drop the ores give them the position
-		for (int i = 0; i < pickUpDropAmountValue; i++)
+		for (int i = 0; i < pickupDropAmountValue; i++)
 		{
-			load(new ScorePickUp(this), new PVector(position.x + 10 + random(size.x - 60), position.y + 10 + random(size.y - 60)));
+			load(new ScorePickup(this), new PVector(position.x + 10 + random(size.x - 60), position.y + 10 + random(size.y - 60)));
 		}
 	}
 }

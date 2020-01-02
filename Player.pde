@@ -2,19 +2,12 @@ class Player extends Mob
 {
 	//Animation
 	private AnimatedImage walkCycle;
-	private final int WALKFRAMES = 4;
 	private AnimatedImage animatedImageIdle;
-	private final int IDLEFRAMES = 3;
 	private AnimatedImage animatedImageAir;
-	private final int AIRFRAMES = 3;
-	private AnimatedImage shockedCycle;
-	private final int SHOCKFRAMES = 2;
+	private AnimatedImage animatedImageShocked;
 	private AnimatedImage animatedImageMine;
-	private final int MINEFRAMES = 3;
 	private AnimatedImage animatedImageFall;
-	private final int FALLFRAMES = 4;
 	private AnimatedImage animatedImageFire;
-	private final int FIREFRAMES = 4;
 
 	//Camera
 	private float viewAmount = 400;
@@ -23,6 +16,10 @@ class Player extends Mob
 
 	//Status effects
 	public float stunTimer;
+	private float shieldTimer;
+
+	boolean gotbonus1;
+	Shield myShield;
 
 	private PVector spawnPosition = new PVector(1300, 509);
 	public int score = 0;
@@ -31,37 +28,31 @@ class Player extends Mob
 	{
 		position = spawnPosition;
 		setMaxHp(100);
-		baseDamage = 0.1; //low basedamage without pickaxe
-		isSwimming = false;
+		baseDamage = 1.4;
 		canRegen = true;
 		jumpForce = 21f;
 
-		walkCycle = new AnimatedImage("PlayerWalk", WALKFRAMES, 8, position, size.x, flipSpriteHorizontal);
-		animatedImageIdle = new AnimatedImage("PlayerIdle", IDLEFRAMES, 60, position, size.x, flipSpriteHorizontal);
-		animatedImageAir = new AnimatedImage("PlayerAir", AIRFRAMES, 10, position, size.x, flipSpriteHorizontal);
-		shockedCycle = new AnimatedImage("PlayerShock", SHOCKFRAMES, 10, position, size.x, flipSpriteHorizontal);
-		animatedImageMine = new AnimatedImage("PlayerMine", MINEFRAMES, 5, position, size.x, flipSpriteHorizontal);
-    	animatedImageFall = new AnimatedImage("PlayerFall", FALLFRAMES, 20, position, size.x, flipSpriteHorizontal);
-    	animatedImageFire = new AnimatedImage("FireP", FIREFRAMES, 10, position, size.x, flipSpriteHorizontal);
+		setUpAnimation();
 
 		setupLightSource(this, viewAmount, 1f);
 
 		applyRelicBoost();
+
+		// myShield = new Shield();
 	}
 
 	void update()
 	{
-		if (Globals.gamePaused)
+		if (gamePaused)
 		{  
 			return;
 		}
 
 		super.update();
 
-		if(player.getDepth() - Globals.OVERWORLD_HEIGHT > 90 && !achievementHelper.hasUnlockedAchievement(Globals.LONEDIGGERACHIEVEMENT))
-		{	 
-			achievementHelper.unlock(Globals.LONEDIGGERACHIEVEMENT); 
-			
+		if(player.getDepth() - OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(LONE_DIGGER_ACHIEVEMENT))
+		{
+			achievementHelper.unlock(LONE_DIGGER_ACHIEVEMENT); 
 		}
 
 		setVisibilityBasedOnCurrentBiome();
@@ -69,6 +60,8 @@ class Player extends Mob
 		checkHealthLow();
 
 		statusEffects();
+
+		digBonuses();
 
 		if (stunTimer <= 0)
 		{
@@ -96,24 +89,24 @@ class Player extends Mob
 		{
 			if(collectedRelicShardInventory.relicshardid == 0)
 			{
-				baseDamage += Globals.DAMAGE_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				baseDamage += DAMAGE_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 1)
 			{
-				maxHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
-				currentHealth += Globals.HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				maxHealth += HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				currentHealth += HEALTH_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 2)
 			{
-				regen += Globals.REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				regen += REGEN_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 3)
 			{
-				this.speed += Globals.SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				this.speed += SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 4)
 			{
-				viewAmount += Globals.LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				viewAmount += LIGHT_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 		}
 	}
@@ -136,13 +129,13 @@ class Player extends Mob
 
 	void draw()
 	{
-		if(Globals.currentGameState == Globals.GameState.GameOver)
+		if(currentGameState == GameState.GameOver)
 		{
 			// dont draw when we are dead
 			return;
 		}
 
-		if(Globals.gamePaused)
+		if(gamePaused)
 		{
 			animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
 			animatedImageIdle.draw();
@@ -153,10 +146,36 @@ class Player extends Mob
 		handleAnimation();
 
 		// player only, because we'll never bother adding a holding sprite for every mob 
-		for (Item item : inventory)
+		for (int i = 0; i < inventory.length; i++)
 		{
-			item.drawOnPlayer(this);
+			if(inventory[i] != null)
+			{
+				inventory[i].drawOnPlayer(this);
+			}
 		}
+ 
+	}
+
+	private void setUpAnimation()
+	{
+		//Movement animation
+		int walkFrames = 4, idleFrames = 3, mineFrames = 3;
+		int walkAnimSpeed = 8, idleAnimSpeed = 1, mineAnimSpeed = 5;
+		walkCycle = new AnimatedImage("PlayerWalk", walkFrames, walkAnimSpeed, position, size.x, flipSpriteHorizontal);
+		animatedImageIdle = new AnimatedImage("PlayerIdle", idleFrames, idleAnimSpeed, position, size.x, flipSpriteHorizontal);
+		animatedImageMine = new AnimatedImage("PlayerMine", mineFrames, mineAnimSpeed, position, size.x, flipSpriteHorizontal);
+		
+		//Jumping animation
+		int airFrames = 3, fallFrames = 4;
+		int airAnimSpeed = 10, fallAnimSpeed = 20;
+		animatedImageAir = new AnimatedImage("PlayerAir", airFrames, airAnimSpeed, position, size.x, flipSpriteHorizontal);
+    	animatedImageFall = new AnimatedImage("PlayerFall", fallFrames, fallAnimSpeed, position, size.x, flipSpriteHorizontal);
+
+		//Status effects
+		int shockFrames = 2, fireFrames = 4;
+		int statusEffectAnimSpeed = 10;
+		animatedImageShocked = new AnimatedImage("PlayerShock", shockFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
+		animatedImageFire = new AnimatedImage("FireP", fireFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
 	}
 
 	private void handleAnimation()
@@ -170,15 +189,25 @@ class Player extends Mob
 			AudioManager.playSoundEffect("FireSound");
 		}
 
+		//Draw the shield
+		// if (this.shieldTimer > 0f)
+		// {
+		// 	// myShield.drawShield();
+		// 	// PImage shieldImage = ResourceManager.getImage("Umberla");
+		// 	// // shieldImage
+
+		// 	// image(shieldImage, this.position.x, this.position.y, 40, 40);
+		// }
+
 		// Am I stunned?
 		if (stunTimer > 0f)
 		{
-			shockedCycle.flipSpriteHorizontal = flipSpriteHorizontal;
-			shockedCycle.draw();
+			animatedImageShocked.flipSpriteHorizontal = flipSpriteHorizontal;
+			animatedImageShocked.draw();
 		}
 		else // Play the other animations when we are not stunned
 		{
-			if ((InputHelper.isKeyDown(Globals.LEFTKEY) || InputHelper.isKeyDown(Globals.RIGHTKEY)) && isGrounded()) // Walking
+			if ((InputHelper.isKeyDown(LEFT_KEY) || InputHelper.isKeyDown(RIGHT_KEY)) && isGrounded()) // Walking
 			{
 				walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
 				walkCycle.draw();
@@ -187,12 +216,12 @@ class Player extends Mob
 				PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(position, 1, 2, standingOn.particleColor);
 				load(particleSystem);
 			}
-			else if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2))) //Jumping
+			else if ((InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2))) //Jumping
 			{
 				animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageAir.draw();
 			}
-			else if (InputHelper.isKeyDown(Globals.DIGKEY) && Globals.currentGameState == Globals.GameState.InGame) //Digging
+			else if (InputHelper.isKeyDown(DIG_KEY) && currentGameState == GameState.InGame) //Digging
 			{
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();
@@ -220,7 +249,7 @@ class Player extends Mob
 
 		gravityForce = 1f;
 
-		if ((InputHelper.isKeyDown(Globals.JUMPKEY1) || InputHelper.isKeyDown(Globals.JUMPKEY2)) && isGrounded())
+		if ((InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2)) && isGrounded())
 		{
 			if (!isSwimming)
 			{
@@ -233,13 +262,13 @@ class Player extends Mob
 			}
 
 		}
-		else if(!InputHelper.isKeyDown(Globals.JUMPKEY1) && !InputHelper.isKeyDown(Globals.JUMPKEY2) && !isGrounded())
+		else if(!InputHelper.isKeyDown(JUMP_KEY_1) && !InputHelper.isKeyDown(JUMP_KEY_2) && !isGrounded())
 		{
 			//allow for short jumps
 			gravityForce = 1.8f;
 		}
 
-		if (InputHelper.isKeyDown(Globals.DIGKEY))
+		if (InputHelper.isKeyDown(DIG_KEY))
 		{
 			isMiningDown = true;
 
@@ -254,7 +283,7 @@ class Player extends Mob
 			isMiningDown = false;
 		}
 
-		if (InputHelper.isKeyDown(Globals.LEFTKEY))
+		if (InputHelper.isKeyDown(LEFT_KEY))
 		{
 			addForce(new PVector(-speed, 0));
 			isMiningLeft = true;
@@ -265,7 +294,7 @@ class Player extends Mob
 			isMiningLeft = false;
 		}
 
-		if (InputHelper.isKeyDown(Globals.RIGHTKEY))
+		if (InputHelper.isKeyDown(RIGHT_KEY))
 		{
 			addForce(new PVector(speed, 0));
 			isMiningRight = true;
@@ -276,22 +305,34 @@ class Player extends Mob
 			isMiningRight = false;
 		}
 
-		if (InputHelper.isKeyDown(Globals.INVENTORYKEY))
+		if (InputHelper.isKeyDown(INVENTORY_KEY_A))
 		{ 
-			useInventory();
-			InputHelper.onKeyReleased(Globals.INVENTORYKEY);
+			useInventory(0);
+			InputHelper.onKeyReleased(INVENTORY_KEY_A);
 		}
-
-		if (InputHelper.isKeyDown(Globals.ITEMKEY))
-		{
-			switchInventory();
-			InputHelper.onKeyReleased(Globals.ITEMKEY);
+		
+		if (InputHelper.isKeyDown(INVENTORY_KEY_B))
+		{ 
+			useInventory(1);
+			InputHelper.onKeyReleased(INVENTORY_KEY_B);
 		}
 	}
 
 	void addScore(int scoreToAdd)
 	{
 		score += scoreToAdd;
+	}
+
+	private void digBonuses()
+	{
+		float extraShieldTime = timeInSeconds(10f);
+		if (getDepth() > BONUSDEPTH && gotbonus1 == false)
+		{
+			shieldTimer += extraShieldTime;
+			gotbonus1 = true;
+			
+		}
+		// println("shieldTimer: " + shieldTimer);
 	}
 
 	public void takeDamage(float damageTaken)
@@ -306,6 +347,7 @@ class Player extends Mob
 			// if the player has taken damage, add camera shake
 			//40 is about max damage
 			camera.induceStress(damageTaken / 40);
+			ui.prepareHealthFlash();
 
 			AudioManager.playSoundEffect("HurtSound");
 		}
@@ -324,6 +366,16 @@ class Player extends Mob
 			isMiningLeft = false;
 			isMiningRight = false;
 		}
+
+		if (shieldTimer > 0f)
+		{
+			shieldTimer--;
+			this.isImmortal = true;	
+		}
+		else
+		{
+			this.isImmortal = false;
+		}
 	}
 
 	public void die()
@@ -333,7 +385,7 @@ class Player extends Mob
 		endRun();
 	}
 
-	boolean canPickUp(PickUp pickUp)
+	boolean canPickup(Pickup pickup)
 	{
 		return true;
 	}
@@ -343,8 +395,9 @@ class Player extends Mob
 		return true;
 	}
 
-	void afterMine(BaseObject object)
+	protected void afterMine(BaseObject object)
 	{
 		runData.playerBlocksMined++;
 	}
+
 }

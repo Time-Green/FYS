@@ -63,7 +63,7 @@ public class Npc extends Mob
 	{
 		super.update();
 
-		if(Globals.currentGameState == Globals.GameState.InGame && !isPanicking)
+		if(currentGameState == GameState.InGame && !isPanicking)
 		{
 			panic();
 		}

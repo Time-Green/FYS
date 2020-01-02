@@ -1,29 +1,41 @@
-public class ScorePickUp extends PickUp
+public class ScorePickup extends Pickup
 {
-	int score;
+	private int score;
+	//Placeholder sound
+	private String soundName = "treasure";
 
 	// drop based on tile
-	public ScorePickUp(ResourceTile tile)
+	public ScorePickup(ResourceTile tile)
 	{
-		score = tile.value / tile.pickUpDropAmountValue;
-		image = tile.pickUpImage;
+		this.score = tile.value / tile.pickupDropAmountValue;
+		this.image = tile.pickupImage;
 	}
 
 	// independant drop
-	public ScorePickUp(int scoreToGiveOnPickup, PImage image)
+	public ScorePickup(int scoreToGiveOnPickup, PImage image)
 	{
-		score = scoreToGiveOnPickup;
+		this.score = scoreToGiveOnPickup;
 		this.image = image;
 	}
 
-	//This pickup is collected by the player
+	//This Pickup is collected by the player
 	void pickedUp(Mob mob)
 	{
+		//Score
 		player.addScore(score);
+		//Draw the Pickup text
 		load(new PickupText(score, position));
-		//TODO: find and add sound effect, do not remove comment yet
-		// AudioManager.playSoundEffect(pickupSound, position);
+		ui.drawExtraPoints(this.score);
 
+		//Effects
+		//TODO: find and add sound effect, do not remove comment yet
+		AudioManager.setMaxVolume(soundName, 0.8f);
+		AudioManager.playSoundEffect(soundName, position);
+		// Insert particle code here
+
+		//Delete this object
 		super.pickedUp(mob);
+		
 	}
+
 }

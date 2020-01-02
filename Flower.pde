@@ -6,7 +6,7 @@ class Flower extends BaseObject
 	public Flower()
 	{
 		setupLightSource(this, 125f, 1f);
-		size.set(Globals.TILE_SIZE, Globals.TILE_SIZE);
+		size.set(TILE_SIZE, TILE_SIZE);
 
 		animatedImageFlower = new AnimatedImage("Flower", FLOWERFRAMES, 20, position, size.x, false);
 	}

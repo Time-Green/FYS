@@ -4,11 +4,17 @@ public class LapisTile extends ResourceTile
 	{
 		super(x, y);
 
-		value = Globals.LAPISVALUE;
+		value = LAPIS_VALUE;
 
-		image = ResourceManager.getImage("LapisBlock");
+		image = ResourceManager.getImage("WaterStoneTile");
 		breakSound = "GlassBreak" + floor(random(1, 4));
 	
-		pickUpImage = ResourceManager.getImage("LapisPickup");
+		pickupImage = ResourceManager.getImage("LapisPickup");
 	}
+
+	// void draw() {
+	// 	super.draw();
+
+	// 	tint(0, 216, 255);
+	// }
 }

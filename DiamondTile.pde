@@ -6,7 +6,7 @@ public class DiamondTile extends ResourceTile
 
 		particleColor = color(#0997b0);
 
-		value = Globals.DIAMONDVALUE;
+		value = DIAMOND_VALUE;
 
 		if(type == 0)
 		{
@@ -22,6 +22,6 @@ public class DiamondTile extends ResourceTile
 			println("Type not found!");
 		}
 
-		pickUpImage = ResourceManager.getImage("DiamondPickUp");
+		pickupImage = ResourceManager.getImage("DiamondPickup");
 	}
 }

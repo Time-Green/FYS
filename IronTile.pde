@@ -4,12 +4,12 @@ public class IronTile extends ResourceTile
 	{
 		super(x, y);
 
-		value = Globals.IRONVALUE;
+		value = IRON_VALUE;
 		
 		particleColor = color(#ccccc6);
 
 		image = ResourceManager.getImage("IronBlock");
-		pickUpImage = ResourceManager.getImage("IronPickUp");
+		pickupImage = ResourceManager.getImage("IronPickup");
 		decalType = "DecalStone";
 	}
 }
