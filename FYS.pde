@@ -264,6 +264,7 @@ void updateObjects()
 	if (startGame)
 	{
 		startGame = false;
+		runData.timeToButtonPress = (millis() - world.worldAge) * 0.001; //* 0.001 to get the time in seconds
 		startAsteroidRain();
 	}
 }

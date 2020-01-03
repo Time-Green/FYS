@@ -193,12 +193,12 @@ class Mob extends Movable
 		currentHealth = maxHealth;
 	}
 
-	boolean canPickup(Pickup Pickup)
+	public boolean canPickup(Pickup Pickup)
 	{
 		return false;
 	}
 
-	boolean canAddToInventory(Item item)
+	public boolean canAddToInventory(Item item)
 	{
 		for(int i = 0; i < inventory.length; i++)
 		{
@@ -218,7 +218,7 @@ class Mob extends Movable
 		return false;
 	}
 
-	void addToInventory(Item item)
+	public void addToInventory(Item item)
 	{
 		item.suspended = true;
 		load(new ItemParticleSystem(new PVector().set(position), 1, item));
@@ -234,20 +234,22 @@ class Mob extends Movable
 			}
 	}
 
-	void useInventory(int slot)
+	protected boolean canUseInventory(int slot)
 	{
-		if (lastUse + useCooldown < millis() && inventory[slot] != null)
-		{
-			Item item = inventory[slot];
-
-			item.onUse(this);
-			item.suspended = false;
-
-			lastUse = millis();
-		}
+		return lastUse + useCooldown < millis() && inventory[slot] != null;
 	}
 
-	void removeFromInventory(Item item)
+	protected void useInventory(int slot)
+	{
+		Item item = inventory[slot];
+
+		item.onUse(this);
+		item.suspended = false;
+
+		lastUse = millis();
+	}
+
+	protected void removeFromInventory(Item item)
 	{
 		for(int i = 0; i < inventory.length; i++)
 		{
@@ -258,7 +260,7 @@ class Mob extends Movable
 		}
 	}
 
-	int getFirstEmptyInventorySlot()
+	public int getFirstEmptyInventorySlot()
 	{
 		for(int i = 0; i < inventory.length; i++)
 		{

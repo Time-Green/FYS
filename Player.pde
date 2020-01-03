@@ -307,13 +307,19 @@ class Player extends Mob
 
 		if (InputHelper.isKeyDown(INVENTORY_KEY_A))
 		{ 
-			useInventory(0);
+			if(canUseInventory(0))
+			{
+				useInventory(0);
+			}
 			InputHelper.onKeyReleased(INVENTORY_KEY_A);
 		}
 		
 		if (InputHelper.isKeyDown(INVENTORY_KEY_B))
 		{ 
-			useInventory(1);
+			if(canUseInventory(1))
+			{
+				useInventory(1);
+			}
 			InputHelper.onKeyReleased(INVENTORY_KEY_B);
 		}
 	}
@@ -398,6 +404,13 @@ class Player extends Mob
 	protected void afterMine(BaseObject object)
 	{
 		runData.playerBlocksMined++;
+	}
+
+	protected void useInventory(int slot)
+	{
+		super.useInventory(slot);
+
+		runData.itemsUsed++;
 	}
 
 }
