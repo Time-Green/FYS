@@ -74,7 +74,13 @@ public class UIController
 	String dots = "";
 
 	//Inventory
-	private float inventorySize = 50;
+	private float inventorySize = 80;
+	private float xSlot = 0.9; //these are all done in percentage of screen width/height so they can properly size with the screen
+	private float ySlot = 0.08;
+	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
+	private float slotYIncrement = 0.07;
+
+	private float imageEnlargement = 2; //how much we grow the item in our inventory
 
 	private PImage healthBarImage;
 	private PImage arrowImage;
@@ -91,19 +97,16 @@ public class UIController
 		arrowImage = ResourceManager.getImage("RedArrow");
 
 		generateLeaderboardGraphics();
-
-		//Draw the title in the middle of the screen
-		titleXPos = width / 2;
-		//Draw the title about a third of the screen
-		float distanceFromTheTop = 4.15;
-		titleYPos = (float)height / distanceFromTheTop;
+		updateTitlePosition();
 	}
 
 	void draw()
 	{
+		updateTitlePosition();
+
 		//draw hud at center position
 		rectMode(CENTER);
-		textAlign(CENTER, CENTER);
+		textAlign(CENTER);
 
 		// draw hud based on current gamestate
 		switch (currentGameState)
@@ -120,8 +123,12 @@ public class UIController
 				gameOver();
 			break;
 
+			//Temp
+			// case Overworld :
+			// 	generateScoreboardGraphic();
+			// break;
+
 			case InGame :
-			//case Overworld :
 				gameHUD();
 			break;
 
@@ -139,6 +146,16 @@ public class UIController
 		{
 			drawStats();
 		}
+	}
+
+	void updateTitlePosition()
+	{
+		//Draw the title in the middle of the screen
+		titleXPos = width / 2;
+
+		//Draw the title about a third of the screen
+		float distanceFromTheTop = 4.15;
+		titleYPos = (float)height / distanceFromTheTop;
 	}
 
 	void drawWarningOverlay()
@@ -217,11 +234,7 @@ public class UIController
 
 	void gameOver()
 	{
-		//title
-		fill(titleColor);
-		textFont(titleFont);
-		textSize(titleFontSize);
-		text("GAME OVER", titleXPos, titleYPos);
+		drawTitle("GAME OVER");
 
 		//sub text
 		textFont(instructionFont);
@@ -256,15 +269,7 @@ public class UIController
 
 	void startMenu()
 	{
-		//title background
-		textFont(titleFont);
-		fill(titleBackground);
-
-		//title
-		fill(titleColor);
-		textFont(titleFont);
-		textSize(titleFontSize);
-		text("ROCKY RAIN", titleXPos, titleYPos);
+		drawTitle("ROCKY RAIN");
 
 		//sub text
 		subTextCounter++;
@@ -325,6 +330,19 @@ public class UIController
 		drawInventory();
 	}
 
+	//Draw functions
+
+	private void drawTitle(String menuText)
+	{
+		//Update the posotopn of the title,this will prefent the title from moving while the screenszie changes
+		updateTitlePosition();
+		fill(titleColor);
+		textFont(titleFont);
+		textSize(titleFontSize);
+		textAlign(CENTER);
+		text(menuText, titleXPos, titleYPos);
+	}
+
 	public float getExtraBonusX()
 	{
 		//Get the amount of digits in the score display,
@@ -332,15 +350,17 @@ public class UIController
 		String scoreDigits = str(scoreDisplay);
 		int numberOfScoreDigits = scoreDigits.length();
 		float bonusX = hudTextDistanceFromLeft + (hudFontSize * (scoreText.length() + numberOfScoreDigits));
+
 		return bonusX;
 	}
 
+	//This function draws the extra scored points right to the normal point counter
 	public void drawExtraPoints(int scoreToAdd)
 	{
 		//Get a new postion if we need to
 		extraBonusX = getExtraBonusX();
 		//Reset the collected score counter
-		float resetTimer = timeInSeconds(1f);
+		float resetTimer = timeInSeconds(0.5f);
 		extraScoreLiveTimer = resetTimer;
 		collectedPoints += scoreToAdd;
 	}
@@ -398,11 +418,7 @@ public class UIController
 
 	void pauseScreen()
 	{
-		//title
-		textFont(titleFont);
-		fill(titleColor);
-		textSize(titleFontSize);
-		text("Paused", titleXPos, titleYPos);
+		drawTitle("Paused");
 
 		//sub text
 		textFont(instructionFont);
@@ -415,23 +431,30 @@ public class UIController
 	{
 		for (int i = 0; i < player.maxInventory; i++)
 		{
-			if (i == player.selectedSlot - 1)
-			{
-				fill(inventorySelectedColor);
-			}
-			else
-			{
-				fill(inventoryColor);
-			}
-
 			//Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-			rect(width * 0.95 - inventorySize * i, barX, inventorySize, inventorySize);
+			PVector slotLocation = getInventorySlotLocation(i);
+			ellipse(slotLocation.x, slotLocation.y, inventorySize, inventorySize);
 		}
 
-		for (Item item : player.inventory)
+		imageMode(CENTER);
+		
+		for (int i = 0; i < player.inventory.length; i++)
 		{
-			image(item.image, width * 0.95 - inventorySize * player.inventory.indexOf(item), barX, item.size.x, item.size.y);
+			if(player.inventory[i] != null && player.inventoryDrawable[i])
+			{
+				Item item = player.inventory[i];
+				PVector slotLocation = getInventorySlotLocation(i);
+				image(item.image, slotLocation.x, slotLocation.y, item.size.x * imageEnlargement, item.size.y * imageEnlargement);
+			}
 		}
+
+		imageMode(CORNER); 
+	}
+
+	PVector getInventorySlotLocation(int slot)
+	{
+		return new PVector(width * (xSlot + slot * slotXIncrement), height * (ySlot + slot * slotYIncrement));
+		
 	}
 
 	void startDisplayingAchievement(int id)
@@ -445,6 +468,7 @@ public class UIController
 	{	
 		textFont(instructionFont);
 		textSize(instructionFontSize);
+		textAlign(CENTER);
 		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 
@@ -467,15 +491,15 @@ public class UIController
 
 		for (LeaderboardRow leaderboardRow : leaderBoard)
 		{
-			if(i == 0)
+			if(i == 0) //First place
 			{
 				leaderBoardGraphics.fill(#C98910);
 			}
-			else if(i == 1)
+			else if(i == 1) //Second place
 			{
 				leaderBoardGraphics.fill(#A8A8A8);
 			}
-			else if(i == 2)
+			else if(i == 2) //Third place
 			{
 				leaderBoardGraphics.fill(#cd7f32);
 			}
@@ -499,5 +523,25 @@ public class UIController
 		}
 
 		leaderBoardGraphics.endDraw();
+	}
+
+
+	//This is basic and full of magic numbers, remove them
+	//I will write comments later i'm in a hurry atm
+	public void generateScoreboardGraphic()
+	{
+		textSize(20);
+		textAlign(LEFT);
+		fill(WHITE);
+
+		for (int i = 0; i < scoreboard.size(); i++)
+		{
+			ScoreboardRow currentRow = scoreboard.get(i);
+			PImage pickupImage = ResourceManager.getImage(currentRow.imageName);
+
+			image(pickupImage, 50, 0 + (40*i), 40, 40);
+			text(currentRow.score, 100, 30 + 40*i);
+			// println(currentRow.imageName + "...." + currentRow.score);
+		}
 	}
 }

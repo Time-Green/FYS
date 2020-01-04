@@ -4,6 +4,7 @@ public class LoginScreen
 
     public String enteredName = "";
     public int activeChars = MIN_CHARS_TO_DISPLAY;
+
     private LoginLetter[] loginLetters;
     private String allChars = " ";
     private String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -36,8 +37,6 @@ public class LoginScreen
         allChars += alphabet;
         allChars += lowerCaseAlphabet;
         allChars += numbers;
-
-        //println("allChars: " + allChars);
     }
     
     public void update()

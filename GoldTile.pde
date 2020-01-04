@@ -22,6 +22,6 @@ public class GoldTile extends ResourceTile
 			println("Type not found!");
 		}
 
-		pickUpImage = ResourceManager.getImage("GoldPickUp");
+		pickupImage = ResourceManager.getImage("GoldPickup");
 	}
 }

@@ -6,6 +6,8 @@ public class World
 	float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
 	int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
 
+	float worldAge = millis(); //useful for when we wanna see the length of the current run if we do a few in a row. set to the amount of milliseconds the moment we're created
+
 	PImage dayNightImage;
 
 	int birdCount = round(random(10, 15));
@@ -34,7 +36,6 @@ public class World
 		spawnOverworldStructures();
 		spawnBirds();
 		spawnNpcs();
-		spawnStarterChest();
 		spawnJukebox();
 	}
 
@@ -119,11 +120,6 @@ public class World
 
 			load(npc, new PVector(random(50, 1650), 509));
 		}
-	}
-
-	void spawnStarterChest()
-	{
-		load(new Chest(69), new PVector(36 * TILE_SIZE, 10 * TILE_SIZE)); //69 is the forcedKey for an always pickaxe spawn
 	}
 
 	//return tile you're currently on

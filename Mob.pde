@@ -20,11 +20,12 @@ class Mob extends Movable
 	protected float baseDamage = 1;
 
 	//Inventory
-	protected ArrayList<Item> inventory = new ArrayList<Item>();
-	protected int selectedSlot = 1; //the selected slot. we'll always use this one if we can
-	protected int maxInventory = 3;
+	protected int maxInventory = 2;
 	protected int lastUse;
 	protected int useCooldown = 100;
+	//we use an array here, because position matters and arraylist will shift it
+	protected Item[] inventory = new Item[maxInventory];
+	protected boolean[] inventoryDrawable = new boolean[maxInventory]; //set to false on specific location to stop drawing, like the homing item thing
 
 	//regen and fire
 	public float regen = 0.05f;
@@ -34,7 +35,8 @@ class Mob extends Movable
 	private int fireTimer;
 	private int regenTimer;
 
-	Mob(){
+	Mob()
+	{
 		super();
 		drawLayer = MOB_LAYER;
 	}
@@ -94,21 +96,7 @@ class Mob extends Movable
 				return;
 			}
 
-			if (hasHeldItem())
-			{
-				Held held = getHeldItem();
-
-				if (!held.canMine(object, this))
-				{
-					return;
-				}
-
-				held.onMine(object, this);
-			}
-			else
-			{
-				object.takeDamage(getAttackPower(false)); //FIST MINING
-			}
+			object.takeDamage(getAttackPower()); 
 
 			lastMine = millis();
 			afterMine(object);
@@ -116,7 +104,7 @@ class Mob extends Movable
 	}
 
 	// hook, used by player to count the mined tiles
-	void afterMine(BaseObject object)
+	protected void afterMine(BaseObject object)
 	{
 		return;
 	}
@@ -150,14 +138,10 @@ class Mob extends Movable
 
 	}
 
-	float getAttackPower(boolean useHeldItem)
+	float getAttackPower()
 	{
-		if (!useHeldItem || !hasHeldItem())
-		{
-			return baseDamage;
-		}
 
-		return baseDamage * getHeldItem().damageCoefficient;
+		return baseDamage;
 	}
 
 		//fire damage blocks regenaration
@@ -209,95 +193,83 @@ class Mob extends Movable
 		currentHealth = maxHealth;
 	}
 
-	boolean canPickUp(PickUp pickUp)
+	public boolean canPickup(Pickup Pickup)
 	{
 		return false;
 	}
 
-	boolean canAddToInventory(Item item)
+	public boolean canAddToInventory(Item item)
 	{
-		if (inventory.contains(item))
+		for(int i = 0; i < inventory.length; i++)
 		{
-			return false;
-		}
-
-		return inventory.size() < maxInventory;
-	}
-
-	void addToInventory(Item item)
-	{
-		rectMode(CENTER);
-
-		item.suspended = true;
-		inventory.add(item);
-
-		rectMode(CORNER);
-	}
-
-	void useInventory()
-	{
-		if (lastUse + useCooldown < millis() && inventory.size() != 0)
-		{
-			if (selectedSlot <= inventory.size())
+			if(inventory[i] == item) //cant have the same item in both hands
 			{
-				Item item = inventory.get(selectedSlot - 1);
-
-				item.onUse(this);
-				item.suspended = false;
-
-				lastUse = millis();
+				return false;
 			}
 		}
-	}
 
-	void switchInventory()
-	{
-		selectedSlot++;
-
-		if (selectedSlot > maxInventory)
+		for(int i = 0; i < inventory.length; i++)
 		{
-			selectedSlot = 1;
-		}
-	}
-
-	void removeFromInventory(Item item)
-	{
-		inventory.remove(item);
-	}
-
-	boolean hasHeldItem()
-	{
-		for (Item item : inventory)
-		{
-			if (item instanceof Held)
+			if(inventory[i] == null) //cant have the same item in both hands
 			{
 				return true;
 			}
 		}
-
 		return false;
 	}
 
-	Held getHeldItem()
+	public void addToInventory(Item item)
 	{
-		if (inventory.size() >= selectedSlot)
-		{
-			Item item = inventory.get(selectedSlot - 1);
+		item.suspended = true;
+		load(new ItemParticleSystem(new PVector().set(position), 1, item));
 
-			if (item instanceof Held)
+		for(int i = 0; i < inventory.length; i++)
 			{
-				return (Held) inventory.get(selectedSlot - 1);
+				if(inventory[i] == null)
+				{
+					inventory[i] = item;
+					inventoryDrawable[i] = false; //we set this to true again once the homing particle hits
+					break;
+				}
+			}
+	}
+
+	protected boolean canUseInventory(int slot)
+	{
+		return lastUse + useCooldown < millis() && inventory[slot] != null;
+	}
+
+	protected void useInventory(int slot)
+	{
+		Item item = inventory[slot];
+
+		item.onUse(this);
+		item.suspended = false;
+
+		lastUse = millis();
+	}
+
+	protected void removeFromInventory(Item item)
+	{
+		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] == item)
+			{
+				inventory[i] = null;
+			}
+		}
+	}
+
+	public int getFirstEmptyInventorySlot()
+	{
+		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] == null)
+			{
+				return i;
 			}
 		}
 
-		for (Item item : inventory)
-		{
-			if (item instanceof Held)
-			{
-				return (Held)item;
-			}
-		}
-
-		return null; //should never happen, because we should always check hasHeldItem before calling this
+		return 0;
 	}
 }

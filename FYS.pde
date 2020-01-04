@@ -18,6 +18,7 @@ ArrayList<Mob> mobList = new ArrayList<Mob>();
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
 // database variables
+//this is a mess, we need to orginaze more in groups
 LoginScreen loginScreen;
 boolean userInLoginScreen;
 boolean loadedPlayerInventory = false;
@@ -37,6 +38,10 @@ ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
+//Scores
+ArrayList<ScoreboardRow> scoreboard;
+boolean loadedScores = false;
+
 // used to run code on closing game
 DisposeHandler dh;
 
@@ -45,8 +50,7 @@ World world;
 Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
-public UIController ui;
-Enemy[] enemies;
+UIController ui;
 
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
@@ -88,26 +92,31 @@ void checkUser()
 // used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
-	AudioManager.setMaxVolume("Siren", 0.6f);
-	AudioManager.setMaxVolume("BackgroundMusic", 0.75f);
+	AudioManager.setMaxVolume("Siren", 0.55f);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
 	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
-	AudioManager.setMaxVolume("DirtBreak", 0.5f);
+	AudioManager.setMaxVolume("DirtBreak", 0.7f);
 	AudioManager.setMaxVolume("HurtSound", 0.75f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.2f);
+		AudioManager.setMaxVolume("Explosion" + i, 0.7f);
 	}
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.5f);
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.4f);
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f);
+	}
+
+	for (int i = 1; i < 4; i++)
+	{
+		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f);
 	}
 
 	//setup game and show title screen
@@ -128,18 +137,14 @@ void setupGame()
 	prepareDrawingLayers();
 
 	runData = new RunData();
-
 	ui = new UIController();
-
 	world = new World();
-
 	player = new Player();
-	load(player);
-
 	wallOfDeath = new WallOfDeath();
-	load(wallOfDeath);
-
 	camera = new Camera(player);
+	
+	load(player);
+	load(wallOfDeath);
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
 }
@@ -259,6 +264,7 @@ void updateObjects()
 	if (startGame)
 	{
 		startGame = false;
+		runData.timeToButtonPress = (millis() - world.worldAge) * 0.001; //* 0.001 to get the time in seconds
 		startAsteroidRain();
 	}
 }
@@ -323,6 +329,7 @@ void handleGameFlow()
 		//Reset game to over world
 		if (InputHelper.isKeyDown(BACK_KEY))
 		{
+			AudioManager.stopMusic("BackgroundMusic");
 			enterOverWorld(true);
 		}
 
@@ -338,7 +345,6 @@ void enterOverWorld(boolean reloadGame)
 		setupGame();
 	}
 
-	//AudioManager.loopMusic("ForestAmbianceMusic"); 
 	gamePaused = false;
 	currentGameState = GameState.Overworld;
 	camera.lerpAmount = 0.075f;
@@ -489,12 +495,14 @@ BaseObject load(BaseObject newObject, boolean priority)
 // handles removal, call delete(object) to delete that object from the world
 void delete(BaseObject deletingObject)
 {
-	if(deletingObject == null)
-	{
-		return;
-	}
 	destroyList.add(deletingObject); //queue for deletion
   	deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
+}
+
+// handles reload, call delete(object) to delete that object from the world
+void reload(BaseObject reloadingObject)
+{
+	reloadList.add(reloadingObject); //queue for reloading
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
@@ -541,31 +549,50 @@ void keyPressed()
 	InputHelper.onKeyPressed(keyCode);
 	InputHelper.onKeyPressed(key);
 
-	// Test spawns
-	if(key == 'E' || key == 'e')
-	{
-		load(new EnemyGhost(new PVector(player.position.x + 200,player.position.y)));
-	}
-
-	// if (key == 'I' || key == 'i')
-	// {
-	// 	load(new Icicle(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
-
-	// if (key == 'G' || key == 'g')
-	// {
-	// 	load(new Dynamite(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
-
-	// if (key == 'H' || key == 'h')
-	// {
-	// 	load(new Spike(), new PVector(player.position.x + 200, player.position.y - 200));
-	// }
+	//Debug code
+	debugInput();
 }
 
 void keyReleased()
 {
 	InputHelper.onKeyReleased(keyCode);
 	InputHelper.onKeyReleased(key);
+}
+
+void debugInput()
+{
+	// Test spawns
+	if(key == 'E' || key == 'e')
+	{
+		load(new EnemyBomb(new PVector(player.position.x + 200,player.position.y)));
+	}
+
+	// if(key == 'R' || key == 'r')
+	// {
+	// 	databaseManager.updateVariable("poop", 500);
+	// }
+
+	// if (key == 'T' || key == 't')
+	// {
+	// 	databaseManager.insertVariable("poop", 500);
+	// }
+
+	// if (key == 'Y' || key == 'y')
+	// {
+	// 	//Doesn't work right now
+	// 	databaseManager.deleteVariable("poop");
+	// }
+
+	if (key == 'U' || key == 'u')
+	{
+		// databaseManager.getAllPickupScores();
+		// ui.generateScoreboardGraphic();
+	}
+
+	if(key == 'l')
+	{
+		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y));
+	}
+
 }
 

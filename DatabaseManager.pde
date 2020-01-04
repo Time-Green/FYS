@@ -170,11 +170,10 @@ public class DatabaseManager
 
 		for (int i = 0; i < result.size(); i++) 
 		{
-			returnList.add(buildAchievement(result.getJSONObject(i)));
+			returnList.add(buildAchievement(result.getJSONObject(i)));		
 		}
-		
-		return returnList;
-		
+				
+		return returnList;			
 	}
 
 	// get all the unlocked achievement ids from the current player
@@ -216,7 +215,7 @@ public class DatabaseManager
 		return returnList; 
 	}
 
-	//if not insert new row with this user id and achievement id
+	//insert new row with this user id and achievement id
 	private boolean insertNewAchievement(int unlockedAchievementId) 
 	{
 		JSONArray result = doDatabaseRequest("INSERT INTO UnlockedAchievement (`playerid`, `achievementid`) VALUES ('" + dbUser.id + "', '" + unlockedAchievementId + "')");
@@ -276,7 +275,7 @@ public class DatabaseManager
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 
-		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickUpsPickedUp + "', blocksmined = '" + runData.playerBlocksMined + "' WHERE id = " + currentRunId);
+		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickupsPickedUp + "', blocksmined = '" + runData.playerBlocksMined  + "', buttontime = '" + runData.timeToButtonPress + "', itemsused = '" + runData.itemsUsed + "' WHERE id = " + currentRunId);
 
 		int success = -1;
 
@@ -499,6 +498,7 @@ public class DatabaseManager
 
 		//encode
 		url = url.replace(' ', '+');
+		url = url.replace("%", "%25");
 		url = url.replace("`", "%60");
 
 		GetRequest get = new GetRequest(url);
@@ -575,28 +575,80 @@ public class DatabaseManager
 		}
 	}
 
-	public ArrayList<Integer> getAllVars()
+	//Get variables from database
+
+	//Get all variables
+	public void getAllVariable()
 	{
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables");
 
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name");
-		//ArrayList<DbUser> returnList = new ArrayList<DbUser>();
-
-		for (int i = 0; i < result.size(); i++) {
-			//println(result.getJSONObject(i));
-			//returnList.add(buildUser(result.getJSONObject(i)));
+		for (int i = 0; i < result.size(); i++)
+		{
+			println(result.getJSONObject(i));
 		}
 
-		return null;
 	}
 
 	//Get a specific value from the database
-	public float getValue(String variableName) {
-
-		//Select the row we need
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name = " + variableName + ";");
-		//Get the float from that row and return it
+	public float getValue(String variableName)
+	{
+		// Select the row we need
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name LIKE " + variableName + ";");
+		// Get the float from that row and return it
 		float value = result.getJSONObject(0).getFloat("value");
 
 		return value;
 	}
+
+	public void updateVariable(String variableName, float newValue)
+	{
+		// Update the value of the selected variable
+		JSONArray result = doDatabaseRequest("UPDATE Intvariables SET value = " + newValue + " WHERE Intvariables.name = '" + variableName + "';");
+	}
+
+	public void insertVariable(String variableName, int value)
+	{
+		//Insert a new row in the database
+		JSONArray result = doDatabaseRequest("INSERT INTO Intvariables (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '0');");
+	}
+
+	//over
+	public void insertVariable(String variableName, int value, int allowEdit)
+	{
+		//Insert a new row in the database
+		JSONArray result = doDatabaseRequest("INSERT INTO `Intvariables` (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '"+allowEdit+"');");
+	}
+
+	public void deleteVariable(String variableName)
+	{
+		//Insert a new row in the database
+		JSONArray result = doDatabaseRequest("DELETE FROM Intvariables WHERE name = '"+variableName+"';");
+	}
+
+	public ArrayList<ScoreboardRow> getAllPickupScores()
+	{
+		//Get all rows that have PickupValue in their name,
+		//We also remove 'value'  from their name because we can use that to get images
+		JSONArray result = doDatabaseRequest("SELECT left(name, LOCATE('value', name) - 1) as Stone, value as Points FROM Intvariables WHERE name LIKE '%PickupValue' ORDER BY Intvariables.value ASC;");
+		ArrayList<ScoreboardRow> returnList = new ArrayList<ScoreboardRow>();
+		//Add all returbn word into a arraylist
+		for (int i = 0; i < result.size(); i++)
+		{
+			returnList.add(buildScoreboardRow(result.getJSONObject(i)));
+		}
+
+		return returnList;
+
+	}
+
+	private ScoreboardRow buildScoreboardRow(JSONObject json)
+	{
+		ScoreboardRow scoreboardRow = new ScoreboardRow();
+
+		scoreboardRow.imageName = json.getString("Stone");
+		scoreboardRow.score = json.getInt("Points");
+
+		return scoreboardRow;
+	}
+	
 }

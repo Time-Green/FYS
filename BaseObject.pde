@@ -15,12 +15,16 @@ class BaseObject
 	float lightEmitAmount = 0.0f; // the amount of light this object emits
 	float distanceDimFactor = 1;
 
+	protected boolean inWater;
+
 	void update()
 	{
 		if(enableLightning)
 		{
 			updateLightning();
 		}
+
+		// this.inWater = true;
 	}
 
 	void draw()

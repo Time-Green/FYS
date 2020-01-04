@@ -1,4 +1,4 @@
-class RelicShard extends PickUp
+class RelicShard extends Pickup
 {
 	int type;
 

@@ -8,7 +8,6 @@ public class LoginLetter
     private PVector drawPosition;
     private String allChars;
     private int charIndex = 0;
-
     private int displayCounter = 0;
 
     public LoginLetter(LoginScreen loginScreen, int index, String allChars)
@@ -51,6 +50,7 @@ public class LoginLetter
             displayCounter++;
 
             drawArrows();
+            drawNearbyChars();
         }
 
 		if (displayCounter >= 0)
@@ -80,11 +80,11 @@ public class LoginLetter
 
     private void drawArrows()
     {
-        textAlign(CENTER);
-        textSize(70);
+        //textAlign(CENTER);
+        //textSize(70);
 
-        text("↑", drawPosition.x, drawPosition.y - 110);
-        text("↓", drawPosition.x, drawPosition.y + 110);
+        //text("↑", drawPosition.x, drawPosition.y - 110);
+        //text("↓", drawPosition.x, drawPosition.y + 110);
 
         textAlign(CENTER);
         textSize(40);
@@ -98,6 +98,20 @@ public class LoginLetter
         {
             text("→", drawPosition.x + 45, drawPosition.y - 10);
         }
+    }
+
+    private void drawNearbyChars()
+    {
+        for (int i = -3; i < 4; i++)
+        {
+            if(i != 0)
+            {
+                fill(255, 255 - abs(i * 75));
+                text(getChar(i), drawPosition.x, drawPosition.y + i * 70);
+            }
+        }
+
+        fill(255);
     }
 
     private void checkInput()
@@ -162,6 +176,23 @@ public class LoginLetter
     public char getChar()
     {
         return allChars.charAt(charIndex);
+    }
+
+    public char getChar(int offset)
+    {
+        int index = charIndex + offset;
+
+        if(index < 0)
+        {
+            index = allChars.length() + index;
+        }
+
+        if(index > allChars.length() - 1)
+        {
+            index = index - allChars.length();
+        }
+
+        return allChars.charAt(index);
     }
 
 }
