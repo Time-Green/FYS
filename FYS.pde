@@ -1,3 +1,5 @@
+import java.util.*;
+
 // List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
 
@@ -31,7 +33,7 @@ DbUser dbUser;
 int loginStartTime;
 RunData runData;
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
-ArrayList<LeaderboardRow> leaderBoard;
+ArrayList<DbLeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
 ArrayList<Integer> vars;
@@ -43,7 +45,7 @@ ArrayList<ScoreboardRow> scoreboard;
 boolean loadedScores = false;
 
 // used to run code on closing game
-DisposeHandler dh;
+DisposeHandler disposeHandler;
 
 // global game objects
 World world;
@@ -57,9 +59,10 @@ boolean startGame = false; // start the game on next frame. needed to avoid conc
 
 void setup()
 {
-	dh = new DisposeHandler(this);
+	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P2D);
+
 	//fullScreen(P2D);
 
 	surface.setResizable(true);
@@ -92,36 +95,47 @@ void checkUser()
 // used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
-	AudioManager.setMaxVolume("Siren", 0.55f);
-	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
-	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
-	AudioManager.setMaxVolume("DirtBreak", 0.7f);
-	AudioManager.setMaxVolume("HurtSound", 0.75f);
-	AudioManager.setMaxVolume("LowHealth", 0.7f);
+	AudioManager.setMaxVolume("Siren", 0.55f * musicVolume);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.7f * musicVolume);
+	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f * musicVolume);
+	AudioManager.setMaxVolume("DirtBreak", 0.7f * soundEffectVolume);
+	AudioManager.setMaxVolume("HurtSound", 0.75f * soundEffectVolume);
+	AudioManager.setMaxVolume("LowHealth", 0.7f * soundEffectVolume);
+	// AudioManager.setMaxVolume("treasure", 0.8f * soundEffectVolume);
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.7f);
+		AudioManager.setMaxVolume("Explosion" + i, 0.7f * soundEffectVolume);
 	}
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f);
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f * soundEffectVolume);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f);
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f * soundEffectVolume);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f);
+		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f * musicVolume);
 	}
+	
+	//generateFlippedImages();
 
 	//setup game and show title screen
 	setupGame();
 }
+
+// void generateFlippedImages()
+// {
+// 	ResourceManager.generateFlippedImages("CoalBlock");
+// 	ResourceManager.generateFlippedImages("IronBlock");
+// 	ResourceManager.generateFlippedImages("DirtBlock");
+// 	ResourceManager.generateFlippedImages("StoneBlock");
+// }
 
 void setupGame()
 {
@@ -198,6 +212,8 @@ void draw()
 	world.update();
 	world.draw();
 
+	drawParallaxLayers();
+
 	updateObjects();
 	drawObjects();
 
@@ -265,6 +281,7 @@ void updateObjects()
 	if (startGame)
 	{
 		startGame = false;
+		runData.timeToButtonPress = (millis() - world.worldAge) * 0.001; //* 0.001 to get the time in seconds
 		startAsteroidRain();
 	}
 }
@@ -276,6 +293,22 @@ void drawObjects()
 		for(BaseObject object : drawUs)
 		{
 			object.draw();
+		}
+	}
+}
+
+void drawParallaxLayers()
+{
+	for(int i = world.parallaxMap.size() - 1; i >= 0; i--)
+	{
+		ArrayList<ArrayList<ParallaxTile>> parallaxList = world.parallaxMap.get(i);
+
+		for(ArrayList<ParallaxTile> yList : parallaxList)
+		{
+			for(ParallaxTile tile : yList)
+			{
+				tile.draw();
+			}
 		}
 	}
 }
@@ -393,8 +426,7 @@ void endRun()
 	isUploadingRunResults = true;
 	gamePaused = true;
 	currentGameState = GameState.GameOver;
-	
-	//ui.setupRunEnd();
+	ui.drawWarningOverlay = false;
 	AudioManager.stopMusic("BackgroundMusic");
 
 	thread("startRegisterEndThread");
@@ -579,10 +611,10 @@ void keyReleased()
 void debugInput()
 {
 	// Test spawns
-	if(key == 'E' || key == 'e')
-	{
-		load(new EnemyBomb(new PVector(player.position.x + 200,player.position.y)));
-	}
+	// if(key == 'E' || key == 'e')
+	// {
+	// 	load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+	// }
 
 	// if(key == 'R' || key == 'r')
 	// {

@@ -6,6 +6,6 @@ public class ShadowTile extends Tile
 
 		particleColor = color(#18191c);
 
-		image = ResourceManager.getImage("ShadowBlock");
+		image = ResourceManager.getImage("ShadowBlock", true);
 	}
 }

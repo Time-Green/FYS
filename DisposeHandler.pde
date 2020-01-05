@@ -1,8 +1,8 @@
 public class DisposeHandler
 {
-	DisposeHandler(PApplet pa)
+	DisposeHandler(PApplet game)
 	{
-		pa.registerMethod("dispose", this);
+		game.registerMethod("dispose", this);
 	}
 
 	public void dispose()

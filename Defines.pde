@@ -15,22 +15,25 @@ final int START_KEY = ENTER;
 final int BACK_KEY = BACKSPACE;
 final int ACHIEVEMENT_SCREEN_KEY = 32; 
 
+//Audio volume
+float musicVolume = 0.0f;
+float soundEffectVolume = 0.0f;
+
 //Ore values (later to be set in database?, yes)
-final int COAL_VALUE = 50;
-final int IRON_VALUE = 100;
-final int GREEN_ICE_VALUE = 250;
-final int RED_ICE_VALUE = 300;
-final int BLUE_ICE_VALUE = 350;
-final int REDSTONE_VALUE = 400;
-final int GOLD_VALUE = 500;
-final int LAPIS_VALUE = 750;
-final int DIAMOND_VALUE = 1000;
-final int AMETHYST_VALUE = 2500;
-final int METEORITE_VALUE = 5000;
+final int COAL_VALUE = databaseManager.getIntValue("CoalPickupValue");
+final int IRON_VALUE = databaseManager.getIntValue("IronPickupValue");
+final int GREEN_ICE_VALUE = databaseManager.getIntValue("EmeraldPickupValue");
+final int RED_ICE_VALUE = databaseManager.getIntValue("RubyPickupValue");
+final int BLUE_ICE_VALUE = databaseManager.getIntValue("SaphirePickupValue");
+final int REDSTONE_VALUE = databaseManager.getIntValue("RedstonePickupValue");
+final int GOLD_VALUE = databaseManager.getIntValue("GoldPickupValue");
+final int LAPIS_VALUE = databaseManager.getIntValue("LapisPickupValue");
+final int DIAMOND_VALUE = databaseManager.getIntValue("DiamondPickupValue");
+final int AMETHYST_VALUE = databaseManager.getIntValue("AmethystPickupValue");
+final int METEORITE_VALUE = databaseManager.getIntValue("MeteoritePickupValue");
 
 //Dig bonuses
 final int BONUSDEPTH = 50;
-
 
 //relicboost
 final int HEALTH_BOOST = 10;
@@ -56,6 +59,7 @@ final int NORTHEAST = 4;
 final int SOUTHEAST = 5;
 final int NORTHWEST = 6;
 final int SOUTHWEST = 7;
+final int DIRECTIONS = 8;
 
 //drawing layers
 final int BACKGROUND_LAYER = 0;
@@ -65,6 +69,12 @@ final int MOB_LAYER = 3;
 final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
+
+//Smoothing
+final boolean PARALLAX_ENABLED = true;
+final float PARALLAX_INTENSITY = 0.05;
+final float PARALLAX_NOISE_SCALE = 0.1; //the parallax background has one constant noise generator, so we dont get the ugly transitions from noise like normal biomes
+final float PARALLAX_NOISE_POSSIBILITY = 0.46f;
 
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;

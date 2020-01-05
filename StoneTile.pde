@@ -1,11 +1,11 @@
 public class StoneTile extends Tile
-	{
-
+{
 	public StoneTile(int x, int y)
 	{
 		super(x, y);
 
 		decalType = "DecalStone";
-		image = ResourceManager.getImage("StoneBlock");
+		parallaxDecalType = "DecalStoneParallax";
+		image = ResourceManager.getImage("StoneBlock", true);
 	}
 }

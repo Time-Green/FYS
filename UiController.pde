@@ -12,6 +12,8 @@ public class UIController
 	private PFont hudFont;
 	private float hudFontSize = 30;
 
+	int subTextCounter = -60;
+
 	//Title position
 	private float titleXPos;
 	private float titleYPos;
@@ -89,6 +91,8 @@ public class UIController
 
 	// graphics
 	PGraphics leaderBoardGraphics;
+
+	PImage cir;
 
 	UIController()
 	{
@@ -271,8 +275,6 @@ public class UIController
 		}
 	}
 
-	int subTextCounter = -60;
-
 	void startMenu()
 	{
 		drawTitle("ROCKY RAIN");
@@ -436,13 +438,13 @@ public class UIController
 		fill(WHITE);
 		textSize(20);
 
-		text(round(frameRate) + " FPS", width - 10, 140);
-		text(updateList.size() + " objects", width - 10, 120);
-		text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 100);
-		text(round(player.position.x) + " Player X Pos", width - 10, 80);
-		text(round(player.position.y) + " Player Y Pos", width - 10, 60);
-		text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, 40);
-		text("Logged in as " + dbUser.userName, width - 10, 20);
+		text(round(frameRate) + " FPS", width - 10, height - 130);
+		text(updateList.size() + " objects", width - 10, height - 110);
+		text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 90);
+		text(round(player.position.x) + " Player X Pos", width - 10, height - 70);
+		text(round(player.position.y) + " Player Y Pos", width - 10, height - 50);
+		text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 30);
+		text("Logged in as " + dbUser.userName, width - 10, height - 10);
 	}
 
 	void pauseScreen()
@@ -518,7 +520,7 @@ public class UIController
 
 		leaderBoardGraphics.textAlign(LEFT, CENTER);
 
-		for (LeaderboardRow leaderboardRow : leaderBoard)
+		for (DbLeaderboardRow leaderboardRow : leaderBoard)
 		{
 			if(i == 0) //First place
 			{
@@ -534,7 +536,7 @@ public class UIController
 			}
 			else if(leaderboardRow.userName.equals(dbUser.userName))
 			{
-				leaderBoardGraphics.fill(WHITE); // WIP
+				leaderBoardGraphics.fill(WHITE); // other color meybe?
 			}
 			else
 			{

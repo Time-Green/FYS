@@ -7,6 +7,8 @@ class Meteor extends Movable
 
 	private float sizeModifier;
 
+	MeteorTrailParticleSystem particleSystem;
+
 	Meteor()
 	{
 		worldBorderCheck = false;
@@ -15,10 +17,13 @@ class Meteor extends Movable
 		size.set(TILE_SIZE * sizeModifier, TILE_SIZE * sizeModifier);
 
 		aerialDragFactor = 1.0f;
-		gravityForce = 0.75f;
+		gravityForce = 0.75f - map(sizeModifier, MINSIZE, MAXSIZE, -0.55f, 0.25f);
 
 		velocity.set(random(-MAXHORIZONTALVELOCITY, MAXHORIZONTALVELOCITY), 0);
-		image = ResourceManager.getImage("Meteor 2");
+		image = ResourceManager.getImage("Meteor 2", true);
+
+		particleSystem = new MeteorTrailParticleSystem(position, 10, 1, true);
+		load(particleSystem, position);
 
 		setupLightSource(this, BRIGHTNESS, 1f);
 	}
@@ -32,19 +37,24 @@ class Meteor extends Movable
 
 		super.update(); 
 
+		updateParticleSystemPosition();
+
 		if (isGrounded)
 		{
-			load(new Explosion(position, 100 * sizeModifier, 50, true)); 
+			load(new Explosion(position, 100 * sizeModifier, 50, true));
+			delete(particleSystem);
 			delete(this);
 		}
 		else if (position.x < -size.x / 2 || position.x > world.getWidth() + size.x / 2)
 		{
+			delete(particleSystem);
 			delete(this);
-		} 
-		else
-		{
-            MeteorTrailParticleSystem particleSystem = new MeteorTrailParticleSystem(position, 10, 5, size);
-			load(particleSystem);
 		}
+	}
+
+	private void updateParticleSystemPosition()
+	{
+		particleSystem.position.x = position.x + size.x / 2;
+		particleSystem.position.y = position.y + size.y / 2;
 	}
 }

@@ -21,6 +21,11 @@ public class MeteorTrailParticle extends BaseParticle
 
 	void update()
 	{
+		if(gamePaused)
+		{
+			return;
+		}
+		
 		super.update();
 
 		updateSize();

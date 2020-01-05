@@ -1,31 +1,16 @@
-class Shield extends BaseObject
+class Shield
 {
-
     private PImage image;
     public boolean drawShield;
 
     public Shield()
     {
-        image = ResourceManager.getImage("BombTile");
-        drawLayer = PRIORITY_LAYER;
+        image = ResourceManager.getImage("Shield");
     }
 
-    // void draw()
-    // {
-    //     println("hi");
-    //     image(image, position.x, position.y, size.x, size.y);
-    // }
-
-    // void update()
-    // {
-    //     position = new PVector(player.position.x,player.position.x);
-    // }
-
-    // public void drawShield()
-    // {
-        
-    //     update();
-    //     // draw();
-    // }
+    void draw()
+    {
+        image(image, player.position.x, player.position.y, player.size.x, player.size.y);
+    }
 
 }

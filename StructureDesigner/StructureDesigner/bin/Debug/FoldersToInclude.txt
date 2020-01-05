@@ -1,6 +1,5 @@
 Blocks
 Enemies
-Cave
 House
 Landscape
 Structures

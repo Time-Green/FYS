@@ -6,7 +6,7 @@ public class LapisTile extends ResourceTile
 
 		value = LAPIS_VALUE;
 
-		image = ResourceManager.getImage("WaterStoneTile");
+		image = ResourceManager.getImage("WaterStoneTile", true);
 		breakSound = "GlassBreak" + floor(random(1, 4));
 	
 		pickupImage = ResourceManager.getImage("LapisPickup");

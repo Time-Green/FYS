@@ -1,28 +1,31 @@
-public class MeteorTrailParticleSystem extends BaseParticleSystem
+public class MeteorTrailParticleSystem extends EmittingParticleSystem
 {
-	public MeteorTrailParticleSystem(PVector spawnPos, int amount, float maxForce, PVector size)
+	private final int PARTICLES_PER_SPAWN = 5;
+
+	public MeteorTrailParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles)
 	{
-		super(spawnPos, amount);
-        
-		for (int i = 0; i < particleAmount; i++)
+		super(spawnPos, maxForce, spawnDelay, onlyUpwardsParticles);
+	}
+
+    void spawnParticle()
+    {
+        for (int i = 0; i < PARTICLES_PER_SPAWN; i++)
 		{
-			float randomAngle = random(0, TWO_PI);
-			float randomRadius = random(0, maxForce);
+			float randomAngle = random(TWO_PI);
+			float randomRadius = random(maxForce);
 			float circleX = cos(randomAngle) * randomRadius;
 			float circleY = sin(randomAngle) * randomRadius;
-            
-            if(circleY > 0)
-            {
-                circleY *= -1;
-            }
-
+			
+			if(onlyUpwardsParticles && circleY > 0)
+			{
+				circleY *= -1;
+			}
 
 			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
-
-            PVector particleSpawnPosition = new PVector(position.x + size.x / 2, position.y + 60);
+			PVector particleSpawnPosition = new PVector(position.x + circleX * 7.5f, position.y + circleY * 7.5f);
 
 			MeteorTrailParticle particle = new MeteorTrailParticle(this, particleSpawnPosition, particleSpawnAcceleration);
 			load(particle);
 		}
-	}
+    }
 }

@@ -18,8 +18,6 @@ class LoaderThread extends Thread
 	
 	public void run()
 	{
-		//System.out.println("Loading: " + currentResourceName);
 		ResourceManager.load(currentResourceName, currentResourceFileName);
-		//System.out.println("Loaded: " + currentResourceName);
 	}
 }

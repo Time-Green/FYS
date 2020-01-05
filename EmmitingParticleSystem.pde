@@ -1,7 +1,7 @@
 // spawn particles over time
 public class EmittingParticleSystem extends BaseParticleSystem
 {
-    int spawnDelay;
+    int spawnDelay, currentFrameCounter;
     float maxForce;
     boolean onlyUpwardsParticles;
 
@@ -12,6 +12,8 @@ public class EmittingParticleSystem extends BaseParticleSystem
         this.spawnDelay = spawnDelay;
         this.maxForce = maxForce;
         this.onlyUpwardsParticles = onlyUpwardsParticles;
+
+        currentFrameCounter = floor(random(100));
 	}
 
     void update()
@@ -23,10 +25,19 @@ public class EmittingParticleSystem extends BaseParticleSystem
 
 		super.update();
 
-        if(frameCount % spawnDelay == 0) 
+        if(spawnDelay == 0)
+        {
+            spawnParticle();
+            
+            return;
+        }
+
+        if(currentFrameCounter % spawnDelay == 0) 
         {
             spawnParticle();
         }
+
+        currentFrameCounter++;
 	}
 
     void spawnParticle()
