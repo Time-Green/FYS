@@ -92,6 +92,22 @@ public class DatabaseManager
 		return checkSuccess(result);
 	}
 
+	// deletes all runs with a score null or 0
+	public boolean deleteAllRunsWhereScoreIsNullOr0()
+	{
+		JSONArray result = doDatabaseRequest("DELETE FROM Run WHERE score IS NULL OR score = 0" );
+
+		return checkSuccess(result);
+	}
+	
+	// Update the score of a run by its id
+	public boolean updateRunScore(int id, int newScore)
+	{
+		JSONArray result = doDatabaseRequest("UPDATE Run SET score = " + newScore + " WHERE id = " + id);
+
+		return checkSuccess(result);
+	}
+
 	// renames a user to newName, selected by its id
 	public boolean renameUser(int id, String newName)
 	{
