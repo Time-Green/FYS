@@ -2,7 +2,7 @@ public class ScorePickup extends Pickup
 {
 	private int score;
 	//Placeholder sound
-	private String soundName = "treasure";
+	private String soundName = "Treasure";
 
 	// drop based on tile
 	public ScorePickup(ResourceTile tile)
@@ -25,17 +25,14 @@ public class ScorePickup extends Pickup
 		player.addScore(score);
 		//Draw the Pickup text
 		load(new PickupText(score, position));
-		ui.drawExtraPoints(this.score);
+		ui.drawExtraPoints(score);
 
 		//Effects
 		//TODO: find and add sound effect, do not remove comment yet
-		AudioManager.setMaxVolume(soundName, 0.8f);
 		AudioManager.playSoundEffect(soundName, position);
 		// Insert particle code here
 
 		//Delete this object
 		super.pickedUp(mob);
-		
 	}
-
 }

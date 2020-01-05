@@ -64,6 +64,8 @@ void setup()
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
 
+	frameRate(1000);
+
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
 
@@ -100,6 +102,7 @@ void afterResouceLoadingSetup()
 	AudioManager.setMaxVolume("DirtBreak", 0.7f);
 	AudioManager.setMaxVolume("HurtSound", 0.75f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
+	AudioManager.setMaxVolume("Treasure", 0.8f);
 
 	for (int i = 1; i < 5; i++)
 	{
