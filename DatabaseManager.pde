@@ -5,7 +5,7 @@ import java.util.Date;
 public class DatabaseManager
 {
 	private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
-	private final boolean PRINT_DATABASE_DEBUG = false;
+	private final boolean PRINT_DATABASE_DEBUG = true;
 
 	public String userNameToLogin;
 
@@ -260,6 +260,24 @@ public class DatabaseManager
 		{
 			return false; 
 		}
+	}
+
+	public boolean updateAchievementName(int id, String newName)
+	{
+		if (currentSessionId < 0) 
+		{
+			return false; 
+		}
+
+		if(achievementHelper.achievementExists(id) && newName.length() < 20)
+		{
+			JSONArray result = doDatabaseRequest("UPDATE Achievement SET name = '" + newName + "' WHERE id = " + id);
+			return checkSuccess(result);
+		}
+		else
+		{
+			return false; 
+		}		
 	}
 
 	// get the top 'amount' leaderboard rows

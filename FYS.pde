@@ -162,6 +162,8 @@ void setupGame()
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
 	ui.initAchievementFrames(); 
+
+	databaseManager.updateAchievementName(1, "When pigs fly"); 
 }
 
 void prepareDrawingLayers()
