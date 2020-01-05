@@ -2,7 +2,7 @@ import ddf.minim.*;
 
 public static class AudioManager
 {
-	private static final boolean AUDIO_ENABLED = true;
+	private static final boolean AUDIO_ENABLED = false;
 
 	private final static int SEQUENTIAL_AUDIO_AMOUNT = 15;
 	private final static float AUDIO_DISTSANCE_FALLOFF = 1500;
@@ -126,10 +126,10 @@ public static class AudioManager
 
 	public static void playSoundEffect(String name, PVector atLocation)
 	{
-		// if(!AUDIO_ENABLED)
-		// {
-		// 	return;
-		// }
+		if(!AUDIO_ENABLED)
+		{
+			return;
+		}
 
 		AudioPlayer[] soundEffects = soundEffectMap.get(name);
 		int playAtIndex = soundEffectMapIndex.get(name);
