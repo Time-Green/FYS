@@ -90,6 +90,8 @@ public class UIController
 	// graphics
 	PGraphics leaderBoardGraphics;
 
+	PImage cir;
+
 	UIController()
 	{
 		titleFont = ResourceManager.getFont("Block Stock");

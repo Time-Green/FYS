@@ -45,7 +45,7 @@ ArrayList<ScoreboardRow> scoreboard;
 boolean loadedScores = false;
 
 // used to run code on closing game
-DisposeHandler dh;
+DisposeHandler disposeHandler;
 
 // global game objects
 World world;
@@ -59,7 +59,7 @@ boolean startGame = false; // start the game on next frame. needed to avoid conc
 
 void setup()
 {
-	dh = new DisposeHandler(this);
+	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
@@ -388,8 +388,7 @@ void endRun()
 	isUploadingRunResults = true;
 	gamePaused = true;
 	currentGameState = GameState.GameOver;
-	
-	//ui.setupRunEnd();
+	ui.drawWarningOverlay = false;
 	AudioManager.stopMusic("BackgroundMusic");
 
 	thread("startRegisterEndThread");
