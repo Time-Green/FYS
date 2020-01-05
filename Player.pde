@@ -16,10 +16,11 @@ class Player extends Mob
 
 	//Status effects
 	public float stunTimer;
-	private float shieldTimer;
+	public float shieldTimer;
+	public float magnetTimer;
 
 	boolean gotbonus1;
-	Shield myShield;
+	private Shield myShield;
 
 	private PVector spawnPosition = new PVector(1300, 509);
 	public int score = 0;
@@ -31,6 +32,7 @@ class Player extends Mob
 		baseDamage = 1.4;
 		canRegen = true;
 		jumpForce = 21f;
+		drawLayer = PLAYER_LAYER;
 
 		setUpAnimation();
 
@@ -38,7 +40,8 @@ class Player extends Mob
 
 		applyRelicBoost();
 
-		// myShield = new Shield();
+		myShield = new Shield();
+		// load(myShield);
 	}
 
 	void update()
@@ -189,16 +192,6 @@ class Player extends Mob
 			AudioManager.playSoundEffect("FireSound");
 		}
 
-		//Draw the shield
-		// if (this.shieldTimer > 0f)
-		// {
-		// 	// myShield.drawShield();
-		// 	// PImage shieldImage = ResourceManager.getImage("Umberla");
-		// 	// // shieldImage
-
-		// 	// image(shieldImage, this.position.x, this.position.y, 40, 40);
-		// }
-
 		// Am I stunned?
 		if (stunTimer > 0f)
 		{
@@ -236,6 +229,13 @@ class Player extends Mob
 				animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageIdle.draw();
 			}
+		}
+	
+		//Draw the shield
+		//This has to go on the bottom of this function, otherwise it will draw behind the player
+		if (this.shieldTimer > 0f)
+		{
+			myShield.draw();
 		}
 	}
 
@@ -332,7 +332,6 @@ class Player extends Mob
 			gotbonus1 = true;
 			
 		}
-		// println("shieldTimer: " + shieldTimer);
 	}
 
 	public void takeDamage(float damageTaken)
@@ -370,11 +369,14 @@ class Player extends Mob
 		if (shieldTimer > 0f)
 		{
 			shieldTimer--;
-			this.isImmortal = true;	
+			this.isImmortal = true;
+			// if (myShield.drawShield != true) 
+			myShield.drawShield = true;
 		}
 		else
 		{
 			this.isImmortal = false;
+			myShield.drawShield = false;
 		}
 	}
 

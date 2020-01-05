@@ -34,14 +34,21 @@ class EnemyDigger extends Enemy
 			this.speed = chaseSpeed;
 
 			if (this.position.x > playerX)
+			{
 				this.walkLeft = true;//GO left
+			}
 			else
+			{
 				this.walkLeft = false;//Go right
-
+			}
 			if (this.position.y < playerY)
+			{
 				this.gravityForce = chaseSpeed/2;//Go down
+			}
 			else
+			{
 				this.gravityForce = -chaseSpeed;//Go up
+			}
 			
 			//Allow us to mine
 			this.isMiningLeft = true;
