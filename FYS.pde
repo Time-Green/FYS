@@ -64,8 +64,6 @@ void setup()
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
 
-	frameRate(1000);
-
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
 
