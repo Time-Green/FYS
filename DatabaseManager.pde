@@ -128,7 +128,8 @@ public class DatabaseManager
 
 			JSONArray result = doDatabaseRequest("INSERT INTO Playsession (`userid`, `startdatetime`) VALUES ('" + loggedInUser.id + "', '" + formatter.format(date) + "')");
 
-			if (result.size() == 1) {
+			if (result.size() == 1)
+			{
 				currentSessionId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
 			}
 
