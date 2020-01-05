@@ -13,7 +13,7 @@ public class World
 	int birdCount = round(random(10, 15));
 
 	int parallaxLayers = 2;
-	int[] parallaxWidth = new int[2]; //width of the parallaxbackgrounds
+	int[] parallaxWidth = new int[parallaxLayers]; //width of the parallaxbackgrounds
 	ArrayList<ArrayList<ArrayList<ParallaxTile>>> parallaxMap = new ArrayList<ArrayList<ArrayList<ParallaxTile>>>(); //parallax layer, then y and then x
 
 	Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
@@ -634,7 +634,7 @@ public class World
 			{
 				parallaxImage = ResourceManager.getImage(currentBiome.getParallaxedRock());
 			}
-			
+
 			ParallaxTile tile = (ParallaxTile) load(new ParallaxTile(x * TILE_SIZE, y * TILE_SIZE, parallaxLayer, parallaxImage));
 			tile.row = yList;
 
