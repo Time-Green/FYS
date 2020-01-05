@@ -34,10 +34,10 @@ class MagmaRock extends Tile
 		}
 	}
 
-	void breakTile()
+	void breakTile(boolean generated)
 	{
 		delete(particleSystem);
 
-		super.breakTile();
+		super.breakTile(generated);
 	}
 }

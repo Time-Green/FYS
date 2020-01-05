@@ -19,7 +19,6 @@ class Biome
 
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 	PImage parallaxImage;
-	PImage defaultParallaxImage = ResourceManager.getImage("Parallax_Rock"); //we always draw a parallax image to maintain continuety with biome switching
 
   	Tile getTileToGenerate(int x, int depth)
   	{
@@ -183,11 +182,11 @@ class Biome
 
 	Parallax getParallax()
 	{
-		PImage newImage = parallaxImage;
-		if(newImage == null)
+		if(parallaxImage == null)
 		{
-			newImage = defaultParallaxImage;
+			return new Parallax(ResourceManager.getImage("Invisible")); 
 		}
+		PImage newImage = parallaxImage;
 		return new Parallax(newImage);
 	}
 }

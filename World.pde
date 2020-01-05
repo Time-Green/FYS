@@ -17,8 +17,6 @@ public class World
 	ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
 	int switchDepth; //the depth at wich we switch to the next biome in the qeueu
 
-	int parallaxLength = 10;
-
 	World()
 	{
 		dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, 8)));
@@ -164,10 +162,7 @@ public class World
 				switchBiome(y);
 			}
 
-			if(y % parallaxLength == 0){
-				println("yeehaw", currentBiome);
-				load(currentBiome.getParallax(), new PVector(0, y * TILE_SIZE));
-			}
+			load(currentBiome.getParallax(), new PVector(0, y * TILE_SIZE));
 
 			if (y > OVERWORLD_HEIGHT + 11 && currentBiome.structureChance > random(1))
 			{

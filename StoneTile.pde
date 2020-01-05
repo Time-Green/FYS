@@ -6,6 +6,7 @@ public class StoneTile extends Tile
 		super(x, y);
 
 		decalType = "DecalStone";
+		parallaxDecalType = "DecalStoneParallax";
 		image = ResourceManager.getImage("StoneBlock");
 	}
 }

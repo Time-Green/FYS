@@ -4,7 +4,7 @@ class NormalBiome extends Biome
 	NormalBiome()
 	{
 		structureChance = 0.008;
-    parallaxImage = ResourceManager.getImage("Parallax_Rock");
+    parallaxImage = ResourceManager.getImage("DefaultParallax");
 	}
 
   String getStructureName() {

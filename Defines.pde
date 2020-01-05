@@ -55,6 +55,7 @@ final int NORTHEAST = 4;
 final int SOUTHEAST = 5;
 final int NORTHWEST = 6;
 final int SOUTHWEST = 7;
+final int DIRECTIONS = 8;
 
 //drawing layers
 final int BACKGROUND_LAYER = 0;
