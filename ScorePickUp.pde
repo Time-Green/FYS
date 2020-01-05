@@ -29,7 +29,8 @@ public class ScorePickup extends Pickup
 
 		//Effects
 		//TODO: find and add sound effect, do not remove comment yet
-		AudioManager.playSoundEffect(soundName, position);
+		//RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
+		//AudioManager.playSoundEffect(soundName, position);
 		// Insert particle code here
 
 		//Delete this object
