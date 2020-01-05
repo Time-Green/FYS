@@ -7,7 +7,7 @@ import java.util.Date;
 public class DatabaseManager
 {
 	private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
-	private final boolean PRINT_DATABASE_DEBUG = false;
+	private final boolean PRINT_DATABASE_DEBUG = true;
 
 	public String userNameToLogin;
 
@@ -86,6 +86,36 @@ public class DatabaseManager
 		{
 			return null;
 		}
+	}
+
+	// deletes a user by its id
+	public boolean deleteUser(int id)
+	{
+		JSONArray result = doDatabaseRequest("DELETE FROM User WHERE id = " + id);
+
+		int success = -1;
+
+		if (result.size() == 1)
+		{
+			success = result.getJSONObject(0).getInt("Success");
+		}
+
+		return success == 1;
+	}
+
+	// renames a user to newName, selected by its id
+	public boolean renameUser(int id, String newName)
+	{
+		JSONArray result = doDatabaseRequest("UPDATE User SET username = '" + newName + "' WHERE id = " + id);
+
+		int success = -1;
+
+		if (result.size() == 1)
+		{
+			success = result.getJSONObject(0).getInt("Success");
+		}
+
+		return success == 1;
 	}
 
 	// notify the database that this player has quit the game
