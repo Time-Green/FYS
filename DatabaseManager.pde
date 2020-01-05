@@ -517,6 +517,7 @@ public class DatabaseManager
 		return leaderboardRow;
 	}
 
+	// sends the sql request to the server and returns the result as a json array, TODO: add encryption and password
 	public JSONArray doDatabaseRequest(String request)
 	{
 		String url = BASE_URL + request;
@@ -539,7 +540,16 @@ public class DatabaseManager
 			println("result: " + result);
 		}
 
-		return parseJSONArray(result);
+		try
+		{
+			return parseJSONArray(result);
+		}
+		catch (Exception e)
+		{
+			println("ERROR could not parse database request: " + e.getMessage() + "\nResult message: " + result);
+
+			return new JSONArray();
+		}
 	}
 
 	void beginLogin(String userNameToLogin)
