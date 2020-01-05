@@ -13,6 +13,7 @@ final int INVENTORY_KEY_B = ALT;
 //Menus
 final int START_KEY = ENTER;
 final int BACK_KEY = BACKSPACE;
+final int ACHIEVEMENT_SCREEN_KEY = 32; 
 
 //Ore values (later to be set in database?, yes)
 final int COAL_VALUE = 50;
@@ -81,7 +82,8 @@ enum GameState
 	Overworld, // when the player can walk around but not mine
 	MainMenu, // when main menu is showing
 	ScoreMenu, // when the score is displayed, not used yet
-	OptionMenu, // when the options menu is displayed, not used yet
+	OptionMenu,
+	AchievementScreen,
 	InGame, // when the world is getting blown up!
 	GameOver, // when the player died
 	GamePaused // when the player pauses the game

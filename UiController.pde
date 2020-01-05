@@ -7,6 +7,8 @@ public class UIController
 	private PFont instructionFont;
 	private float instructionFontSize = 40;
 
+	private float achievementUiSize = 25; 
+
 	private PFont hudFont;
 	private float hudFontSize = 30;
 
@@ -35,7 +37,7 @@ public class UIController
 	int scoreDisplay = 0;
 
 	//Achievement icon
-	private float iconFrameSize = 25; 
+	ArrayList<achievementImageFrame> achievementFrames = new ArrayList<achievementImageFrame>();
 	int achievementDisplayTimer = 0; 
 	int showingAchievementId; 
 
@@ -118,6 +120,10 @@ public class UIController
 			case MainMenu:
 				startMenu();
 			break;	
+
+			case AchievementScreen:
+				achievementScreen(); 
+			break; 
 
 			case GameOver:
 				gameOver();
@@ -274,9 +280,12 @@ public class UIController
 		//sub text
 		subTextCounter++;
 
+		textFont(instructionFont);
+		textSize(achievementUiSize);
+		text("Press space to view achievements", width / 2, (height / 2.5) + (titleFontSize/2));
+
 		if (subTextCounter >= 0)
 		{
-			textFont(instructionFont);
 			textSize(instructionFontSize);
 			text("Press Start", width / 2, (height / 1.5) + (titleFontSize/2));
 
@@ -285,6 +294,26 @@ public class UIController
 				subTextCounter = -60;
 			}
 		}
+	}
+
+	void initAchievementFrames()
+	{
+		for(int i = 0; i < allAchievements.size(); i++)
+		{
+			achievementFrames.add(new achievementImageFrame(i, achievementHelper.getAchievementData(i).id)); 
+		}
+	}
+	
+	void achievementScreen()
+	{
+		fill(0, 0, 0, 50); 
+		rect(0, 0, width * 2, height * 2); 
+
+		for(int i = 0; i < achievementFrames.size(); i++)
+		{
+			achievementFrames.get(i).draw();  
+		}
+
 	}
 
 	void gameHUD()

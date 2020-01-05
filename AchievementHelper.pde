@@ -1,6 +1,7 @@
 public class AchievementHelper
 {
-    // 1 - Lone Digger (player has dug more than 100 tiles)
+
+    // 0 - Lone Digger (player has dug more than 100 tiles)
 
     void unlock(int id)
     {
@@ -70,5 +71,42 @@ public class AchievementHelper
         }     
 
         return false;    
+    }
+}
+
+public class achievementImageFrame
+{
+
+    public float frameSize = 170; 
+    public float xPosition; 
+    public int achievementId; 
+    public float moveAmount = frameSize; 
+
+    achievementImageFrame(int x, int id)
+    {
+        xPosition = width / 2 + (180 * x); 
+        achievementId = id; 
+    }
+
+    void draw()
+    {
+        fill(255); 
+        rect(xPosition, height/3, frameSize, frameSize);
+    }
+
+    void move(boolean direction)
+    {    
+        if(!direction)
+        {
+            xPosition -= moveAmount; 
+        }
+        
+        else
+        {
+            xPosition += moveAmount; 
+        }
+
+        return; 
+        
     }
 }

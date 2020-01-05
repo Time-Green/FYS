@@ -147,6 +147,7 @@ void setupGame()
 	load(wallOfDeath);
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
+	ui.initAchievementFrames(); 
 }
 
 void prepareDrawingLayers()
@@ -290,6 +291,13 @@ void handleGameFlow()
 			enterOverWorld(false);
 		}
 
+		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
+		{
+			currentGameState = GameState.AchievementScreen; 
+			ui.achievementScreen();  
+			
+		}
+
 		break;
 
 	case InGame:
@@ -314,10 +322,20 @@ void handleGameFlow()
 
 		break;
 
+	case AchievementScreen:
+
+		if(InputHelper.isKeyDown(START_KEY))
+		{
+			currentGameState = GameState.MainMenu; 
+			InputHelper.onKeyReleased(START_KEY);
+		}
+
+		break; 
+
 	case GamePaused:
 		gamePaused = true;
 
-		//if the game has been paused the player can contineu the game
+		//if the game has been paused the player can continue the game
 		if (InputHelper.isKeyDown(START_KEY))
 		{
 			gamePaused = false;
