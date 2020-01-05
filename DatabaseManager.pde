@@ -243,6 +243,25 @@ public class DatabaseManager
 		return newId > -1;
 	}
 
+	public boolean deletePlayerUnlockedAchievement(int achievementid)
+	{
+		if (currentSessionId < 0) 
+		{
+			return false; 
+		}
+
+		// Check if the player has the achievement, if the id does not exist we return false
+		if(achievementHelper.hasUnlockedAchievement(achievementid))
+		{
+			JSONArray result = doDatabaseRequest("DELETE FROM UnlockedAchievement WHERE playerid = " + dbUser.id + " AND achievementid =" + achievementid); 
+			return checkSuccess(result);		
+		}
+		else
+		{
+			return false; 
+		}
+	}
+
 	// get the top 'amount' leaderboard rows
 	public ArrayList<DbLeaderboardRow> getLeaderboard(int amount)
 	{
