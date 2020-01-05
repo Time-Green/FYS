@@ -376,6 +376,13 @@ public class DatabaseManager
 		return success;
 	}
 
+	//we don't want anymore boost this delete function prevents it to do anything past id 4
+	public boolean deleteFalseId()
+	{
+		JSONArray result = doDatabaseRequest("DELETE FROM Relicshard WHERE id > 4");
+		return checkSuccess(result);
+	}
+
 	// upload gained achievements to the database
 	public boolean updatePlayerAchievements() 
 	{
@@ -450,6 +457,7 @@ public class DatabaseManager
 
 		return success == 1;  
 	}
+	
 
 	public String getCurrentDateTime()
 	{
