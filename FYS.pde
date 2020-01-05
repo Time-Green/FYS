@@ -357,6 +357,7 @@ void handleGameFlow()
 
 	case AchievementScreen:
 
+		// In the achievement screen press ENTER to exit temp(!)
 		if(InputHelper.isKeyDown(START_KEY))
 		{
 			currentGameState = GameState.MainMenu; 

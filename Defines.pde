@@ -43,7 +43,7 @@ final float SPEED_BOOST = 0.01f;
 final float LIGHT_BOOST = 10;
 
 //Achievements
-final int LONE_DIGGER_ACHIEVEMENT = 1;
+final int LONE_DIGGER_ACHIEVEMENT = 0;
 
 //world
 final int OVERWORLD_HEIGHT = 10; // in grid tiles
