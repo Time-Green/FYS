@@ -31,4 +31,9 @@ class FireBiome extends Biome
 	{
 		return "MagmaRock" + int(random(3));
 	}
+
+	String getParallaxedRock()
+	{
+		return "VulcanicTile";
+	}
 }

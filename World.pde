@@ -12,6 +12,10 @@ public class World
 
 	int birdCount = round(random(10, 15));
 
+	int parallaxLayers = 2;
+	int[] parallaxWidth = new int[2]; //width of the parallaxbackgrounds
+	ArrayList<ArrayList<ArrayList<ParallaxTile>>> parallaxMap = new ArrayList<ArrayList<ArrayList<ParallaxTile>>>(); //parallax layer, then y and then x
+
 	Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
 	Biome currentBiome;
 	ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
@@ -29,6 +33,7 @@ public class World
 		fillBiomeQueue(0);
 		switchBiome(0);
 
+		prepareParallax();
 		updateWorldDepth();
 
 		spawnOverworldStructures();
@@ -120,6 +125,15 @@ public class World
 		}
 	}
 
+	void prepareParallax()
+	{
+		for(int i = 0; i < parallaxLayers; i++)
+		{
+			parallaxMap.add(new ArrayList<ArrayList<ParallaxTile>>());
+			parallaxWidth[i] = int(TILES_HORIZONTAL + TILES_HORIZONTAL * PARALLAX_INTENSITY * i * 3); //the three has no meaning, I just kept trying till it filled the screen
+		}
+	}
+
 	//return tile you're currently on
 	Tile getTile(float x, float y)
 	{
@@ -162,8 +176,6 @@ public class World
 				switchBiome(y);
 			}
 
-			load(currentBiome.getParallax(), new PVector(0, y * TILE_SIZE));
-
 			if (y > OVERWORLD_HEIGHT + 11 && currentBiome.structureChance > random(1))
 			{
 				currentBiome.placeStructure(this, y);
@@ -181,12 +193,22 @@ public class World
 			}
 
 			map.add(subArray);// add the empty tile-list to the bigger list
+
+			if(PARALLAX_ENABLED)
+			{
+				for(int i = 1; i <= parallaxLayers; i++)
+				{
+					generateParallax(y, i);
+				}
+			}
 		}
 
 		for (StructureSpawner spawner : queuedStructures)
 		{
 			spawner.trySpawn(this);
 		}
+
+
 
 		postGenerate(map.size() - 2); //tell the row of tiles above us we're finished, so they can add 'aesthetics'
 		//also minus -2 because we do -1 to get the the zero based index, and then minus -1 more to get the row above it
@@ -578,6 +600,45 @@ public class World
 			default :
 				println("ERROR: structure object '" + stripedObjectName + "' not set up or not found!");
 			break;
+		}
+	}
+
+	void generateParallax(int y, int parallaxLayer)
+	{
+		ArrayList<ArrayList<ParallaxTile>> parallaxList = parallaxMap.get(parallaxLayer - 1);
+
+		ArrayList<ParallaxTile> yList = new ArrayList<ParallaxTile>();
+		parallaxList.add(yList);
+
+		for(int x = 0; x < parallaxWidth[parallaxLayer - 1]; x++)
+		{
+			PImage parallaxImage;
+
+			if(!currentBiome.canParallax)
+			{
+				parallaxImage = null;
+			}
+			else if(noise(x * PARALLAX_NOISE_SCALE * parallaxLayer, y * PARALLAX_NOISE_SCALE * parallaxLayer) > PARALLAX_NOISE_POSSIBILITY)
+			{
+				if(parallaxLayer < parallaxLayers) //there's another layer behind us, so don't draw a background infront of it
+				{
+					parallaxImage = null;
+				}
+				
+				else
+				{
+					parallaxImage = currentBiome.destroyedImage;
+				}	
+			}
+			else
+			{
+				parallaxImage = ResourceManager.getImage(currentBiome.getParallaxedRock());
+			}
+			
+			ParallaxTile tile = (ParallaxTile) load(new ParallaxTile(x * TILE_SIZE, y * TILE_SIZE, parallaxLayer, parallaxImage));
+			tile.row = yList;
+
+			yList.add(tile); //we can safely cast it since we just made it
 		}
 	}
 }

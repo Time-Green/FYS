@@ -62,6 +62,7 @@ void setup()
 	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P2D);
+
 	//fullScreen(P2D);
 
 	surface.setResizable(true);
@@ -210,6 +211,8 @@ void draw()
 	world.update();
 	world.draw();
 
+	drawParallaxLayers();
+
 	updateObjects();
 	drawObjects();
 
@@ -289,6 +292,22 @@ void drawObjects()
 		for(BaseObject object : drawUs)
 		{
 			object.draw();
+		}
+	}
+}
+
+void drawParallaxLayers()
+{
+	for(int i = world.parallaxMap.size() - 1; i >= 0; i--)
+	{
+		ArrayList<ArrayList<ParallaxTile>> parallaxList = world.parallaxMap.get(i);
+
+		for(ArrayList<ParallaxTile> yList : parallaxList)
+		{
+			for(ParallaxTile tile : yList)
+			{
+				tile.draw();
+			}
 		}
 	}
 }

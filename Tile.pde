@@ -20,6 +20,7 @@ class Tile extends BaseObject {
   String decalType;
   boolean[] decals = new boolean[DIRECTIONS]; //for all cardinal and diagonal directions
 
+  boolean canParallax = true; //set to false to never use parallax on this tile and just use the destroyed image
   boolean parallaxDecals = true; //the ridges on non-dense tile transitioning into parallax tiles
   String parallaxDecalType;
   boolean parallaxed = false; //wheter or not we've been overwritten by a parallax image
@@ -63,26 +64,16 @@ class Tile extends BaseObject {
     if (gridPosition.y > OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
     {
       breakTile(true);
-      if(world.currentBiome.parallaxImage != null)
-      {
-        destroyedImage = ResourceManager.getImage("Invisible");
-        parallaxed = true;
-        resetDecals();
-      }
 
       if(random(1) < world.currentBiome.ceilingObstacleChance)
       { //do a chance check first to save time and resources
         world.currentBiome.prepareCeilingObstacle(this, world);
       }
 
-      //1% change to spawn torch
-      if (random(100) < 1)
-      {
-        load(new Torch(), position);
-      }
       if (random(1) < world.currentBiome.enemyChance)
         world.currentBiome.spawnEnemy(position);
     }
+
     else
     {
       world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
@@ -126,15 +117,22 @@ class Tile extends BaseObject {
       image(image, position.x, position.y, TILE_SIZE, TILE_SIZE);
       drawDecals();
       tint(255);
-    } else 
+    } 
+    
+    else
     {
-      if (destroyedImage != null) 
+      if (destroyedImage != null && (!PARALLAX_ENABLED || !canParallax)) 
       {
         tint(lightningAmount);
         image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
         drawDecals();
-        tint(255);
       }
+      else
+      {
+        tint(lightningAmount, 255 - lightningAmount); //second param is transparency. make the invisible tile less transparent and light, otherwise it doesnt work at all
+        image(ResourceManager.getImage("Black"), position.x, position.y, TILE_SIZE, TILE_SIZE); //black so we can properly detransparant it. empty image doesnt work
+      }
+      tint(255);
     }
   }
 

@@ -17,8 +17,10 @@ class Biome
 	// the amount the player can see in the biome
 	float playerVisibilityScale = 1;
 
+	boolean canParallax = true;
+
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
-	PImage parallaxImage;
+
 
   	Tile getTileToGenerate(int x, int depth)
   	{
@@ -175,18 +177,13 @@ class Biome
 		}
 	}
 
-	BaseObject spawnGroundObstacle(Tile target) //please return movable type, since that's the only sensible obstacle
+	BaseObject spawnGroundObstacle(Tile target)
 	{
 		return null;
 	}
 
-	Parallax getParallax()
+	String getParallaxedRock()
 	{
-		if(parallaxImage == null)
-		{
-			return new Parallax(ResourceManager.getImage("Invisible")); 
-		}
-		PImage newImage = parallaxImage;
-		return new Parallax(newImage);
+		return "StoneBlock";
 	}
 }
