@@ -546,7 +546,7 @@ public class DatabaseManager
 		}
 		catch (Exception e)
 		{
-			println("ERROR could not parse database result: " + e.getMessage() + "\nResult message: " + result);
+			println("ERROR: could not parse database result: " + e.getMessage() + "\nResult message: " + result);
 
 			return new JSONArray();
 		}
