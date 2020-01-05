@@ -94,32 +94,32 @@ void checkUser()
 // used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
-	AudioManager.setMaxVolume("Siren", 0.55f);
-	AudioManager.setMaxVolume("BackgroundMusic", 0.8f);
-	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
-	AudioManager.setMaxVolume("DirtBreak", 0.7f);
-	AudioManager.setMaxVolume("HurtSound", 0.75f);
-	AudioManager.setMaxVolume("LowHealth", 0.7f);
-	AudioManager.setMaxVolume("Treasure", 0.8f);
+	AudioManager.setMaxVolume("Siren", 0.55f * musicVolume);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.7f * musicVolume);
+	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f * musicVolume);
+	AudioManager.setMaxVolume("DirtBreak", 0.7f * soundEffectVolume);
+	AudioManager.setMaxVolume("HurtSound", 0.75f * soundEffectVolume);
+	AudioManager.setMaxVolume("LowHealth", 0.7f * soundEffectVolume);
+	// AudioManager.setMaxVolume("treasure", 0.8f * soundEffectVolume);
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.7f);
+		AudioManager.setMaxVolume("Explosion" + i, 0.7f * soundEffectVolume);
 	}
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f);
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f * soundEffectVolume);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f);
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f * soundEffectVolume);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f);
+		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f * musicVolume);
 	}
 	
 	//generateFlippedImages();
@@ -574,10 +574,10 @@ void keyReleased()
 void debugInput()
 {
 	// Test spawns
-	if(key == 'E' || key == 'e')
-	{
-		load(new EnemyBomb(new PVector(player.position.x + 200,player.position.y)));
-	}
+	// if(key == 'E' || key == 'e')
+	// {
+	// 	load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+	// }
 
 	// if(key == 'R' || key == 'r')
 	// {

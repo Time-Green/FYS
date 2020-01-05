@@ -14,6 +14,10 @@ final int INVENTORY_KEY_B = ALT;
 final int START_KEY = ENTER;
 final int BACK_KEY = BACKSPACE;
 
+//Audio volume
+float musicVolume = 0.0f;
+float soundEffectVolume = 0.0f;
+
 //Ore values (later to be set in database?, yes)
 final int COAL_VALUE = 50;
 final int IRON_VALUE = 100;
