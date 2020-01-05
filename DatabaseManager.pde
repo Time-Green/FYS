@@ -7,7 +7,7 @@ import java.util.Date;
 public class DatabaseManager
 {
 	private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
-	private final boolean PRINT_DATABASE_DEBUG = true;
+	private final boolean PRINT_DATABASE_DEBUG = false;
 
 	public String userNameToLogin;
 
