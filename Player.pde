@@ -156,7 +156,6 @@ class Player extends Mob
 				inventory[i].drawOnPlayer(this);
 			}
 		}
- 
 	}
 
 	private void setUpAnimation()
@@ -260,7 +259,6 @@ class Player extends Mob
 			{
 				addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
 			}
-
 		}
 		else if(!InputHelper.isKeyDown(JUMP_KEY_1) && !InputHelper.isKeyDown(JUMP_KEY_2) && !isGrounded())
 		{
@@ -307,13 +305,21 @@ class Player extends Mob
 
 		if (InputHelper.isKeyDown(INVENTORY_KEY_A))
 		{ 
-			useInventory(0);
+			if(canUseInventory(0))
+			{
+				useInventory(0);
+			}
+
 			InputHelper.onKeyReleased(INVENTORY_KEY_A);
 		}
 		
 		if (InputHelper.isKeyDown(INVENTORY_KEY_B))
 		{ 
-			useInventory(1);
+			if(canUseInventory(1))
+			{
+				useInventory(1);
+			}
+
 			InputHelper.onKeyReleased(INVENTORY_KEY_B);
 		}
 	}
@@ -326,11 +332,11 @@ class Player extends Mob
 	private void digBonuses()
 	{
 		float extraShieldTime = timeInSeconds(10f);
+
 		if (getDepth() > BONUSDEPTH && gotbonus1 == false)
 		{
 			shieldTimer += extraShieldTime;
 			gotbonus1 = true;
-			
 		}
 	}
 
@@ -400,6 +406,13 @@ class Player extends Mob
 	protected void afterMine(BaseObject object)
 	{
 		runData.playerBlocksMined++;
+	}
+
+	protected void useInventory(int slot)
+	{
+		super.useInventory(slot);
+
+		runData.itemsUsed++;
 	}
 
 }

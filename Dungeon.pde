@@ -18,7 +18,7 @@ class DungeonBlock1 extends Tile
 		image = ResourceManager.getImage("DungeonBlock1");
 		density = true;
 		healthMultiplier = 2;
-    setMaxHp(30);
+    	setMaxHp(30);
 
 		//make it a lightsource if it is the button altar, "sun"
 		if(y == OVERWORLD_HEIGHT)
@@ -170,7 +170,7 @@ class Cobweb extends Obstacle
 	Cobweb()
 	{
 		anchored = true;
-		image = ResourceManager.getImage("Cobweb");
+		image = ResourceManager.getImage("Cobweb", true);
 		density = false;
 	}
 }

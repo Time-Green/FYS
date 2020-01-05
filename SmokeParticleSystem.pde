@@ -1,6 +1,5 @@
 public class SmokeParticleSystem extends EmittingParticleSystem
 {
-
 	public SmokeParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles)
 	{
 		super(spawnPos, maxForce, spawnDelay, onlyUpwardsParticles);

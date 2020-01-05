@@ -4,6 +4,7 @@ class OverworldBiome extends Biome
 	{
 		length = 10;
 		destroyedImage = ResourceManager.getImage("Invisible");
+		parallaxImage = null;
 	}
 
 	Tile getTileToGenerate(int x, int depth)

@@ -32,7 +32,7 @@ final int AMETHYST_VALUE = 2500;
 final int METEORITE_VALUE = 5000;
 
 //Dig bonuses
-final int BONUSDEPTH = 10;
+final int BONUSDEPTH = 50;
 
 //relicboost
 final int HEALTH_BOOST = 10;
@@ -58,6 +58,7 @@ final int NORTHEAST = 4;
 final int SOUTHEAST = 5;
 final int NORTHWEST = 6;
 final int SOUTHWEST = 7;
+final int DIRECTIONS = 8;
 
 //drawing layers
 final int BACKGROUND_LAYER = 0;
@@ -67,6 +68,9 @@ final int MOB_LAYER = 3;
 final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
+
+//Smoothing
+final float PARALLAX_INTENSITY = 0.05;
 
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;

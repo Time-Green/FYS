@@ -18,6 +18,7 @@ class Biome
 	float playerVisibilityScale = 1;
 
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
+	PImage parallaxImage;
 
   	Tile getTileToGenerate(int x, int depth)
   	{
@@ -177,5 +178,15 @@ class Biome
 	BaseObject spawnGroundObstacle(Tile target) //please return movable type, since that's the only sensible obstacle
 	{
 		return null;
+	}
+
+	Parallax getParallax()
+	{
+		if(parallaxImage == null)
+		{
+			return new Parallax(ResourceManager.getImage("Invisible")); 
+		}
+		PImage newImage = parallaxImage;
+		return new Parallax(newImage);
 	}
 }

@@ -6,6 +6,8 @@ public class World
 	float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
 	int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
 
+	float worldAge = millis(); //useful for when we wanna see the length of the current run if we do a few in a row. set to the amount of milliseconds the moment we're created
+
 	PImage dayNightImage;
 
 	int birdCount = round(random(10, 15));
@@ -159,6 +161,8 @@ public class World
 			{
 				switchBiome(y);
 			}
+
+			load(currentBiome.getParallax(), new PVector(0, y * TILE_SIZE));
 
 			if (y > OVERWORLD_HEIGHT + 11 && currentBiome.structureChance > random(1))
 			{

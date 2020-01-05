@@ -8,7 +8,7 @@ public class IronTile extends ResourceTile
 		
 		particleColor = color(#ccccc6);
 
-		image = ResourceManager.getImage("IronBlock");
+		image = ResourceManager.getImage("IronBlock", true);
 		pickupImage = ResourceManager.getImage("IronPickup");
 		decalType = "DecalStone";
 	}

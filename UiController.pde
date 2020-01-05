@@ -10,6 +10,8 @@ public class UIController
 	private PFont hudFont;
 	private float hudFontSize = 30;
 
+	int subTextCounter = -60;
+
 	//Title position
 	private float titleXPos;
 	private float titleYPos;
@@ -80,11 +82,15 @@ public class UIController
 	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
 	private float slotYIncrement = 0.07;
 
+	private float imageEnlargement = 2; //how much we grow the item in our inventory
+
 	private PImage healthBarImage;
 	private PImage arrowImage;
 
 	// graphics
 	PGraphics leaderBoardGraphics;
+
+	PImage cir;
 
 	UIController()
 	{
@@ -263,8 +269,6 @@ public class UIController
 		}
 	}
 
-	int subTextCounter = -60;
-
 	void startMenu()
 	{
 		drawTitle("ROCKY RAIN");
@@ -405,13 +409,13 @@ public class UIController
 		fill(WHITE);
 		textSize(20);
 
-		text(round(frameRate) + " FPS", width - 10, 140);
-		text(updateList.size() + " objects", width - 10, 120);
-		text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, 100);
-		text(round(player.position.x) + " Player X Pos", width - 10, 80);
-		text(round(player.position.y) + " Player Y Pos", width - 10, 60);
-		text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, 40);
-		text("Logged in as " + dbUser.userName, width - 10, 20);
+		text(round(frameRate) + " FPS", width - 10, height - 130);
+		text(updateList.size() + " objects", width - 10, height - 110);
+		text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 90);
+		text(round(player.position.x) + " Player X Pos", width - 10, height - 70);
+		text(round(player.position.y) + " Player Y Pos", width - 10, height - 50);
+		text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 30);
+		text("Logged in as " + dbUser.userName, width - 10, height - 10);
 	}
 
 	void pauseScreen()
@@ -430,21 +434,29 @@ public class UIController
 		for (int i = 0; i < player.maxInventory; i++)
 		{
 			//Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-			ellipse(width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), inventorySize, inventorySize);
+			PVector slotLocation = getInventorySlotLocation(i);
+			ellipse(slotLocation.x, slotLocation.y, inventorySize, inventorySize);
 		}
 
 		imageMode(CENTER);
 		
 		for (int i = 0; i < player.inventory.length; i++)
 		{
-			if(player.inventory[i] != null)
+			if(player.inventory[i] != null && player.inventoryDrawable[i])
 			{
 				Item item = player.inventory[i];
-				image(item.image, width * (xSlot + i * slotXIncrement), height * (ySlot + i * slotYIncrement), item.size.x, item.size.y);
+				PVector slotLocation = getInventorySlotLocation(i);
+				image(item.image, slotLocation.x, slotLocation.y, item.size.x * imageEnlargement, item.size.y * imageEnlargement);
 			}
 		}
 
 		imageMode(CORNER); 
+	}
+
+	PVector getInventorySlotLocation(int slot)
+	{
+		return new PVector(width * (xSlot + slot * slotXIncrement), height * (ySlot + slot * slotYIncrement));
+		
 	}
 
 	void startDisplayingAchievement(int id)
@@ -479,7 +491,7 @@ public class UIController
 
 		leaderBoardGraphics.textAlign(LEFT, CENTER);
 
-		for (LeaderboardRow leaderboardRow : leaderBoard)
+		for (DbLeaderboardRow leaderboardRow : leaderBoard)
 		{
 			if(i == 0) //First place
 			{
@@ -495,7 +507,7 @@ public class UIController
 			}
 			else if(leaderboardRow.userName.equals(dbUser.userName))
 			{
-				leaderBoardGraphics.fill(WHITE); // WIP
+				leaderBoardGraphics.fill(WHITE); // other color meybe?
 			}
 			else
 			{

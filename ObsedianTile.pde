@@ -6,7 +6,7 @@ public class ObsedianTile extends Tile
 
 		setMaxHp(150);
 
-		image = ResourceManager.getImage("ObsedianBlock");
+		image = ResourceManager.getImage("ObsedianBlock", true);
 	}
 
 	void takeDamage(float damageTaken)

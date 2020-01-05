@@ -10,7 +10,7 @@ public class IceTile extends Tile
 
 		healthMultiplier = 0.75f;
 
-		image = ResourceManager.getImage("IceTile");
+		image = ResourceManager.getImage("IceTile", true);
 		breakSound = "GlassBreak" + floor(random(1, 4));
 	}
 }

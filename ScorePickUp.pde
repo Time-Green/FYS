@@ -25,14 +25,15 @@ public class ScorePickup extends Pickup
 		player.addScore(score);
 		//Draw the Pickup text
 		load(new PickupText(score, position));
-		ui.drawExtraPoints(this.score);
+		ui.drawExtraPoints(score);
 
 		//TODO: find and add sound effect, do not remove comment yet
-		AudioManager.playSoundEffect("treasure", position);
+		//RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
+		//AudioManager.playSoundEffect("Treasure", position);
+		// Insert particle code here
 
 		//Delete this object
 		super.pickedUp(mob);
-		
 	}
 
 	// void update()

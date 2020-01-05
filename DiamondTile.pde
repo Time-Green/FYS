@@ -10,12 +10,12 @@ public class DiamondTile extends ResourceTile
 
 		if(type == 0)
 		{
-			image = ResourceManager.getImage("DiamondBlock");
+			image = ResourceManager.getImage("DiamondBlock", true);
 			decalType = "DecalStone";
 		}
 		else if(type == 1)
 		{
-			image = ResourceManager.getImage("ShadowDiamondBlock");
+			image = ResourceManager.getImage("ShadowDiamondBlock", true);
 		}
 		else
 		{

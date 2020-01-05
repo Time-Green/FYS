@@ -18,7 +18,11 @@ class Tile extends BaseObject {
 
   //Decals - I'm so sorry, but I really don't know any other way that doesn't involve adding more objects
   String decalType;
-  boolean[] decals = new boolean[8]; //for all cardinal and diagonal directions
+  boolean[] decals = new boolean[DIRECTIONS]; //for all cardinal and diagonal directions
+
+  boolean parallaxDecals = true; //the ridges on non-dense tile transitioning into parallax tiles
+  String parallaxDecalType;
+  boolean parallaxed = false; //wheter or not we've been overwritten by a parallax image
 
   int destroyedLayer = BACKGROUND_LAYER;
 
@@ -58,7 +62,13 @@ class Tile extends BaseObject {
     //11 is grass layer + transition layer
     if (gridPosition.y > OVERWORLD_HEIGHT + 11 && noise(gridPosition.x * world.currentBiome.caveSpawningNoiseScale, gridPosition.y * world.currentBiome.caveSpawningNoiseScale) > world.currentBiome.caveSpawningPossibilityScale) 
     {
-      breakTile();
+      breakTile(true);
+      if(world.currentBiome.parallaxImage != null)
+      {
+        destroyedImage = ResourceManager.getImage("Invisible");
+        parallaxed = true;
+        resetDecals();
+      }
 
       if(random(1) < world.currentBiome.ceilingObstacleChance)
       { //do a chance check first to save time and resources
@@ -122,6 +132,7 @@ class Tile extends BaseObject {
       {
         tint(lightningAmount);
         image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
+        drawDecals();
         tint(255);
       }
     }
@@ -181,7 +192,7 @@ class Tile extends BaseObject {
 		load(particleSystem);
     }
 
-    breakTile();
+    breakTile(false);
 
     //if this tile generates light and is destroyed, disable the lightsource by removing it
     if (lightSources.contains(this)) 
@@ -190,7 +201,7 @@ class Tile extends BaseObject {
     }
   }
 
-  void breakTile() //collection of what mining and generating a cave have in common so we dont copypaste it everywhere
+  void breakTile(boolean generated) //collection of what mining and generating a cave have in common so we dont copypaste it everywhere
   {
     destroyed = true;
     density = false;
@@ -198,6 +209,11 @@ class Tile extends BaseObject {
     releaseRooted();
     moveLayer(destroyedLayer);
     makeNeighboursAesthetic();
+
+    if(!generated)
+    {
+      resetDecals();
+    }
   }
 
   private void playBreakSound() 
@@ -236,7 +252,7 @@ class Tile extends BaseObject {
       return;
     }
 
-    if(!density || decalType == null)
+    if(!density && (!parallaxDecals || parallaxDecalType == null) || decalType == null)
     {
       return; //again we dont need airdecals or decals for those who dont want it
     }
@@ -252,40 +268,49 @@ class Tile extends BaseObject {
     Tile tileSouthEast = world.getTile(position.x + TILE_SIZE, position.y + TILE_SIZE);
     Tile tileSouthWest = world.getTile(position.x - TILE_SIZE, position.y + TILE_SIZE);
 
-    if(tileEast != null && !tileEast.density)
+    if(canDrawDecalsOn(tileEast))
     {
       decals[EAST] = true;
     }
-    if(tileWest != null && !tileWest.density)
+    if(canDrawDecalsOn(tileWest))
     {
       decals[WEST] = true;    
     }
-    if(tileNorth != null && !tileNorth.density)
+    if(canDrawDecalsOn(tileNorth))
     {
       decals[NORTH] = true;
     }
-    if(tileSouth != null && !tileSouth.density)
+    if(canDrawDecalsOn(tileSouth))
     {
       decals[SOUTH] = true;
     }
 
-    if(tileNorthWest != null && !tileNorthWest.density)
+    if(canDrawDecalsOn(tileNorthWest))
     {
       decals[NORTHWEST] = true;
     }
-    if(tileNorthEast != null && !tileNorthEast.density)
+    if(canDrawDecalsOn(tileNorthEast))
     {
       decals[NORTHEAST] = true;
     }
-    if(tileSouthWest != null && !tileSouthWest.density)
+    if(canDrawDecalsOn(tileSouthWest))
     {
       decals[SOUTHWEST] = true;
     }
-    if(tileSouthEast != null && !tileSouthEast.density)
+    if(canDrawDecalsOn(tileSouthEast))
     {
       decals[SOUTHEAST] = true;
     }
 
+  }
+
+  boolean canDrawDecalsOn(Tile tile)
+  {
+    if(parallaxDecals && tile != null && tile.parallaxed && !parallaxed) //do we do parallaxdecals and is the other tile a parallax?
+    {
+      return true;
+    }
+    return density && tile != null && !tile.density;
   }
 
   void makeNeighboursAesthetic()
@@ -305,7 +330,7 @@ class Tile extends BaseObject {
     for(int i = 0; i < tiles.length; i++)
     {
       Tile tile = tiles[i];
-      if(tile == null || !tile.density)
+      if(tile == null)
       {
         continue;
       }
@@ -314,31 +339,59 @@ class Tile extends BaseObject {
     }
   }
 
+  void resetDecals()
+  {
+    decals = new boolean[DIRECTIONS];
+    addAesthetics();
+  }
+
   void drawDecals(){
-    if(decals[NORTH]){
-      image(ResourceManager.getImage(decalType + "_n"), position.x, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    String decal;
+
+    if(!density && parallaxDecalType != null)
+    {
+      decal = parallaxDecalType;
     }
-    if(decals[SOUTH]){
-      image(ResourceManager.getImage(decalType + "_s"), position.x, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    else if(decalType != null)
+    {
+      decal = decalType;
     }
-    if(decals[WEST]){
-      image(ResourceManager.getImage(decalType + "_w"), position.x  - TILE_SIZE, position.y, TILE_SIZE, TILE_SIZE);
-    }
-    if(decals[EAST]){
-      image(ResourceManager.getImage(decalType + "_e"), position.x  + TILE_SIZE, position.y, TILE_SIZE, TILE_SIZE);
+    else{
+      resetDecals();;
+      return;
     }
 
-    if(decals[NORTHEAST]){
-      image(ResourceManager.getImage(decalType + "_ne"), position.x + TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    if(decals[NORTH])
+    {
+      image(ResourceManager.getImage(decal + "_n"), position.x, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
-    if(decals[SOUTHEAST]){
-      image(ResourceManager.getImage(decalType + "_se"), position.x + TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    if(decals[SOUTH])
+    {
+      image(ResourceManager.getImage(decal + "_s"), position.x, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
-    if(decals[NORTHWEST]){
-      image(ResourceManager.getImage(decalType + "_nw"), position.x  - TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    if(decals[WEST])
+    {
+      image(ResourceManager.getImage(decal + "_w"), position.x  - TILE_SIZE, position.y, TILE_SIZE, TILE_SIZE);
     }
-    if(decals[SOUTHEAST]){
-      image(ResourceManager.getImage(decalType + "_se"), position.x  + TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    if(decals[EAST])
+    {
+      image(ResourceManager.getImage(decal + "_e"), position.x  + TILE_SIZE, position.y, TILE_SIZE, TILE_SIZE);
+    }
+    if(decals[NORTHEAST])
+    {
+      image(ResourceManager.getImage(decal + "_ne"), position.x + TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    if(decals[SOUTHEAST])
+    {
+      image(ResourceManager.getImage(decal + "_se"), position.x + TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    if(decals[NORTHWEST])
+    {
+      image(ResourceManager.getImage(decal + "_nw"), position.x  - TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    if(decals[SOUTHEAST])
+    {
+      image(ResourceManager.getImage(decal + "_se"), position.x  + TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
   }
 }

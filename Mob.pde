@@ -24,7 +24,8 @@ class Mob extends Movable
 	protected int lastUse;
 	protected int useCooldown = 100;
 	//we use an array here, because position matters and arraylist will shift it
-	protected Item[] inventory = new Item[maxInventory]; 
+	protected Item[] inventory = new Item[maxInventory];
+	protected boolean[] inventoryDrawable = new boolean[maxInventory]; //set to false on specific location to stop drawing, like the homing item thing
 
 	//regen and fire
 	public float regen = 0.05f;
@@ -34,7 +35,8 @@ class Mob extends Movable
 	private int fireTimer;
 	private int regenTimer;
 
-	Mob(){
+	Mob()
+	{
 		super();
 		drawLayer = MOB_LAYER;
 	}
@@ -191,12 +193,12 @@ class Mob extends Movable
 		currentHealth = maxHealth;
 	}
 
-	boolean canPickup(Pickup Pickup)
+	public boolean canPickup(Pickup Pickup)
 	{
 		return false;
 	}
 
-	boolean canAddToInventory(Item item)
+	public boolean canAddToInventory(Item item)
 	{
 		for(int i = 0; i < inventory.length; i++)
 		{
@@ -216,40 +218,58 @@ class Mob extends Movable
 		return false;
 	}
 
-	void addToInventory(Item item)
+	public void addToInventory(Item item)
 	{
 		item.suspended = true;
+		load(new ItemParticleSystem(new PVector().set(position), 1, item));
+
 		for(int i = 0; i < inventory.length; i++)
 			{
 				if(inventory[i] == null)
 				{
 					inventory[i] = item;
+					inventoryDrawable[i] = false; //we set this to true again once the homing particle hits
 					break;
 				}
 			}
 	}
 
-	void useInventory(int slot)
+	protected boolean canUseInventory(int slot)
 	{
-		if (lastUse + useCooldown < millis() && inventory[slot] != null)
+		return lastUse + useCooldown < millis() && inventory[slot] != null;
+	}
+
+	protected void useInventory(int slot)
+	{
+		Item item = inventory[slot];
+
+		item.onUse(this);
+		item.suspended = false;
+
+		lastUse = millis();
+	}
+
+	protected void removeFromInventory(Item item)
+	{
+		for(int i = 0; i < inventory.length; i++)
 		{
-			Item item = inventory[slot];
-
-			item.onUse(this);
-			item.suspended = false;
-
-			lastUse = millis();
+			if(inventory[i] == item)
+			{
+				inventory[i] = null;
+			}
 		}
 	}
 
-	void removeFromInventory(Item item)
+	public int getFirstEmptyInventorySlot()
 	{
 		for(int i = 0; i < inventory.length; i++)
+		{
+			if(inventory[i] == null)
 			{
-				if(inventory[i] == item)
-					{
-						inventory[i] = null;
-					}
+				return i;
 			}
+		}
+
+		return 0;
 	}
 }
