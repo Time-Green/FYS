@@ -21,12 +21,10 @@ public class PickupText extends BaseObject
 		int numberOfSprites = 4;
 		int animationSpeed = 8;
 		stars = new AnimatedImage("PickupEffect3", numberOfSprites, animationSpeed, position, size.x, false);
-
 	}
 
 	void draw()
 	{
-
 		if (gamePaused)
 		{
 			return;

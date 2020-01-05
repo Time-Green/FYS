@@ -9,6 +9,6 @@ public class WaterTile extends Tile
 		//Act as water
 		density = false;
 
-		image = ResourceManager.getImage("MagmaTile");
+		image = ResourceManager.getImage("MagmaTile", true);
 	}
 }

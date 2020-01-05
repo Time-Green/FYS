@@ -1,3 +1,5 @@
+import java.util.*;
+
 // List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
 
@@ -31,7 +33,7 @@ DbUser dbUser;
 int loginStartTime;
 RunData runData;
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
-ArrayList<LeaderboardRow> leaderBoard;
+ArrayList<DbLeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
 ArrayList<Integer> vars;
@@ -43,7 +45,7 @@ ArrayList<ScoreboardRow> scoreboard;
 boolean loadedScores = false;
 
 // used to run code on closing game
-DisposeHandler dh;
+DisposeHandler disposeHandler;
 
 // global game objects
 World world;
@@ -57,7 +59,7 @@ boolean startGame = false; // start the game on next frame. needed to avoid conc
 
 void setup()
 {
-	dh = new DisposeHandler(this);
+	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P2D);
 	//fullScreen(P2D);
@@ -93,11 +95,12 @@ void checkUser()
 void afterResouceLoadingSetup()
 {
 	AudioManager.setMaxVolume("Siren", 0.55f);
-	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.8f);
 	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
 	AudioManager.setMaxVolume("DirtBreak", 0.7f);
 	AudioManager.setMaxVolume("HurtSound", 0.75f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
+	AudioManager.setMaxVolume("Treasure", 0.8f);
 
 	for (int i = 1; i < 5; i++)
 	{
@@ -118,10 +121,20 @@ void afterResouceLoadingSetup()
 	{
 		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f);
 	}
+	
+	//generateFlippedImages();
 
 	//setup game and show title screen
 	setupGame();
 }
+
+// void generateFlippedImages()
+// {
+// 	ResourceManager.generateFlippedImages("CoalBlock");
+// 	ResourceManager.generateFlippedImages("IronBlock");
+// 	ResourceManager.generateFlippedImages("DirtBlock");
+// 	ResourceManager.generateFlippedImages("StoneBlock");
+// }
 
 void setupGame()
 {
@@ -376,8 +389,7 @@ void endRun()
 	isUploadingRunResults = true;
 	gamePaused = true;
 	currentGameState = GameState.GameOver;
-	
-	//ui.setupRunEnd();
+	ui.drawWarningOverlay = false;
 	AudioManager.stopMusic("BackgroundMusic");
 
 	thread("startRegisterEndThread");

@@ -8,8 +8,7 @@ public class CoalTile extends ResourceTile
 
 		particleColor = color(#262625);
 
-		//image = ResourceManager.getRandomFlippedImage("CoalBlock"); WIP
-		image = ResourceManager.getImage("CoalBlock");
+		image = ResourceManager.getImage("CoalBlock", true);
 		pickupImage = ResourceManager.getImage("CoalPickup");
 		decalType = "DecalStone";
 	}

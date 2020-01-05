@@ -188,8 +188,8 @@ class WallOfDeath extends Movable
 			//is the object above the wall of death..
 			if (object.position.y < position.y - DESTROYTILESAFTER * TILE_SIZE)
 			{
-				//..and its not the player..
-				if (object instanceof Player)
+				//..and its not the player or a particlesystem (fix for particle system not working)..
+				if (object instanceof Player || object instanceof BaseParticleSystem)
 				{
 					continue;
 				}

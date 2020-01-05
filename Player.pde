@@ -153,7 +153,6 @@ class Player extends Mob
 				inventory[i].drawOnPlayer(this);
 			}
 		}
- 
 	}
 
 	private void setUpAnimation()
@@ -260,7 +259,6 @@ class Player extends Mob
 			{
 				addForce(new PVector(0, -jumpForce/10));//Decrease jump force while swimming
 			}
-
 		}
 		else if(!InputHelper.isKeyDown(JUMP_KEY_1) && !InputHelper.isKeyDown(JUMP_KEY_2) && !isGrounded())
 		{
@@ -311,6 +309,7 @@ class Player extends Mob
 			{
 				useInventory(0);
 			}
+
 			InputHelper.onKeyReleased(INVENTORY_KEY_A);
 		}
 		
@@ -320,6 +319,7 @@ class Player extends Mob
 			{
 				useInventory(1);
 			}
+
 			InputHelper.onKeyReleased(INVENTORY_KEY_B);
 		}
 	}
@@ -332,12 +332,13 @@ class Player extends Mob
 	private void digBonuses()
 	{
 		float extraShieldTime = timeInSeconds(10f);
+
 		if (getDepth() > BONUSDEPTH && gotbonus1 == false)
 		{
 			shieldTimer += extraShieldTime;
 			gotbonus1 = true;
-			
 		}
+
 		// println("shieldTimer: " + shieldTimer);
 	}
 

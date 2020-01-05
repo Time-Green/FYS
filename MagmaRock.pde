@@ -1,6 +1,6 @@
 class MagmaRock extends Tile
 {
-	//we want enough damage so the player won't mine trough it
+	//we want enough damage so the player does't want to mine trough it
 	float damage = 18;
 
 	float particleVelocity = -3;
@@ -12,7 +12,7 @@ class MagmaRock extends Tile
 		super(x, y);
 
 		setupLightSource(this, 300, 1f);
-		image = ResourceManager.getImage("LavaBlock");
+		image = ResourceManager.getImage("LavaBlock", true);
 
 		slipperiness = 0.1;
 		healthMultiplier = 3f;
