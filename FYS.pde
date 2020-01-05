@@ -161,9 +161,7 @@ void setupGame()
 	load(wallOfDeath);
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
-	ui.initAchievementFrames(); 
-
-	databaseManager.updateAchievementName(1, "When pigs fly"); 
+	ui.initAchievementFrames();
 }
 
 void prepareDrawingLayers()
