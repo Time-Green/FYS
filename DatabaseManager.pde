@@ -20,7 +20,8 @@ public class DatabaseManager
 		JSONArray result = doDatabaseRequest("SELECT * FROM User");
 		ArrayList<DbUser> returnList = new ArrayList<DbUser>();
 
-		for (int i = 0; i < result.size(); i++) {
+		for (int i = 0; i < result.size(); i++)
+		{
 			returnList.add(buildUser(result.getJSONObject(i)));
 		}
 
@@ -62,14 +63,11 @@ public class DatabaseManager
 	// create a new user in the database and return it
 	public DbUser createUser(String userName, boolean checkForUserExists)
 	{
-		if (checkForUserExists)
+		if (checkForUserExists && userExists(userName))
 		{
-			if (userExists(userName))
-			{
-				println("ERROR: user '" + userName + "' already exists in the database!");
+			println("ERROR: user '" + userName + "' already exists in the database!");
 
-				return null;
-			}
+			return null;
 		}
 
 		final String NEW_ID_COLUMN = "id";
@@ -93,14 +91,7 @@ public class DatabaseManager
 	{
 		JSONArray result = doDatabaseRequest("DELETE FROM User WHERE id = " + id);
 
-		int success = -1;
-
-		if (result.size() == 1)
-		{
-			success = result.getJSONObject(0).getInt("Success");
-		}
-
-		return success == 1;
+		return checkSuccess(result);
 	}
 
 	// renames a user to newName, selected by its id
@@ -108,14 +99,7 @@ public class DatabaseManager
 	{
 		JSONArray result = doDatabaseRequest("UPDATE User SET username = '" + newName + "' WHERE id = " + id);
 
-		int success = -1;
-
-		if (result.size() == 1)
-		{
-			success = result.getJSONObject(0).getInt("Success");
-		}
-
-		return success == 1;
+		return checkSuccess(result);
 	}
 
 	// notify the database that this player has quit the game
@@ -123,10 +107,7 @@ public class DatabaseManager
 	{
 		try
 		{
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Date date = new Date();
-
-			JSONArray result = doDatabaseRequest("INSERT INTO Playsession (`userid`, `startdatetime`) VALUES ('" + loggedInUser.id + "', '" + formatter.format(date) + "')");
+			JSONArray result = doDatabaseRequest("INSERT INTO Playsession (`userid`, `startdatetime`) VALUES ('" + loggedInUser.id + "', '" + getCurrentDateTime() + "')");
 
 			if (result.size() == 1)
 			{
@@ -152,19 +133,9 @@ public class DatabaseManager
 			return false;
 		}
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = new Date();
+		JSONArray result = doDatabaseRequest("UPDATE Playsession SET enddatetime = '" + getCurrentDateTime() + "' WHERE id = " + currentSessionId);
 
-		JSONArray result = doDatabaseRequest("UPDATE Playsession SET enddatetime = '" + formatter.format(date) + "' WHERE id = " + currentSessionId);
-
-		int success = -1;
-
-		if (result.size() == 1)
-		{
-			success = result.getJSONObject(0).getInt("Success");
-		}
-
-		return success == 1;
+		return checkSuccess(result);
 	}
 
 	// notify the database that this player has started a run
@@ -175,10 +146,7 @@ public class DatabaseManager
             return false;
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-
-        JSONArray result = doDatabaseRequest("INSERT INTO Run (playsessionid, startdatetime) VALUES ('" + currentSessionId + "', '" + formatter.format(date) + "')");
+        JSONArray result = doDatabaseRequest("INSERT INTO Run (playsessionid, startdatetime) VALUES ('" + currentSessionId + "', '" + getCurrentDateTime() + "')");
 
         if (result.size() == 1)
         {
@@ -303,19 +271,9 @@ public class DatabaseManager
 			return false;
 		}
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = new Date();
+		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + getCurrentDateTime() + "', score = '" + player.score + "', depth = '" + (player.getDepth() - OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickupsPickedUp + "', blocksmined = '" + runData.playerBlocksMined  + "', buttontime = '" + runData.timeToButtonPress + "', itemsused = '" + runData.itemsUsed + "' WHERE id = " + currentRunId);
 
-		JSONArray result = doDatabaseRequest("UPDATE Run SET enddatetime = '" + formatter.format(date) + "', score = '" + player.score + "', depth = '" + (player.getDepth() - OVERWORLD_HEIGHT) + "', jumps = '" + runData.playerJumps + "', pickups = '" + runData.pickupsPickedUp + "', blocksmined = '" + runData.playerBlocksMined  + "', buttontime = '" + runData.timeToButtonPress + "', itemsused = '" + runData.itemsUsed + "' WHERE id = " + currentRunId);
-
-		int success = -1;
-
-		if (result.size() == 1)
-		{
-			success = result.getJSONObject(0).getInt("Success");
-		}
-
-		return success == 1;
+		return checkSuccess(result);
 	}
 
 	// get all relics this player has collected
@@ -463,6 +421,12 @@ public class DatabaseManager
 	{
 		JSONArray result = doDatabaseRequest("UPDATE Relicinventory SET amount = '" + (playerRelicInventory.amount + 1) + "' WHERE id = " + playerRelicInventory.id);
 
+		return checkSuccess(result);
+	}
+
+	// when running an update query, use this function to check if it succeeded
+	private boolean checkSuccess(JSONArray result)
+	{
 		int success = -1;
 
 		if (result.size() == 1)
@@ -471,6 +435,14 @@ public class DatabaseManager
 		}
 
 		return success == 1;  
+	}
+
+	public String getCurrentDateTime()
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+
+		return formatter.format(date);
 	}
 
 	// converts json object to DbUser class
@@ -527,7 +499,7 @@ public class DatabaseManager
 	{
 		String url = BASE_URL + request;
 
-		//encode
+		//encode html
 		url = url.replace(' ', '+');
 		url = url.replace("%", "%25");
 		url = url.replace("`", "%60");
