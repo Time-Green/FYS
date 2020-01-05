@@ -43,4 +43,9 @@ class ShadowBiome extends Biome
 	{
 		load(new EnemyGhost(position));
 	}
+
+	String getParallaxedRock()
+	{
+		return "ShadowSandBlock";
+	}
 }

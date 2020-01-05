@@ -34,4 +34,9 @@ class IceBiome extends Biome
 		
 		return new IceTile(x, depth);
 	}
+
+	String getParallaxedRock()
+	{
+		return "IceTile";
+	}
 }
