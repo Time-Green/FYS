@@ -2,8 +2,6 @@ import http.requests.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//jonah needs help
-
 public class DatabaseManager
 {
 	private final String BASE_URL = "https://fys-tui.000webhostapp.com/phpconnect.php?sql=";
