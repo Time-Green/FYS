@@ -8,7 +8,7 @@ public class DirtTile extends Tile
 
 		particleColor = color(#6e3e26);
 
-		image = ResourceManager.getImage("DirtBlock");
+		image = ResourceManager.getImage("DirtBlock", true);
 		breakSound = "DirtBreak";
 	}
 }

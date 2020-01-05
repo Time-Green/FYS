@@ -202,24 +202,103 @@ public static class ResourceManager
 		return image;
 	}
 
+	public static PImage getImage(String name, boolean randomFlipped)
+	{
+		if(randomFlipped)
+		{
+			return getRandomFlippedImage(name);
+		}
+		else
+		{
+			return getImage(name);
+		}
+	}
+
 	public static PImage getRandomFlippedImage(String name)
 	{
-		PImage image = imageMap.get(name);
+		int randomFlipIndex = game.floor(game.random(3));
+
+		PImage image = imageMap.get(name + "_Flip" + randomFlipIndex);
 
 		if (image == null)
 		{
-			println("WARNING Random image '" + name + "' not found! Returning normal image...");
+			//println("WARNING Random flip image '" + name + "' not found! Generating at runtime...");
 
-			// return normal image
-			return getImage(name);
+			// generate the flipped images at runtime
+			generateFlippedImages(name);
+
+			// retry to get the newly generated image
+			return getRandomFlippedImage(name);
 		}
 
 		return image;
 	}
 
-	public void generateRandomFlippedImages(String name)
+	public static void generateFlippedImages(String name)
 	{
+		PImage baseImage = getImage(name);
 
+		PImage horizontallyFlippedImage = generateHorizontallyFlippedImage(baseImage);
+		PImage verticallyFlippedImage = generateVerticallyFlippedImage(baseImage);
+		PImage horizontallyAndVerticallyFlippedImage = generateHorizontallyAndVerticallyFlippedImage(baseImage);
+
+		imageMap.put(name + "_Flip0", horizontallyFlippedImage);
+		imageMap.put(name + "_Flip1", verticallyFlippedImage);
+		imageMap.put(name + "_Flip2", horizontallyAndVerticallyFlippedImage);
+	}
+
+	private static PImage generateHorizontallyFlippedImage(PImage baseImage)
+	{
+		PImage newImage = new PImage(baseImage.width, baseImage.height, ARGB);
+
+		baseImage.loadPixels();
+		newImage.loadPixels();
+
+		for (int y = 0; y < baseImage.height; y++)
+		{
+			for (int x = 0; x < baseImage.width; x++)
+			{
+				int xPos = newImage.width - x - 1;
+
+				newImage.pixels[y * newImage.width + xPos] = baseImage.pixels[y * baseImage.width + x];
+			}
+		}
+
+		newImage.updatePixels();
+
+		return newImage;
+	}
+
+	private static PImage generateVerticallyFlippedImage(PImage baseImage)
+	{
+		PImage newImage = new PImage(baseImage.width, baseImage.height, ARGB);
+
+		baseImage.loadPixels();
+		newImage.loadPixels();
+
+		for (int y = 0; y < baseImage.height; y++)
+		{
+			for (int x = 0; x < baseImage.width; x++)
+			{
+				int yPos = newImage.height - y - 1;
+				
+				newImage.pixels[yPos * newImage.width + x] = baseImage.pixels[y * baseImage.width + x];
+			}
+		}
+
+		newImage.updatePixels();
+
+		return newImage;
+	}
+
+	private static PImage generateHorizontallyAndVerticallyFlippedImage(PImage baseImage)
+	{
+		PImage newImage = new PImage(baseImage.width, baseImage.height, ARGB);
+
+		PImage horizontallyFlippedImage = generateHorizontallyFlippedImage(baseImage);
+		PImage horizontallyAndVerticallyFlippedImage = generateVerticallyFlippedImage(horizontallyFlippedImage);
+
+		return horizontallyAndVerticallyFlippedImage;
 	}
 
 	public static PFont getFont(String name)

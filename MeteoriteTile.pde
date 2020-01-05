@@ -8,7 +8,7 @@ public class MeteoriteTile extends ResourceTile
 
 		value = 5000;
 
-		image = ResourceManager.getImage("MeteoriteTile");
+		image = ResourceManager.getImage("MeteoriteTile", true);
 		pickupImage = ResourceManager.getImage("MeteoritePickup");
 	}
 }

@@ -231,15 +231,15 @@ public class DatabaseManager
 	}
 
 	// get the top 'amount' leaderboard rows
-	public ArrayList<LeaderboardRow> getLeaderboard(int amount)
+	public ArrayList<DbLeaderboardRow> getLeaderboard(int amount)
 	{
 		if (currentSessionId < 0)
 		{
-			return new ArrayList<LeaderboardRow>();
+			return new ArrayList<DbLeaderboardRow>();
 		}
 
 		JSONArray result = doDatabaseRequest("SELECT u.username, MAX(r.score) score, MAX(r.depth) depth FROM Run r INNER JOIN Playsession p ON r.playsessionid = p.id INNER JOIN User u ON p.userid = u.id WHERE r.score IS NOT NULL GROUP BY u.username ORDER BY MAX(r.score) DESC LIMIT " + amount);
-		ArrayList<LeaderboardRow> returnList = new ArrayList<LeaderboardRow>();
+		ArrayList<DbLeaderboardRow> returnList = new ArrayList<DbLeaderboardRow>();
 
 		for (int i = 0; i < result.size(); i++)
 		{
@@ -481,9 +481,9 @@ public class DatabaseManager
 	}
 
 	// converts json object to LeaderboardRow class
-	private LeaderboardRow buildLeaderboardRow(JSONObject json)
+	private DbLeaderboardRow buildLeaderboardRow(JSONObject json)
 	{
-		LeaderboardRow leaderboardRow = new LeaderboardRow();
+		DbLeaderboardRow leaderboardRow = new DbLeaderboardRow();
 
 		leaderboardRow.userName = json.getString("username");
 		leaderboardRow.score = json.getInt("score");

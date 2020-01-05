@@ -9,6 +9,6 @@ public class ShadowSandTile extends Tile
 		healthMultiplier = 0.75f;
 		slipperiness = 0.5;
 
-		image = ResourceManager.getImage("ShadowSandBlock");
+		image = ResourceManager.getImage("ShadowSandBlock", true);
 	}
 }

@@ -85,17 +85,21 @@ class BaseObject
 	// check if this object is in camera view
 	boolean inCameraView()
 	{
-		PVector camPos = camera.getPosition();
+		// DISABLED FOR BETTER CPU PERFORMACE
 
-		if (position.y > -camPos.y - TILE_SIZE
-			&& position.y < -camPos.y + height
-			&& position.x > -camPos.x - TILE_SIZE
-			&& position.x < -camPos.x + width)
-		{
-			return true;
-		}
+		// PVector camPos = camera.getPosition();
 
-		return false;
+		// if (position.y > -camPos.y - TILE_SIZE
+		// 	&& position.y < -camPos.y + height
+		// 	&& position.x > -camPos.x - TILE_SIZE
+		// 	&& position.x < -camPos.x + width)
+		// {
+		// 	return true;
+		// }
+
+		// return false;
+
+		return true;
 	}
 
 	// this is what you make a child proc from in-case you want to do something special on deletion

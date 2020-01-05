@@ -28,7 +28,8 @@ public class Pickup extends Movable
 			}
 		}
 
-		if (object instanceof Pickup) {
+		if (object instanceof Pickup)
+		{
 			return false;
 		}
 
