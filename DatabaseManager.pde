@@ -652,7 +652,7 @@ public class DatabaseManager
 	//Get all variables
 	public void getAllVariable()
 	{
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables");
+		JSONArray result = doDatabaseRequest("SELECT * FROM GlobalSettings");
 
 		for (int i = 0; i < result.size(); i++)
 		{
@@ -665,7 +665,7 @@ public class DatabaseManager
 	public float getFloatValue(String variableName)
 	{
 		// Select the row we need
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name LIKE '" + variableName + "';");
+		JSONArray result = doDatabaseRequest("SELECT * FROM GlobalSettings WHERE name LIKE '" + variableName + "';");
 		// Get the float from that row and return it
 		float value = result.getJSONObject(0).getFloat("value");
 
@@ -676,7 +676,7 @@ public class DatabaseManager
 	public int getIntValue(String variableName)
 	{
 		// Select the row we need
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name LIKE '" + variableName + "';");
+		JSONArray result = doDatabaseRequest("SELECT * FROM GlobalSettings WHERE name LIKE '" + variableName + "';");
 		// Get the float from that row and return it
 		int value = result.getJSONObject(0).getInt("value");
 
@@ -686,26 +686,26 @@ public class DatabaseManager
 	public void updateVariable(String variableName, float newValue)
 	{
 		// Update the value of the selected variable
-		JSONArray result = doDatabaseRequest("UPDATE Intvariables SET value = " + newValue + " WHERE Intvariables.name = '" + variableName + "';");
+		JSONArray result = doDatabaseRequest("UPDATE GlobalSettings SET value = " + newValue + " WHERE GlobalSettings.name = '" + variableName + "';");
 	}
 
 	public void insertVariable(String variableName, int value)
 	{
 		//Insert a new row in the database
-		JSONArray result = doDatabaseRequest("INSERT INTO Intvariables (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '0');");
+		JSONArray result = doDatabaseRequest("INSERT INTO GlobalSettings (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '0');");
 	}
 
 	public void deleteVariable(String variableName)
 	{
 		//Insert a new row in the database
-		JSONArray result = doDatabaseRequest("DELETE FROM Intvariables WHERE name = '"+variableName+"';");
+		JSONArray result = doDatabaseRequest("DELETE FROM GlobalSettings WHERE name = '"+variableName+"';");
 	}
 
 	public ArrayList<ScoreboardRow> getAllPickupScores()
 	{
 		//Get all rows that have PickupValue in their name,
 		//We also remove 'value'  from their name because we can use that to get images
-		JSONArray result = doDatabaseRequest("SELECT left(name, LOCATE('value', name) - 1) as Stone, value as Points FROM Intvariables WHERE name LIKE '%PickupValue' ORDER BY Intvariables.value ASC;");
+		JSONArray result = doDatabaseRequest("SELECT left(name, LOCATE('value', name) - 1) as Stone, value as Points FROM GlobalSettings WHERE name LIKE '%PickupValue' ORDER BY GlobalSettings.value ASC;");
 		ArrayList<ScoreboardRow> returnList = new ArrayList<ScoreboardRow>();
 		//Add all returbn word into a arraylist
 		for (int i = 0; i < result.size(); i++)
