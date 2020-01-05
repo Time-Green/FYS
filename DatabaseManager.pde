@@ -607,12 +607,23 @@ public class DatabaseManager
 	}
 
 	//Get a specific value from the database
-	public float getValue(String variableName)
+	public float getFloatValue(String variableName)
 	{
 		// Select the row we need
-		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name LIKE " + variableName + ";");
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name LIKE '" + variableName + "';");
 		// Get the float from that row and return it
 		float value = result.getJSONObject(0).getFloat("value");
+
+		return value;
+	}
+
+	//Get a specific int value from the database
+	public int getIntValue(String variableName)
+	{
+		// Select the row we need
+		JSONArray result = doDatabaseRequest("SELECT * FROM Intvariables WHERE name LIKE '" + variableName + "';");
+		// Get the float from that row and return it
+		int value = result.getJSONObject(0).getInt("value");
 
 		return value;
 	}
@@ -627,13 +638,6 @@ public class DatabaseManager
 	{
 		//Insert a new row in the database
 		JSONArray result = doDatabaseRequest("INSERT INTO Intvariables (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '0');");
-	}
-
-	//over
-	public void insertVariable(String variableName, int value, int allowEdit)
-	{
-		//Insert a new row in the database
-		JSONArray result = doDatabaseRequest("INSERT INTO `Intvariables` (name, value, canEdit) VALUES ('"+variableName+"', '"+value+"', '"+allowEdit+"');");
 	}
 
 	public void deleteVariable(String variableName)
