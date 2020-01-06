@@ -25,6 +25,11 @@ class ParallaxTile extends BaseObject
         row.remove(this);
     }
 
+    void update()
+    {
+        return;
+    }
+
     void draw()
     {
         if(image != null)

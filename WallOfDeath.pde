@@ -6,6 +6,8 @@ class WallOfDeath extends Movable
 	boolean isInBeginfase = true;
 	private final int MAX_DEPTH_CHECK = 25; 
 
+	private float lastPurge; //last y coord when we killed a bunch of stuff
+
 	private color wallColor = #FF8C33;
 
 	private float gameStartSpawnMult = 0; 
@@ -76,7 +78,10 @@ class WallOfDeath extends Movable
 			spawnAstroid();
 		}
 
-		cleanUpObjects();
+		if(lastPurge + TILE_SIZE * 5 < position.y) //so we only cleanup every tile we pass
+		{
+			cleanUpObjects();
+		}
 	}
 
 	void draw()
@@ -183,6 +188,7 @@ class WallOfDeath extends Movable
 
 	private void cleanUpObjects()
 	{
+		lastPurge = position.y;
 		for (BaseObject object : updateList)
 		{
 			//is the object above the wall of death..
