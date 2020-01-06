@@ -23,7 +23,7 @@ class Meteor extends Movable
 		velocity.set(random(-MAXHORIZONTALVELOCITY, MAXHORIZONTALVELOCITY), 0);
 		image = ResourceManager.getImage("Meteor 2");
 
-		particleSystem = new MeteorTrailParticleSystem(position, 10, 1, true);
+		particleSystem = new MeteorTrailParticleSystem(position, 3.75f, 1, true, size);
 		load(particleSystem, position);
 
 		setupLightSource(this, BRIGHTNESS, 1f);

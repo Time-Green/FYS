@@ -1,20 +1,26 @@
 public class MeteorTrailParticleSystem extends EmittingParticleSystem
 {
-	private final int PARTICLES_PER_SPAWN = 5;
+	private PVector meteorSize = new PVector();
 
-	public MeteorTrailParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles)
+	public MeteorTrailParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles, PVector size)
 	{
 		super(spawnPos, maxForce, spawnDelay, onlyUpwardsParticles);
+
+		meteorSize.set(size);
 	}
 
     void spawnParticle()
     {
-        for (int i = 0; i < PARTICLES_PER_SPAWN; i++)
+		int particleAmount = int(meteorSize.x / 10);
+
+        for (int i = 0; i < particleAmount; i++)
 		{
 			float randomAngle = random(TWO_PI);
 			float randomRadius = random(maxForce);
-			float circleX = cos(randomAngle) * randomRadius;
-			float circleY = sin(randomAngle) * randomRadius;
+			float baseCircleX = cos(randomAngle);
+			float baseCircleY = sin(randomAngle);
+			float circleX = baseCircleX * randomRadius;
+			float circleY = baseCircleY * randomRadius;
 			
 			if(onlyUpwardsParticles && circleY > 0)
 			{
@@ -22,7 +28,7 @@ public class MeteorTrailParticleSystem extends EmittingParticleSystem
 			}
 
 			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
-			PVector particleSpawnPosition = new PVector(position.x + circleX * 7.5f, position.y + circleY * 7.5f);
+			PVector particleSpawnPosition = new PVector(position.x + baseCircleX * (meteorSize.x / 3), position.y + baseCircleY * (meteorSize.y / 3));
 
 			MeteorTrailParticle particle = new MeteorTrailParticle(this, particleSpawnPosition, particleSpawnAcceleration);
 			load(particle);
