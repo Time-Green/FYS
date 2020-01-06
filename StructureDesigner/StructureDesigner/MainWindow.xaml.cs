@@ -352,52 +352,63 @@ namespace StructureDesigner
 
         private void DoLoad()
         {
-            var fileDialog = new OpenFileDialog
+            try
             {
-                InitialDirectory = Path.Combine(_fysDataDirectory, "Structures"),
-                Filter = "json files (*.json)|*.json"
-            };
-
-            var selectedFile = fileDialog.ShowDialog();
-
-            if (!selectedFile.HasValue || string.IsNullOrEmpty(fileDialog.FileName))
-            {
-                return;
-            }
-
-            var data = File.ReadAllText(fileDialog.FileName);
-
-            var structure = JsonConvert.DeserializeObject<List<List<string>>>(data);
-
-            var layerIndex = 0;
-
-            ClearAllTiles();
-
-            foreach (var layer in structure)
-            {
-                foreach (var tile in layer)
+                var fileDialog = new OpenFileDialog
                 {
-                    var split = tile.Split('|');
+                    InitialDirectory = Path.Combine(_fysDataDirectory, "Structures"),
+                    Filter = "json files (*.json)|*.json"
+                };
 
-                    if (split.Length == 1)
-                    {
-                        continue;
-                    }
+                var selectedFile = fileDialog.ShowDialog();
 
-                    var x = int.Parse(split[0]);
-                    var y = int.Parse(split[1]);
-                    var file = split[2];
-                    var point = new Point(x * TileSize, y * TileSize);
-                    var fullPath = _fysDataDirectory + file;
-
-                    AddTile(point, new BitmapImage(new Uri(fullPath)), layerIndex);
+                if (!selectedFile.HasValue || string.IsNullOrEmpty(fileDialog.FileName))
+                {
+                    return;
                 }
 
-                layerIndex++;
-            }
+                var data = File.ReadAllText(fileDialog.FileName);
 
-            _currentProjectName = Path.GetFileNameWithoutExtension(fileDialog.FileName);
-            Title = $"Structure Designer - {_currentProjectName}";
+                var structure = JsonConvert.DeserializeObject<List<List<string>>>(data);
+
+                var layerIndex = 0;
+
+                ClearAllTiles();
+
+                foreach (var layer in structure)
+                {
+                    foreach (var tile in layer)
+                    {
+                        var split = tile.Split('|');
+
+                        if (split.Length == 1)
+                        {
+                            continue;
+                        }
+
+                        var x = int.Parse(split[0]);
+                        var y = int.Parse(split[1]);
+                        var file = split[2];
+                        var point = new Point(x * TileSize, y * TileSize);
+                        var fullPath = _fysDataDirectory + file;
+
+                        AddTile(point, new BitmapImage(new Uri(fullPath)), layerIndex);
+                    }
+
+                    layerIndex++;
+                }
+
+                _currentProjectName = Path.GetFileNameWithoutExtension(fileDialog.FileName);
+                Title = $"Structure Designer - {_currentProjectName}";
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error");
+
+                ClearAllTiles();
+                _currentProjectName = string.Empty;
+                Title = "Structure Designer";
+            }
         }
 
         private void ClearAllTiles()
