@@ -123,17 +123,22 @@ class Tile extends BaseObject
 		}
 		else
 		{
-			if (destroyedImage != null && (!PARALLAX_ENABLED || !canParallax)) 
+			if (destroyedImage != null) 
 			{
-				tint(lightningAmount);
-				image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
-				drawDecals();
+				if((!PARALLAX_ENABLED || !canParallax))
+				{
+					tint(lightningAmount);
+					image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
+					drawDecals();
+				}
+
+				else
+				{
+					tint(lightningAmount, 255 - lightningAmount); //second param is transparency. make the invisible tile less transparent and light, otherwise it doesnt work at all
+					image(ResourceManager.getImage("Black"), position.x, position.y, TILE_SIZE, TILE_SIZE); //black so we can properly detransparant it. empty image doesnt work
+				}
 			}
-			else
-			{
-				tint(lightningAmount, 255 - lightningAmount); //second param is transparency. make the invisible tile less transparent and light, otherwise it doesnt work at all
-				image(ResourceManager.getImage("Black"), position.x, position.y, TILE_SIZE, TILE_SIZE); //black so we can properly detransparant it. empty image doesnt work
-			}
+
 
 			tint(255);
 		}
