@@ -54,8 +54,8 @@ public class AnimatedImage
 
 		popMatrix();
 
-		// if this animation is paused, return the function before it can increase the frame counter
-		if (isPaused)
+		// if this animation or the game is paused, return the function before it can increase the frame counter
+		if (isPaused || gamePaused)
 		{
 			return;
 		}

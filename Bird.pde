@@ -45,6 +45,11 @@ public class Bird extends Mob
 
 	void update()
 	{
+		if (gamePaused)
+		{
+			return;
+		}
+		
 		super.update();
 
 		if (flyingLeft && position.x < -32)

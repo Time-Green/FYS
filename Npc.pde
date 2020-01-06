@@ -61,6 +61,11 @@ public class Npc extends Mob
 
 	void update()
 	{
+		if (gamePaused)
+		{
+			return;
+		}
+		
 		super.update();
 
 		if(currentGameState == GameState.InGame && !isPanicking)
