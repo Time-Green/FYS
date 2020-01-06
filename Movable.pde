@@ -23,6 +23,7 @@ class Movable extends BaseObject
 	protected boolean flipSpriteVertical;
 	protected boolean anchored = false; //true if we are completely immovable
 	protected boolean anchoredHorizontaly = false;
+	protected boolean rotateTowardsHeading = false;
 
 	//Tiles
 	protected int miningcolor = #DC143C;
@@ -191,6 +192,15 @@ class Movable extends BaseObject
 		pushMatrix();
 
 		translate(position.x, position.y);
+
+		if(rotateTowardsHeading)
+		{
+			float angle = velocity.heading();
+
+			translate(size.x / 2, size.y / 2);
+ 			rotate(angle - radians(90));
+		    translate(-size.x / 2, -size.y / 2);
+		}
 
 		tint(lightningAmount);
 

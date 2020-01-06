@@ -12,6 +12,7 @@ class Meteor extends Movable
 	Meteor()
 	{
 		worldBorderCheck = false;
+		rotateTowardsHeading = true;
 
 		sizeModifier = random(MINSIZE, MAXSIZE);
 		size.set(TILE_SIZE * sizeModifier, TILE_SIZE * sizeModifier);
@@ -20,7 +21,7 @@ class Meteor extends Movable
 		gravityForce = 0.75f - map(sizeModifier, MINSIZE, MAXSIZE, -0.55f, 0.25f);
 
 		velocity.set(random(-MAXHORIZONTALVELOCITY, MAXHORIZONTALVELOCITY), 0);
-		image = ResourceManager.getImage("Meteor 2", true);
+		image = ResourceManager.getImage("Meteor 2");
 
 		particleSystem = new MeteorTrailParticleSystem(position, 10, 1, true);
 		load(particleSystem, position);

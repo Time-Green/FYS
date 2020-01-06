@@ -16,8 +16,8 @@ final int BACK_KEY = BACKSPACE;
 final int ACHIEVEMENT_SCREEN_KEY = 32; 
 
 //Audio volume
-float musicVolume = 0.0f;
-float soundEffectVolume = 0.0f;
+float musicVolume = 1.0f;
+float soundEffectVolume = 1.0f;
 
 //Ore values (later to be set in database?, yes)
 final int COAL_VALUE = databaseManager.getIntValue("CoalPickupValue");
