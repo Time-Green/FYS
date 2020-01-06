@@ -71,7 +71,7 @@ final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
 
 //Smoothing
-final boolean PARALLAX_ENABLED = true;
+final boolean PARALLAX_ENABLED = false;
 final float PARALLAX_INTENSITY = 0.05;
 final float PARALLAX_NOISE_SCALE = 0.1; //the parallax background has one constant noise generator, so we dont get the ugly transitions from noise like normal biomes
 final float PARALLAX_NOISE_POSSIBILITY = 0.46f;
