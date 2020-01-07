@@ -131,7 +131,7 @@ class Player extends Mob
 
 	void draw()
 	{
-		if(currentGameState == GameState.GameOver)
+		if(gameState == GameState.GameOver)
 		{
 			// dont draw when we are dead
 			return;
@@ -212,7 +212,7 @@ class Player extends Mob
 				animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageAir.draw();
 			}
-			else if (InputHelper.isKeyDown(DIG_KEY) && currentGameState == GameState.InGame) //Digging
+			else if (InputHelper.isKeyDown(DIG_KEY) && gameState == GameState.InGame) //Digging
 			{
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();

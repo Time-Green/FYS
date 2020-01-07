@@ -45,7 +45,7 @@ public class Camera
 	{
 		position.x = -target.position.x + width * 0.5f - target.size.x / 2f;
 
-		if(currentGameState == GameState.GameOver)
+		if(gameState == GameState.GameOver)
 		{
 			position.y = -SPAWN_Y_POS * 5;
 		}
