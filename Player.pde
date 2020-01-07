@@ -359,7 +359,7 @@ class Player extends Mob
 		}
 
 		//needs to happen after camera shake because else 'isHurt' will be always true
-		//super.takeDamage(damageTaken);  
+		super.takeDamage(damageTaken);  
 	}
 
 	private void statusEffects()
