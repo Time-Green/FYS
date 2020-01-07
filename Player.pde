@@ -41,7 +41,6 @@ class Player extends Mob
 		applyRelicBoost();
 
 		myShield = new Shield();
-		// load(myShield);
 	}
 
 	void update()
