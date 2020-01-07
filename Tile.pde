@@ -125,7 +125,7 @@ class Tile extends BaseObject
 		{
 			if (destroyedImage != null) 
 			{
-				if((!PARALLAX_ENABLED || !canParallax))
+				if(!PARALLAX_ENABLED || !canParallax)
 				{
 					tint(lightningAmount);
 					image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
