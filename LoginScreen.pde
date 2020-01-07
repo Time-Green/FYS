@@ -41,41 +41,15 @@ public class LoginScreen
     
     public void update()
     {
-        if(InputHelper.isKeyDown(RIGHT_KEY) && selectedCharIndex < MAX_LOGIN_NAME_SIZE - 1)
+        if(InputHelper.isKeyDown(RIGHT_KEY))
         {
-            if(selectedCharIndex > activeChars - 3 && activeChars < MAX_LOGIN_NAME_SIZE)
-            {
-                loginLetters[activeChars].isEnabled = true;
-                activeChars++;
-            }
-
-            loginLetters[selectedCharIndex].deselect();
-            selectedCharIndex++;
-            loginLetters[selectedCharIndex].select();
-
+            selectNextLetter();
             InputHelper.onKeyReleased(RIGHT_KEY);
         }
 
-        if(InputHelper.isKeyDown(LEFT_KEY) && selectedCharIndex > 0)
+        if(InputHelper.isKeyDown(LEFT_KEY))
         {
-            for (int i = activeChars - 1; i > MIN_CHARS_TO_DISPLAY; i--)
-            {
-                if(loginLetters[i].isEnabled && loginLetters[i].getChar() != ' ')
-                {
-                    break;
-                }
-
-                loginLetters[i].isEnabled = false;
-                loginLetters[i].deselect();
-                activeChars--;
-
-                selectedCharIndex = activeChars - 1;
-            }
-
-            loginLetters[selectedCharIndex].deselect();
-            selectedCharIndex--;
-            loginLetters[selectedCharIndex].select();
-
+            selectPreviousLetter();
             InputHelper.onKeyReleased(LEFT_KEY);
         }
 
@@ -89,6 +63,63 @@ public class LoginScreen
             enteredName = getName();
             InputHelper.onKeyReleased(START_KEY);
         }
+    }
+
+    public void selectNextLetter()
+    {
+        if(selectedCharIndex >= MAX_LOGIN_NAME_SIZE - 1)
+        {
+            return;
+        }
+
+        if(selectedCharIndex > activeChars - 3 && activeChars < MAX_LOGIN_NAME_SIZE)
+        {
+            loginLetters[activeChars].isEnabled = true;
+            activeChars++;
+        }
+
+        loginLetters[selectedCharIndex].deselect();
+        selectedCharIndex++;
+        loginLetters[selectedCharIndex].select();
+    }
+
+    public void selectPreviousLetter()
+    {
+        if(selectedCharIndex <= 0)
+        {
+            return;
+        }
+
+        for (int i = activeChars - 1; i > MIN_CHARS_TO_DISPLAY; i--)
+        {
+            if(loginLetters[i].isEnabled && loginLetters[i].getChar() != ' ')
+            {
+                break;
+            }
+
+            loginLetters[i].isEnabled = false;
+            loginLetters[i].deselect();
+            activeChars--;
+
+            selectedCharIndex = activeChars - 1;
+        }
+
+        loginLetters[selectedCharIndex].deselect();
+        selectedCharIndex--;
+        loginLetters[selectedCharIndex].select();
+    }
+
+    public int getIndexByChar(char charToCheck)
+    {
+        for (int i = 0; i < allChars.length(); i++)
+        {
+            if(allChars.charAt(i) == charToCheck)
+            {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     public String getName()
