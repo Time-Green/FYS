@@ -118,7 +118,7 @@ void setVolumes()
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.73f);
+		AudioManager.setMaxVolume("Explosion" + i, 0.728f);
 	}
 	
 	//tile breaking
@@ -126,12 +126,12 @@ void setVolumes()
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.72f);
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.71f);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.72f);
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.71f);
 	}
 
 	// music
