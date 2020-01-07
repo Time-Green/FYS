@@ -112,13 +112,13 @@ void afterResouceLoadingSetup()
 void setVolumes()
 {
 	// sound effects
-	AudioManager.setMaxVolume("Siren", 0.65f);
+	AudioManager.setMaxVolume("Siren", 0.66f);
 	AudioManager.setMaxVolume("HurtSound", 0.75f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.75f);
+		AudioManager.setMaxVolume("Explosion" + i, 0.73f);
 	}
 	
 	//tile breaking
@@ -126,21 +126,21 @@ void setVolumes()
 
 	for (int i = 1; i < 5; i++)
 	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f);
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.72f);
 	}
 
 	for (int i = 1; i < 4; i++)
 	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f);
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.72f);
 	}
 
 	// music
 	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
-	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f);
+	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.73f);
 
 	for (int i = 1; i < JUKEBOX_SONG_AMOUNT; i++)
 	{
-		AudioManager.setMaxVolume("JukeboxMusic" + i, 0.65f);
+		AudioManager.setMaxVolume("JukeboxMusic" + i, 0.8f);
 	}
 }
 
