@@ -39,7 +39,7 @@ public class UIController
 	int scoreDisplay = 0;
 
 	//Achievement icon
-	ArrayList<achievementImageFrame> achievementFrames = new ArrayList<achievementImageFrame>();
+	public ArrayList<achievementImageFrame> achievementFrames = new ArrayList<achievementImageFrame>();
 	int achievementDisplayTimer = 0; 
 	int showingAchievementId; 
 
@@ -316,6 +316,23 @@ public class UIController
 			achievementFrames.get(i).draw();  
 		}
 
+		if(InputHelper.isKeyDown(RIGHT_KEY))
+		{
+			for(int i = 0; i < achievementFrames.size(); i++)
+			{
+				achievementFrames.get(i).moveLeft(i); 
+				InputHelper.onKeyReleased(RIGHT_KEY); 
+			}
+		}
+
+		if(InputHelper.isKeyDown(LEFT_KEY))
+		{
+			for(int i = 0; i < achievementFrames.size(); i++)
+			{
+				achievementFrames.get(i).moveRight(i); 
+				InputHelper.onKeyReleased(LEFT_KEY); 
+			}
+		}
 	}
 
 	void gameHUD()
