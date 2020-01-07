@@ -25,6 +25,7 @@ public class UIController
 	private color inventorySelectedColor = #56BACF;
 
 	private final color WHITE = #FFFFFF;
+	private final color BLACK = #000000;
 	private final color RED = #FF0000;
 
 	//Game HUD
@@ -421,9 +422,10 @@ public class UIController
 		textFont(hudFont);
 
 		textAlign(CENTER);
-		fill(WHITE);
+		fill(BLACK);
 		textSize(hudFontSize / 2);
 		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
+		fill(WHITE);
 	}
 
 	public void prepareHealthFlash()

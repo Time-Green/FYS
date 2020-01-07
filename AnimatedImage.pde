@@ -1,9 +1,9 @@
 public class AnimatedImage
 {
 	PImage[] frames;
-	float frameDelay, objectWidth;
+	float frameDelay, objectWidth, objectHeight;
 	PVector drawPosition;
-	boolean flipSpriteHorizontal, isPaused;
+	boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
 
 	int frameCounter = 0;
 
@@ -16,6 +16,7 @@ public class AnimatedImage
 		this.frameDelay = frameDelay;
 		this.drawPosition = drawPosition;
 		this.flipSpriteHorizontal = flipSpriteHorizontal;
+		// this.flipSpriteVertical = flipSpriteVertical;
 	}
 
 	public AnimatedImage(String animationName, int totalFrameCount, float frameDelay, PVector drawPosition, float objectWidth, boolean flipSpriteHorizontal)
@@ -31,6 +32,7 @@ public class AnimatedImage
 		this.frameDelay = frameDelay;
 		this.drawPosition = drawPosition;
 		this.flipSpriteHorizontal = flipSpriteHorizontal;
+		// this.flipSpriteVertical = flipSpriteVertical;
 	}
 
 	public void draw()
@@ -51,6 +53,16 @@ public class AnimatedImage
 		{
 			image(imageToDraw, 0, 0);
 		}
+
+		// if (flipSpriteVertical)
+		// {
+		// 	scale(1, -1);
+		// 	image(imageToDraw, 0, -objectHeight);
+		// }
+		// else
+		// {
+		// 	image(imageToDraw, 0, 0);
+		// }
 
 		popMatrix();
 

@@ -124,6 +124,7 @@ void afterResouceLoadingSetup()
 	}
 	
 	//generateFlippedImages();
+	prepareDrawingLayers();
 
 	//setup game and show title screen
 	setupGame();
@@ -148,7 +149,7 @@ void setupGame()
 	mobList.clear();
 	lightSources.clear();
 
-	prepareDrawingLayers();
+	cleanDrawingLayers();
 
 	runData = new RunData();
 	ui = new UIController();
@@ -171,6 +172,14 @@ void prepareDrawingLayers()
 	for(int i = 0; i < drawingLayers; i++)
 	{
 		drawList.add(new ArrayList<BaseObject>());
+	}
+}
+
+void cleanDrawingLayers()
+{
+	for (ArrayList<BaseObject> drawLayer : drawList)
+	{
+		drawLayer.clear();
 	}
 }
 
@@ -600,7 +609,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	debugInput();
+	// debugInput();
 }
 
 void keyReleased()
@@ -612,10 +621,12 @@ void keyReleased()
 void debugInput()
 {
 	// Test spawns
-	// if(key == 'E' || key == 'e')
-	// {
-	// 	load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
-	// }
+	if(key == 'E' || key == 'e')
+	{
+		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+		load(new EnemyDigger(new PVector(1000,500)));
+
+	}
 
 	// if(key == 'R' || key == 'r')
 	// {

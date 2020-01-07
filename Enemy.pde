@@ -52,7 +52,7 @@ class Enemy extends Mob
 	}
 
 	protected void movement() {
-		//Can you please stop removing this bool from this script please?
+		//Can you guys please stop removing this bool from this script please?
 		if (this.walkLeft == true)
 		{
 			this.velocity.set(-speed, 0);
