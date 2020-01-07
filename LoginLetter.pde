@@ -4,6 +4,7 @@ public class LoginLetter
 
     private LoginScreen loginScreen;
     private boolean isSelected = false;
+    private boolean canGetInput = false;
     private float atIndex;
     private PVector drawPosition;
     private String allChars;
@@ -24,6 +25,11 @@ public class LoginLetter
         if(!isEnabled)
         {
             return;
+        }
+
+        if(!canGetInput && keyPressed == false)
+        {
+            canGetInput = true;
         }
 
         drawPosition.y = height / 2;
@@ -116,7 +122,7 @@ public class LoginLetter
 
     private void checkInput()
     {
-        if(InputHelper.isKeyDown(UP))
+        if(InputHelper.isKeyDown(DOWN))
         {
             charIndex++;
             displayCounter = 0;
@@ -126,10 +132,9 @@ public class LoginLetter
                 charIndex = 0;
             }
 
-            InputHelper.onKeyReleased(UP);
+            InputHelper.onKeyReleased(DOWN);
         }
-
-        if(InputHelper.isKeyDown(DOWN))
+        else if(InputHelper.isKeyDown(UP))
         {
             charIndex--;
             displayCounter = 0;
@@ -139,12 +144,19 @@ public class LoginLetter
                 charIndex = allChars.length() - 1;
             }
 
-            InputHelper.onKeyReleased(DOWN);
+            InputHelper.onKeyReleased(UP);
+        }
+        else if(canGetInput && keyPressed && keyCode != UP && keyCode != DOWN && keyCode != LEFT && keyCode != RIGHT && keyCode != SHIFT)
+        {
+            charIndex = loginScreen.getIndexByChar(key);
+            displayCounter = 0;
+            loginScreen.selectNextLetter();
         }
     }
 
     public void select()
     {
+        canGetInput = false;
         isSelected = true;
         displayCounter = 0;
     }
@@ -194,5 +206,4 @@ public class LoginLetter
 
         return allChars.charAt(index);
     }
-
 }
