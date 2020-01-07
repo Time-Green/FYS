@@ -1,4 +1,4 @@
-class MagmaRock extends Tile
+class LavaTile extends Tile
 {
 	//we want enough damage so the player does't want to mine trough it
 	float damage = 18;
@@ -7,7 +7,7 @@ class MagmaRock extends Tile
     int particleDelay = 20;
 	SmokeParticleSystem particleSystem;
 
-	MagmaRock(int x, int y)
+	LavaTile(int x, int y)
 	{    
 		super(x, y);
 
