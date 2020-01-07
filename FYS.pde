@@ -600,7 +600,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	debugInput();
+	// debugInput();
 }
 
 void keyReleased()
@@ -612,10 +612,12 @@ void keyReleased()
 void debugInput()
 {
 	// Test spawns
-	// if(key == 'E' || key == 'e')
-	// {
-	// 	load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
-	// }
+	if(key == 'E' || key == 'e')
+	{
+		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+		load(new EnemyDigger(new PVector(1000,500)));
+
+	}
 
 	// if(key == 'R' || key == 'r')
 	// {

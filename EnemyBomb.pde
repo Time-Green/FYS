@@ -9,7 +9,7 @@ class EnemyBomb extends Enemy
 	private boolean isExploding = false;
 	private float explosionTimer = 1.5f * 40f;
 	private float explosionSize = 325f;
-	private final float MAXEXPLOSIONDAMAGE = 15f;
+	private final float MAX_EXPLOSION_DAMAGE = 15f;
 
 	EnemyBomb(PVector spawnPos)
 	{
@@ -34,7 +34,7 @@ class EnemyBomb extends Enemy
 			if (this.explosionTimer <= 0)
 			{
 				//Explode
-				load(new Explosion(this.position, this.explosionSize, this.MAXEXPLOSIONDAMAGE, true));
+				load(new Explosion(this.position, this.explosionSize, this.MAX_EXPLOSION_DAMAGE, true));
 				delete(this);
 			}
 		}
