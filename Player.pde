@@ -341,7 +341,7 @@ class Player extends Mob
 
 	public void takeDamage(float damageTaken)
 	{
-		if (isImmortal || damageTaken == 0.0)
+		if (isImmortal || damageTaken <= 0)
 		{
 			return;
 		}
