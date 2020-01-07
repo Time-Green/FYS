@@ -78,7 +78,7 @@ class Mob extends Movable
 	{
 
 		// In the overworld we disable digging all together. 
-		if (currentGameState == GameState.Overworld)
+		if (gameState == GameState.Overworld)
 		{
 			return;
 		}

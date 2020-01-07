@@ -1,11 +1,11 @@
 class Jukebox extends Movable
 {
-    int musicNotes = 4;
-    boolean destroyed = false;
-    int numbers = 4;
-    float particleVelocity = 1;
-    int particleDelay = 30;
-    EmittingParticleSystem particleSystem;
+    private final float PARTICLE_VELOCITY = 1.0f;
+    private final int PARTICLE_DELAY = 30;
+
+    private boolean destroyed = false;
+    private int songId;
+    private EmittingParticleSystem particleSystem;
 
     Jukebox(PVector spawnPos)
     {
@@ -13,10 +13,13 @@ class Jukebox extends Movable
 
         image = ResourceManager.getImage("Jukebox");
 
-        particleSystem = new EmittingParticleSystem(new PVector(position.x + 10, position.y + 5), particleVelocity, particleDelay, true);
+        particleSystem = new EmittingParticleSystem(new PVector(position.x + 10, position.y + 5), PARTICLE_VELOCITY, PARTICLE_DELAY, true);
         load(particleSystem);
 
-        music();
+        playRandomMusic();
+
+        // instance in FYS
+        jukebox = this;
     }
 
     void update()
@@ -30,9 +33,12 @@ class Jukebox extends Movable
         }
     }
 
-    void music()
+    void playRandomMusic()
     {
-        AudioManager.loopMusic("JukeboxNum" + floor(random(numbers)) + "Music");
+        songId = floor(random(JUKEBOX_SONG_AMOUNT));
+
+        AudioManager.setMaxVolume("JukeboxMusic" + songId, 0.65f);
+        AudioManager.loopMusic("JukeboxMusic" + songId);
     }
 
     //we need to delete the jukebox and stop all numbers from playing
@@ -40,12 +46,19 @@ class Jukebox extends Movable
     {
         super.takeDamage(damageTaken);
 
-        for(int i = 0; i < numbers; i++) 
-        {
-            AudioManager.stopMusic("JukeboxNum" + i + "Music");
-        }
-        
+        instantStopMusic();
+
         delete(particleSystem);
         delete(this);
+    }
+
+    void instantStopMusic()
+    {
+        AudioManager.stopMusic("JukeboxMusic" + songId);
+    }
+
+    void stopMusicOverTime(int millis)
+    {
+        AudioManager.muteOverTime("JukeboxMusic" + songId, millis);
     }
 }

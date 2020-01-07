@@ -131,7 +131,7 @@ class Player extends Mob
 
 	void draw()
 	{
-		if(currentGameState == GameState.GameOver)
+		if(gameState == GameState.GameOver)
 		{
 			// dont draw when we are dead
 			return;
@@ -212,7 +212,7 @@ class Player extends Mob
 				animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageAir.draw();
 			}
-			else if (InputHelper.isKeyDown(DIG_KEY) && currentGameState == GameState.InGame) //Digging
+			else if (InputHelper.isKeyDown(DIG_KEY) && gameState == GameState.InGame) //Digging
 			{
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();
@@ -341,16 +341,17 @@ class Player extends Mob
 
 	public void takeDamage(float damageTaken)
 	{
-		if (isImmortal || damageTaken == 0.0)
+		if (isImmortal || damageTaken <= 0)
 		{
 			return;
 		}
 
 		if (isHurt == false)
 		{
-			// if the player has taken damage, add camera shake
-			//40 is about max damage
-			camera.induceStress(damageTaken / 40);
+			// if the player has taken damage, add camera shake based on damage
+			float stressToInduce = damageTaken / 10;
+
+			camera.induceStress(stressToInduce);
 			ui.prepareHealthFlash();
 
 			AudioManager.playSoundEffect("HurtSound");

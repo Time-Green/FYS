@@ -71,7 +71,7 @@ public class ExplosionTile extends Tile
 	{
 		super.update();
 
-		if(currentGameState != GameState.InGame)
+		if(gameState != GameState.InGame)
 		{
 			return;
 		}
