@@ -40,13 +40,17 @@ ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
-//Gamestate
-boolean gamePaused = true;
-GameState gameState = GameState.MainMenu;
+//Database variables
+ArrayList<DatabaseVariable> DatabaseVariable;
+boolean loadedVariables = false;
 
 //Scores
 ArrayList<ScoreboardRow> scoreboard;
 boolean loadedScores = false;
+
+//Gamestate
+boolean gamePaused = true;
+GameState gameState = GameState.MainMenu;
 
 // used to run code on closing game
 DisposeHandler disposeHandler;

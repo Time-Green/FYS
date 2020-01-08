@@ -19,17 +19,17 @@ final int ACHIEVEMENT_SCREEN_KEY = 32;
 final int JUKEBOX_SONG_AMOUNT = 3;
 
 //Database ore values
-// final int COAL_VALUE = databaseManager.getIntValue("CoalPickupValue");
-// final int IRON_VALUE = databaseManager.getIntValue("IronPickupValue");
-// final int GREEN_ICE_VALUE = databaseManager.getIntValue("EmeraldPickupValue");
-// final int RED_ICE_VALUE = databaseManager.getIntValue("RubyPickupValue");
-// final int BLUE_ICE_VALUE = databaseManager.getIntValue("SaphirePickupValue");
-// final int REDSTONE_VALUE = databaseManager.getIntValue("RedstonePickupValue");
-// final int GOLD_VALUE = databaseManager.getIntValue("GoldPickupValue");
-// final int LAPIS_VALUE = databaseManager.getIntValue("LapisPickupValue");
-// final int DIAMOND_VALUE = databaseManager.getIntValue("DiamondPickupValue");
-// final int AMETHYST_VALUE = databaseManager.getIntValue("AmethystPickupValue");
-// final int METEORITE_VALUE = databaseManager.getIntValue("MeteoritePickupValue");
+// final int DEFAULT_COAL_VALUE = 50;
+// final int DEFAULT_IRON_VALUE = 100;
+// final int DEFAULT_GREEN_ICE_VALUE = 250;
+// final int DEFAULT_RED_ICE_VALUE = 300;
+// final int DEFAULT_BLUE_ICE_VALUE = 350;
+// final int DEFAULT_REDSTONE_VALUE = 400;
+// final int DEFAULT_GOLD_VALUE = 500;
+// final int DEFAULT_LAPIS_VALUE = 750;
+// final int DEFAULT_DIAMOND_VALUE = 1000;
+// final int DEFAULT_AMETHYST_VALUE = 2000;
+// final int DEFAULT_METEORITE_VALUE = 5000;
 
 final int COAL_VALUE = 50;
 final int IRON_VALUE = 100;

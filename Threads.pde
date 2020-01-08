@@ -12,6 +12,7 @@ void loginThread()
 	thread("loadPlayerAchievementsThread");
 	thread("loadLeaderboardThread");
 	thread("loadScoreboardThread");
+    thread("loadDatabaseVariables");
 }
 
 // called in its own thread, loads the player inventory
@@ -90,7 +91,26 @@ void loadLeaderboardThread()
     }
 }
 
-// called in its own thread, loads the scpreboard
+// called in its own thread, loads the scoreboard
+void loadDatabaseVariables()
+{
+    int startTime = millis();
+
+    if(PRINT_LOADING_DEBUG)
+    {
+	    println("Loading database variables");
+    }
+
+	scoreboard = databaseManager.getAllPickupScores();
+	loadedScores = true;
+
+    if(PRINT_LOADING_DEBUG)
+    {
+	    println("Loaded database variables in " + (millis() - startTime) + "ms : " + scoreboard);
+    }
+}
+
+// called in its own thread, loads the scoreboard
 void loadScoreboardThread()
 {
     int startTime = millis();
