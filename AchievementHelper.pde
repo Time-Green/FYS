@@ -76,9 +76,19 @@ public class AchievementHelper
 
 public class achievementImageFrame
 {
+<<<<<<< Updated upstream
 
     public float frameSize = 170; 
     public float xPosition; 
+=======
+    public float minFrameSize = 150;
+    public float currentFrameSize = minFrameSize; 
+    public float maxFrameSize = 200; 
+    public float frameSpaceBetween = 0.5f; 
+    public String lockedAchievementText = "???"; 
+    public float x; 
+    public float y;
+>>>>>>> Stashed changes
     public int achievementId; 
     public float moveAmount = frameSize; 
 
