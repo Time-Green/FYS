@@ -40,7 +40,7 @@ public class UIController
 	int scoreDisplay = 0;
 
 	//Achievement icon
-	ArrayList<achievementImageFrame> achievementFrames = new ArrayList<achievementImageFrame>();
+	public ArrayList<achievementImageFrame> achievementFrames = new ArrayList<achievementImageFrame>();
 	int achievementDisplayTimer = 0; 
 	int showingAchievementId; 
 
@@ -285,7 +285,7 @@ public class UIController
 
 		textFont(instructionFont);
 		textSize(achievementUiSize);
-		text("Press space to view achievements", width / 2, (height / 2.5) + (titleFontSize/2));
+		text("Press space for achievements", width / 2, (height / 2.5) + (titleFontSize/2));
 
 		if (subTextCounter >= 0)
 		{
@@ -309,7 +309,7 @@ public class UIController
 	
 	void achievementScreen()
 	{
-		fill(0, 0, 0, 50); 
+		fill(0, 0, 0, 100); 
 		rect(0, 0, width * 2, height * 2); 
 
 		for(int i = 0; i < achievementFrames.size(); i++)
@@ -317,6 +317,23 @@ public class UIController
 			achievementFrames.get(i).draw();  
 		}
 
+		if(InputHelper.isKeyDown(RIGHT_KEY))
+		{
+			for(int i = 0; i < achievementFrames.size(); i++)
+			{
+				achievementFrames.get(i).moveLeft(i); 
+				InputHelper.onKeyReleased(RIGHT_KEY); 
+			}
+		}
+
+		if(InputHelper.isKeyDown(LEFT_KEY))
+		{
+			for(int i = 0; i < achievementFrames.size(); i++)
+			{
+				achievementFrames.get(i).moveRight(i); 
+				InputHelper.onKeyReleased(LEFT_KEY); 
+			}
+		}
 	}
 
 	void gameHUD()
