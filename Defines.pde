@@ -81,6 +81,9 @@ final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
 
+//Amount of threads we support
+final int MAX_THREADS = 200;
+
 //Smoothing
 final boolean PARALLAX_ENABLED = false;
 final float PARALLAX_INTENSITY = 0.05;

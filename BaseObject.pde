@@ -5,6 +5,8 @@ class BaseObject
 	protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
 	protected boolean density = true;
 
+	int currentThread;
+
 	protected int drawLayer = OBJECT_LAYER; //true to insert at the front of draw, so player doesn't get loaded behind tiles
 	protected boolean movableCollision = false; //do we collide with movables themselves?
 
@@ -117,7 +119,7 @@ class BaseObject
 	// add to certain lists
 	void specialAdd()
 	{
-		updateList.add(this);
+		updateList.get(currentThread).add(this);
 		insertIntoDrawLayer(drawLayer);
 
 	}

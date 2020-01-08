@@ -1,11 +1,13 @@
 import java.util.*;
 
 // List of everything we need to update
-ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
+ArrayList<ArrayList<BaseObject>> updateList = new ArrayList<ArrayList<BaseObject>>(); 
 
-ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
-ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
-ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
+ArrayList<ArrayList<BaseObject>> destroyList = new ArrayList<ArrayList<BaseObject>>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
+ArrayList<ArrayList<BaseObject>> loadList = new ArrayList<ArrayList<BaseObject>>();    //otherwise we get a ConcurrentModificationException
+ArrayList<ArrayList<BaseObject>> reloadList = new ArrayList<ArrayList<BaseObject>>();    //otherwise we get a ConcurrentModificationException
+
+ArrayList<ProcessingThread> threads = new ArrayList<ProcessingThread>();
 
 //Drawing
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
@@ -164,6 +166,7 @@ void setupGame()
 	lightSources.clear();
 
 	cleanDrawingLayers();
+	prepareThreads();
 
 	runData = new RunData();
 	ui = new UIController();
@@ -177,6 +180,26 @@ void setupGame()
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
 	ui.initAchievementFrames();
+}
+
+void prepareThreads()
+{
+	for(int i = 0; i <= MAX_THREADS; i++)
+	{
+		updateList.add(new ArrayList<BaseObject>());
+		loadList.add(new ArrayList<BaseObject>());
+		destroyList.add(new ArrayList<BaseObject>());
+		reloadList.add(new ArrayList<BaseObject>());
+	}
+}
+
+void startThreads()
+{
+	for(int i = 0; i <= MAX_THREADS; i++)
+	{
+		ProcessingThread thread = new ProcessingThread(i);
+		thread.run();
+	}
 }
 
 void prepareDrawingLayers()
@@ -237,8 +260,15 @@ void draw()
 
 	drawParallaxLayers();
 
-	updateObjects();
 	drawObjects();
+
+	//used to start the game with the button
+	if (startGame)
+	{
+		startGame = false;
+		runData.timeToButtonPress = (millis() - world.worldAge) * 0.001; //* 0.001 to get the time in seconds
+		startAsteroidRain();
+	}
 
 	world.updateDepth();
 
@@ -254,6 +284,8 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
+
+	startThreads();
 }
 
 void userFilledInName()
@@ -273,9 +305,9 @@ void userFilledInName()
 	loginScreen = null;
 }
 
-void updateObjects()
+void updateObjects(int thread)
 {
-	for (BaseObject object : destroyList)
+	for (BaseObject object : destroyList.get(thread))
 	{
 		//clean up light sources of they are destroyed
 		if (lightSources.contains(object))
@@ -286,26 +318,18 @@ void updateObjects()
 		object.destroyed(); //handle some dying stuff, like removing ourselves from our type specific lists
 	}
 
-	destroyList.clear();
+	destroyList.get(thread).clear();
 
-	for (BaseObject object : loadList)
+	for (BaseObject object : loadList.get(thread))
 	{
 		object.specialAdd();
 	}
+	
+	loadList.get(thread).clear();
 
-	loadList.clear();
-
-	for (BaseObject object : updateList)
+	for (BaseObject object : updateList.get(thread))
 	{
 		object.update();
-	}
-
-	//used to start the game with the button
-	if (startGame)
-	{
-		startGame = false;
-		runData.timeToButtonPress = (millis() - world.worldAge) * 0.001; //* 0.001 to get the time in seconds
-		startAsteroidRain();
 	}
 }
 
@@ -536,20 +560,35 @@ private void handleDots()
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
+BaseObject load(BaseObject newObject, int thread)
+{
+	if(loadList.size() >= thread)
+	{
+		newObject.currentThread = thread;
+		loadList.get(thread).add(newObject); //qeue for loading
+	}
+
+	return newObject;
+}
+
 BaseObject load(BaseObject newObject)
 {
-	loadList.add(newObject); //qeue for loading
+	return load(newObject, 0);
+}
+
+BaseObject load(BaseObject newObject, int thread, PVector setPosition)
+{
+	loadList.get(thread).add(newObject);
+	newObject.position.set(setPosition);
 
 	return newObject;
 }
 
 BaseObject load(BaseObject newObject, PVector setPosition)
 {
-	loadList.add(newObject);
-	newObject.position.set(setPosition);
-
-	return newObject;
+	return load(newObject, 0, setPosition);
 }
+
 
 // load it RIGHT NOW. Only use in specially processed objects, like world
 BaseObject load(BaseObject newObject, boolean priority)
@@ -569,14 +608,21 @@ BaseObject load(BaseObject newObject, boolean priority)
 // handles removal, call delete(object) to delete that object from the world
 void delete(BaseObject deletingObject)
 {
-	destroyList.add(deletingObject); //queue for deletion
+	if(destroyList.size() >= deletingObject.currentThread)
+	{
+		destroyList.get(deletingObject.currentThread).add(deletingObject); //queue for deletion
+	}
+	
   	deletingObject.onDeleteQueued(); //if it has childs it has to delete, it cant do so in the delete tick so do it now
 }
 
 // handles reload, call delete(object) to delete that object from the world
 void reload(BaseObject reloadingObject)
 {
-	reloadList.add(reloadingObject); //queue for reloading
+	if(reloadList.size() >= reloadingObject.currentThread){
+		reloadList.get(reloadingObject.currentThread).add(reloadingObject); //queue for reloading
+	}
+	
 }
 
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
@@ -589,17 +635,19 @@ void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
 ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
 {
 	ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
-
-	for (BaseObject object : updateList)
+	for(ArrayList<BaseObject> thread : updateList)
 	{
-		if (object.suspended)
+		for (BaseObject object : thread)
 		{
-			continue;
-		}
+			if (object.suspended)
+			{
+				continue;
+			}
 
-		if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius)
-		{
-			objectsInRadius.add(object);
+			if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius)
+			{
+				objectsInRadius.add(object);
+			}
 		}
 	}
 

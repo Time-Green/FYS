@@ -189,19 +189,22 @@ class WallOfDeath extends Movable
 	private void cleanUpObjects()
 	{
 		lastPurge = position.y;
-		for (BaseObject object : updateList)
+		for(ArrayList<BaseObject> thread : updateList)
 		{
-			//is the object above the wall of death..
-			if (object.position.y < position.y - DESTROYTILESAFTER * TILE_SIZE)
+			for (BaseObject object : thread)
 			{
-				//..and its not the player or a particlesystem (fix for particle system not working)..
-				if (object instanceof Player || object instanceof BaseParticleSystem)
+				//is the object above the wall of death..
+				if (object.position.y < position.y - DESTROYTILESAFTER * TILE_SIZE)
 				{
-					continue;
-				}
+					//..and its not the player or a particlesystem (fix for particle system not working)..
+					if (object instanceof Player || object instanceof BaseParticleSystem)
+					{
+						continue;
+					}
 
-				//..https://www.youtube.com/watch?v=Kbx7m2qVVA0
-				delete(object);
+					//..https://www.youtube.com/watch?v=Kbx7m2qVVA0
+					delete(object);
+				}
 			}
 		}
 	}
