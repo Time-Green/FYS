@@ -414,9 +414,9 @@ class Tile extends BaseObject
 			image(ResourceManager.getImage(decal + "_nw"), position.x  - TILE_SIZE, position.y - TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
 
-		if(decals[SOUTHEAST])
+		if(decals[SOUTHWEST])
 		{
-			image(ResourceManager.getImage(decal + "_se"), position.x  + TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
+			image(ResourceManager.getImage(decal + "_sw"), position.x  - TILE_SIZE, position.y + TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
 	}
 }

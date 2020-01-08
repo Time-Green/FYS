@@ -76,37 +76,126 @@ public class AchievementHelper
 
 public class achievementImageFrame
 {
-
-    public float frameSize = 170; 
-    public float xPosition; 
+    public float minFrameSize = 150;
+    public float currentFrameSize = minFrameSize; 
+    public float maxFrameSize = 200; 
+    public float frameSpaceBetween = 0.5f; 
+    public String lockedAchievementText = "???"; 
+    public float x; 
+    public float y;
     public int achievementId; 
-    public float moveAmount = frameSize; 
 
-    achievementImageFrame(int x, int id)
+    achievementImageFrame(int posX, int id)
     {
-        xPosition = width / 2 + (180 * x); 
+        x = width/2 + (160 * posX); 
         achievementId = id; 
     }
 
     void draw()
     {
+        y = height/2; 
+
+        for(int i = 0; i < ui.achievementFrames.size(); i++)
+        {
+            if(CollisionHelper.lineRect(width/2, 0, width/2, height, ui.achievementFrames.get(i).x, ui.achievementFrames.get(i).y, currentFrameSize, currentFrameSize))
+            {
+                ui.achievementFrames.get(i).inflate(i);               
+                textSize(ui.achievementUiSize);
+                text(achievementHelper.getAchievementData(ui.achievementFrames.get(i).achievementId).name, width/2, height-200);
+
+                if(achievementHelper.hasUnlockedAchievement(ui.achievementFrames.get(i).achievementId))
+                {
+                    text(achievementHelper.getAchievementData(ui.achievementFrames.get(i).achievementId).description, width/2, height-100);
+                }
+                else
+                {
+                    text(lockedAchievementText, width/2, height-100); 
+                }          
+            }   
+            else
+            {
+                ui.achievementFrames.get(i).deflate(i);
+            }
+        }
+
         fill(255); 
-        rect(xPosition, height/3, frameSize, frameSize);
+        rect(x, y, currentFrameSize, currentFrameSize);         
+    } 
+       
+    void inflate(int i)
+    {
+        if(currentFrameSize >= maxFrameSize)
+        {
+            return; 
+        }
+
+        try
+        {
+            for(int y = i; y > 0; y--)
+            {
+                ui.achievementFrames.get(y).x -= frameSpaceBetween;     
+            }
+
+            for(int y = i; y < ui.achievementFrames.size(); y++)
+            {
+                ui.achievementFrames.get(y).x += frameSpaceBetween;     
+            }      
+        }
+
+        catch (Exception e) 
+        {
+            return;
+        }
+           
+        currentFrameSize++; 
     }
 
-    void move(boolean direction)
+    void deflate(int i)
+    {
+        if(currentFrameSize <= minFrameSize)
+        {
+            return; 
+        }
+
+        try
+        {
+            for(int y = i; y > 0; y--)
+            {
+                ui.achievementFrames.get(y).x += frameSpaceBetween;     
+            }
+
+            for(int y = i; y < ui.achievementFrames.size(); y++)
+            {
+                ui.achievementFrames.get(y).x -= frameSpaceBetween;     
+            }  
+        }
+
+        catch (Exception e) 
+        {
+            return; 
+        }
+
+        currentFrameSize--; 
+    }
+
+    void moveLeft(int first)
     {    
-        if(!direction)
+        if(first <= 0)
         {
-            xPosition -= moveAmount; 
-        }
-        
-        else
-        {
-            xPosition += moveAmount; 
+            return; 
         }
 
-        return; 
-        
+        x -= minFrameSize; 
+       
     }
+
+    void moveRight(int last)
+    {    
+        if(last == ui.achievementFrames.size()) 
+        {
+            return; 
+        }
+
+        x += minFrameSize;  
+     }
 }
