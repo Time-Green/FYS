@@ -15,11 +15,10 @@ final int START_KEY = ENTER;
 final int BACK_KEY = BACKSPACE;
 final int ACHIEVEMENT_SCREEN_KEY = 32; 
 
-//Audio volume
-float musicVolume = 0.0f;
-float soundEffectVolume = 0.0f;
+//Jukecox
+final int JUKEBOX_SONG_AMOUNT = 3;
 
-//Ore values (later to be set in database?, yes)
+//Database ore values
 // final int COAL_VALUE = databaseManager.getIntValue("CoalPickupValue");
 // final int IRON_VALUE = databaseManager.getIntValue("IronPickupValue");
 // final int GREEN_ICE_VALUE = databaseManager.getIntValue("EmeraldPickupValue");
@@ -90,10 +89,6 @@ final float PARALLAX_NOISE_POSSIBILITY = 0.46f;
 
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;
-
-//Gamestate
-boolean gamePaused = true;
-GameState currentGameState = GameState.MainMenu;
 
 //Movement
 final float SPEED_LIMIT = TILE_SIZE; //otherwise we can phase through tiles like the flash, because we only check the closest tiles and not the ones BEHIND them

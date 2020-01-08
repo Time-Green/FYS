@@ -65,7 +65,7 @@ class Explosion extends BaseObject
 			}
 		}
 
-		camera.induceStress(0.05f);
+		camera.induceStress(0.04f);
 	}
 
 	void update()

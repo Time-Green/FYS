@@ -35,7 +35,7 @@ class WallOfDeath extends Movable
 
 	void update()
 	{
-		if (gamePaused || currentGameState == GameState.Overworld)
+		if (gamePaused || gameState == GameState.Overworld)
 		{
 			return;
 		}
@@ -91,7 +91,7 @@ class WallOfDeath extends Movable
 
 	private void doStartingCameraShake()
 	{
-		if (currentGameState == GameState.InGame && isInBeginfase)
+		if (gameState == GameState.InGame && isInBeginfase)
 		{
 			camera.induceStress(1f - gameStartSpawnMult * 1.5f);
 		}
@@ -103,7 +103,7 @@ class WallOfDeath extends Movable
 		if (CollisionHelper.rectRect(position, size, player.position, player.size))
 		{
 			gamePaused = true;
-			currentGameState = GameState.GameOver;
+			gameState = GameState.GameOver;
 		}
 	}
 

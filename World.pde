@@ -28,6 +28,7 @@ public class World
 		//Specially queued biomes, for cinematic effect
 		biomeQueue.add(new OverworldBiome());
 		biomeQueue.add(new NormalBiome());
+		// biomeQueue.add(new FireBiome());
 		// biomeQueue.add(new WaterBiome());
 
 		fillBiomeQueue(0);
@@ -498,8 +499,8 @@ public class World
 			case "WoodBirch" :
 				return new WoodBirchTile(int(spawnPos.x), int(spawnPos.y));
 
-			case "MagmaTile" :
-				return new MagmaRock(int(spawnPos.x), int(spawnPos.y));
+			case "LavaBlock" :
+				return new LavaTile(int(spawnPos.x), int(spawnPos.y));
 
 			case "ObsedianBlock" :
 				return new ObsedianTile(int(spawnPos.x), int(spawnPos.y));

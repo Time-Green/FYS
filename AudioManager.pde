@@ -4,8 +4,8 @@ public static class AudioManager
 {
 	private static final boolean AUDIO_ENABLED = true;
 
-	private final static int SEQUENTIAL_AUDIO_AMOUNT = 15;
-	private final static float AUDIO_DISTSANCE_FALLOFF = 1500;
+	private final static int SEQUENTIAL_AUDIO_AMOUNT = 10;
+	private final static float AUDIO_DISTSANCE_FALLOFF = 2500;
 
 	private static FYS game;
 	private static Minim minim;
@@ -257,6 +257,37 @@ public static class AudioManager
 	// convert volume to gain
 	private static void setVolume(AudioPlayer audio, float volume)
 	{
+		volume = constrain(volume, 0.0f, 1.0f);
 		audio.setGain(-60 + volume * 60);
+	}
+
+	public static void muteOverTime(String name, int millis)
+	{
+		if(!AUDIO_ENABLED)
+		{
+			return;
+		}
+
+		AudioPlayer music = musicMap.get(name);
+
+		if(music != null)
+		{
+			setMuteOverTime(music, maxAudioVolumes.get(name), millis);
+		}
+
+		AudioPlayer[] soundEffects = soundEffectMap.get(name);
+
+		if(soundEffects != null)
+		{
+			for (AudioPlayer soundFile : soundEffects)
+			{
+				setMuteOverTime(soundFile, maxAudioVolumes.get(name), millis);
+			}
+		}
+	}
+
+	private static void setMuteOverTime(AudioPlayer audioPlayer, float maxVolume, int millis)
+	{
+		audioPlayer.shiftGain(-60 + maxVolume * 60, -60.0f, millis);
 	}
 }

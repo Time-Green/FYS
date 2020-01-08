@@ -45,7 +45,7 @@ public class Bird extends Mob
 
 	void update()
 	{
-		if (gamePaused)
+		if (gamePaused && gameState == GameState.InGame)
 		{
 			return;
 		}

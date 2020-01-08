@@ -40,6 +40,10 @@ ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
+//Gamestate
+boolean gamePaused = true;
+GameState gameState = GameState.MainMenu;
+
 //Scores
 ArrayList<ScoreboardRow> scoreboard;
 boolean loadedScores = false;
@@ -53,6 +57,7 @@ Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
+Jukebox jukebox;
 
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
@@ -84,9 +89,9 @@ void checkUser()
 	{
 		databaseManager.beginLogin(userName[0]);
 	}
-	else if(userName.length == 0)
+	else
 	{
-		// if no name was filled in, show login screen
+		// if no name was found, show login screen
 		loginScreen = new LoginScreen();
 		userInLoginScreen = true;
 	}
@@ -95,48 +100,57 @@ void checkUser()
 // used for initialisation that need loaded resources
 void afterResouceLoadingSetup()
 {
-	AudioManager.setMaxVolume("Siren", 0.55f * musicVolume);
-	AudioManager.setMaxVolume("BackgroundMusic", 0.7f * musicVolume);
-	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.7f * musicVolume);
-	AudioManager.setMaxVolume("DirtBreak", 0.7f * soundEffectVolume);
-	AudioManager.setMaxVolume("HurtSound", 0.75f * soundEffectVolume);
-	AudioManager.setMaxVolume("LowHealth", 0.7f * soundEffectVolume);
-	// AudioManager.setMaxVolume("treasure", 0.8f * soundEffectVolume);
-
-	for (int i = 1; i < 5; i++)
-	{
-		AudioManager.setMaxVolume("Explosion" + i, 0.7f * soundEffectVolume);
-	}
-
-	for (int i = 1; i < 5; i++)
-	{
-		AudioManager.setMaxVolume("StoneBreak" + i, 0.7f * soundEffectVolume);
-	}
-
-	for (int i = 1; i < 4; i++)
-	{
-		AudioManager.setMaxVolume("GlassBreak" + i, 0.65f * soundEffectVolume);
-	}
-
-	for (int i = 1; i < 4; i++)
-	{
-		AudioManager.setMaxVolume("JukeboxNum" + i + "Music", 0.55f * musicVolume);
-	}
+	setVolumes();
 	
-	//generateFlippedImages();
 	prepareDrawingLayers();
+	generateFlippedImages();
 
 	//setup game and show title screen
 	setupGame();
 }
 
-// void generateFlippedImages()
-// {
-// 	ResourceManager.generateFlippedImages("CoalBlock");
-// 	ResourceManager.generateFlippedImages("IronBlock");
-// 	ResourceManager.generateFlippedImages("DirtBlock");
-// 	ResourceManager.generateFlippedImages("StoneBlock");
-// }
+void setVolumes()
+{
+	// sound effects
+	AudioManager.setMaxVolume("Siren", 0.66f);
+	AudioManager.setMaxVolume("HurtSound", 0.75f);
+	AudioManager.setMaxVolume("LowHealth", 0.7f);
+
+	for (int i = 1; i < 5; i++)
+	{
+		AudioManager.setMaxVolume("Explosion" + i, 0.728f);
+	}
+	
+	//tile breaking
+	AudioManager.setMaxVolume("DirtBreak", 0.7f);
+
+	for (int i = 1; i < 5; i++)
+	{
+		AudioManager.setMaxVolume("StoneBreak" + i, 0.71f);
+	}
+
+	for (int i = 1; i < 4; i++)
+	{
+		AudioManager.setMaxVolume("GlassBreak" + i, 0.71f);
+	}
+
+	// music
+	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
+	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.73f);
+
+	for (int i = 1; i < JUKEBOX_SONG_AMOUNT; i++)
+	{
+		AudioManager.setMaxVolume("JukeboxMusic" + i, 0.8f);
+	}
+}
+
+void generateFlippedImages()
+{
+	ResourceManager.generateFlippedImages("CoalBlock");
+	ResourceManager.generateFlippedImages("IronBlock");
+	ResourceManager.generateFlippedImages("DirtBlock");
+	ResourceManager.generateFlippedImages("StoneBlock");
+}
 
 void setupGame()
 {
@@ -229,7 +243,7 @@ void draw()
 	world.updateDepth();
 
 	// needs to happan here because we are inside the push and pop matrix functions
-	if (currentGameState == GameState.InGame && player.position.y < (OVERWORLD_HEIGHT + 5) * TILE_SIZE)
+	if (gameState == GameState.InGame && player.position.y < (OVERWORLD_HEIGHT + 5) * TILE_SIZE)
 	{
 		ui.drawArrows();
 	}
@@ -324,7 +338,7 @@ void drawParallaxLayers()
 
 void handleGameFlow()
 {
-  switch (currentGameState)
+  switch (gameState)
   {
 	case MainMenu:
 		//if we are in the main menu we start the game by pressing enter
@@ -335,7 +349,7 @@ void handleGameFlow()
 
 		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
 		{
-			currentGameState = GameState.AchievementScreen; 
+			gameState = GameState.AchievementScreen; 
 			ui.achievementScreen();  
 			
 		}
@@ -346,7 +360,7 @@ void handleGameFlow()
 		//Pauze the game
 		if (InputHelper.isKeyDown(START_KEY))
 		{
-			currentGameState = GameState.GamePaused;
+			gameState = GameState.GamePaused;
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
@@ -369,7 +383,7 @@ void handleGameFlow()
 		// In the achievement screen press ENTER to exit temp(!)
 		if(InputHelper.isKeyDown(START_KEY))
 		{
-			currentGameState = GameState.MainMenu; 
+			gameState = GameState.MainMenu; 
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
@@ -382,7 +396,7 @@ void handleGameFlow()
 		if (InputHelper.isKeyDown(START_KEY))
 		{
 			gamePaused = false;
-			currentGameState = GameState.InGame;
+			gameState = GameState.InGame;
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
@@ -406,7 +420,7 @@ void enterOverWorld(boolean reloadGame)
 	}
 
 	gamePaused = false;
-	currentGameState = GameState.Overworld;
+	gameState = GameState.Overworld;
 	camera.lerpAmount = 0.075f;
 }
 
@@ -421,13 +435,14 @@ void startAsteroidRain()
 	thread("startRegisterRunThread");
 
 	gamePaused = false;
-	currentGameState = GameState.InGame;
+	gameState = GameState.InGame;
 
 	AudioManager.stopMusic("ForestAmbianceMusic");
 	AudioManager.loopMusic("BackgroundMusic");
 	AudioManager.playSoundEffect("Siren");
 
 	ui.drawWarningOverlay = true;
+	jukebox.stopMusicOverTime(1500);
 }
 
 //is called when the played died
@@ -435,7 +450,7 @@ void endRun()
 {
 	isUploadingRunResults = true;
 	gamePaused = true;
-	currentGameState = GameState.GameOver;
+	gameState = GameState.GameOver;
 	ui.drawWarningOverlay = false;
 	AudioManager.stopMusic("BackgroundMusic");
 

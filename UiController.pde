@@ -116,7 +116,7 @@ public class UIController
 		textAlign(CENTER);
 
 		// draw hud based on current gamestate
-		switch (currentGameState)
+		switch (gameState)
 		{
 			default :
 				//println("Something went wrong with the game state");
