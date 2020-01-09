@@ -40,13 +40,17 @@ ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
-//Gamestate
-boolean gamePaused = true;
-GameState gameState = GameState.MainMenu;
+//Database variables
+ArrayList<DatabaseVariable> DatabaseVariable;
+boolean loadedVariables = false;
 
 //Scores
 ArrayList<ScoreboardRow> scoreboard;
 boolean loadedScores = false;
+
+//Gamestate
+boolean gamePaused = true;
+GameState gameState = GameState.MainMenu;
 
 // used to run code on closing game
 DisposeHandler disposeHandler;
@@ -61,6 +65,8 @@ Jukebox jukebox;
 
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
+
+boolean parallaxEnabled = false;
 
 void setup()
 {
@@ -261,13 +267,17 @@ void userFilledInName()
 	// tell the game we dont need to show the login screen anymore
 	userInLoginScreen = false;
 
-	// save username for next time the game starts
-	String[] saveData = new String[1];
-	saveData[0] = loginScreen.enteredName;
-	saveStrings("DbUser.txt", saveData);
+	if(SAVE_USERNAME_AT_LOGIN)
+	{
+		// save username for next time the game starts
+		String[] saveData = new String[1];
+		
+		saveData[0] = loginScreen.enteredName;
+		saveStrings("DbUser.txt", saveData);
+	}
 
 	// begin login with filled in name
-	databaseManager.beginLogin(saveData[0]);
+	databaseManager.beginLogin(loginScreen.enteredName);
 
 	// clean up
 	loginScreen = null;
@@ -624,7 +634,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	debugInput();
+	//debugInput();
 }
 
 void keyReleased()
@@ -670,5 +680,9 @@ void debugInput()
 		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y));
 	}
 
+	if(key == 'p')
+	{
+		parallaxEnabled = !parallaxEnabled;
+	}
 }
 

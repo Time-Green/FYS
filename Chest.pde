@@ -1,21 +1,23 @@
 class Chest extends Obstacle
 {
-	boolean opened = false;
-	int forcedKey = -1; //set to something zero or above if you want a specific set of contents
+	private final int MAX_RANDOM_LOOT_AMOUNT = 10;
 
-	float jumpiness = -35; //how far our contents jump out
-	float sideWobble = 5; //vertical velocity of item ranging between -sideWobble and sideWobble
+	private boolean opened = false;
+	private int forcedKey = -1; //set to something zero or above if you want a specific set of contents
 
-	PImage openState = ResourceManager.getImage("ChestOpen");
+	private float jumpiness = -35; //how far our contents jump out
+	private float sideWobble = 5; //vertical velocity of item ranging between -sideWobble and sideWobble
 
-	ArrayList<Movable> contents = new ArrayList<Movable>();
+	private PImage openState = ResourceManager.getImage("ChestOpen");
 
-	Chest()
+	private ArrayList<Movable> contents = new ArrayList<Movable>();
+
+	public Chest()
 	{
 		setup();
 	}
 
-	Chest(int forcedKey)
+	public Chest(int forcedKey)
 	{
 		if(forcedKey > 0)
 		{
@@ -34,7 +36,7 @@ class Chest extends Obstacle
 	}
 
 	// only load childtypes of Movable
-	void populateContents()
+	private void populateContents()
 	{
 		ArrayList<Movable> newContents = new ArrayList<Movable>();
 
@@ -45,37 +47,25 @@ class Chest extends Obstacle
 			randomKey = forcedKey;
 		}
 
-		//println("randomKey: " + randomKey);
-
-		switch(randomKey)
+		if(randomKey == 0)
 		{
-			case 0:
-				RelicShard relicShard = new RelicShard();
-				load(relicShard);
+			RelicShard relicShard = new RelicShard();
+			load(relicShard, position);
 
-				newContents.add(relicShard);
-				addRandomLoot(newContents, 18);
-			break;
+			newContents.add(relicShard);
+			addRandomLoot(newContents, MAX_RANDOM_LOOT_AMOUNT);
+		}
+		else if(randomKey == 1)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				Dynamite dynamite = new Dynamite();
+				load(dynamite, position);
 
-			case 1:
-				for (int i = 0; i < 3; i++)
-				{
-					Dynamite dynamite = new Dynamite();
-					load(dynamite);
+				newContents.add(dynamite);
+			}
 
-					newContents.add(dynamite);
-				}
-
-				addRandomLoot(newContents, 18);
-			break;
-			
-			case 70:
-				RelicShard testRelicShard = new RelicShard();
-				load(testRelicShard);
-
-				newContents.add(testRelicShard);
-				addRandomLoot(newContents, 6);
-			break;
+			addRandomLoot(newContents, MAX_RANDOM_LOOT_AMOUNT);
 		}
 
 		// I dont want to force every new content thingy to Movable seperately, so do it here
@@ -90,7 +80,7 @@ class Chest extends Obstacle
 		}
 	}
 
-	void addRandomLoot(ArrayList<Movable> newContents, int maxAmount)
+	private void addRandomLoot(ArrayList<Movable> newContents, int maxAmount)
 	{
 		int randomLootAmount = floor(random(maxAmount / 2, maxAmount));
 
@@ -112,12 +102,12 @@ class Chest extends Obstacle
 				scorePickup = new ScorePickup(DIAMOND_VALUE, ResourceManager.getImage("DiamondPickup"));
 			}
 
-			load(scorePickup);
+			load(scorePickup, position);
 			newContents.add(scorePickup);
 		}
 	}
 
-	void pushed(Movable movable, float x, float y)
+	public void pushed(Movable movable, float x, float y)
 	{
 		super.pushed(movable, x, y);
 
@@ -127,20 +117,26 @@ class Chest extends Obstacle
 		}
 	}
 
-	void takeDamage(float damageTaken)
+	public void takeDamage(float damageTaken)
 	{
 		super.takeDamage(damageTaken);
+
+		for (Movable movable : contents)
+		{
+			delete(movable);
+		}
+
+		contents.clear();
+
 		delete(this);
 	}
 
-	void openChest()
+	private void openChest()
 	{
 		AudioManager.playSoundEffect("ChestOpen");
 
 		for (Movable movable : contents)
 		{
-			//println("Dropping: " + movable);
-
 			movable.position.set(new PVector(position.x, position.y - TILE_SIZE));
 			movable.suspended = false;
 

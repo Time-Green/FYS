@@ -109,7 +109,6 @@ class WallOfDeath extends Movable
 
 	void spawnAstroid()
 	{
-
 		if (isInBeginfase)
 		{
 			spawnRandomTargetedMeteor();
@@ -195,7 +194,7 @@ class WallOfDeath extends Movable
 			if (object.position.y < position.y - DESTROYTILESAFTER * TILE_SIZE)
 			{
 				//..and its not the player or a particlesystem (fix for particle system not working)..
-				if (object instanceof Player || object instanceof BaseParticleSystem)
+				if (object instanceof Player || object instanceof BaseParticleSystem || object.suspended)
 				{
 					continue;
 				}

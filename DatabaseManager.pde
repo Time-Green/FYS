@@ -661,28 +661,6 @@ public class DatabaseManager
 
 	}
 
-	//Get a specific value from the database
-	public float getFloatValue(String variableName)
-	{
-		// Select the row we need
-		JSONArray result = doDatabaseRequest("SELECT * FROM GlobalSettings WHERE name LIKE '" + variableName + "';");
-		// Get the float from that row and return it
-		float value = result.getJSONObject(0).getFloat("value");
-
-		return value;
-	}
-
-	//Get a specific int value from the database
-	public int getIntValue(String variableName)
-	{
-		// Select the row we need
-		JSONArray result = doDatabaseRequest("SELECT * FROM GlobalSettings WHERE name LIKE '" + variableName + "';");
-		// Get the float from that row and return it
-		int value = result.getJSONObject(0).getInt("value");
-
-		return value;
-	}
-
 	public void updateVariable(String variableName, float newValue)
 	{
 		// Update the value of the selected variable
@@ -707,7 +685,7 @@ public class DatabaseManager
 		//We also remove 'value'  from their name because we can use that to get images
 		JSONArray result = doDatabaseRequest("SELECT left(name, LOCATE('value', name) - 1) as Stone, value as Points FROM GlobalSettings WHERE name LIKE '%PickupValue' ORDER BY GlobalSettings.value ASC;");
 		ArrayList<ScoreboardRow> returnList = new ArrayList<ScoreboardRow>();
-		//Add all returbn word into a arraylist
+		//Take everything from the result query and put in in the returnList
 		for (int i = 0; i < result.size(); i++)
 		{
 			returnList.add(buildScoreboardRow(result.getJSONObject(i)));
@@ -725,6 +703,31 @@ public class DatabaseManager
 		scoreboardRow.score = json.getInt("Points");
 
 		return scoreboardRow;
+	}
+
+	public ArrayList<DatabaseVariable> buildVaribles()
+	{
+		//Get everything from GlobalSettings
+		JSONArray result = doDatabaseRequest("SELECT * FROM GlobalSettings");
+		ArrayList<DatabaseVariable> returnList = new ArrayList<DatabaseVariable>();
+		//Take everything from the result query and put in in the returnList
+		for (int i = 0; i < result.size(); i++)
+		{
+			returnList.add(buildDatabaseVariable(result.getJSONObject(i)));
+		}
+
+		return returnList;
+
+	}
+
+	private DatabaseVariable buildDatabaseVariable(JSONObject json)
+	{
+		DatabaseVariable dbVariable = new DatabaseVariable();
+
+		dbVariable.variableName = json.getString("name");
+		dbVariable.value = json.getInt("value");
+
+		return dbVariable;
 	}
 	
 }

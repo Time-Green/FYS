@@ -3,15 +3,16 @@ class NormalBiome extends Biome
 {
 	NormalBiome()
 	{
-		structureChance = 0.008;
+		structureChance = 0.01;
 	}
 
-  String getStructureName() {
-    return "Dungeon";
-  }
+	String getStructureName()
+	{
+		return "Dungeon";
+	}
 
-  BaseObject spawnGroundObstacle(Tile target)
-  {
-    return load(new Flower(), target.position);
-  }
+	BaseObject spawnGroundObstacle(Tile target)
+	{
+		return load(new Flower(), target.position);
+	}
 }

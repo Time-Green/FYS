@@ -48,7 +48,8 @@ public class ExplosionTile extends Tile
 
 			directionalExplosions = new PImage[4];
 
-			for (int i = 0; i < directionalExplosions.length; i++) {
+			for (int i = 0; i < directionalExplosions.length; i++)
+			{
 				directionalExplosions[i] = image = ResourceManager.getImage("DirectinalExplosion" + i);
 			}
 

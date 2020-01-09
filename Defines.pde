@@ -19,17 +19,17 @@ final int ACHIEVEMENT_SCREEN_KEY = 32;
 final int JUKEBOX_SONG_AMOUNT = 3;
 
 //Database ore values
-// final int COAL_VALUE = databaseManager.getIntValue("CoalPickupValue");
-// final int IRON_VALUE = databaseManager.getIntValue("IronPickupValue");
-// final int GREEN_ICE_VALUE = databaseManager.getIntValue("EmeraldPickupValue");
-// final int RED_ICE_VALUE = databaseManager.getIntValue("RubyPickupValue");
-// final int BLUE_ICE_VALUE = databaseManager.getIntValue("SaphirePickupValue");
-// final int REDSTONE_VALUE = databaseManager.getIntValue("RedstonePickupValue");
-// final int GOLD_VALUE = databaseManager.getIntValue("GoldPickupValue");
-// final int LAPIS_VALUE = databaseManager.getIntValue("LapisPickupValue");
-// final int DIAMOND_VALUE = databaseManager.getIntValue("DiamondPickupValue");
-// final int AMETHYST_VALUE = databaseManager.getIntValue("AmethystPickupValue");
-// final int METEORITE_VALUE = databaseManager.getIntValue("MeteoritePickupValue");
+// final int DEFAULT_COAL_VALUE = 50;
+// final int DEFAULT_IRON_VALUE = 100;
+// final int DEFAULT_GREEN_ICE_VALUE = 250;
+// final int DEFAULT_RED_ICE_VALUE = 300;
+// final int DEFAULT_BLUE_ICE_VALUE = 350;
+// final int DEFAULT_REDSTONE_VALUE = 400;
+// final int DEFAULT_GOLD_VALUE = 500;
+// final int DEFAULT_LAPIS_VALUE = 750;
+// final int DEFAULT_DIAMOND_VALUE = 1000;
+// final int DEFAULT_AMETHYST_VALUE = 2000;
+// final int DEFAULT_METEORITE_VALUE = 5000;
 
 final int COAL_VALUE = 50;
 final int IRON_VALUE = 100;
@@ -83,13 +83,13 @@ final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
 
 //Smoothing
-final boolean PARALLAX_ENABLED = false;
 final float PARALLAX_INTENSITY = 0.05;
 final float PARALLAX_NOISE_SCALE = 0.1; //the parallax background has one constant noise generator, so we dont get the ugly transitions from noise like normal biomes
 final float PARALLAX_NOISE_POSSIBILITY = 0.46f;
 
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;
+final boolean SAVE_USERNAME_AT_LOGIN = true;
 
 //Movement
 final float SPEED_LIMIT = TILE_SIZE; //otherwise we can phase through tiles like the flash, because we only check the closest tiles and not the ones BEHIND them
@@ -100,8 +100,8 @@ enum GameState
 	Overworld, // when the player can walk around but not mine
 	MainMenu, // when main menu is showing
 	ScoreMenu, // when the score is displayed, not used yet
-	OptionMenu,
-	AchievementScreen,
+	OptionMenu, // when in the options menu
+	AchievementScreen, // when in the achievements screen
 	InGame, // when the world is getting blown up!
 	GameOver, // when the player died
 	GamePaused // when the player pauses the game

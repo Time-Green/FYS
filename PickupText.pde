@@ -39,6 +39,7 @@ public class PickupText extends BaseObject
 
 		tint(random(0f, 255f), random(0f, 255f), random(0f, 255f));
 		stars.draw();
+		tint(255);
 	}
 
 	void update() {
