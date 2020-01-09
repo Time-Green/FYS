@@ -1,9 +1,6 @@
 public class LoginScreen
 {
-    private final int MIN_CHARS_TO_DISPLAY = 6;
-
     public String enteredName = "";
-    public int activeChars = MIN_CHARS_TO_DISPLAY;
 
     private LoginLetter[] loginLetters;
     private String allChars = " ";
@@ -21,10 +18,7 @@ public class LoginScreen
         {
             loginLetters[i] = new LoginLetter(this, i, allChars);
 
-            if(i < MIN_CHARS_TO_DISPLAY)
-            {
-                loginLetters[i].isEnabled = true;
-            }
+            loginLetters[i].isEnabled = true;            
         }
 
         loginLetters[0].select();
@@ -72,11 +66,11 @@ public class LoginScreen
             return;
         }
 
-        if(selectedCharIndex > activeChars - 3 && activeChars < MAX_LOGIN_NAME_SIZE)
-        {
-            loginLetters[activeChars].isEnabled = true;
-            activeChars++;
-        }
+        // if(selectedCharIndex > activeChars - 3 && activeChars < MAX_LOGIN_NAME_SIZE)
+        // {
+        //     loginLetters[activeChars].isEnabled = true;
+        //     activeChars++;
+        // }
 
         loginLetters[selectedCharIndex].deselect();
         selectedCharIndex++;
@@ -90,19 +84,19 @@ public class LoginScreen
             return;
         }
 
-        for (int i = activeChars - 1; i > MIN_CHARS_TO_DISPLAY; i--)
-        {
-            if(loginLetters[i].isEnabled && loginLetters[i].getChar() != ' ')
-            {
-                break;
-            }
+        // for (int i = activeChars - 1; i > MIN_CHARS_TO_DISPLAY; i--)
+        // {
+        //     if(loginLetters[i].isEnabled && loginLetters[i].getChar() != ' ')
+        //     {
+        //         break;
+        //     }
 
-            loginLetters[i].isEnabled = false;
-            loginLetters[i].deselect();
-            activeChars--;
+        //     loginLetters[i].isEnabled = false;
+        //     loginLetters[i].deselect();
+        //     activeChars--;
 
-            selectedCharIndex = activeChars - 1;
-        }
+        //     selectedCharIndex = activeChars - 1;
+        // }
 
         loginLetters[selectedCharIndex].deselect();
         selectedCharIndex--;
@@ -145,6 +139,8 @@ public class LoginScreen
             loginLetter.draw();
         }
 
+        drawIndex();
+
         drawFooter();
     }
 
@@ -153,6 +149,13 @@ public class LoginScreen
         textAlign(CENTER);
         textSize(40);
         text("Please enter your name", width / 2, height / 7);
+    }
+
+    private void drawIndex()
+    {
+        textAlign(CENTER);
+        textSize(30);
+        text((selectedCharIndex + 1) + " / " + MAX_LOGIN_NAME_SIZE, width / 2, height / 4);
     }
 
     private void drawFooter()

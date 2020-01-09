@@ -104,7 +104,7 @@ class Player extends Mob
 			}
 			else if(collectedRelicShardInventory.relicshardid == 3)
 			{
-				this.speed += SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
+				speed += SPEED_BOOST * getRelicStrength(collectedRelicShardInventory.amount);
 			}
 			else if(collectedRelicShardInventory.relicshardid == 4)
 			{
@@ -146,6 +146,7 @@ class Player extends Mob
 		}
 
 		handleAnimation();
+		handleParticles();
 
 		// player only, because we'll never bother adding a holding sprite for every mob 
 		for (int i = 0; i < inventory.length; i++)
@@ -198,26 +199,22 @@ class Player extends Mob
 		}
 		else // Play the other animations when we are not stunned
 		{
-			if ((InputHelper.isKeyDown(LEFT_KEY) || InputHelper.isKeyDown(RIGHT_KEY)) && isGrounded()) // Walking
+			if (abs(velocity.x) > 2 && isGrounded()) // Walking
 			{
 				walkCycle.flipSpriteHorizontal = flipSpriteHorizontal;
 				walkCycle.draw();
-
-				//create particle system
-				PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(position, 1, 2, standingOn.particleColor);
-				load(particleSystem);
 			}
-			else if ((InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2))) //Jumping
+			else if (!isGrounded && velocity.y < 0) //Jumping
 			{
 				animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageAir.draw();
 			}
-			else if (InputHelper.isKeyDown(DIG_KEY) && gameState == GameState.InGame) //Digging
+			else if (InputHelper.isKeyDown(DIG_KEY) && isGrounded && gameState == GameState.InGame) //Digging
 			{
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();
 			}
-			else if(isGrounded == false) //Idle
+			else if(!isGrounded && velocity.y > 5) // falling
 			{
 				animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageFall.draw();
@@ -235,6 +232,23 @@ class Player extends Mob
 		{
 			myShield.draw();
 		}
+	}
+
+	private void handleParticles()
+	{
+		// Walking
+		if (abs(velocity.x) > 2 && isGrounded())
+		{
+			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 3.5f), 1, 3, standingOn.particleColor);
+			load(particleSystem);
+		}
+
+		// Jumping
+		if(isGrounded && (InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2)))
+		{
+			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 3.5f), 12, 4, standingOn.particleColor);
+			load(particleSystem);
+		}		
 	}
 
 	void doPlayerMovement()
