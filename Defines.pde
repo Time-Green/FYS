@@ -82,7 +82,11 @@ final int TILE_LAYER = 5;
 final int PRIORITY_LAYER = 6;
 
 //Amount of threads we support
-final int MAX_THREADS = 200;
+final int MAX_THREADS = 2;
+final int PARTICLE_THREAD = 1;
+
+//tickspeed
+final int TICK_SPEED = 15; //in milliseconds
 
 //Smoothing
 final boolean PARALLAX_ENABLED = false;

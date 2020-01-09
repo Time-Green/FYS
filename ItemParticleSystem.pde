@@ -5,6 +5,6 @@ public class ItemParticleSystem extends BaseParticleSystem
 		super(spawnPos, amount);
 
 		ItemParticle particle = new ItemParticle(this, position, new PVector(0,0), item);
-		load(particle);
+		load(particle,PARTICLE_THREAD);
 	}
 }

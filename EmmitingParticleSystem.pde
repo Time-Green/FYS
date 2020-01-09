@@ -55,6 +55,6 @@ public class EmittingParticleSystem extends BaseParticleSystem
         PVector particleSpawnAcceleration = new PVector(circleX, circleY);
 
         ImageParticle particle = new ImageParticle(this, position, particleSpawnAcceleration);
-        load(particle);
+        load(particle, PARTICLE_THREAD);
     }
 }

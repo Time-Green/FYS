@@ -31,7 +31,7 @@ public class MeteorTrailParticleSystem extends EmittingParticleSystem
 			PVector particleSpawnPosition = new PVector(position.x + baseCircleX * (meteorSize.x / 3), position.y + baseCircleY * (meteorSize.y / 3));
 
 			MeteorTrailParticle particle = new MeteorTrailParticle(this, particleSpawnPosition, particleSpawnAcceleration);
-			load(particle);
+			load(particle, PARTICLE_THREAD);
 		}
     }
 }

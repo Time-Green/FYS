@@ -7,7 +7,7 @@ ArrayList<ArrayList<BaseObject>> destroyList = new ArrayList<ArrayList<BaseObjec
 ArrayList<ArrayList<BaseObject>> loadList = new ArrayList<ArrayList<BaseObject>>();    //otherwise we get a ConcurrentModificationException
 ArrayList<ArrayList<BaseObject>> reloadList = new ArrayList<ArrayList<BaseObject>>();    //otherwise we get a ConcurrentModificationException
 
-ArrayList<ProcessingThread> threads = new ArrayList<ProcessingThread>();
+boolean[] threadRunning; //keep track of wheter or not a thread is finished or not
 
 //Drawing
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
@@ -71,6 +71,8 @@ void setup()
 	size(1280, 720, P2D);
 
 	//fullScreen(P2D);
+
+	threadRunning = new boolean[MAX_THREADS];
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
@@ -184,21 +186,12 @@ void setupGame()
 
 void prepareThreads()
 {
-	for(int i = 0; i <= MAX_THREADS; i++)
+	for(int i = 0; i < MAX_THREADS; i++)
 	{
 		updateList.add(new ArrayList<BaseObject>());
 		loadList.add(new ArrayList<BaseObject>());
 		destroyList.add(new ArrayList<BaseObject>());
 		reloadList.add(new ArrayList<BaseObject>());
-	}
-}
-
-void startThreads()
-{
-	for(int i = 0; i <= MAX_THREADS; i++)
-	{
-		ProcessingThread thread = new ProcessingThread(i);
-		thread.run();
 	}
 }
 
@@ -261,6 +254,8 @@ void draw()
 	drawParallaxLayers();
 
 	drawObjects();
+	println(threadRunning.length);
+	callObjectThreads();
 
 	//used to start the game with the button
 	if (startGame)
@@ -284,8 +279,6 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
-
-	startThreads();
 }
 
 void userFilledInName()
@@ -303,6 +296,18 @@ void userFilledInName()
 
 	// clean up
 	loginScreen = null;
+}
+
+void callObjectThreads()
+{
+	for(int i = 0; i < threadRunning.length; i++)
+	{
+		if(!threadRunning[i])
+		{
+			new ProcessingThread(i).start();
+			threadRunning[i] = true;
+		}
+	}
 }
 
 void updateObjects(int thread)
@@ -591,7 +596,7 @@ BaseObject load(BaseObject newObject, PVector setPosition)
 
 
 // load it RIGHT NOW. Only use in specially processed objects, like world
-BaseObject load(BaseObject newObject, boolean priority)
+BaseObject load(BaseObject newObject, int thread, boolean priority)
 {
 	if (priority)
 	{
@@ -599,10 +604,15 @@ BaseObject load(BaseObject newObject, boolean priority)
 	}
 	else
 	{
-		load(newObject);
+		load(newObject, thread);
 	}
 
 	return newObject;
+}
+
+BaseObject load(BaseObject newObject, boolean priority)
+{
+	return load(newObject, 0, priority);
 }
 
 // handles removal, call delete(object) to delete that object from the world

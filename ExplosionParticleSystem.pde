@@ -13,7 +13,7 @@ public class ExplosionParticleSystem extends BaseParticleSystem
 			PVector particleSpawnAcceleration = new PVector(circleX, circleY);
 
 			ExplosionParticle particle = new ExplosionParticle(this, position, particleSpawnAcceleration);
-			load(particle);
+			load(particle, PARTICLE_THREAD);
 		}
 	}
 }

@@ -8,11 +8,9 @@ class ProcessingThread extends Thread
 		this.threadInt = threadInt;
 	}
 
-    public void run()
+    public void run ()
     {
-        while(active)
-        {
-            updateObjects(threadInt);
-        }
+        updateObjects(threadInt);
+        threadRunning[threadInt] = false;
     }
 }

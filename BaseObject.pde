@@ -103,6 +103,7 @@ class BaseObject
 	// this is what you make a child proc from in-case you want to do something special on deletion
 	void destroyed()
 	{
+		println(this, currentThread);
 		updateList.remove(this);
 		removeFromDrawLayer();
 

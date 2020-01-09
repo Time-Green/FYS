@@ -12,7 +12,10 @@ class Button extends Obstacle
 	void update()
 	{
 		super.update();
+	}
 
+	void draw()
+	{
 		if(canBePressed)
 		{
 			drawText();
@@ -25,6 +28,7 @@ class Button extends Obstacle
 		textSize(20);
 		fill(#ffa259);
 
+		println(position);
 		text("Caution\nDo NOT press!!!", position.x + 20, position.y - 65);
 
 		textAlign(LEFT);

@@ -15,7 +15,7 @@ public class TileBreakParticleSystem extends BaseParticleSystem
             PVector particleSpawnPosition = new PVector(position.x + random(TILE_SIZE), position.y + random(TILE_SIZE));
 
 			TileBreakParticle particle = new TileBreakParticle(this, particleSpawnPosition, particleSpawnAcceleration, tileColor);
-			load(particle);
+			load(particle, PARTICLE_THREAD);
 		}
 	}
 }

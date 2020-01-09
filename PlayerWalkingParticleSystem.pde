@@ -21,7 +21,7 @@ public class PlayerWalkingParticleSystem extends BaseParticleSystem
             PVector particleSpawnPosition = new PVector(position.x + 20, position.y + 35);
 
 			PlayerWalkingParticle particle = new PlayerWalkingParticle(this, particleSpawnPosition, particleSpawnAcceleration, tileColor);
-			load(particle);
+			load(particle, PARTICLE_THREAD);
 		}
 	}
 }
