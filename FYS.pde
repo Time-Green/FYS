@@ -66,6 +66,8 @@ Jukebox jukebox;
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
 
+boolean parallaxEnabled = false;
+
 void setup()
 {
 	disposeHandler = new DisposeHandler(this);
@@ -678,5 +680,9 @@ void debugInput()
 		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y));
 	}
 
+	if(key == 'p')
+	{
+		parallaxEnabled = !parallaxEnabled;
+	}
 }
 
