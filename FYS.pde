@@ -635,7 +635,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	//debugInput();
+	debugInput();
 }
 
 void keyReleased()
