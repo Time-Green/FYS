@@ -131,7 +131,7 @@ public class AchievementImageFrame
             text(achievementHelper.getAchievementData(achievementId).name, width/2, height-200);
             text(achievementHelper.getAchievementRarity(achievementId).rarity, width/2, y + 150); 
 
-            if(!achievementHelper.hasUnlockedAchievement(achievementId))
+            if(achievementHelper.hasUnlockedAchievement(achievementId))
             {
                 text(achievementHelper.getAchievementData(achievementId).description, width/2, height-100);
             }

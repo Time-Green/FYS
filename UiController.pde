@@ -314,7 +314,7 @@ public class UIController
 	
 	void achievementScreen()
 	{
-		fill(0, 0, 0, 100); 
+		fill(0, 175); 
 		rect(0, 0, width * 2, height * 2); 
 
 		for(AchievementImageFrame frame : achievementFrames)
@@ -574,7 +574,6 @@ public class UIController
 	PVector getInventorySlotLocation(int slot)
 	{
 		return new PVector(width * (xSlot + slot * slotXIncrement), height * (ySlot + slot * slotYIncrement));
-		
 	}
 
 	void startDisplayingAchievement(int id)

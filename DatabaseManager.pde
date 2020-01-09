@@ -183,9 +183,7 @@ public class DatabaseManager
 
 		for (int i = 0; i < result.size(); i++) 
 		{
-			println(result.getJSONObject(i));
-			returnList.add(buildAchievementRarity(result.getJSONObject(i)));	
-				
+			returnList.add(buildAchievementRarity(result.getJSONObject(i)));					
 		}
 				
 		return returnList;			
@@ -671,14 +669,7 @@ public class DatabaseManager
 	{ 
 		JSONArray result = doDatabaseRequest("SELECT SUM(" + data + ") as" + data + " FROM Playsession, Run WHERE Playsession.id = Run.playsessionid AND Playsession.userid = '" + userid + ";");
 
-		try
-		{
-			return result.getInt(0);
-		}
-		catch(Exception e)
-		{
-			return 0;
-		}
+		return result.getInt(0);
 	}
 
 	//Get variables from database
@@ -692,7 +683,6 @@ public class DatabaseManager
 		{
 			println(result.getJSONObject(i));
 		}
-
 	}
 
 	public void updateVariable(String variableName, float newValue)
