@@ -86,6 +86,8 @@ public class UIController
 	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
 	private float slotYIncrement = 0.07;
 
+	private color[] buttonColors = {color(0, 0, 255), color(255, 0, 0)};
+
 	private float imageEnlargement = 2; //how much we grow the item in our inventory
 
 	private PImage healthBarImage;
@@ -507,6 +509,7 @@ public class UIController
 		{
 			//Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
 			PVector slotLocation = getInventorySlotLocation(i);
+			fill(buttonColors[i]);
 			ellipse(slotLocation.x, slotLocation.y, inventorySize, inventorySize);
 		}
 
