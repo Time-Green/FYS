@@ -40,9 +40,10 @@ public class UIController
 	int scoreDisplay = 0;
 
 	//Achievement icon
-	public ArrayList<achievementImageFrame> achievementFrames = new ArrayList<achievementImageFrame>();
+	public ArrayList<AchievementImageFrame> achievementFrames = new ArrayList<AchievementImageFrame>();
 	int achievementDisplayTimer = 0; 
 	int showingAchievementId; 
+	int selectedAchievementFrameIndex = 0; 
 
 	//Health
 	private float healthBarHeight = 30; 
@@ -303,7 +304,14 @@ public class UIController
 	{
 		for(int i = 0; i < allAchievements.size(); i++)
 		{
-			achievementFrames.add(new achievementImageFrame(i, achievementHelper.getAchievementData(i).id)); 
+			AchievementImageFrame achievementFrame = new AchievementImageFrame(i, achievementHelper.getAchievementData(i).id);
+
+			if(i == 0)
+			{
+				achievementFrame.isSelected = true; 
+			}
+
+			achievementFrames.add(achievementFrame); 
 		}
 	}
 	
@@ -312,27 +320,57 @@ public class UIController
 		fill(0, 0, 0, 100); 
 		rect(0, 0, width * 2, height * 2); 
 
-		for(int i = 0; i < achievementFrames.size(); i++)
+		for(AchievementImageFrame frame : achievementFrames)
 		{
-			achievementFrames.get(i).draw();  
+			frame.draw();  
 		}
 
 		if(InputHelper.isKeyDown(RIGHT_KEY))
 		{
-			for(int i = 0; i < achievementFrames.size(); i++)
+			if(selectedAchievementFrameIndex > achievementFrames.size()-2)
 			{
-				achievementFrames.get(i).moveLeft(i); 
+				return; 
+			}
+
+			selectedAchievementFrameIndex++; 
+			int selectedFrame = 0; 
+
+			for(AchievementImageFrame frame : achievementFrames)
+			{
+				if(frame.isSelected)
+				{
+					selectedFrame = frame.achievementId; 
+					frame.isSelected = false; 
+				}
+				frame.moveLeft(); 
 				InputHelper.onKeyReleased(RIGHT_KEY); 
 			}
+
+			achievementFrames.get(selectedFrame + 1).isSelected = true; 
 		}
 
 		if(InputHelper.isKeyDown(LEFT_KEY))
 		{
-			for(int i = 0; i < achievementFrames.size(); i++)
+			if(selectedAchievementFrameIndex == 0)
 			{
-				achievementFrames.get(i).moveRight(i); 
+				return; 
+			}
+
+			selectedAchievementFrameIndex--; 
+			int selectedFrame = 0; 
+
+			for(AchievementImageFrame frame : achievementFrames)
+			{
+				if(frame.isSelected)
+				{
+					selectedFrame = frame.achievementId; 
+					frame.isSelected = false; 
+				}
+				frame.moveRight(); 
 				InputHelper.onKeyReleased(LEFT_KEY); 
 			}
+
+			achievementFrames.get(selectedFrame - 1).isSelected = true; 
 		}
 	}
 
