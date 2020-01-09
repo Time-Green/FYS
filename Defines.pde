@@ -55,6 +55,7 @@ final float LIGHT_BOOST = 10;
 
 //Achievements
 final int LONE_DIGGER_ACHIEVEMENT = 0;
+final int COMBO_MASTER_ACHIEVEMENT = 1;
 
 //world
 final int OVERWORLD_HEIGHT = 10; // in grid tiles

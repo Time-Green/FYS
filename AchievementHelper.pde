@@ -74,128 +74,93 @@ public class AchievementHelper
     }
 }
 
-public class achievementImageFrame
+public class AchievementImageFrame
 {
     public float minFrameSize = 150;
-    public float currentFrameSize = minFrameSize; 
-    public float maxFrameSize = 200; 
-    public float frameSpaceBetween = 0.5f; 
+    public float maxGrowSize = 50;
+    public float growSpeed = 3f;  
+    public float selectedSizeOffset; 
     public String lockedAchievementText = "???"; 
+    public boolean isSelected; 
+    public float margin = 40f; 
     public float x; 
     public float y;
+    private float xOffset; 
     public int achievementId; 
+    private int posX; 
+    private PImage achievementImage; 
 
-    achievementImageFrame(int posX, int id)
+    AchievementImageFrame(int posX, int id)
     {
-        x = width/2 + (160 * posX); 
+        achievementImage = ResourceManager.getImage("Achievement4"); 
+        this.posX = posX; 
+        x = width/2 + ((minFrameSize + margin) * posX); 
         achievementId = id; 
     }
 
     void draw()
     {
-        y = height/2; 
+        y = height/2.75f; 
+        x = width/2 + ((minFrameSize + margin) * posX) + xOffset;
 
-        for(int i = 0; i < ui.achievementFrames.size(); i++)
+        if(isSelected)
         {
-            if(CollisionHelper.lineRect(width/2, 0, width/2, height, ui.achievementFrames.get(i).x, ui.achievementFrames.get(i).y, currentFrameSize, currentFrameSize))
-            {
-                ui.achievementFrames.get(i).inflate(i);               
-                textSize(ui.achievementUiSize);
-                text(achievementHelper.getAchievementData(ui.achievementFrames.get(i).achievementId).name, width/2, height-200);
+            inflate();  
+            fill(255);              
+            textSize(ui.achievementUiSize);
+            text(achievementHelper.getAchievementData(achievementId).name, width/2, height-200);
 
-                if(achievementHelper.hasUnlockedAchievement(ui.achievementFrames.get(i).achievementId))
-                {
-                    text(achievementHelper.getAchievementData(ui.achievementFrames.get(i).achievementId).description, width/2, height-100);
-                }
-                else
-                {
-                    text(lockedAchievementText, width/2, height-100); 
-                }          
-            }   
+            if(achievementHelper.hasUnlockedAchievement(achievementId))
+            {
+                text(achievementHelper.getAchievementData(achievementId).description, width/2, height-100);
+            }
             else
             {
-                ui.achievementFrames.get(i).deflate(i);
-            }
+                text(lockedAchievementText, width/2, height-100); 
+            }          
+        }   
+        else
+        {
+            deflate();
         }
 
         fill(255); 
-        rect(x, y, currentFrameSize, currentFrameSize);         
+        rectMode(CENTER); 
+        imageMode(CENTER); 
+        noStroke(); 
+        rect(x, y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset); 
+        image(achievementImage, x, y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset); 
+        imageMode(CORNER); 
+        rectMode(CORNER);         
     } 
        
-    void inflate(int i)
+    void inflate()
     {
-        if(currentFrameSize >= maxFrameSize)
+        if(selectedSizeOffset >= maxGrowSize)
         {
             return; 
         }
 
-        try
-        {
-            for(int y = i; y > 0; y--)
-            {
-                ui.achievementFrames.get(y).x -= frameSpaceBetween;     
-            }
-
-            for(int y = i; y < ui.achievementFrames.size(); y++)
-            {
-                ui.achievementFrames.get(y).x += frameSpaceBetween;     
-            }      
-        }
-
-        catch (Exception e) 
-        {
-            return;
-        }
-           
-        currentFrameSize++; 
+        selectedSizeOffset += growSpeed; 
     }
 
-    void deflate(int i)
+    void deflate()
     {
-        if(currentFrameSize <= minFrameSize)
+        if(selectedSizeOffset <= 0)
         {
             return; 
         }
 
-        try
-        {
-            for(int y = i; y > 0; y--)
-            {
-                ui.achievementFrames.get(y).x += frameSpaceBetween;     
-            }
-
-            for(int y = i; y < ui.achievementFrames.size(); y++)
-            {
-                ui.achievementFrames.get(y).x -= frameSpaceBetween;     
-            }  
-        }
-
-        catch (Exception e) 
-        {
-            return; 
-        }
-
-        currentFrameSize--; 
+        selectedSizeOffset -= growSpeed;
     }
 
-    void moveLeft(int first)
+    void moveLeft()
     {    
-        if(first <= 0)
-        {
-            return; 
-        }
-
-        x -= minFrameSize; 
-       
+        xOffset -= minFrameSize + margin;
     }
 
-    void moveRight(int last)
-    {    
-        if(last == ui.achievementFrames.size()) 
-        {
-            return; 
-        }
-
-        x += minFrameSize;  
+    void moveRight()
+    {     
+        xOffset += minFrameSize + margin;  
      }
 }
