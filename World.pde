@@ -195,7 +195,7 @@ public class World
 
 			map.add(subArray);// add the empty tile-list to the bigger list
 
-			if(PARALLAX_ENABLED)
+			if(parallaxEnabled)
 			{
 				for(int i = 1; i <= parallaxLayers; i++)
 				{
