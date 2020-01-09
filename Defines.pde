@@ -89,6 +89,7 @@ final float PARALLAX_NOISE_POSSIBILITY = 0.46f;
 
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;
+final boolean SAVE_USERNAME_AT_LOGIN = true;
 
 //Movement
 final float SPEED_LIMIT = TILE_SIZE; //otherwise we can phase through tiles like the flash, because we only check the closest tiles and not the ones BEHIND them
@@ -99,8 +100,8 @@ enum GameState
 	Overworld, // when the player can walk around but not mine
 	MainMenu, // when main menu is showing
 	ScoreMenu, // when the score is displayed, not used yet
-	OptionMenu,
-	AchievementScreen,
+	OptionMenu, // when in the options menu
+	AchievementScreen, // when in the achievements screen
 	InGame, // when the world is getting blown up!
 	GameOver, // when the player died
 	GamePaused // when the player pauses the game

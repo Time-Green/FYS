@@ -2,7 +2,7 @@ class Biome
 {
 	int length = 50; //after how many tiles do we tell world to get another biome?
 
-	float structureChance = 0.001; //chance of a structure spawning between 0 and 1 for every row of tiles
+	float structureChance = 1; //chance of a structure spawning between 0 and 1 for every row of tiles
 	float enemyChance = 0.01; //chance of enemy spawning on an open tile
 	float ceilingObstacleChance = 0.0; //chance that a tile can have something hanging from it
 	float groundObstacleChance = 0.1; //ditto but then ground
@@ -20,7 +20,6 @@ class Biome
 	boolean canParallax = true;
 
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
-
 
   	Tile getTileToGenerate(int x, int depth)
   	{

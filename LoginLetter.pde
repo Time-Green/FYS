@@ -27,7 +27,7 @@ public class LoginLetter
             return;
         }
 
-        if(!canGetInput && keyPressed == false)
+        if(!canGetInput && !keyPressed)
         {
             canGetInput = true;
         }
@@ -86,12 +86,6 @@ public class LoginLetter
 
     private void drawArrows()
     {
-        //textAlign(CENTER);
-        //textSize(70);
-
-        //text("↑", drawPosition.x, drawPosition.y - 110);
-        //text("↓", drawPosition.x, drawPosition.y + 110);
-
         textAlign(CENTER);
         textSize(40);
 
@@ -148,9 +142,17 @@ public class LoginLetter
         }
         else if(canGetInput && keyPressed && keyCode != UP && keyCode != DOWN && keyCode != LEFT && keyCode != RIGHT && keyCode != SHIFT)
         {
-            charIndex = loginScreen.getIndexByChar(key);
-            displayCounter = 0;
-            loginScreen.selectNextLetter();
+            if(keyCode == BACKSPACE)
+            {
+                charIndex = 0;
+                loginScreen.selectPreviousLetter();
+            }
+            else
+            {
+                charIndex = loginScreen.getIndexByChar(key);
+                displayCounter = 0;
+                loginScreen.selectNextLetter();
+            }
         }
     }
 
@@ -170,8 +172,8 @@ public class LoginLetter
     private float calculateXPos()
     {
         float xPos = 0.0f;
-        float offset = (((atIndex + 0.5) / float(loginScreen.activeChars)) - 0.5f);
-        float offsetMultiplier = width / 4f + loginScreen.activeChars * 42; // 42, it was the answer all along!
+        float offset = (((atIndex + 0.5) / float(MAX_LOGIN_NAME_SIZE)) - 0.5f);
+        float offsetMultiplier = width / 4f + MAX_LOGIN_NAME_SIZE * 42; // 42, it was the answer all along!
 
         // multiply offset based on schreen width
         offset *= offsetMultiplier;

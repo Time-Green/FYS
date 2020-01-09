@@ -265,13 +265,17 @@ void userFilledInName()
 	// tell the game we dont need to show the login screen anymore
 	userInLoginScreen = false;
 
-	// save username for next time the game starts
-	String[] saveData = new String[1];
-	saveData[0] = loginScreen.enteredName;
-	saveStrings("DbUser.txt", saveData);
+	if(SAVE_USERNAME_AT_LOGIN)
+	{
+		// save username for next time the game starts
+		String[] saveData = new String[1];
+		
+		saveData[0] = loginScreen.enteredName;
+		saveStrings("DbUser.txt", saveData);
+	}
 
 	// begin login with filled in name
-	databaseManager.beginLogin(saveData[0]);
+	databaseManager.beginLogin(loginScreen.enteredName);
 
 	// clean up
 	loginScreen = null;
@@ -628,7 +632,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	debugInput();
+	//debugInput();
 }
 
 void keyReleased()
