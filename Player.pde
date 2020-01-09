@@ -214,7 +214,7 @@ class Player extends Mob
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();
 			}
-			else if(!isGrounded && velocity.y > 5) // falling
+			else if(!isGrounded && velocity.y > 7.5) // falling
 			{
 				animatedImageFall.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageFall.draw();

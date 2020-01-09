@@ -27,6 +27,7 @@ public class UIController
 	private final color WHITE = #FFFFFF;
 	private final color BLACK = #000000;
 	private final color RED = #FF0000;
+	private final color GREEN = #00FF00;
 
 	//Game HUD
 	private float hudTextDistanceFromLeft = 10; //The distance from the left side of the screen 
@@ -228,14 +229,8 @@ public class UIController
 		textFont(instructionFont);
 		textSize(instructionFontSize / 2);
 
-		for (int i = 0; i < TILES_HORIZONTAL + 1; i++)
+		for (int i = 0; i < TILES_HORIZONTAL + 1; i += 2)
 		{
-
-			if (i % 2 == 0)
-			{
-				continue;
-			}
-
 			text("Dig!", i * TILE_SIZE, OVERWORLD_HEIGHT * TILE_SIZE + arrowYOffset - 15);
 			image(arrowImage, i * TILE_SIZE, OVERWORLD_HEIGHT * TILE_SIZE + arrowYOffset);
 		}
@@ -350,7 +345,33 @@ public class UIController
 		//Draw the collected score if we have some
 		if (collectedPoints > 0)
 		{
-			text("+ " + collectedPoints, extraBonusX, hudTextStartY);
+			String comboChainText = "";
+
+			if(extraScoreLiveTimer > 0)
+			{
+				if(collectedPoints >= 500 && collectedPoints < 1000)
+				{
+					comboChainText = "Not bad!";
+				}
+				else if(collectedPoints >= 1000 && collectedPoints < 2500)
+				{
+					comboChainText = "Nice!";
+				}
+				else if(collectedPoints >= 2500 && collectedPoints < 5000)
+				{
+					comboChainText = "Sick!";
+				}
+				else if(collectedPoints >= 5000 && collectedPoints < 10000)
+				{
+					comboChainText = "Awesome!";
+				}
+				else if(collectedPoints >= 10000)
+				{
+					comboChainText = "Rock Solid!!";
+				}
+			}
+
+			text("+ " + collectedPoints + " " + comboChainText, extraBonusX, hudTextStartY);
 		}
 
 		if (extraScoreLiveTimer > 0)
@@ -409,7 +430,7 @@ public class UIController
 		//Get a new postion if we need to
 		extraBonusX = getExtraBonusX();
 		//Reset the collected score counter
-		float resetTimer = timeInSeconds(0.5f);
+		float resetTimer = timeInSeconds(0.75f);
 		extraScoreLiveTimer = resetTimer;
 		collectedPoints += scoreToAdd;
 	}
@@ -430,8 +451,11 @@ public class UIController
 		}
 
 		fill(WHITE);
-		rect(barX, barY, healthBarWidth, healthBarHeight); 
-		fill(0, 255, 0);
+		rect(barX, barY, healthBarWidth, healthBarHeight);
+
+		color healthBarColor = lerpColor(RED, GREEN, map(player.currentHealth, 0f, player.maxHealth, 0f, 1f));
+
+		fill(healthBarColor);
 		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
 
 		stroke(0); //we may've changed the stroke in the flashy thing olf the healthbar
