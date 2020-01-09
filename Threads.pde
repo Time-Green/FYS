@@ -45,6 +45,7 @@ void loadAllAchievementsThread()
     }
 
 	allAchievements = databaseManager.getAllAchievements();
+    allAchievementsRarity = databaseManager.getAchievementRarity(); 
 	loadedAllAchievements = true;
 
     if(PRINT_LOADING_DEBUG)

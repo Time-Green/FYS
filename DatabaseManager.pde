@@ -170,6 +170,27 @@ public class DatabaseManager
         return currentRunId >= 0;
     }
 
+	// get all the achievement rarities
+	public ArrayList<AchievementRarity> getAchievementRarity() 
+	{
+		if (currentSessionId < 0) 
+		{
+			return new ArrayList<AchievementRarity>();
+		}
+
+		JSONArray result = doDatabaseRequest("SELECT * FROM AchievementRarity");
+		ArrayList<AchievementRarity> returnList = new ArrayList<AchievementRarity>();
+
+		for (int i = 0; i < result.size(); i++) 
+		{
+			println(result.getJSONObject(i));
+			returnList.add(buildAchievementRarity(result.getJSONObject(i)));	
+				
+		}
+				
+		return returnList;			
+	}
+
 	// get all the unlocked achievements from the current player
 	public ArrayList<Achievement> getPlayerAchievements() 
 	{
@@ -536,10 +557,23 @@ public class DatabaseManager
 		achievement.id = json.getInt("id");
 		achievement.name = json.getString("name");
 		achievement.description = json.getString("description");
+		achievement.rarity = json.getInt("rarity"); 
 
 		//println("Achievement: " + achievement.id + ", " + achievement.name);
 
 		return achievement;
+	}
+
+	private AchievementRarity buildAchievementRarity(JSONObject json)
+	{
+		AchievementRarity achievementRarity = new AchievementRarity();
+
+		achievementRarity.id = json.getInt("id");
+		achievementRarity.rarity = json.getString("rarity"); 
+
+		//println("Achievement: " + achievement.id + ", " + achievement.name);
+
+		return achievementRarity;
 	}
 
 	// converts json object to LeaderboardRow class
