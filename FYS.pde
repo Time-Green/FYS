@@ -39,6 +39,12 @@ ArrayList<Achievement> allAchievements;
 ArrayList<AchievementRarity> allAchievementsRarity; 	
 ArrayList<DatabaseVariable> databaseVariables;
 
+// loading screen
+final boolean SHOW_LOADING_RESOURCES = false;
+final color TITLE_COLOR = #ffa259;
+final float TITLE_FONT_SIZE = 120;
+PFont titleFont;
+
 //Database variables
 ArrayList<DatabaseVariable> databaseVariable;
 boolean loadedVariables = false;
@@ -81,6 +87,8 @@ void setup()
   	AudioManager.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.loadAll(true);
+
+	titleFont = createFont("Fonts/Block Stock.ttf", 32);
 }
 
 void checkUser()
@@ -463,11 +471,11 @@ void endRun()
 	thread("startRegisterEndThread");
 }
 
-String dots = "";
-
 void handleLoadingScreen()
 {
 	background(0);
+
+	textFont(titleFont);
 
 	float loadingBarWidth = ResourceManager.getLoadingAllProgress();
 
@@ -482,63 +490,64 @@ void handleLoadingScreen()
 
 	if(loadingBarWidth < 1)
 	{
-		text("Loading", width / 2, height - 10);
+		text("Loading", width / 2, height - 5);
 	}
 
 	//login
 	if(loginStatus != "Logged in")
 	{
-		//handleDots();
-		text(loginStatus + dots, width / 2, height - 55);
+		text(loginStatus, width / 2, height - 50);
 	}
 	else
 	{
 		fill(0, 255, 0);
-		text("Logged in as " + dbUser.userName, width / 2, height - 55);
+		text("Logged in as " + dbUser.userName, width / 2, height - 50);
 	}
 
-	ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
-
-	if(currentlyLoadingResources.size() == 0)
+	if(SHOW_LOADING_RESOURCES)
 	{
-		return;
-	}
+		ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
 
-	fill(255);
-	textSize(25);
-	textAlign(LEFT);
-	text("Currently loading resources:", 10, 20);
-
-	textSize(15);
-
-	int xPosMultiplier = -1;
-	int yPosMultiplier = 0;
-
-	for (int i = 0; i < currentlyLoadingResources.size(); i++)
-	{
-		if(i % 33 == 0)
+		if(currentlyLoadingResources.size() == 0)
 		{
-			xPosMultiplier++;
-			yPosMultiplier = 0;
+			return;
 		}
 
-		text(currentlyLoadingResources.get(i), 10 + (150 * xPosMultiplier), 40 + yPosMultiplier * 18);
+		fill(255);
+		textSize(25);
+		textAlign(LEFT);
+		text("Currently loading resources:", 10, 20);
 
-		yPosMultiplier++;
+		textSize(15);
+
+		int xPosMultiplier = -1;
+		int yPosMultiplier = 0;
+
+		for (int i = 0; i < currentlyLoadingResources.size(); i++)
+		{
+			if(i % 33 == 0)
+			{
+				xPosMultiplier++;
+				yPosMultiplier = 0;
+			}
+
+			text(currentlyLoadingResources.get(i), 10 + (150 * xPosMultiplier), 40 + yPosMultiplier * 18);
+
+			yPosMultiplier++;
+		}
 	}
+
+	drawTitle();
 }
 
-private void handleDots()
+// because we don't have a UiManager instance when loading, the title needs to happand separately here
+private void drawTitle()
 {
-	if(frameCount % 20 == 0)
-	{
-		dots += ".";
-	}
+	fill(TITLE_COLOR);
+	textSize(TITLE_FONT_SIZE);
+	textAlign(CENTER);
 
-	if(dots.length() > 3)
-	{
-		dots = "";
-	}
+	text("Rocky Rain", width / 2, float(height) / 4f);
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch

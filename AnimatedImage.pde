@@ -16,7 +16,6 @@ public class AnimatedImage
 		this.frameDelay = frameDelay;
 		this.drawPosition = drawPosition;
 		this.flipSpriteHorizontal = flipSpriteHorizontal;
-		// this.flipSpriteVertical = flipSpriteVertical;
 	}
 
 	public AnimatedImage(String animationName, int totalFrameCount, float frameDelay, PVector drawPosition, float objectWidth, boolean flipSpriteHorizontal)
@@ -32,7 +31,26 @@ public class AnimatedImage
 		this.frameDelay = frameDelay;
 		this.drawPosition = drawPosition;
 		this.flipSpriteHorizontal = flipSpriteHorizontal;
-		// this.flipSpriteVertical = flipSpriteVertical;
+		this.flipSpriteVertical = false;
+	}
+
+	//overide
+	public AnimatedImage(String animationName, int totalFrameCount, float frameDelay, PVector drawPosition, float objectWidth, float objectHeight, boolean flipSpriteHorizontal, boolean flipSpriteVertical)
+	{
+		frames = new PImage[totalFrameCount];
+
+		for (int i = 0; i < totalFrameCount; i++)
+		{
+			frames[i] = ResourceManager.getImage(animationName + i); 
+		}
+
+		this.objectWidth = objectWidth;
+		this.objectHeight = objectHeight;
+		this.frameDelay = frameDelay;
+		this.drawPosition = drawPosition;
+		this.flipSpriteHorizontal = flipSpriteHorizontal;
+		this.flipSpriteVertical = flipSpriteVertical;
+		
 	}
 
 	public void draw()
@@ -44,25 +62,50 @@ public class AnimatedImage
 		int imageToDrawIndex = frameCounter / round(frameDelay) % frames.length;
 		PImage imageToDraw = frames[imageToDrawIndex];
 
-		if (flipSpriteHorizontal)
-		{
-			scale(-1, 1);
-			image(imageToDraw, -objectWidth, 0);
-		}
-		else
-		{
-			image(imageToDraw, 0, 0);
-		}
-
-		// if (flipSpriteVertical)
+		// if (flipSpriteHorizontal)
 		// {
-		// 	scale(1, -1);
-		// 	image(imageToDraw, 0, -objectHeight);
+		// 	scale(-1, 1);
+		// 	image(imageToDraw, -objectWidth, 0);
 		// }
 		// else
 		// {
 		// 	image(imageToDraw, 0, 0);
 		// }
+
+		// if (flipSpriteVertical)
+		// {
+		// 	scale(1, -1);
+		// 	image(imageToDraw, -objectHeight, 0);
+		// }
+		// else
+		// {
+		// 	image(imageToDraw, 0, 0);
+		// }
+
+		if (!flipSpriteHorizontal && !flipSpriteVertical)
+		{
+			scale(1, 1);
+			image(imageToDraw, 0, 0);
+		}
+		else if (flipSpriteHorizontal && !flipSpriteVertical)
+		{
+			scale(-1, 1);
+			image(imageToDraw, -objectWidth, 0);
+		}
+		else if (!flipSpriteHorizontal && flipSpriteVertical)
+		{
+			scale(1, -1);
+			image(imageToDraw, 0, -objectHeight);
+			println("flipSpriteVertical: "+flipSpriteVertical);
+		}
+		else if (flipSpriteHorizontal && flipSpriteVertical)
+		{
+			scale(-1, -1);
+			image(imageToDraw, -objectWidth, -objectHeight);
+			println("flipSpriteVertical: "+flipSpriteVertical);
+		}
+
+		
 
 		popMatrix();
 

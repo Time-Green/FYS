@@ -144,9 +144,8 @@ public class UIController
 		//Draw the title in the middle of the screen
 		titleXPos = width / 2;
 
-		//Draw the title about a third of the screen
-		float distanceFromTheTop = 4.15;
-		titleYPos = (float)height / distanceFromTheTop;
+		//Draw the title at about a forth of the screen height
+		titleYPos = float(height) / 4f;
 	}
 
 	void drawWarningOverlay()
@@ -252,8 +251,6 @@ public class UIController
 
 	void drawStartMenu()
 	{
-		drawTitle("ROCKY RAIN");
-
 		//sub text
 		subTextCounter++;
 
@@ -273,6 +270,8 @@ public class UIController
 		}
 
 		handleLoadingScreenTransition();
+
+		drawTitle("ROCKY RAIN");
 	}
 
 	private void handleLoadingScreenTransition()
@@ -519,13 +518,9 @@ public class UIController
 		fill(WHITE);
 		textSize(20);
 
-		text(round(frameRate) + " FPS", width - 10, height - 130);
-		text(updateList.size() + " objects", width - 10, height - 110);
-		text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 90);
-		text(round(player.position.x) + " Player X Pos", width - 10, height - 70);
-		text(round(player.position.y) + " Player Y Pos", width - 10, height - 50);
-		text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 30);
-		text("Logged in as " + dbUser.userName, width - 10, height - 10);
+		text(round(frameRate) + " FPS", width - 10, height - 60);
+		text(updateList.size() + " objects", width - 10, height - 35);
+		text("Player: " + dbUser.userName, width - 10, height - 10);
 	}
 
 	void drawPauseScreen()
@@ -548,13 +543,14 @@ public class UIController
 
 	public void displayAchievement()
 	{	
-		float unlockedTextOffset = 100; 
+		final float unlockedTextOffset = 100;
+
 		textFont(instructionFont);		
 		textAlign(CENTER);
-		textSize(INSTRUCTION_FONT_SIZE/2);
-		text("Achievement unlocked: ", width/2, height/2 - unlockedTextOffset);
+		textSize(INSTRUCTION_FONT_SIZE / 2);
+		text("Achievement unlocked: ", width / 2, height / 2 - unlockedTextOffset);
 		textSize(INSTRUCTION_FONT_SIZE);
-		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
+		text(achievementHelper.getAchievementData(showingAchievementId).name, width / 2, height / 2); 	
 	}
 
 	private void generateLeaderboardGraphics()
@@ -610,9 +606,6 @@ public class UIController
 		leaderBoardGraphics.endDraw();
 	}
 
-
-	//This is basic and full of magic numbers, remove them
-	//I will write comments later i'm in a hurry atm
 	public void generateScoreboardGraphic()
 	{
 		textSize(20);
@@ -626,7 +619,6 @@ public class UIController
 
 			image(pickupImage, 50, 0 + (40*i), 40, 40);
 			text(currentRow.score, 100, 30 + 40*i);
-			// println(currentRow.imageName + "...." + currentRow.score);
 		}
 	}
 }
