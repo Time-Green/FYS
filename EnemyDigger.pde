@@ -33,6 +33,7 @@ class EnemyDigger extends Enemy
 		else //Chase animation
 		{
 			digSequence.draw();
+			digSequence.flipSpriteVertical = flipSpriteVertical;
 		}
 		
 	}
@@ -64,12 +65,12 @@ class EnemyDigger extends Enemy
 			if (this.position.y < playerY)
 			{
 				this.gravityForce = chaseSpeed/2;//Go down
-				//this.flipSpriteVertical = true;
+				this.flipSpriteVertical = true;
 			}
 			else
 			{
 				this.gravityForce = -chaseSpeed;//Go up
-				//this.flipSpriteVertical = false;
+				this.flipSpriteVertical = false;
 			}
 			
 			//Allow us to mine
@@ -90,12 +91,13 @@ class EnemyDigger extends Enemy
 			this.gravityForce = 0;
 			this.isChasing = false;
 		}
+
 	}
 
 	private void setUpAnimation()
 	{
 		int digFrames = 3;
 		int digAnimSpeed = 8;
-		digSequence = new AnimatedImage("DiggerEnemyDigging", digFrames, digAnimSpeed, position, size.x, flipSpriteHorizontal);
+		digSequence = new AnimatedImage("DiggerEnemyDigging", digFrames, digAnimSpeed, position, size.x, size.y, flipSpriteHorizontal, flipSpriteVertical);
 	}
 }
