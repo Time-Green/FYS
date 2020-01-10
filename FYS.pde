@@ -42,7 +42,7 @@ String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
 //Database variables
-ArrayList<DatabaseVariable> DatabaseVariable;
+ArrayList<DatabaseVariable> databaseVariable;
 boolean loadedVariables = false;
 
 //Scores
@@ -673,11 +673,6 @@ void debugInput()
 	{
 		// databaseManager.getAllPickupScores();
 		// ui.generateScoreboardGraphic();
-	}
-
-	if(key == 'l')
-	{
-		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y));
 	}
 
 	if(key == 'p')

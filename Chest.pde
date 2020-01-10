@@ -57,14 +57,6 @@ class Chest extends Obstacle
 		}
 		else if(randomKey == 1)
 		{
-			for (int i = 0; i < 3; i++)
-			{
-				Dynamite dynamite = new Dynamite();
-				load(dynamite, position);
-
-				newContents.add(dynamite);
-			}
-
 			addRandomLoot(newContents, MAX_RANDOM_LOOT_AMOUNT);
 		}
 

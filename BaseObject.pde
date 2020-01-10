@@ -155,4 +155,10 @@ class BaseObject
 	{
 		delete(this);
 	}
+
+	// looks better than instanceof
+	public boolean canPlayerInteract()
+	{
+		return false;
+	}
 }
