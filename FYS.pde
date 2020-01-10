@@ -2,44 +2,48 @@ import java.util.*;
 
 // List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
-
-ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
-ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
-ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
+ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); // Destroy and loadList are required, because it needs to be qeued before looping through the updateList,
+ArrayList<BaseObject> loadList = new ArrayList<BaseObject>(); // Otherwise we get a ConcurrentModificationException
+ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>(); // Otherwise we get a ConcurrentModificationException
 
 //Drawing
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
-int drawingLayers = 10; //increase if you add more layers
+final int DRAWING_LAYERS = 10; // Increase if you add more layers
 
 // These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
 ArrayList<Movable> movableList = new ArrayList<Movable>();
 ArrayList<Mob> mobList = new ArrayList<Mob>();
 
-// list of all objects that emit light
+// List of all objects that emit light
 ArrayList<BaseObject> lightSources = new ArrayList<BaseObject>();
 
-// database variables
-//this is a mess, we need to orginaze more in groups
+// Database variables
+DatabaseManager databaseManager = new DatabaseManager();
+AchievementHelper achievementHelper = new AchievementHelper(); 
 LoginScreen loginScreen;
+DbUser dbUser;
+int loginStartTime;
+RunData runData;
+String loginStatus = "Logging in";
+boolean isUploadingRunResults = false;
 boolean userInLoginScreen;
 boolean loadedPlayerInventory = false;
 boolean loadedAllAchievements = false;
 boolean loadedPlayerAchievements = false;
 boolean loadedLeaderboard = false;
-AchievementHelper achievementHelper = new AchievementHelper(); 
-DatabaseManager databaseManager = new DatabaseManager();
-DbUser dbUser;
-int loginStartTime;
-RunData runData;
 ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<DbLeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
 ArrayList<AchievementRarity> allAchievementsRarity; 	
-ArrayList<Integer> vars;
-String loginStatus = "Logging in";
-boolean isUploadingRunResults = false;
+ArrayList<DatabaseVariable> databaseVariables;
+
+// loading screen
+final boolean SHOW_LOADING_RESOURCES = false;
+final color TITLE_COLOR = #ffa259;
+final float TITLE_FONT_SIZE = 120;
+PFont titleFont;
 
 //Database variables
 ArrayList<DatabaseVariable> databaseVariable;
@@ -53,7 +57,7 @@ boolean loadedScores = false;
 boolean gamePaused = true;
 GameState gameState = GameState.MainMenu;
 
-// used to run code on closing game
+// used to run code when closing the game
 DisposeHandler disposeHandler;
 
 // global game objects
@@ -73,9 +77,7 @@ void setup()
 {
 	disposeHandler = new DisposeHandler(this);
 
-	size(1280, 720, P2D);
-
-	//fullScreen(P2D);
+	size(1280, 720, P3D);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
@@ -85,6 +87,8 @@ void setup()
   	AudioManager.setup(this);
 	ResourceManager.setup(this);
 	ResourceManager.loadAll(true);
+
+	titleFont = createFont("Fonts/Block Stock.ttf", 32);
 }
 
 void checkUser()
@@ -108,7 +112,7 @@ void afterResouceLoadingSetup()
 {
 	setVolumes();
 	
-	prepareDrawingLayers();
+	prepareDRAWING_LAYERS();
 	generateFlippedImages();
 
 	//setup game and show title screen
@@ -169,7 +173,7 @@ void setupGame()
 	mobList.clear();
 	lightSources.clear();
 
-	cleanDrawingLayers();
+	cleanDRAWING_LAYERS();
 
 	runData = new RunData();
 	ui = new UIController();
@@ -183,19 +187,20 @@ void setupGame()
 
 	AudioManager.loopMusic("ForestAmbianceMusic");
 	ui.initAchievementFrames();
+	ui.currentLoadingScreenTransitionFill = 255;
 }
 
-void prepareDrawingLayers()
+void prepareDRAWING_LAYERS()
 {
 	drawList = new ArrayList<ArrayList>();
 
-	for(int i = 0; i < drawingLayers; i++)
+	for(int i = 0; i < DRAWING_LAYERS; i++)
 	{
 		drawList.add(new ArrayList<BaseObject>());
 	}
 }
 
-void cleanDrawingLayers()
+void cleanDRAWING_LAYERS()
 {
 	for (ArrayList<BaseObject> drawLayer : drawList)
 	{
@@ -360,8 +365,7 @@ void handleGameFlow()
 		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
 		{
 			gameState = GameState.AchievementScreen; 
-			ui.achievementScreen();  
-			
+			ui.drawAchievementScreen();  
 		}
 
 		break;
@@ -467,11 +471,11 @@ void endRun()
 	thread("startRegisterEndThread");
 }
 
-String dots = "";
-
 void handleLoadingScreen()
 {
 	background(0);
+
+	textFont(titleFont);
 
 	float loadingBarWidth = ResourceManager.getLoadingAllProgress();
 
@@ -486,63 +490,64 @@ void handleLoadingScreen()
 
 	if(loadingBarWidth < 1)
 	{
-		text("Loading", width / 2, height - 10);
+		text("Loading", width / 2, height - 5);
 	}
 
 	//login
 	if(loginStatus != "Logged in")
 	{
-		//handleDots();
-		text(loginStatus + dots, width / 2, height - 55);
+		text(loginStatus, width / 2, height - 50);
 	}
 	else
 	{
 		fill(0, 255, 0);
-		text("Logged in as " + dbUser.userName, width / 2, height - 55);
+		text("Logged in as " + dbUser.userName, width / 2, height - 50);
 	}
 
-	ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
-
-	if(currentlyLoadingResources.size() == 0)
+	if(SHOW_LOADING_RESOURCES)
 	{
-		return;
-	}
+		ArrayList<String> currentlyLoadingResources = ResourceManager.getLoadingResources();
 
-	fill(255);
-	textSize(25);
-	textAlign(LEFT);
-	text("Currently loading resources:", 10, 20);
-
-	textSize(15);
-
-	int xPosMultiplier = -1;
-	int yPosMultiplier = 0;
-
-	for (int i = 0; i < currentlyLoadingResources.size(); i++)
-	{
-		if(i % 33 == 0)
+		if(currentlyLoadingResources.size() == 0)
 		{
-			xPosMultiplier++;
-			yPosMultiplier = 0;
+			return;
 		}
 
-		text(currentlyLoadingResources.get(i), 10 + (150 * xPosMultiplier), 40 + yPosMultiplier * 18);
+		fill(255);
+		textSize(25);
+		textAlign(LEFT);
+		text("Currently loading resources:", 10, 20);
 
-		yPosMultiplier++;
+		textSize(15);
+
+		int xPosMultiplier = -1;
+		int yPosMultiplier = 0;
+
+		for (int i = 0; i < currentlyLoadingResources.size(); i++)
+		{
+			if(i % 33 == 0)
+			{
+				xPosMultiplier++;
+				yPosMultiplier = 0;
+			}
+
+			text(currentlyLoadingResources.get(i), 10 + (150 * xPosMultiplier), 40 + yPosMultiplier * 18);
+
+			yPosMultiplier++;
+		}
 	}
+
+	drawTitle();
 }
 
-private void handleDots()
+// because we don't have a UiManager instance when loading, the title needs to happand separately here
+private void drawTitle()
 {
-	if(frameCount % 20 == 0)
-	{
-		dots += ".";
-	}
+	fill(TITLE_COLOR);
+	textSize(TITLE_FONT_SIZE);
+	textAlign(CENTER);
 
-	if(dots.length() > 3)
-	{
-		dots = "";
-	}
+	text("Rocky Rain", width / 2, float(height) / 4f);
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
@@ -673,11 +678,6 @@ void debugInput()
 	{
 		// databaseManager.getAllPickupScores();
 		// ui.generateScoreboardGraphic();
-	}
-
-	if(key == 'l')
-	{
-		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y));
 	}
 
 	if(key == 'p')

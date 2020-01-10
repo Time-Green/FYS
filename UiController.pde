@@ -2,28 +2,21 @@ public class UIController
 {
 	//Text
 	private PFont titleFont;
-	private float titleFontSize = 120;
-
 	private PFont instructionFont;
-	private float instructionFontSize = 40;
-
-	private float achievementUiSize = 25; 
-
 	private PFont hudFont;
-	private float hudFontSize = 30;
+	private final float TITLE_FONT_SIZE = 120;
+	private final float INSTRUCTION_FONT_SIZE = 40;
+	private final float ACHIEVEMENT_FONT_SIZE = 25; 
+	private final float HUD_FONT_SIZE = 30;
 
-	int subTextCounter = -60;
+	private int subTextCounter = -60;
 
 	//Title position
 	private float titleXPos;
 	private float titleYPos;
 
 	//Colors
-	private color titleColor = #ffa259;
-	private color titleBackground = #FFA500;
-	private color inventoryColor = #FBB65E;
-	private color inventorySelectedColor = #56BACF;
-
+	private final color TITLE_COLOR = #ffa259;
 	private final color WHITE = #FFFFFF;
 	private final color BLACK = #000000;
 	private final color RED = #FF0000;
@@ -35,16 +28,16 @@ public class UIController
 
 	//Extra score to add
 	private float extraBonusX;
-	String scoreText = "Score: ";
+	private final String SCORE_TEXT = "Score: ";
 	private float extraScoreLiveTimer;
 	private int collectedPoints;
-	int scoreDisplay = 0;
+	private int scoreDisplay = 0;
 
 	//Achievement icon
 	public ArrayList<AchievementImageFrame> achievementFrames = new ArrayList<AchievementImageFrame>();
-	int achievementDisplayTimer = 0; 
-	int showingAchievementId; 
-	int selectedAchievementFrameIndex = 0; 
+	private int achievementDisplayTimer = 0; 
+	private int showingAchievementId; 
+	private int selectedAchievementFrameIndex = 0; 
 
 	//Health
 	private float healthBarHeight = 30; 
@@ -66,38 +59,26 @@ public class UIController
 	private float killFactor = 0.01; //we stop the tweening at 0.01 of maxBarOffet
 
 	//arrows
-	float arrowYTarget = 0;
-	float arrowYOffset = 0;
-	float easing = 0.05f;
+	private float arrowYTarget = 0;
+	private float arrowYOffset = 0;
+	private float easing = 0.05f;
 
 	//Overlay
-	boolean drawWarningOverlay = false;
-	final float MAX_OVERLAY_FILL = 30f;
-	float currentOverlayFill = 0;
-	boolean isIncreasing = true;
+	public float currentLoadingScreenTransitionFill = 0;
+	private boolean drawWarningOverlay = false;
+	private final float MAX_OVERLAY_FILL = 30f;
+	private float currentOverlayFill = 0;
+	private boolean isIncreasing = true;
 
 	private final boolean DRAWSTATS = true;
 
-	String dots = "";
-
-	//Inventory
-	private float inventorySize = 80;
-	private float xSlot = 0.9; //these are all done in percentage of screen width/height so they can properly size with the screen
-	private float ySlot = 0.08;
-	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
-	private float slotYIncrement = 0.07;
-
-	private color[] buttonColors = {color(0, 0, 255), color(255, 0, 0)};
-
-	private float imageEnlargement = 2; //how much we grow the item in our inventory
+	private String dots = "";
 
 	private PImage healthBarImage;
 	private PImage arrowImage;
 
 	// graphics
 	PGraphics leaderBoardGraphics;
-
-	PImage cir;
 
 	UIController()
 	{
@@ -122,33 +103,28 @@ public class UIController
 		// draw hud based on current gamestate
 		switch (gameState)
 		{
-			default :
-				//println("Something went wrong with the game state");
-			break;
-
 			case MainMenu:
-				startMenu();
+				drawStartMenu();
 			break;	
 
 			case AchievementScreen:
-				achievementScreen(); 
+				drawAchievementScreen(); 
 			break; 
 
 			case GameOver:
-				gameOver();
+				drawGameOver();
 			break;
 
-			//Temp
-			// case Overworld :
-			// 	generateScoreboardGraphic();
-			// break;
-
 			case InGame :
-				gameHUD();
+				drawGameHUD();
 			break;
 
 			case GamePaused :
-				pauseScreen();
+				drawPauseScreen();
+			break;
+
+			default :
+				//println("Something went wrong with the game state");
 			break;
 		}
 
@@ -168,9 +144,8 @@ public class UIController
 		//Draw the title in the middle of the screen
 		titleXPos = width / 2;
 
-		//Draw the title about a third of the screen
-		float distanceFromTheTop = 4.15;
-		titleYPos = (float)height / distanceFromTheTop;
+		//Draw the title at about a forth of the screen height
+		titleYPos = float(height) / 4f;
 	}
 
 	void drawWarningOverlay()
@@ -228,9 +203,9 @@ public class UIController
 		arrowYOffset += dy * easing;
 
 		tint(255, 127);
-		fill(titleColor);
+		fill(TITLE_COLOR);
 		textFont(instructionFont);
-		textSize(instructionFontSize / 2);
+		textSize(INSTRUCTION_FONT_SIZE / 2);
 
 		for (int i = 0; i < TILES_HORIZONTAL + 1; i += 2)
 		{
@@ -241,23 +216,23 @@ public class UIController
 		tint(WHITE);
 	}
 
-	void gameOver()
+	void drawGameOver()
 	{
 		drawTitle("GAME OVER");
 
 		//sub text
 		textFont(instructionFont);
-		textSize(instructionFontSize);
-		text("Score: " + scoreDisplay + "\nDepth: " + player.getDepth() + "m", width / 2, height / 2 + instructionFontSize);
+		textSize(INSTRUCTION_FONT_SIZE);
+		text("Score: " + scoreDisplay + "\nDepth: " + player.getDepth() + "m", width / 2, height / 2 + INSTRUCTION_FONT_SIZE);
 
 		if(isUploadingRunResults)
 		{
 			handleDots();
-			text("Uploading run stats" + dots, width / 2, height / 2 + instructionFontSize * 4);
+			text("Uploading run stats" + dots, width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 4);
 		}
 		else
 		{
-			text("Enter: restart", width / 2, height / 2 + instructionFontSize * 4);
+			text("Enter: restart", width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 4);
 		}
 	}
 
@@ -274,26 +249,45 @@ public class UIController
 		}
 	}
 
-	void startMenu()
+	void drawStartMenu()
 	{
-		drawTitle("ROCKY RAIN");
-
 		//sub text
 		subTextCounter++;
 
 		textFont(instructionFont);
-		textSize(achievementUiSize);
-		text("Press space for achievements", width / 2, (height / 2.5) + (titleFontSize/2));
+		textSize(ACHIEVEMENT_FONT_SIZE);
+		text("Press space for achievements", width / 2, (height / 2.5) + (TITLE_FONT_SIZE/2));
 
 		if (subTextCounter >= 0)
 		{
-			textSize(instructionFontSize);
-			text("Press Start", width / 2, (height / 1.5) + (titleFontSize/2));
+			textSize(INSTRUCTION_FONT_SIZE);
+			text("Press Start", width / 2, (height / 1.5) + (TITLE_FONT_SIZE/2));
 
 			if(subTextCounter > 60)
 			{
 				subTextCounter = -60;
 			}
+		}
+
+		handleLoadingScreenTransition();
+
+		drawTitle("ROCKY RAIN");
+	}
+
+	private void handleLoadingScreenTransition()
+	{
+		if(currentLoadingScreenTransitionFill > 0)
+		{
+			currentLoadingScreenTransitionFill -= 4.5f;
+
+			if(currentLoadingScreenTransitionFill < 0)
+			{
+				currentLoadingScreenTransitionFill = 0;
+			}
+
+			fill(0, currentLoadingScreenTransitionFill);
+			rectMode(CORNER);
+			rect(0, 0, width, height);
 		}
 	}
 
@@ -312,7 +306,7 @@ public class UIController
 		}
 	}
 	
-	void achievementScreen()
+	void drawAchievementScreen()
 	{
 		fill(0, 175); 
 		rect(0, 0, width * 2, height * 2); 
@@ -371,15 +365,15 @@ public class UIController
 		}
 	}
 
-	void gameHUD()
+	void drawGameHUD()
 	{
 		drawHealthBar();
 
 		//Draw the score and depth display
 		textAlign(LEFT);
-		textSize(hudFontSize);
-		text(scoreText + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
-		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + hudFontSize + 10);
+		textSize(HUD_FONT_SIZE);
+		text(SCORE_TEXT + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
+		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + 10);
 
 		//Collected points display
 		//Draw the collected score if we have some
@@ -441,8 +435,6 @@ public class UIController
 			displayAchievement(); 
 			achievementDisplayTimer--; 
 		}
-
-		drawInventory();
 	}
 
 	//Draw functions
@@ -451,9 +443,9 @@ public class UIController
 	{
 		//Update the posotopn of the title,this will prefent the title from moving while the screenszie changes
 		updateTitlePosition();
-		fill(titleColor);
+		fill(TITLE_COLOR);
 		textFont(titleFont);
-		textSize(titleFontSize);
+		textSize(TITLE_FONT_SIZE);
 		textAlign(CENTER);
 		text(menuText, titleXPos, titleYPos);
 	}
@@ -464,7 +456,7 @@ public class UIController
 		//then draw the extra score based on the distance
 		String scoreDigits = str(scoreDisplay);
 		int numberOfScoreDigits = scoreDigits.length();
-		float bonusX = hudTextDistanceFromLeft + (hudFontSize * (scoreText.length() + numberOfScoreDigits));
+		float bonusX = hudTextDistanceFromLeft + (HUD_FONT_SIZE * (SCORE_TEXT.length() + numberOfScoreDigits));
 
 		return bonusX;
 	}
@@ -509,7 +501,7 @@ public class UIController
 
 		textAlign(CENTER);
 		fill(BLACK);
-		textSize(hudFontSize / 2);
+		textSize(HUD_FONT_SIZE / 2);
 		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
 		fill(WHITE);
 	}
@@ -526,54 +518,20 @@ public class UIController
 		fill(WHITE);
 		textSize(20);
 
-		text(round(frameRate) + " FPS", width - 10, height - 130);
-		text(updateList.size() + " objects", width - 10, height - 110);
-		text(round(wallOfDeath.position.y) + " WoD Y Pos", width - 10, height - 90);
-		text(round(player.position.x) + " Player X Pos", width - 10, height - 70);
-		text(round(player.position.y) + " Player Y Pos", width - 10, height - 50);
-		text(round((player.position.y - wallOfDeath.position.y)) + " Player/WoD Y Div", width - 10, height - 30);
-		text("Logged in as " + dbUser.userName, width - 10, height - 10);
+		text(round(frameRate) + " FPS", width - 10, height - 60);
+		text(updateList.size() + " objects", width - 10, height - 35);
+		text("Player: " + dbUser.userName, width - 10, height - 10);
 	}
 
-	void pauseScreen()
+	void drawPauseScreen()
 	{
 		drawTitle("Paused");
 
 		//sub text
 		textFont(instructionFont);
-		textSize(instructionFontSize);
+		textSize(INSTRUCTION_FONT_SIZE);
 		text("Start: continue", width / 2, height / 2 - 30);
 		text("Select: restart", width / 2, height / 2 + 60);
-	}
-
-	void drawInventory()
-	{
-		for (int i = 0; i < player.maxInventory; i++)
-		{
-			//Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-			PVector slotLocation = getInventorySlotLocation(i);
-			fill(buttonColors[i]);
-			ellipse(slotLocation.x, slotLocation.y, inventorySize, inventorySize);
-		}
-
-		imageMode(CENTER);
-		
-		for (int i = 0; i < player.inventory.length; i++)
-		{
-			if(player.inventory[i] != null && player.inventoryDrawable[i])
-			{
-				Item item = player.inventory[i];
-				PVector slotLocation = getInventorySlotLocation(i);
-				image(item.image, slotLocation.x, slotLocation.y, item.size.x * imageEnlargement, item.size.y * imageEnlargement);
-			}
-		}
-
-		imageMode(CORNER); 
-	}
-
-	PVector getInventorySlotLocation(int slot)
-	{
-		return new PVector(width * (xSlot + slot * slotXIncrement), height * (ySlot + slot * slotYIncrement));
 	}
 
 	void startDisplayingAchievement(int id)
@@ -585,13 +543,14 @@ public class UIController
 
 	public void displayAchievement()
 	{	
-		float unlockedTextOffset = 100; 
+		final float unlockedTextOffset = 100;
+
 		textFont(instructionFont);		
 		textAlign(CENTER);
-		textSize(instructionFontSize/2);
-		text("Achievement unlocked: ", width/2, height/2 - unlockedTextOffset);
-		textSize(instructionFontSize);
-		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
+		textSize(INSTRUCTION_FONT_SIZE / 2);
+		text("Achievement unlocked: ", width / 2, height / 2 - unlockedTextOffset);
+		textSize(INSTRUCTION_FONT_SIZE);
+		text(achievementHelper.getAchievementData(showingAchievementId).name, width / 2, height / 2); 	
 	}
 
 	private void generateLeaderboardGraphics()
@@ -647,9 +606,6 @@ public class UIController
 		leaderBoardGraphics.endDraw();
 	}
 
-
-	//This is basic and full of magic numbers, remove them
-	//I will write comments later i'm in a hurry atm
 	public void generateScoreboardGraphic()
 	{
 		textSize(20);
@@ -663,7 +619,6 @@ public class UIController
 
 			image(pickupImage, 50, 0 + (40*i), 40, 40);
 			text(currentRow.score, 100, 30 + 40*i);
-			// println(currentRow.imageName + "...." + currentRow.score);
 		}
 	}
 }

@@ -18,6 +18,7 @@ public class World
 
 	Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
 	Biome currentBiome;
+	Biome nextBiome;
 	ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
 	int switchDepth; //the depth at wich we switch to the next biome in the qeueu
 
@@ -26,10 +27,8 @@ public class World
 		dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, 8)));
 
 		//Specially queued biomes, for cinematic effect
-		biomeQueue.add(new OverworldBiome());
+		nextBiome = new OverworldBiome();
 		biomeQueue.add(new NormalBiome());
-		// biomeQueue.add(new FireBiome());
-		// biomeQueue.add(new WaterBiome());
 
 		fillBiomeQueue(0);
 		switchBiome(0);
@@ -184,8 +183,18 @@ public class World
 
 			for (int x = 0; x <= TILES_HORIZONTAL; x++)
 			{
-				Tile tile = currentBiome.getTileToGenerate(x, y);
-				tile.destroyedImage = currentBiome.destroyedImage;
+				Tile tile;
+
+				if(random(currentBiome.transitWidth) > switchDepth - y)
+				{
+					tile = nextBiome.getTileToGenerate(x, y);
+					tile.destroyedImage = nextBiome.destroyedImage;
+				}
+				else
+				{
+					tile = currentBiome.getTileToGenerate(x, y);
+					tile.destroyedImage = currentBiome.destroyedImage;
+				}
 
 				subArray.add(tile);
 				load(tile, true);
@@ -347,8 +356,10 @@ public class World
 	{
 		if (biomeQueue.size() != 0)
 		{
-			currentBiome = biomeQueue.get(0);
+			currentBiome = nextBiome;
+			nextBiome = biomeQueue.get(0);
 			switchDepth += currentBiome.length;
+
 			biomeQueue.remove(0);
 			currentBiome.startedAt = depth;
 		}

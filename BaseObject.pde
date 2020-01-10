@@ -48,7 +48,7 @@ class BaseObject
 
 	void insertIntoDrawLayer(int layer)
 	{
-		if(layer > drawingLayers)
+		if(layer > DRAWING_LAYERS)
 		{
 			println("ERROR: Attempted to draw " + this + " on a layer that doesn't exist! Increse drawingLayer in main.pde");
 			return;
@@ -154,5 +154,11 @@ class BaseObject
 	void unroot(Tile tile)
 	{
 		delete(this);
+	}
+
+	// looks better than instanceof
+	public boolean canPlayerInteract()
+	{
+		return false;
 	}
 }

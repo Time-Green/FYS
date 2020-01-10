@@ -147,15 +147,6 @@ class Player extends Mob
 
 		handleAnimation();
 		handleParticles();
-
-		// player only, because we'll never bother adding a holding sprite for every mob 
-		for (int i = 0; i < inventory.length; i++)
-		{
-			if(inventory[i] != null)
-			{
-				inventory[i].drawOnPlayer(this);
-			}
-		}
 	}
 
 	private void setUpAnimation()
@@ -315,26 +306,6 @@ class Player extends Mob
 		{
 			isMiningRight = false;
 		}
-
-		if (InputHelper.isKeyDown(INVENTORY_KEY_A))
-		{ 
-			if(canUseInventory(0))
-			{
-				useInventory(0);
-			}
-
-			InputHelper.onKeyReleased(INVENTORY_KEY_A);
-		}
-		
-		if (InputHelper.isKeyDown(INVENTORY_KEY_B))
-		{ 
-			if(canUseInventory(1))
-			{
-				useInventory(1);
-			}
-
-			InputHelper.onKeyReleased(INVENTORY_KEY_B);
-		}
 	}
 
 	void addScore(int scoreToAdd)
@@ -421,12 +392,4 @@ class Player extends Mob
 	{
 		runData.playerBlocksMined++;
 	}
-
-	protected void useInventory(int slot)
-	{
-		super.useInventory(slot);
-
-		runData.itemsUsed++;
-	}
-
 }

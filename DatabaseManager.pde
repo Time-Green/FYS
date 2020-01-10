@@ -92,6 +92,14 @@ public class DatabaseManager
 		return checkSuccess(result);
 	}
 
+	// deletes a playsession by its id
+	public boolean deletePlaySession(int id)
+	{
+		JSONArray result = doDatabaseRequest("DELETE FROM Playsession WHERE id = " + id);
+
+		return checkSuccess(result);
+	}
+
 	// deletes all runs with a score null or 0
 	public boolean deleteAllRunsWhereScoreIsNullOr0()
 	{
@@ -104,6 +112,14 @@ public class DatabaseManager
 	public boolean updateRunScore(int id, int newScore)
 	{
 		JSONArray result = doDatabaseRequest("UPDATE Run SET score = " + newScore + " WHERE id = " + id);
+
+		return checkSuccess(result);
+	}
+
+	// deletes a run by its id
+	public boolean deleteRunScore(int id, int newScore)
+	{
+		JSONArray result = doDatabaseRequest("DELETE FROM Run WHERE id = " + id);
 
 		return checkSuccess(result);
 	}
@@ -683,6 +699,21 @@ public class DatabaseManager
 		{
 			println(result.getJSONObject(i));
 		}
+	}
+
+	public int getDatabaseVariable(String name)
+	{
+		for (DatabaseVariable variable : databaseVariables)
+		{
+			if(name.equals(variable.variableName))
+			{
+				return variable.value;
+			}
+		}
+
+		println("ERROR: database variable '" + name + "' not found!");
+
+		return 0;
 	}
 
 	public void updateVariable(String variableName, float newValue)
