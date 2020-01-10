@@ -44,6 +44,7 @@ final boolean SHOW_LOADING_RESOURCES = false;
 final color TITLE_COLOR = #ffa259;
 final float TITLE_FONT_SIZE = 120;
 PFont titleFont;
+PImage gameTitle;
 
 //Database variables
 ArrayList<DatabaseVariable> databaseVariable;
@@ -88,8 +89,11 @@ void setup()
 	ResourceManager.setup(this);
 	ResourceManager.loadAll(true);
 
-	titleFont = createFont("Fonts/Block Stock.ttf", 32);
 	noStroke();
+
+	// pre-loading
+	titleFont = createFont("Fonts/Block Stock.ttf", 32);
+	gameTitle = loadImage("Sprites/GameTitle.png");
 }
 
 void checkUser()
@@ -538,17 +542,15 @@ void handleLoadingScreen()
 		}
 	}
 
-	drawTitle();
+	drawTitleImage();
 }
 
-// because we don't have a UiManager instance when loading, the title needs to happand separately here
-private void drawTitle()
+// because we don't have a UiManager instance when loading, the title rendering needs to happan separately here
+void drawTitleImage()
 {
-	fill(TITLE_COLOR);
-	textSize(TITLE_FONT_SIZE);
-	textAlign(CENTER);
-
-	text("Rocky Rain", width / 2, float(height) / 4f);
+	imageMode(CENTER);
+	image(gameTitle, width / 2, height / 4.5f, width * 0.8f, height * 0.3f);
+	imageMode(CORNER);
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch

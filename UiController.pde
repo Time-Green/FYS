@@ -285,7 +285,7 @@ public class UIController
 
 		handleLoadingScreenTransition();
 
-		drawTitle("ROCKY RAIN");
+		drawTitleImage();
 	}
 
 	private void handleLoadingScreenTransition()
