@@ -2,26 +2,21 @@ public class UIController
 {
 	//Text
 	private PFont titleFont;
-	private float titleFontSize = 120;
-
 	private PFont instructionFont;
-	private float instructionFontSize = 40;
-
-	private float achievementUiSize = 25; 
-
 	private PFont hudFont;
-	private float hudFontSize = 30;
+	private final float TITLE_FONT_SIZE = 120;
+	private final float INSTRUCTION_FONT_SIZE = 40;
+	private final float ACHIEVEMENT_FONT_SIZE = 25; 
+	private final float HUD_FONT_SIZE = 30;
 
-	int subTextCounter = -60;
+	private int subTextCounter = -60;
 
 	//Title position
 	private float titleXPos;
 	private float titleYPos;
 
 	//Colors
-	private color titleColor = #ffa259;
-	private color titleBackground = #FFA500;
-
+	private final color TITLE_COLOR = #ffa259;
 	private final color WHITE = #FFFFFF;
 	private final color BLACK = #000000;
 	private final color RED = #FF0000;
@@ -33,10 +28,10 @@ public class UIController
 
 	//Extra score to add
 	private float extraBonusX;
-	String scoreText = "Score: ";
+	private final String SCORE_TEXT = "Score: ";
 	private float extraScoreLiveTimer;
 	private int collectedPoints;
-	int scoreDisplay = 0;
+	private int scoreDisplay = 0;
 
 	//Achievement icon
 	public ArrayList<AchievementImageFrame> achievementFrames = new ArrayList<AchievementImageFrame>();
@@ -84,8 +79,6 @@ public class UIController
 	// graphics
 	PGraphics leaderBoardGraphics;
 
-	PImage cir;
-
 	UIController()
 	{
 		titleFont = ResourceManager.getFont("Block Stock");
@@ -109,10 +102,6 @@ public class UIController
 		// draw hud based on current gamestate
 		switch (gameState)
 		{
-			default :
-				//println("Something went wrong with the game state");
-			break;
-
 			case MainMenu:
 				startMenu();
 			break;	
@@ -125,17 +114,16 @@ public class UIController
 				gameOver();
 			break;
 
-			//Temp
-			// case Overworld :
-			// 	generateScoreboardGraphic();
-			// break;
-
 			case InGame :
 				gameHUD();
 			break;
 
 			case GamePaused :
 				pauseScreen();
+			break;
+
+			default :
+				//println("Something went wrong with the game state");
 			break;
 		}
 
@@ -215,9 +203,9 @@ public class UIController
 		arrowYOffset += dy * easing;
 
 		tint(255, 127);
-		fill(titleColor);
+		fill(TITLE_COLOR);
 		textFont(instructionFont);
-		textSize(instructionFontSize / 2);
+		textSize(INSTRUCTION_FONT_SIZE / 2);
 
 		for (int i = 0; i < TILES_HORIZONTAL + 1; i += 2)
 		{
@@ -234,17 +222,17 @@ public class UIController
 
 		//sub text
 		textFont(instructionFont);
-		textSize(instructionFontSize);
-		text("Score: " + scoreDisplay + "\nDepth: " + player.getDepth() + "m", width / 2, height / 2 + instructionFontSize);
+		textSize(INSTRUCTION_FONT_SIZE);
+		text("Score: " + scoreDisplay + "\nDepth: " + player.getDepth() + "m", width / 2, height / 2 + INSTRUCTION_FONT_SIZE);
 
 		if(isUploadingRunResults)
 		{
 			handleDots();
-			text("Uploading run stats" + dots, width / 2, height / 2 + instructionFontSize * 4);
+			text("Uploading run stats" + dots, width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 4);
 		}
 		else
 		{
-			text("Enter: restart", width / 2, height / 2 + instructionFontSize * 4);
+			text("Enter: restart", width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 4);
 		}
 	}
 
@@ -269,13 +257,13 @@ public class UIController
 		subTextCounter++;
 
 		textFont(instructionFont);
-		textSize(achievementUiSize);
-		text("Press space for achievements", width / 2, (height / 2.5) + (titleFontSize/2));
+		textSize(ACHIEVEMENT_FONT_SIZE);
+		text("Press space for achievements", width / 2, (height / 2.5) + (TITLE_FONT_SIZE/2));
 
 		if (subTextCounter >= 0)
 		{
-			textSize(instructionFontSize);
-			text("Press Start", width / 2, (height / 1.5) + (titleFontSize/2));
+			textSize(INSTRUCTION_FONT_SIZE);
+			text("Press Start", width / 2, (height / 1.5) + (TITLE_FONT_SIZE/2));
 
 			if(subTextCounter > 60)
 			{
@@ -364,9 +352,9 @@ public class UIController
 
 		//Draw the score and depth display
 		textAlign(LEFT);
-		textSize(hudFontSize);
-		text(scoreText + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
-		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + hudFontSize + 10);
+		textSize(HUD_FONT_SIZE);
+		text(SCORE_TEXT + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
+		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + 10);
 
 		//Collected points display
 		//Draw the collected score if we have some
@@ -436,9 +424,9 @@ public class UIController
 	{
 		//Update the posotopn of the title,this will prefent the title from moving while the screenszie changes
 		updateTitlePosition();
-		fill(titleColor);
+		fill(TITLE_COLOR);
 		textFont(titleFont);
-		textSize(titleFontSize);
+		textSize(TITLE_FONT_SIZE);
 		textAlign(CENTER);
 		text(menuText, titleXPos, titleYPos);
 	}
@@ -449,7 +437,7 @@ public class UIController
 		//then draw the extra score based on the distance
 		String scoreDigits = str(scoreDisplay);
 		int numberOfScoreDigits = scoreDigits.length();
-		float bonusX = hudTextDistanceFromLeft + (hudFontSize * (scoreText.length() + numberOfScoreDigits));
+		float bonusX = hudTextDistanceFromLeft + (HUD_FONT_SIZE * (SCORE_TEXT.length() + numberOfScoreDigits));
 
 		return bonusX;
 	}
@@ -494,7 +482,7 @@ public class UIController
 
 		textAlign(CENTER);
 		fill(BLACK);
-		textSize(hudFontSize / 2);
+		textSize(HUD_FONT_SIZE / 2);
 		text("Health", barX, barY + 7, healthBarWidth, healthBarHeight);
 		fill(WHITE);
 	}
@@ -526,7 +514,7 @@ public class UIController
 
 		//sub text
 		textFont(instructionFont);
-		textSize(instructionFontSize);
+		textSize(INSTRUCTION_FONT_SIZE);
 		text("Start: continue", width / 2, height / 2 - 30);
 		text("Select: restart", width / 2, height / 2 + 60);
 	}
@@ -543,9 +531,9 @@ public class UIController
 		float unlockedTextOffset = 100; 
 		textFont(instructionFont);		
 		textAlign(CENTER);
-		textSize(instructionFontSize/2);
+		textSize(INSTRUCTION_FONT_SIZE/2);
 		text("Achievement unlocked: ", width/2, height/2 - unlockedTextOffset);
-		textSize(instructionFontSize);
+		textSize(INSTRUCTION_FONT_SIZE);
 		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 
