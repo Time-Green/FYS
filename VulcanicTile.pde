@@ -6,6 +6,8 @@ class VulcanicTile extends Tile
 		
 		particleColor = color(#8c071d);
 
+		decalType = "DecalVulcanic";
+
 		image = ResourceManager.getImage("VulcanicTile", true);
 	}
 }
