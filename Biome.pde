@@ -14,6 +14,9 @@ class Biome
 	float caveSpawningPossibilityScale = 0.68f; //lower for more caves
 	int startedAt;
 
+	boolean smoothTransit = true; //wheter we do the fusing thing with the biome UNDER us
+	int transitWidth = 10; //how far we fuse with the biome UNDER us
+
 	// the amount the player can see in the biome
 	float playerVisibilityScale = 1;
 
