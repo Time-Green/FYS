@@ -4,7 +4,7 @@ public class Camera
 	private Movable target;
 	private float lerpAmount;
 
-	private final float SPAWN_Y_POS = 190;
+	private final float SPAWN_Y_POS = 450;
 
 	private PVector currentShakeOffset = new PVector();
 
@@ -47,14 +47,14 @@ public class Camera
 
 		if(gameState == GameState.GameOver)
 		{
-			position.y = -SPAWN_Y_POS * 5;
+			position.y = -SPAWN_Y_POS * 2;
 		}
 		else
 		{
 			position.y = SPAWN_Y_POS;
 		}
 		
-		lerpAmount = 0.002f;
+		lerpAmount = 0.001f;
 	}
 
 	public void setTarget(Movable targetObject)

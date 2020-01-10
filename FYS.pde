@@ -9,6 +9,7 @@ ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>(); // Otherwise we 
 //Drawing
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
 final int DRAWING_LAYERS = 10; // Increase if you add more layers
+color backgroundColor = color(0);
 
 // These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -242,6 +243,9 @@ void draw()
 		hasCalledAfterResourceLoadSetup = true;
 		afterResouceLoadingSetup();
 	}
+
+	// based on dayNight image
+	background(backgroundColor);
 
 	//push and pop are needed so the hud can be correctly drawn
 	pushMatrix();
