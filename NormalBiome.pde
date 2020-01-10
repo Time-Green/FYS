@@ -3,7 +3,7 @@ class NormalBiome extends Biome
 {
 	NormalBiome()
 	{
-		structureChance = 0.01;
+		structureChance = 0.02;
 	}
 
 	String getStructureName()

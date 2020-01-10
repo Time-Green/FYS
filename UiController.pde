@@ -314,7 +314,7 @@ public class UIController
 	
 	void achievementScreen()
 	{
-		fill(0, 0, 0, 100); 
+		fill(0, 175); 
 		rect(0, 0, width * 2, height * 2); 
 
 		for(AchievementImageFrame frame : achievementFrames)
@@ -408,6 +408,11 @@ public class UIController
 				else if(collectedPoints >= 10000)
 				{
 					comboChainText = "Rock Solid!!";
+					
+					if(!achievementHelper.hasUnlockedAchievement(COMBO_MASTER_ACHIEVEMENT))
+					{
+						achievementHelper.unlock(COMBO_MASTER_ACHIEVEMENT); 
+					}
 				}
 			}
 
@@ -569,7 +574,6 @@ public class UIController
 	PVector getInventorySlotLocation(int slot)
 	{
 		return new PVector(width * (xSlot + slot * slotXIncrement), height * (ySlot + slot * slotYIncrement));
-		
 	}
 
 	void startDisplayingAchievement(int id)
@@ -581,9 +585,12 @@ public class UIController
 
 	public void displayAchievement()
 	{	
-		textFont(instructionFont);
-		textSize(instructionFontSize);
+		float unlockedTextOffset = 100; 
+		textFont(instructionFont);		
 		textAlign(CENTER);
+		textSize(instructionFontSize/2);
+		text("Achievement unlocked: ", width/2, height/2 - unlockedTextOffset);
+		textSize(instructionFontSize);
 		text(achievementHelper.getAchievementData(showingAchievementId).name, width/2, height/2); 	
 	}
 

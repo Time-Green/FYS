@@ -170,6 +170,25 @@ public class DatabaseManager
         return currentRunId >= 0;
     }
 
+	// get all the achievement rarities
+	public ArrayList<AchievementRarity> getAchievementRarity() 
+	{
+		if (currentSessionId < 0) 
+		{
+			return new ArrayList<AchievementRarity>();
+		}
+
+		JSONArray result = doDatabaseRequest("SELECT * FROM AchievementRarity");
+		ArrayList<AchievementRarity> returnList = new ArrayList<AchievementRarity>();
+
+		for (int i = 0; i < result.size(); i++) 
+		{
+			returnList.add(buildAchievementRarity(result.getJSONObject(i)));					
+		}
+				
+		return returnList;			
+	}
+
 	// get all the unlocked achievements from the current player
 	public ArrayList<Achievement> getPlayerAchievements() 
 	{
@@ -536,10 +555,23 @@ public class DatabaseManager
 		achievement.id = json.getInt("id");
 		achievement.name = json.getString("name");
 		achievement.description = json.getString("description");
+		achievement.rarity = json.getInt("rarity"); 
 
 		//println("Achievement: " + achievement.id + ", " + achievement.name);
 
 		return achievement;
+	}
+
+	private AchievementRarity buildAchievementRarity(JSONObject json)
+	{
+		AchievementRarity achievementRarity = new AchievementRarity();
+
+		achievementRarity.id = json.getInt("id");
+		achievementRarity.rarity = json.getString("rarity"); 
+
+		//println("Achievement: " + achievement.id + ", " + achievement.name);
+
+		return achievementRarity;
 	}
 
 	// converts json object to LeaderboardRow class
@@ -637,14 +669,7 @@ public class DatabaseManager
 	{ 
 		JSONArray result = doDatabaseRequest("SELECT SUM(" + data + ") as" + data + " FROM Playsession, Run WHERE Playsession.id = Run.playsessionid AND Playsession.userid = '" + userid + ";");
 
-		try
-		{
-			return result.getInt(0);
-		}
-		catch(Exception e)
-		{
-			return 0;
-		}
+		return result.getInt(0);
 	}
 
 	//Get variables from database
@@ -658,7 +683,6 @@ public class DatabaseManager
 		{
 			println(result.getJSONObject(i));
 		}
-
 	}
 
 	public void updateVariable(String variableName, float newValue)

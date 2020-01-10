@@ -36,6 +36,7 @@ ArrayList<PlayerRelicInventory> totalCollectedRelicShards;
 ArrayList<DbLeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
+ArrayList<AchievementRarity> allAchievementsRarity; 	
 ArrayList<Integer> vars;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
