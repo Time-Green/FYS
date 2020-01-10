@@ -144,9 +144,8 @@ public class UIController
 		//Draw the title in the middle of the screen
 		titleXPos = width / 2;
 
-		//Draw the title about a third of the screen
-		float distanceFromTheTop = 4.15;
-		titleYPos = (float)height / distanceFromTheTop;
+		//Draw the title at about a forth of the screen height
+		titleYPos = float(height) / 4f;
 	}
 
 	void drawWarningOverlay()

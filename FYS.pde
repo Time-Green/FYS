@@ -547,7 +547,7 @@ private void drawTitle()
 	textSize(TITLE_FONT_SIZE);
 	textAlign(CENTER);
 
-	text("Rocky Rain", width / 2, float(height) / 4.15f);
+	text("Rocky Rain", width / 2, float(height) / 4f);
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
