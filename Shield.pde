@@ -5,7 +5,7 @@ class Shield
 
     public Shield()
     {
-        image = ResourceManager.getImage("Shield");
+        image = ResourceManager.getImage("ShieldOld");
     }
 
     void draw()

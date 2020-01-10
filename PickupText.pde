@@ -20,7 +20,7 @@ public class PickupText extends BaseObject
 		//Set up the animation
 		int numberOfSprites = 4;
 		int animationSpeed = 8;
-		stars = new AnimatedImage("PickupEffect3", numberOfSprites, animationSpeed, position, size.x, false);
+		stars = new AnimatedImage("PickupParticle", numberOfSprites, animationSpeed, position, size.x, false);
 	}
 
 	void draw()
