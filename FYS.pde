@@ -675,11 +675,6 @@ void debugInput()
 		// ui.generateScoreboardGraphic();
 	}
 
-	if(key == 'l')
-	{
-		load(new Dynamite(), new PVector(player.position.x + 200, player.position.y));
-	}
-
 	if(key == 'p')
 	{
 		parallaxEnabled = !parallaxEnabled;

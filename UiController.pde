@@ -21,8 +21,6 @@ public class UIController
 	//Colors
 	private color titleColor = #ffa259;
 	private color titleBackground = #FFA500;
-	private color inventoryColor = #FBB65E;
-	private color inventorySelectedColor = #56BACF;
 
 	private final color WHITE = #FFFFFF;
 	private final color BLACK = #000000;
@@ -79,17 +77,6 @@ public class UIController
 	private final boolean DRAWSTATS = true;
 
 	String dots = "";
-
-	//Inventory
-	private float inventorySize = 80;
-	private float xSlot = 0.9; //these are all done in percentage of screen width/height so they can properly size with the screen
-	private float ySlot = 0.08;
-	private float slotXIncrement = 0.05; //how much we move for the next iteration of inventory slot (its two but lets support it)
-	private float slotYIncrement = 0.07;
-
-	private color[] buttonColors = {color(0, 0, 255), color(255, 0, 0)};
-
-	private float imageEnlargement = 2; //how much we grow the item in our inventory
 
 	private PImage healthBarImage;
 	private PImage arrowImage;
@@ -441,8 +428,6 @@ public class UIController
 			displayAchievement(); 
 			achievementDisplayTimer--; 
 		}
-
-		drawInventory();
 	}
 
 	//Draw functions
@@ -544,36 +529,6 @@ public class UIController
 		textSize(instructionFontSize);
 		text("Start: continue", width / 2, height / 2 - 30);
 		text("Select: restart", width / 2, height / 2 + 60);
-	}
-
-	void drawInventory()
-	{
-		for (int i = 0; i < player.maxInventory; i++)
-		{
-			//Get the first position we can draw from, then keep going until we get the ast possible postion and work back from there
-			PVector slotLocation = getInventorySlotLocation(i);
-			fill(buttonColors[i]);
-			ellipse(slotLocation.x, slotLocation.y, inventorySize, inventorySize);
-		}
-
-		imageMode(CENTER);
-		
-		for (int i = 0; i < player.inventory.length; i++)
-		{
-			if(player.inventory[i] != null && player.inventoryDrawable[i])
-			{
-				Item item = player.inventory[i];
-				PVector slotLocation = getInventorySlotLocation(i);
-				image(item.image, slotLocation.x, slotLocation.y, item.size.x * imageEnlargement, item.size.y * imageEnlargement);
-			}
-		}
-
-		imageMode(CORNER); 
-	}
-
-	PVector getInventorySlotLocation(int slot)
-	{
-		return new PVector(width * (xSlot + slot * slotXIncrement), height * (ySlot + slot * slotYIncrement));
 	}
 
 	void startDisplayingAchievement(int id)
