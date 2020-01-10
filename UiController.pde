@@ -28,10 +28,10 @@ public class UIController
 
 	//Extra score to add
 	private float extraBonusX;
-	private final String SCORE_TEXT = "Score: ";
 	private float extraScoreLiveTimer;
 	private int collectedPoints;
 	private int scoreDisplay = 0;
+	private boolean addedComboScore = false;
 
 	//Achievement icon
 	public ArrayList<AchievementImageFrame> achievementFrames = new ArrayList<AchievementImageFrame>();
@@ -218,6 +218,8 @@ public class UIController
 
 	void drawGameOver()
 	{
+		checkComboAdded();
+
 		drawTitle("GAME OVER");
 
 		//sub text
@@ -236,6 +238,16 @@ public class UIController
 		}
 	}
 
+	// because when the player dies, the current combo is never added, what this function fixed
+	private void checkComboAdded()
+	{
+		if(!addedComboScore)
+		{
+			addedComboScore = true;
+			scoreDisplay += collectedPoints;
+		}
+	}
+
 	private void handleDots()
 	{
 		if(frameCount % 10 == 0)
@@ -251,6 +263,8 @@ public class UIController
 
 	void drawStartMenu()
 	{
+		fill(TITLE_COLOR);
+		
 		//sub text
 		subTextCounter++;
 
@@ -372,7 +386,7 @@ public class UIController
 		//Draw the score and depth display
 		textAlign(LEFT);
 		textSize(HUD_FONT_SIZE);
-		text(SCORE_TEXT + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
+		text("Score: " + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
 		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + 10);
 
 		//Collected points display
@@ -456,7 +470,7 @@ public class UIController
 		//then draw the extra score based on the distance
 		String scoreDigits = str(scoreDisplay);
 		int numberOfScoreDigits = scoreDigits.length();
-		float bonusX = hudTextDistanceFromLeft + (HUD_FONT_SIZE * (SCORE_TEXT.length() + numberOfScoreDigits));
+		float bonusX = hudTextDistanceFromLeft + (HUD_FONT_SIZE * (7 + numberOfScoreDigits));
 
 		return bonusX;
 	}
@@ -484,7 +498,6 @@ public class UIController
 			rect(barX - barOffset, barY - barOffset, healthBarWidth + barOffset * 2, healthBarHeight + barOffset * 2); 
 
 			barOffset *= tweenFactor; //bootleg tweening
-			noStroke();
 		}
 
 		fill(WHITE);
@@ -494,8 +507,6 @@ public class UIController
 
 		fill(healthBarColor);
 		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
-
-		stroke(0); //we may've changed the stroke in the flashy thing olf the healthbar
 
 		textFont(hudFont);
 

@@ -89,6 +89,7 @@ void setup()
 	ResourceManager.loadAll(true);
 
 	titleFont = createFont("Fonts/Block Stock.ttf", 32);
+	noStroke();
 }
 
 void checkUser()

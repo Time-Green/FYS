@@ -119,7 +119,6 @@ class BaseObject
 	{
 		updateList.add(this);
 		insertIntoDrawLayer(drawLayer);
-
 	}
 
 	// could be useful for attacking
