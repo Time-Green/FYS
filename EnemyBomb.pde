@@ -61,16 +61,10 @@ class EnemyBomb extends Enemy
 		}
 	}
 
-	protected void handleCollision()
+	void attackingPlayer(Player player)
 	{
-		super.handleCollision();
-
-		//Activate the explosion sequence when the player gets too close
-		if (CollisionHelper.rectRect(position, new PVector(size.x + detectionRange, size.y + detectionRange), player.position, player.size) && isExploding == false)
-		{
-			this.isExploding = true;
-			//Flip the explosion animation if need be
-			this.explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
-		}
+		this.isExploding = true;
+		//Flip the explosion animation if need be
+		this.explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 	}
 }

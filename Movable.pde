@@ -353,10 +353,4 @@ class Movable extends BaseObject
 
 		return movableCollision || object.movableCollision;
 	}
-
-	// looks better than instanceof
-	public boolean canPlayerInteract()
-	{
-		return false;
-	}
 }

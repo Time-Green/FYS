@@ -39,30 +39,27 @@ class Enemy extends Mob
 
 		super.update();
 
-		handleCollision();
-
 		movement();
 
 		//Dying
 		if (currentHealth <= 0)
 		{
 			delete(this);
-		}
-			
+		}	
 	}
 
 	protected void movement() {
 		//Can you guys please stop removing this bool from this script please?
 		if (this.walkLeft == true)
 		{
-			this.velocity.set(-speed, 0);
+			this.velocity.x = -speed;
 
 			//Flip the image
 			this.flipSpriteHorizontal = false;
 		}
 		else
 		{
-			this.velocity.set(speed, 0);
+			this.velocity.x = speed;
 
 			//Flip the image
 			this.flipSpriteHorizontal = true;
@@ -100,13 +97,20 @@ class Enemy extends Mob
 			}
 		}
 	}
-	
 
-	protected void handleCollision()
+	boolean canCollideWith(BaseObject object) 
 	{
-		if (CollisionHelper.rectRect(position, size, player.position, player.size))
+		if(object.canPlayerInteract())
 		{
-			player.takeDamage(playerDamage);
+			attackingPlayer((Player) object);
 		}
+		//we phase through the player so we need to put this here, because we dont collide
+
+		return super.canCollideWith(object);
+	}
+
+	void attackingPlayer(Player player)
+	{
+		player.takeDamage(playerDamage);
 	}
 }

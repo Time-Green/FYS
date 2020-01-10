@@ -26,13 +26,8 @@ class EnemyMimic extends Enemy
 		}
 	}
 
-	protected void handleCollision()
+	void attackingPlayer(Player player)
 	{
-		super.handleCollision();
-
-		if (CollisionHelper.rectRect(position, size, player.position, player.size))
-		{
-			detected = true;
-		}
+		detected = true;
 	}
 }
