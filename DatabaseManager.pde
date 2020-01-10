@@ -615,7 +615,7 @@ public class DatabaseManager
 		}
 		catch (Exception e)
 		{
-			println("ERROR: could not parse database result: " + e.getMessage() + "\nResult message: " + result);
+			println("\nERROR: could not parse database result: " + e.getMessage() + "\nResult message: " + result + "\n");
 
 			return new JSONArray();
 		}
@@ -729,11 +729,12 @@ public class DatabaseManager
 		return scoreboardRow;
 	}
 
-	public ArrayList<DatabaseVariable> buildVaribles()
+	public ArrayList<DatabaseVariable> getAllDatabaseVariables()
 	{
 		//Get everything from GlobalSettings
 		JSONArray result = doDatabaseRequest("SELECT * FROM GlobalSettings");
 		ArrayList<DatabaseVariable> returnList = new ArrayList<DatabaseVariable>();
+
 		//Take everything from the result query and put in in the returnList
 		for (int i = 0; i < result.size(); i++)
 		{

@@ -84,8 +84,7 @@ void setup()
 
   	AudioManager.setup(this);
 	ResourceManager.setup(this);
-	ResourceManager.prepareResourceLoading();
-	ResourceManager.loadAll();
+	ResourceManager.loadAll(true);
 }
 
 void checkUser()

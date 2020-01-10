@@ -58,8 +58,13 @@ public static class ResourceManager
 		resourcesToLoadFileNames.add(fileName);
 	}
 
-	public static void loadAll()
+	public static void loadAll(boolean doPrepareResourceLoading)
 	{
+		if(doPrepareResourceLoading)
+		{
+			prepareResourceLoading();
+		}
+
 		for (int i = 0; i < resourcesToLoadNames.size(); i++)
 		{
 			String currentResourceName = resourcesToLoadNames.get(i);
