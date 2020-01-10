@@ -35,9 +35,9 @@ public class UIController
 
 	//Achievement icon
 	public ArrayList<AchievementImageFrame> achievementFrames = new ArrayList<AchievementImageFrame>();
-	int achievementDisplayTimer = 0; 
-	int showingAchievementId; 
-	int selectedAchievementFrameIndex = 0; 
+	private int achievementDisplayTimer = 0; 
+	private int showingAchievementId; 
+	private int selectedAchievementFrameIndex = 0; 
 
 	//Health
 	private float healthBarHeight = 30; 
@@ -59,19 +59,20 @@ public class UIController
 	private float killFactor = 0.01; //we stop the tweening at 0.01 of maxBarOffet
 
 	//arrows
-	float arrowYTarget = 0;
-	float arrowYOffset = 0;
-	float easing = 0.05f;
+	private float arrowYTarget = 0;
+	private float arrowYOffset = 0;
+	private float easing = 0.05f;
 
 	//Overlay
-	boolean drawWarningOverlay = false;
-	final float MAX_OVERLAY_FILL = 30f;
-	float currentOverlayFill = 0;
-	boolean isIncreasing = true;
+	public float currentLoadingScreenTransitionFill = 0;
+	private boolean drawWarningOverlay = false;
+	private final float MAX_OVERLAY_FILL = 30f;
+	private float currentOverlayFill = 0;
+	private boolean isIncreasing = true;
 
 	private final boolean DRAWSTATS = true;
 
-	String dots = "";
+	private String dots = "";
 
 	private PImage healthBarImage;
 	private PImage arrowImage;
@@ -103,23 +104,23 @@ public class UIController
 		switch (gameState)
 		{
 			case MainMenu:
-				startMenu();
+				drawStartMenu();
 			break;	
 
 			case AchievementScreen:
-				achievementScreen(); 
+				drawAchievementScreen(); 
 			break; 
 
 			case GameOver:
-				gameOver();
+				drawGameOver();
 			break;
 
 			case InGame :
-				gameHUD();
+				drawGameHUD();
 			break;
 
 			case GamePaused :
-				pauseScreen();
+				drawPauseScreen();
 			break;
 
 			default :
@@ -216,7 +217,7 @@ public class UIController
 		tint(WHITE);
 	}
 
-	void gameOver()
+	void drawGameOver()
 	{
 		drawTitle("GAME OVER");
 
@@ -249,7 +250,7 @@ public class UIController
 		}
 	}
 
-	void startMenu()
+	void drawStartMenu()
 	{
 		drawTitle("ROCKY RAIN");
 
@@ -270,6 +271,25 @@ public class UIController
 				subTextCounter = -60;
 			}
 		}
+
+		handleLoadingScreenTransition();
+	}
+
+	private void handleLoadingScreenTransition()
+	{
+		if(currentLoadingScreenTransitionFill > 0)
+		{
+			currentLoadingScreenTransitionFill -= 4.5f;
+
+			if(currentLoadingScreenTransitionFill < 0)
+			{
+				currentLoadingScreenTransitionFill = 0;
+			}
+
+			fill(0, currentLoadingScreenTransitionFill);
+			rectMode(CORNER);
+			rect(0, 0, width, height);
+		}
 	}
 
 	void initAchievementFrames()
@@ -287,7 +307,7 @@ public class UIController
 		}
 	}
 	
-	void achievementScreen()
+	void drawAchievementScreen()
 	{
 		fill(0, 175); 
 		rect(0, 0, width * 2, height * 2); 
@@ -346,7 +366,7 @@ public class UIController
 		}
 	}
 
-	void gameHUD()
+	void drawGameHUD()
 	{
 		drawHealthBar();
 
@@ -508,7 +528,7 @@ public class UIController
 		text("Logged in as " + dbUser.userName, width - 10, height - 10);
 	}
 
-	void pauseScreen()
+	void drawPauseScreen()
 	{
 		drawTitle("Paused");
 
