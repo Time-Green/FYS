@@ -37,7 +37,7 @@ ArrayList<DbLeaderboardRow> leaderBoard;
 ArrayList<Integer> unlockedAchievementIds; 
 ArrayList<Achievement> allAchievements; 
 ArrayList<AchievementRarity> allAchievementsRarity; 	
-ArrayList<Integer> vars;
+ArrayList<DatabaseVariable> databaseVariables;
 String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
