@@ -8,4 +8,4 @@ What would that button do?
 I really like {PlayerName}
 Hello {PlayerName}
 Do you know who ate all the donuts?
-you owe me a beer {PlayerName}
+You owe me a beer {PlayerName}

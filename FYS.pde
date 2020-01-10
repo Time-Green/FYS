@@ -2,14 +2,13 @@ import java.util.*;
 
 // List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
-
 ArrayList<BaseObject> destroyList = new ArrayList<BaseObject>(); //destroy and loadList are required, because it needs to be qeued before looping through the updateList,
 ArrayList<BaseObject> loadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>();    //otherwise we get a ConcurrentModificationException
 
 //Drawing
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
-int drawingLayers = 10; //increase if you add more layers
+final int DRAWING_LAYERS = 10; //increase if you add more layers
 
 // These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -108,7 +107,7 @@ void afterResouceLoadingSetup()
 {
 	setVolumes();
 	
-	prepareDrawingLayers();
+	prepareDRAWING_LAYERS();
 	generateFlippedImages();
 
 	//setup game and show title screen
@@ -169,7 +168,7 @@ void setupGame()
 	mobList.clear();
 	lightSources.clear();
 
-	cleanDrawingLayers();
+	cleanDRAWING_LAYERS();
 
 	runData = new RunData();
 	ui = new UIController();
@@ -185,17 +184,17 @@ void setupGame()
 	ui.initAchievementFrames();
 }
 
-void prepareDrawingLayers()
+void prepareDRAWING_LAYERS()
 {
 	drawList = new ArrayList<ArrayList>();
 
-	for(int i = 0; i < drawingLayers; i++)
+	for(int i = 0; i < DRAWING_LAYERS; i++)
 	{
 		drawList.add(new ArrayList<BaseObject>());
 	}
 }
 
-void cleanDrawingLayers()
+void cleanDRAWING_LAYERS()
 {
 	for (ArrayList<BaseObject> drawLayer : drawList)
 	{
