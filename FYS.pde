@@ -42,7 +42,7 @@ String loginStatus = "Logging in";
 boolean isUploadingRunResults = false;
 
 //Database variables
-ArrayList<DatabaseVariable> DatabaseVariable;
+ArrayList<DatabaseVariable> databaseVariable;
 boolean loadedVariables = false;
 
 //Scores
