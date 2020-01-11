@@ -2,7 +2,11 @@ class GoldenBiome extends Biome
 {
 	GoldenBiome()
 	{
-        float caveSpawningPossibilityScale = 0.51f; //lower for more caves
+		destroyedImage = ResourceManager.getImage("DestroyedGolden");
+
+		minimumDepth = 700;
+
+        caveSpawningPossibilityScale = 0.48f; //lower for more caves
 	}
 
     Tile getTileToGenerate(int x, int depth)
@@ -11,15 +15,11 @@ class GoldenBiome extends Biome
     	{
       		float orechance = random(100);
 
-			if (orechance > 88 && orechance <= 93)
-			{
-				return new RedstoneTile(x, depth, 0);
-			}
-			else if (orechance > 93 && orechance <= 96)
+			if (orechance > 93 && orechance <= 95)
 			{
 				return new DiamondTile(x, depth, 0);
 			}
-			else if (orechance > 96 && orechance <= 98)
+			else if (orechance > 96 && orechance <= 99)
 			{
 				return new AmethystTile(x, depth, 0);
 			}

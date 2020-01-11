@@ -1,6 +1,6 @@
 public class TintedTile extends Tile
 {
-    float sparkleChance = 0.001;
+    float sparkleChance = 0.0004;
 
 	public TintedTile(int x, int y)
 	{

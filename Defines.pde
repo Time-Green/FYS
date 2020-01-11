@@ -39,8 +39,8 @@ final int BLUE_ICE_VALUE = 350;
 final int REDSTONE_VALUE = 400;
 final int GOLD_VALUE = 500;
 final int LAPIS_VALUE = 750;
-final int DIAMOND_VALUE = 1000;
-final int AMETHYST_VALUE = 2000;
+final int AMETHYST_VALUE = 800;
+final int DIAMOND_VALUE = 2000;
 final int METEORITE_VALUE = 5000;
 
 //Dig bonuses

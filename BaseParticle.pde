@@ -4,8 +4,8 @@ public class BaseParticle extends Movable
 	PVector spawnAcceleration;
 	float size, spawnTime;
 
-	int maxLifeTime = 120; //max 120 frames life time
-	int currentLifeTime = 0;
+	float maxLifeTime = 120; //max 120 frames life time. it's a float so we can easily do certain divisions, like for opacity
+	float currentLifeTime = 0;
 
 	float minSize = 15;
 	float maxSize = 30;

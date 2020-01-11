@@ -17,7 +17,7 @@ public class World
 	private final int[] PARALLAX_WIDTH = new int[PARALLAX_LAYERS]; //width of the parallaxbackgrounds
 	private ArrayList<ArrayList<ArrayList<ParallaxTile>>> parallaxMap = new ArrayList<ArrayList<ArrayList<ParallaxTile>>>(); //parallax layer, then y and then x
 
-	private Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
+	private Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome(), new GoldenBiome()};
 	private Biome currentBiome;
 	private Biome nextBiome;
 	private ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
@@ -30,7 +30,7 @@ public class World
 
 		//Specially queued biomes, for cinematic effect
 		nextBiome = new OverworldBiome();
-		biomeQueue.add(new GoldenBiome());
+		biomeQueue.add(new NormalBiome());
 
 		fillBiomeQueue(0);
 		switchBiome(0);

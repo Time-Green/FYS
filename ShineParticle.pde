@@ -13,8 +13,8 @@ public class ShineParticle extends BaseParticle
 		{
 			return;
 		}
-
-        tint(255, currentLifeTime / maxLifeTime * 255); //make less opaque as we dissapear.
+		
+        tint(255, 255 - currentLifeTime / maxLifeTime * 255); 
 		image(image, position.x, position.y, size, size);
         tint(255, 255);
 	}
