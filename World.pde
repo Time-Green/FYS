@@ -62,14 +62,16 @@ public class World
 
 	void drawBackgoundImage()
 	{
-		float xPos = -camera.position.x - width * 0.1;
+		final float X_PARALLEX_STRENGTH = 0.1f;
+
+		float xPos = camera.position.x * X_PARALLEX_STRENGTH;
 		float yPos = -camera.position.y * 0.5 - 200;
 
 		float worldWidth = TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE;
 
 		pushMatrix();
 
-		scale(1.1, 1.1);
+		scale(1 + X_PARALLEX_STRENGTH, 1);
 		image(dayNightImage, xPos, yPos, worldWidth, dayNightImage.height);
 
 		popMatrix(); 
