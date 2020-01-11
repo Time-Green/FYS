@@ -28,7 +28,7 @@ class Biome
   	{
     	if(spawnResourceTileAllowed(x, depth))
     	{
-      		float orechance = random(100);
+      		float oreChange = random(100);
 
 			//spawn air at surface
 			if (depth <= OVERWORLD_HEIGHT)
@@ -47,42 +47,46 @@ class Biome
 			{
 				return new DirtStoneTransitionTile(x, depth);
 			}
-			else if (depth > 15 && depth <= 500)
+			else if (depth > 15 && depth <= 750)
 			{
-				if (orechance > 80 && orechance <= 90)
+				if (oreChange > 0 && oreChange <= 10)
 				{
 					return new CoalTile(x, depth);
 				}
-				else if (orechance > 90 && orechance <= 98)
+				else if (oreChange > 10 && oreChange <= 18)
 				{
 					return new IronTile(x, depth);
 				}
-				else if (orechance > 98 && orechance <= 100)
+				else if (oreChange > 18 && oreChange <= 20)
 				{
 					return new ExplosionTile(x, depth);
 				}
 			}
-			else if (depth > 500)
+			else if (depth > 750)
 			{
-				if (orechance > 80 && orechance <= 88)
+				if (oreChange > 0 && oreChange <= 8)
 				{
 					return new GoldTile(x, depth, 0);
 				}
-				else if (orechance > 88 && orechance <= 93)
+				else if (oreChange > 8 && oreChange <= 13)
 				{
 					return new RedstoneTile(x, depth, 0);
 				}
-				else if (orechance > 93 && orechance <= 96)
+				else if (oreChange > 13 && oreChange <= 16)
 				{
 					return new DiamondTile(x, depth, 0);
 				}
-				else if (orechance > 96 && orechance <= 98)
+				else if (oreChange > 16 && oreChange <= 18)
 				{
 					return new AmethystTile(x, depth, 0);
 				}
-				else if (orechance > 98 && orechance <= 100)
+				else if (oreChange > 18 && oreChange <= 20)
 				{
 					return new ObsedianTile(x, depth);
+				}
+				else if (oreChange > 20 && oreChange <= 22)
+				{
+					return new ExplosionTile(x, depth);
 				}
       		}
     	}
