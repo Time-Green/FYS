@@ -1,9 +1,9 @@
 public class AnimatedImage
 {
-	PImage[] frames;
-	float frameDelay, objectWidth, objectHeight;
-	PVector drawPosition;
-	boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
+	public PVector drawPosition;
+	private PImage[] frames;
+	private float frameDelay, objectWidth, objectHeight;
+	private boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
 
 	int frameCounter = 0;
 
@@ -83,8 +83,6 @@ public class AnimatedImage
 			scale(-1, -1);
 			image(imageToDraw, -objectWidth, -objectHeight);
 		}
-
-		
 
 		popMatrix();
 

@@ -4,6 +4,7 @@ class NormalBiome extends Biome
 	NormalBiome()
 	{
 		structureChance = 0.02;
+		maximumDepth = 400;
 	}
 
 	String getStructureName()

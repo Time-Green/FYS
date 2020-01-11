@@ -8,19 +8,24 @@ class FireBiome extends Biome
 
 		destroyedImage = ResourceManager.getImage("DestroyedVulcanic");
 
+		mossChance = 0;
+
 		minimumDepth = 200;
 	}
 
 	Tile getTileToGenerate(int x, int depth)
 	{
-	
 		if(spawnResourceTileAllowed(x, depth))
 		{
-			float oreChance = 0.01;
+			float oreChange = random(100);
 
-			if (random(1) < oreChance)
+			if (oreChange <= 1)
 			{
 				return new MeteoriteTile(x, depth);
+			}
+			else if (oreChange > 1 && oreChange <= 3)
+			{
+				return new ExplosionTile(x, depth);
 			}
 		}
 	

@@ -22,13 +22,17 @@ class Biome
 
 	boolean canParallax = true;
 
+	boolean spawnMoss = true;
+	color mossTint = color(23, 99, 0);
+	float mossChance = 0.0003;
+
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
   	Tile getTileToGenerate(int x, int depth)
   	{
     	if(spawnResourceTileAllowed(x, depth))
     	{
-      		float orechance = random(100);
+      		float oreChange = random(100);
 
 			//spawn air at surface
 			if (depth <= OVERWORLD_HEIGHT)
@@ -47,44 +51,21 @@ class Biome
 			{
 				return new DirtStoneTransitionTile(x, depth);
 			}
-			else if (depth > 15 && depth <= 500)
+			else if (depth > 15)
 			{
-				if (orechance > 80 && orechance <= 90)
+				if (oreChange > 0 && oreChange <= 10)
 				{
 					return new CoalTile(x, depth);
 				}
-				else if (orechance > 90 && orechance <= 98)
+				else if (oreChange > 10 && oreChange <= 18)
 				{
 					return new IronTile(x, depth);
 				}
-				else if (orechance > 98 && orechance <= 100)
+				else if (oreChange > 18 && oreChange <= 20)
 				{
 					return new ExplosionTile(x, depth);
 				}
 			}
-			else if (depth > 500)
-			{
-				if (orechance > 80 && orechance <= 88)
-				{
-					return new GoldTile(x, depth, 0);
-				}
-				else if (orechance > 88 && orechance <= 93)
-				{
-					return new RedstoneTile(x, depth, 0);
-				}
-				else if (orechance > 93 && orechance <= 96)
-				{
-					return new DiamondTile(x, depth, 0);
-				}
-				else if (orechance > 96 && orechance <= 98)
-				{
-					return new AmethystTile(x, depth, 0);
-				}
-				else if (orechance > 98 && orechance <= 100)
-				{
-					return new ObsedianTile(x, depth);
-				}
-      		}
     	}
 
     	//if no special tile was selected, spawn stone
@@ -187,5 +168,15 @@ class Biome
 	String getParallaxedRock()
 	{
 		return "StoneBlock";
+	}
+
+	void maybeSpawnMoss(Tile tile, World world)
+	{
+		if(random(1) > mossChance)
+		{
+			return;
+		}
+
+		load(new Moss(tile, mossTint));
 	}
 }

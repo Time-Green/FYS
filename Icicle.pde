@@ -8,6 +8,8 @@ class Icicle extends Obstacle
 	Icicle()
 	{
 		anchored = true;
+
+		gravityForce = 0.5f;
 		
 		image = ResourceManager.getImage("Icicle");
 	}

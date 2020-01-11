@@ -7,7 +7,8 @@ class Explosion extends BaseObject
 
 	boolean dealDamageToPlayer;
 
-	ArrayList<BaseObject> objectsInMaxRadius = new ArrayList<BaseObject>();
+	ArrayList<BaseObject> objectsInMaxRadius;
+	ObjectFinderThread objectFinderThread;
 
 	Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer)
 	{
@@ -20,7 +21,9 @@ class Explosion extends BaseObject
 		setupLightSource(this, radius, 1f);
 
 		//get objects inside max range
-		objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
+		//objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
+
+		objectFinderThread = startObjectFinderThread(position, maxRadius);
 
 		//create particle system
 		ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, int(radius / 5), radius / 15);
@@ -33,6 +36,19 @@ class Explosion extends BaseObject
 
 	void explode()
 	{
+		if(objectFinderThread.isAlive())
+		{
+			// if we are still getting the objects in max radius
+			return;
+		}
+		else
+		{
+			if(objectsInMaxRadius == null)
+			{
+				objectsInMaxRadius = objectFinderThread.objectsInRadius;
+			}
+		}
+
 		ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
 
 		for (BaseObject object : objectsInMaxRadius)
@@ -66,6 +82,14 @@ class Explosion extends BaseObject
 		}
 
 		camera.induceStress(0.04f);
+
+		// increase next explosion size
+		currentRadius += radiusIncrease;
+
+		if (currentRadius > maxRadius)
+		{
+			currentRadius = maxRadius;
+		}
 	}
 
 	void update()
@@ -74,13 +98,6 @@ class Explosion extends BaseObject
 
 		if (currentRadius < maxRadius)
 		{
-			currentRadius += radiusIncrease;
-
-			if (currentRadius > maxRadius)
-			{
-				currentRadius = maxRadius;
-			}
-
 			explode();
 		}
 		else

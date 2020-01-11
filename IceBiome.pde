@@ -5,6 +5,8 @@ class IceBiome extends Biome
 		destroyedImage = ResourceManager.getImage("DestroyedIce");
 		ceilingObstacleChance = 0.1;
 		caveSpawningPossibilityScale = 0.60;
+
+		mossChance = 0;
 		enemyChance = 0.03;
 	}
 
@@ -13,21 +15,25 @@ class IceBiome extends Biome
 		
 		if(spawnResourceTileAllowed(x, depth))
 		{
-			float orechance = random(100);
+			float oreChange = random(100);
 
 			if (depth - startedAt < 50)
 			{
-				if (orechance <= 4)
+				if (oreChange <= 4)
 				{
 					return new GreenIceTile(x, depth);
 				}
-				else if (orechance <= 8)
+				else if (oreChange > 4 && oreChange <= 8)
 				{
 					return new RedIceTile(x, depth);
 				}
-				else if (orechance <=12)
+				else if (oreChange > 8 && oreChange <= 12)
 				{
 					return new BlueIceTile(x, depth);
+				}
+				else if (oreChange > 12 && oreChange <= 14)
+				{
+					return new ExplosionTile(x, depth);
 				}
 			}
 		}

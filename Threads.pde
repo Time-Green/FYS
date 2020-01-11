@@ -119,6 +119,14 @@ void startLoaderThread(String currentResourceName, String currentResourceFileNam
 	loaderThread.start();
 }
 
+ObjectFinderThread startObjectFinderThread(PVector position, float radius)
+{
+	ObjectFinderThread objectFinderThread = new ObjectFinderThread(position, radius);
+	objectFinderThread.start();
+
+    return objectFinderThread;
+}
+
 // start a thread that registers a run start
 void startRegisterRunThread()
 {

@@ -6,6 +6,8 @@ class OverworldBiome extends Biome
 		destroyedImage = ResourceManager.getImage("Invisible");
 		canParallax = false;
 
+		mossChance = 0;
+
 		transitWidth = 0; //we dont want air holes in the floor
 	}
 
