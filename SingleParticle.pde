@@ -1,10 +1,12 @@
-public class ShineParticle extends BaseParticle
+public class SingleParticle extends BaseParticle
 {
-	PImage image = ResourceManager.getImage("Sparkle");
+	PImage image;
 
-    public ShineParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc)
+    public SingleParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc, PImage image)
     {
         super(parentParticleSystem, spawnLocation, spawnAcc);
+
+		this.image = image;
     }
 
 	void draw()
@@ -13,7 +15,7 @@ public class ShineParticle extends BaseParticle
 		{
 			return;
 		}
-		
+
         tint(255, 255 - currentLifeTime / maxLifeTime * 255); 
 		image(image, position.x, position.y, size, size);
         tint(255, 255);

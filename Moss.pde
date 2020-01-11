@@ -90,7 +90,7 @@ class Moss extends BaseObject
 
         if(victim.rootedIn.size() == 0 && victim.density)
         {
-            int subtract = int(random(2));
+            int subtract = int(random(.8, 2));
             load(new Moss(victim, greyscaleColor, potency - subtract));
         }
 
