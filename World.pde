@@ -239,7 +239,7 @@ public class World
 
 	//returns an arraylist with the 8 tiles surrounding the coordinations. returns BaseObjects so that it can easily be joined with every object list
 	//but it's still kinda weird I'll admit
-	ArrayList<BaseObject> getSurroundingTiles(float x, float y, Movable collider)
+	ArrayList<BaseObject> getSurroundingTiles(float x, float y, BaseObject collider)
 	{ 
 		ArrayList<BaseObject> surrounding = new ArrayList<BaseObject>();
 

@@ -22,6 +22,10 @@ class Biome
 
 	boolean canParallax = true;
 
+	boolean spawnMoss = true;
+	color mossTint = color(23, 99, 0);
+	float mossChance = 0.0003;
+
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
   	Tile getTileToGenerate(int x, int depth)
@@ -164,5 +168,15 @@ class Biome
 	String getParallaxedRock()
 	{
 		return "StoneBlock";
+	}
+
+	void maybeSpawnMoss(Tile tile, World world)
+	{
+		if(random(1) > mossChance)
+		{
+			return;
+		}
+
+		load(new Moss(tile, mossTint));
 	}
 }

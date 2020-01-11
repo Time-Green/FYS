@@ -4,8 +4,13 @@ class ShadowBiome extends Biome
 	ShadowBiome()
 	{
 		enemyChance = 0.15;
+		
+		mossTint = color(80);
+		mossChance = 0.0001;
+
 		minimumDepth = 200;
 		playerVisibilityScale = 0.65f;
+
 		destroyedImage = ResourceManager.getImage("DestroyedShadow");
 	}
 

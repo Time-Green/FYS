@@ -29,6 +29,7 @@ class Tile extends BaseObject
 	int destroyedLayer = BACKGROUND_LAYER;
 
 	ArrayList<BaseObject> rootedIn = new ArrayList<BaseObject>();
+	Moss moss; //in-case we have moss, so we can easily grab it's color and make us nice
 
 	Tile(int x, int y) 
 	{
@@ -81,6 +82,7 @@ class Tile extends BaseObject
 		else
 		{
 			world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
+			world.currentBiome.maybeSpawnMoss(this, world);
 		}
 	}
 
@@ -115,8 +117,15 @@ class Tile extends BaseObject
 			{
 				return;
 			}
-
-			tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
+			if(moss != null)
+			{
+				moss.applyTileTint();
+			}
+			else 
+			{
+				tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
+			}
+			
 			image(image, position.x, position.y, TILE_SIZE, TILE_SIZE);
 			drawDecals();
 			tint(255);

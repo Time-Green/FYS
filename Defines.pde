@@ -80,7 +80,8 @@ final int OBJECT_LAYER = 2;
 final int MOB_LAYER = 3;
 final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
-final int PRIORITY_LAYER = 6;
+final int ABOVE_TILE_LAYER = 6;
+final int PRIORITY_LAYER = 7;
 
 //Smoothing
 final float PARALLAX_INTENSITY = 0.05;

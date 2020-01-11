@@ -6,6 +6,8 @@ class GoldenBiome extends Biome
 
 		minimumDepth = 700;
 
+		mossChance = 0;
+
         caveSpawningPossibilityScale = 0.48f; //lower for more caves
 	}
 

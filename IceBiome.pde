@@ -5,6 +5,8 @@ class IceBiome extends Biome
 		destroyedImage = ResourceManager.getImage("DestroyedIce");
 		ceilingObstacleChance = 0.1;
 		caveSpawningPossibilityScale = 0.60;
+
+		mossChance = 0;
 		enemyChance = 0.03;
 	}
 

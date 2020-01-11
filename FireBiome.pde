@@ -8,6 +8,8 @@ class FireBiome extends Biome
 
 		destroyedImage = ResourceManager.getImage("DestroyedVulcanic");
 
+		mossChance = 0;
+
 		minimumDepth = 200;
 	}
 
