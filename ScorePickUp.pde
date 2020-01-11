@@ -7,15 +7,27 @@ public class ScorePickup extends Pickup
 	// drop based on tile
 	public ScorePickup(ResourceTile tile)
 	{
-		this.score = tile.value / tile.pickupDropAmountValue;
-		this.image = tile.pickupImage;
+		score = tile.value / tile.pickupDropAmountValue;
+		image = tile.pickupImage;
+
+		multiplyScoreBasedOnDepth();
 	}
 
 	// independant drop
 	public ScorePickup(int scoreToGiveOnPickup, PImage image)
 	{
-		this.score = scoreToGiveOnPickup;
+		score = scoreToGiveOnPickup;
 		this.image = image;
+
+		multiplyScoreBasedOnDepth();
+	}
+
+	private void multiplyScoreBasedOnDepth()
+	{
+		// every 100 depth we add 10% to the score
+		float multiplier = float(player.getDepth()) / 1000f;
+
+		score *= 1 + multiplier;
 	}
 
 	// This Pickup is collected by the player

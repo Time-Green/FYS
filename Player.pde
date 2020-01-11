@@ -52,7 +52,7 @@ class Player extends Mob
 
 		super.update();
 
-		if(player.getDepth() - OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(LONE_DIGGER_ACHIEVEMENT))
+		if(getDepth() - OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(LONE_DIGGER_ACHIEVEMENT))
 		{
 			achievementHelper.unlock(LONE_DIGGER_ACHIEVEMENT); 
 		}

@@ -659,17 +659,25 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
 {
 	ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
 
-	for (BaseObject object : updateList)
+	try
 	{
-		if (object.suspended)
+		for (BaseObject object : updateList)
 		{
-			continue;
-		}
+			if (object.suspended)
+			{
+				continue;
+			}
 
-		if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius)
-		{
-			objectsInRadius.add(object);
+			if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius)
+			{
+				objectsInRadius.add(object);
+			}
 		}
+	}
+	catch (Exception e)
+	{
+		// sometimes we get concurrent modification exception, in that case we just try again
+		return getObjectsInRadius(pos, radius);
 	}
 
 	return objectsInRadius;
