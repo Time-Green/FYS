@@ -1,14 +1,14 @@
 class Flower extends BaseObject
 {
 	private AnimatedImage animatedImageFlower;
-	private final int FLOWERFRAMES = 4;
+	private final int FLOWER_FRAMES = 4;
 
 	public Flower()
 	{
 		setupLightSource(this, 125f, 1f);
 		size.set(TILE_SIZE, TILE_SIZE);
 
-		animatedImageFlower = new AnimatedImage("Flower", FLOWERFRAMES, 20, position, size.x, false);
+		animatedImageFlower = new AnimatedImage("Flower", FLOWER_FRAMES, 20, position, size.x, false);
 	}
 
 	void draw()
@@ -18,8 +18,8 @@ class Flower extends BaseObject
 
 	void takeDamage(float damageTaken)
 	{
-		//super secret codes 
 		super.takeDamage(damageTaken);
+
 		AudioManager.playSoundEffect("HurtSound", position);
 		delete(this);
 	}

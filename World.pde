@@ -1,30 +1,32 @@
 public class World
 {
-	ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
-	ArrayList<StructureSpawner> queuedStructures = new ArrayList<StructureSpawner>();
+	private ArrayList<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();//2d list with y, x and Tile.
+	private ArrayList<StructureSpawner> queuedStructures = new ArrayList<StructureSpawner>();
 
-	float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
-	int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
+	private float deepestDepth = 0.0f; //the deepest point our player has been. Could definitely be a player variable, but I decided against it since it feels more like a global score
+	private int generateOffset = 25; // generate tiles 15 tiles below player, other 10 are air offset
 
-	float worldAge = millis(); //useful for when we wanna see the length of the current run if we do a few in a row. set to the amount of milliseconds the moment we're created
+	private float worldAge = millis(); //useful for when we wanna see the length of the current run if we do a few in a row. set to the amount of milliseconds the moment we're created
 
-	PImage dayNightImage;
+	private final int BACKGROUND_IMAGES_COUNT = 8;
+	private PImage dayNightImage;
 
-	int birdCount = round(random(10, 15));
+	private int birdCount = round(random(10, 15));
 
-	int parallaxLayers = 2;
-	int[] parallaxWidth = new int[parallaxLayers]; //width of the parallaxbackgrounds
-	ArrayList<ArrayList<ArrayList<ParallaxTile>>> parallaxMap = new ArrayList<ArrayList<ArrayList<ParallaxTile>>>(); //parallax layer, then y and then x
+	private final int PARALLAX_LAYERS = 2;
+	private final int[] PARALLAX_WIDTH = new int[PARALLAX_LAYERS]; //width of the parallaxbackgrounds
+	private ArrayList<ArrayList<ArrayList<ParallaxTile>>> parallaxMap = new ArrayList<ArrayList<ArrayList<ParallaxTile>>>(); //parallax layer, then y and then x
 
-	Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
-	Biome currentBiome;
-	Biome nextBiome;
-	ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
-	int switchDepth; //the depth at wich we switch to the next biome in the qeueu
+	private Biome[] biomes = {new NormalBiome(), new HollowBiome(), new IceBiome(), new ShadowBiome(), new FireBiome()};
+	private Biome currentBiome;
+	private Biome nextBiome;
+	private ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
+	private int switchDepth; //the depth at wich we switch to the next biome in the qeueu
 
 	World()
 	{
-		dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, 8)));
+		dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, BACKGROUND_IMAGES_COUNT)));
+		backgroundColor = dayNightImage.get(0, 0);
 
 		//Specially queued biomes, for cinematic effect
 		nextBiome = new OverworldBiome();
@@ -60,14 +62,16 @@ public class World
 
 	void drawBackgoundImage()
 	{
-		float xPos = -camera.position.x - width * 0.1;
+		final float X_PARALLEX_STRENGTH = 0.1f;
+
+		float xPos = camera.position.x * X_PARALLEX_STRENGTH;
 		float yPos = -camera.position.y * 0.5 - 200;
 
 		float worldWidth = TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE;
 
 		pushMatrix();
 
-		scale(1.1, 1.1);
+		scale(1 + X_PARALLEX_STRENGTH, 1);
 		image(dayNightImage, xPos, yPos, worldWidth, dayNightImage.height);
 
 		popMatrix(); 
@@ -115,7 +119,7 @@ public class World
 		String[] genericTexts = loadStrings("Texts/GenericTexts.txt");
 		String[] panicTexts = loadStrings("Texts/PanicTexts.txt");
 
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < names.length; i++)
 		{
 			String[] personalTexts = loadStrings("Texts/" + names[i] + "Texts.txt");
 
@@ -127,10 +131,10 @@ public class World
 
 	void prepareParallax()
 	{
-		for(int i = 0; i < parallaxLayers; i++)
+		for(int i = 0; i < PARALLAX_LAYERS; i++)
 		{
 			parallaxMap.add(new ArrayList<ArrayList<ParallaxTile>>());
-			parallaxWidth[i] = int(TILES_HORIZONTAL + TILES_HORIZONTAL * PARALLAX_INTENSITY * i * 3); //the three has no meaning, I just kept trying till it filled the screen
+			PARALLAX_WIDTH[i] = int(TILES_HORIZONTAL + TILES_HORIZONTAL * PARALLAX_INTENSITY * i * 3); //the three has no meaning, I just kept trying till it filled the screen
 		}
 	}
 
@@ -206,7 +210,7 @@ public class World
 
 			if(parallaxEnabled)
 			{
-				for(int i = 1; i <= parallaxLayers; i++)
+				for(int i = 1; i <= PARALLAX_LAYERS; i++)
 				{
 					generateParallax(y, i);
 				}
@@ -622,7 +626,7 @@ public class World
 		ArrayList<ParallaxTile> yList = new ArrayList<ParallaxTile>();
 		parallaxList.add(yList);
 
-		for(int x = 0; x < parallaxWidth[parallaxLayer - 1]; x++)
+		for(int x = 0; x < PARALLAX_WIDTH[parallaxLayer - 1]; x++)
 		{
 			PImage parallaxImage;
 
@@ -632,7 +636,7 @@ public class World
 			}
 			else if(noise(x * PARALLAX_NOISE_SCALE * parallaxLayer, y * PARALLAX_NOISE_SCALE * parallaxLayer) > PARALLAX_NOISE_POSSIBILITY)
 			{
-				if(parallaxLayer < parallaxLayers) //there's another layer behind us, so don't draw a background infront of it
+				if(parallaxLayer < PARALLAX_LAYERS) //there's another layer behind us, so don't draw a background infront of it
 				{
 					parallaxImage = null;
 				}

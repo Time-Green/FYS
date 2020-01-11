@@ -19,7 +19,7 @@ class Player extends Mob
 	public float shieldTimer;
 	public float magnetTimer;
 
-	boolean gotbonus1;
+	private boolean gotbonus1;
 	private Shield myShield;
 
 	private PVector spawnPosition = new PVector(1300, 509);
@@ -34,7 +34,7 @@ class Player extends Mob
 		jumpForce = 21f;
 		drawLayer = PLAYER_LAYER;
 
-		setUpAnimation();
+		setupAnimation();
 
 		setupLightSource(this, viewAmount, 1f);
 
@@ -115,7 +115,7 @@ class Player extends Mob
 
 	float getRelicStrength(float relicAmount)
 	{
-		return floor(relicAmount/5);
+		return floor(relicAmount / 5);
 	}
 
 	void setVisibilityBasedOnCurrentBiome()
@@ -149,26 +149,26 @@ class Player extends Mob
 		handleParticles();
 	}
 
-	private void setUpAnimation()
+	private void setupAnimation()
 	{
 		//Movement animation
-		int walkFrames = 4, idleFrames = 3, mineFrames = 3;
-		int walkAnimSpeed = 8, idleAnimSpeed = 1, mineAnimSpeed = 5;
-		walkCycle = new AnimatedImage("PlayerWalk", walkFrames, walkAnimSpeed, position, size.x, flipSpriteHorizontal);
-		animatedImageIdle = new AnimatedImage("PlayerIdle", idleFrames, idleAnimSpeed, position, size.x, flipSpriteHorizontal);
-		animatedImageMine = new AnimatedImage("PlayerMine", mineFrames, mineAnimSpeed, position, size.x, flipSpriteHorizontal);
+		final int WALK_FRAMES = 4, IDLE_FRAMES = 3, MINE_FRAMES = 3;
+		final int WALK_ANIMATION_SPEED = 8, IDLE_ANIMATION_SPEED = 1, MINE_ANIMATION_SPEED = 5;
+		walkCycle = new AnimatedImage("PlayerWalk", WALK_FRAMES, WALK_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+		animatedImageIdle = new AnimatedImage("PlayerIdle", IDLE_FRAMES, IDLE_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+		animatedImageMine = new AnimatedImage("PlayerMine", MINE_FRAMES, MINE_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 		
 		//Jumping animation
-		int airFrames = 3, fallFrames = 4;
-		int airAnimSpeed = 10, fallAnimSpeed = 20;
-		animatedImageAir = new AnimatedImage("PlayerAir", airFrames, airAnimSpeed, position, size.x, flipSpriteHorizontal);
-    	animatedImageFall = new AnimatedImage("PlayerFall", fallFrames, fallAnimSpeed, position, size.x, flipSpriteHorizontal);
+		final int AIR_FRAMES = 3, FALL_FRAMES = 4;
+		final int AIR_ANIMATION_SPEED = 10, FALL_ANIMATION_SPEED = 20;
+		animatedImageAir = new AnimatedImage("PlayerAir", AIR_FRAMES, AIR_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+    	animatedImageFall = new AnimatedImage("PlayerFall", FALL_FRAMES, FALL_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 
 		//Status effects
-		int shockFrames = 2, fireFrames = 4;
-		int statusEffectAnimSpeed = 10;
-		animatedImageShocked = new AnimatedImage("PlayerShock", shockFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
-		animatedImageFire = new AnimatedImage("FireP", fireFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
+		final int SHOCK_FRAMES = 2, FIRE_FRAMES = 4;
+		final int STATUS_EFFECT_ANIMATION_SPEED = 10;
+		animatedImageShocked = new AnimatedImage("PlayerShock", SHOCK_FRAMES, STATUS_EFFECT_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+		animatedImageFire = new AnimatedImage("FireP", FIRE_FRAMES, STATUS_EFFECT_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 	}
 
 	private void handleAnimation()
@@ -182,7 +182,7 @@ class Player extends Mob
 			AudioManager.playSoundEffect("FireSound");
 		}
 
-		// Am I stunned?
+		// Is the player stunned
 		if (stunTimer > 0f)
 		{
 			animatedImageShocked.flipSpriteHorizontal = flipSpriteHorizontal;
@@ -200,7 +200,7 @@ class Player extends Mob
 				animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageAir.draw();
 			}
-			else if (InputHelper.isKeyDown(DIG_KEY) && isGrounded && gameState == GameState.InGame) //Digging
+			else if ((InputHelper.isKeyDown(DIG_KEY) || InputHelper.isKeyDown(LEFT_KEY) || InputHelper.isKeyDown(RIGHT_KEY)) && velocity.y < 7.5 && gameState == GameState.InGame) //Digging
 			{
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();

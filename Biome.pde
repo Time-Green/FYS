@@ -28,7 +28,7 @@ class Biome
   	{
     	if(spawnResourceTileAllowed(x, depth))
     	{
-      		float orechance = random(100);
+      		float oreChange = random(100);
 
 			//spawn air at surface
 			if (depth <= OVERWORLD_HEIGHT)
@@ -49,15 +49,15 @@ class Biome
 			}
 			else if (depth > 15)
 			{
-				if (orechance > 80 && orechance <= 90)
+				if (oreChange > 0 && oreChange <= 10)
 				{
 					return new CoalTile(x, depth);
 				}
-				else if (orechance > 90 && orechance <= 98)
+				else if (oreChange > 10 && oreChange <= 18)
 				{
 					return new IronTile(x, depth);
 				}
-				else if (orechance > 98 && orechance <= 100)
+				else if (oreChange > 18 && oreChange <= 20)
 				{
 					return new ExplosionTile(x, depth);
 				}

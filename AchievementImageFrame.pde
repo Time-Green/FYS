@@ -57,7 +57,6 @@ public class AchievementImageFrame
         fill(255);
         rectMode(CENTER);
         imageMode(CENTER);
-        noStroke();
 
         rect(position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset);
         image(achievementImage, position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset);

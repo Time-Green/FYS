@@ -70,7 +70,7 @@ public class DatabaseManager
 
 		final String NEW_ID_COLUMN = "id";
 
-		JSONArray result = doDatabaseRequest("INSERT INTO User (`username`) VALUES ('" + userName + "')");
+		JSONArray result = doDatabaseRequest("INSERT INTO User (`username`, `creationdatetime`) VALUES ('" + userName + "', '" + getCurrentDateTime() + "')");
 
 		if (result.size() == 1)
 		{

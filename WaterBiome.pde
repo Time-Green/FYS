@@ -16,13 +16,17 @@ class WaterBiome extends Biome
 		{
 			float oreChance = random(100);
 
-			if (oreChance <=1)
+			if (oreChance <= 1)
 			{
 				return new LapisTile(x, depth);
 			}
-			else if (oreChance <=20)
+			else if (oreChance > 1 && oreChance <= 20)
 			{
 				return new StoneTile(x, depth);
+			}
+			else if (oreChance > 98 && oreChance <= 100)
+			{
+				return new ExplosionTile(x, depth);
 			}
 		}
 

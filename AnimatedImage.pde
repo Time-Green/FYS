@@ -1,9 +1,9 @@
 public class AnimatedImage
 {
-	PImage[] frames;
-	float frameDelay, objectWidth, objectHeight;
-	PVector drawPosition;
-	boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
+	public PVector drawPosition;
+	private PImage[] frames;
+	private float frameDelay, objectWidth, objectHeight;
+	private boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
 
 	int frameCounter = 0;
 
@@ -62,26 +62,6 @@ public class AnimatedImage
 		int imageToDrawIndex = frameCounter / round(frameDelay) % frames.length;
 		PImage imageToDraw = frames[imageToDrawIndex];
 
-		// if (flipSpriteHorizontal)
-		// {
-		// 	scale(-1, 1);
-		// 	image(imageToDraw, -objectWidth, 0);
-		// }
-		// else
-		// {
-		// 	image(imageToDraw, 0, 0);
-		// }
-
-		// if (flipSpriteVertical)
-		// {
-		// 	scale(1, -1);
-		// 	image(imageToDraw, -objectHeight, 0);
-		// }
-		// else
-		// {
-		// 	image(imageToDraw, 0, 0);
-		// }
-
 		if (!flipSpriteHorizontal && !flipSpriteVertical)
 		{
 			scale(1, 1);
@@ -96,16 +76,12 @@ public class AnimatedImage
 		{
 			scale(1, -1);
 			image(imageToDraw, 0, -objectHeight);
-			println("flipSpriteVertical: "+flipSpriteVertical);
 		}
 		else if (flipSpriteHorizontal && flipSpriteVertical)
 		{
 			scale(-1, -1);
 			image(imageToDraw, -objectWidth, -objectHeight);
-			println("flipSpriteVertical: "+flipSpriteVertical);
 		}
-
-		
 
 		popMatrix();
 
