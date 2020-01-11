@@ -12,6 +12,8 @@ class Moss extends BaseObject
 
     float stickOut = 40; //how much we stick out, should not be considered for anything other than visual so we dont chance pos and size
 
+    String mossBreakSound = "MossBreak";
+
     Moss(Tile tile, color greyscale)
     {
         greyscaleColor = greyscale;
@@ -24,6 +26,11 @@ class Moss extends BaseObject
         tile.rootedIn.add(this);
         host = tile;
         tile.moss = this;
+
+        if(mossBreakSound != null)
+        {
+            tile.breakSound = mossBreakSound;
+        }
     }
 
     Moss(Tile tile, color greyscale, int potency)
