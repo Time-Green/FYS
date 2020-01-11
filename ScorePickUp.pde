@@ -24,6 +24,11 @@ public class ScorePickup extends Pickup
 
 	private void multiplyScoreBasedOnDepth()
 	{
+		if(player == null) //depth is basically 0 anyway
+		{
+			return;
+		}
+
 		// every 100 depth we add 10% to the score
 		float multiplier = float(player.getDepth()) / 1000f;
 
