@@ -2,23 +2,34 @@ class EnemyBomb extends Enemy
 {
 	//Animation
 	private AnimatedImage explosionSequence;
-	private final int NUMBEROFSPRITES = 9;
+	private AnimatedImage walkSequence;
+	private AnimatedImage airSequence;
 
 	//Explosion vars
-	private float detectionRange = 90f;
 	private boolean isExploding = false;
-	private float explosionTimer = 1.5f * 40f;
-	private float explosionSize = 325f;
+	private float explosionTimer = timeInSeconds(2.5f);
+	private float explosionSize = 200f;
 	private final float MAX_EXPLOSION_DAMAGE = 15f;
 
 	EnemyBomb(PVector spawnPos)
 	{
 		super(spawnPos);
 
-		image = ResourceManager.getImage("BombEnemy0");
-		this.speed = 2.5f;
+		//Stats setup
+		float timerDecreaseValue = 0.1f;
+		explosionTimer -= increasePower(timerDecreaseValue);
+		//Keep the explosiontimer above 1 second for balance reason
+		if (explosionTimer < 1f)
+		{
+			explosionTimer = 1f;
+		}
+		float explosionIncreaseValue = 30;
+		explosionSize += increasePower(explosionIncreaseValue);
 
-		explosionSequence = new AnimatedImage("BombEnemy", NUMBEROFSPRITES, explosionTimer / NUMBEROFSPRITES, position, size.x, !walkLeft);
+		//Visual setup
+		image = ResourceManager.getImage("BombWalk0");
+		this.speed = 2.5f;
+		animationSetup();
 	}
 
 	void update()
@@ -34,10 +45,11 @@ class EnemyBomb extends Enemy
 			if (this.explosionTimer <= 0)
 			{
 				//Explode
-				load(new Explosion(this.position, this.explosionSize, this.MAX_EXPLOSION_DAMAGE, true));
+				load(new Explosion(this.position, this.explosionSize, MAX_EXPLOSION_DAMAGE, true));
 				delete(this);
 			}
 		}
+
 	}
 
 	void draw()
@@ -48,16 +60,20 @@ class EnemyBomb extends Enemy
 			return;
 		}
 
-		//Normal animation
-		if (!isExploding)
-		{
-			super.draw();
+		if (!isExploding & isGrounded)
+		{//walk animation
+			walkSequence.draw();
+			walkSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 		}
-
-		//Explode animation
+		else if (!isExploding & !isGrounded)
+		{//Fall animation
+			airSequence.draw();
+			airSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
+		}
 		else
-		{
+		{//Explode animation
 			explosionSequence.draw();
+			explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 		}
 	}
 
@@ -66,5 +82,14 @@ class EnemyBomb extends Enemy
 		this.isExploding = true;
 		//Flip the explosion animation if need be
 		this.explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
+	}
+
+	private void animationSetup()
+	{
+		int explodeSprites = 9, walkSprites = 2, airSprites = 1;
+		int walkSpeed = 6, airSpeed = 1;
+		explosionSequence = new AnimatedImage("BombExplosion", explodeSprites, explosionTimer / explodeSprites, position, size.x, flipSpriteHorizontal);
+		walkSequence = new AnimatedImage("BombWalk", walkSprites, walkSpeed, position, size.x, flipSpriteHorizontal);
+		airSequence = new AnimatedImage("BombAir", airSprites, airSpeed, position, size.x, flipSpriteHorizontal);
 	}
 }

@@ -1,8 +1,8 @@
 class BaseObject
 {
 	protected PVector position = new PVector();
-	protected final float OBJECTSIZE = 40f;
-	protected PVector size = new PVector(OBJECTSIZE, OBJECTSIZE);
+	protected final float OBJECT_SIZE = 40f;
+	protected PVector size = new PVector(OBJECT_SIZE, OBJECT_SIZE);
 	protected boolean density = true;
 
 	protected int drawLayer = OBJECT_LAYER; //true to insert at the front of draw, so player doesn't get loaded behind tiles

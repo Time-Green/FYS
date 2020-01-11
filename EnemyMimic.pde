@@ -1,33 +1,44 @@
 class EnemyMimic extends Enemy
 {
-	private boolean detected;
+	//Mimic vars
+	private boolean attacking;
+
+	//Animation
+	private AnimatedImage idleSequence;
+	private AnimatedImage attackSequence;
 
 	EnemyMimic(PVector spawnPos)
 	{
-		//Start off pretending we are a block
+		//Start off pretending we are a chest
 		super(spawnPos);
-		image = ResourceManager.getImage("MimicTile");
+		image = ResourceManager.getImage("MimicIdle0");
 		this.speed = 0;
-		gravityForce = 0;
+		animationSetup();
 	}
 
-	void update()
-	{
-		super.update();
-
-		//The jig is up
-		if (detected)
-		{
-			//Act like a normal enemy
-			final float NORMALSPEED = 6f;
-			this.speed = NORMALSPEED;
-			gravityForce = 1;
-			image = ResourceManager.getImage("MimicEnemy");
+	void draw()
+	{	
+		if (attacking)
+		{// Play attack animation
+			attackSequence.draw();
+		}
+		else
+		{// Draw idle sprite
+			idleSequence.draw();
 		}
 	}
 
-	void attackingPlayer(Player player)
+	private void animationSetup()
 	{
-		detected = true;
+		int attackFrames = 2, idleFrames = 1;
+		int attackSpeed = 8, idleSpeed = 1;
+		attackSequence = new AnimatedImage("MimicAttack", attackFrames, attackSpeed, position, size.x, flipSpriteHorizontal);
+		idleSequence = new AnimatedImage("MimicIdle", idleFrames, idleSpeed, position, size.x, flipSpriteHorizontal);
+	}
+
+	protected void attackingPlayer(Player player)
+	{
+		attacking = true;
+		player.takeDamage(playerDamage);
 	}
 }

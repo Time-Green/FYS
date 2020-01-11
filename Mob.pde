@@ -130,7 +130,7 @@ class Mob extends Movable
 		}
 	}
 
-	public void die()
+	protected void die()
 	{
 
 	}

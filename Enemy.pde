@@ -5,13 +5,17 @@ class Enemy extends Mob
 
 	//Digging
 	protected float digTimer = timeInSeconds(5f);
-	protected float timeLeftToDig;
+	protected float timeLeftToDig = 0;
+
+	//Movememt
+	protected float defaultSpeed = 5f;
 
 	public Enemy(PVector spawnPos)
 	{
-		this.speed = 5f;
+		this.speed = defaultSpeed;
 
 		setMaxHp(10);
+		setupLightSource(this, 125f, 1f);
 
 		this.position.set(spawnPos);
 		this.velocity.set(-speed, 0);
@@ -109,8 +113,15 @@ class Enemy extends Mob
 		return super.canCollideWith(object);
 	}
 
-	void attackingPlayer(Player player)
+	protected void attackingPlayer(Player player)
 	{
 		player.takeDamage(playerDamage);
+	}
+
+	protected float increasePower(float variable)
+	{
+		//Increase thet power of the varabile for each 100 the player had dug
+		variable *= getDepth()/100;
+		return variable;
 	}
 }

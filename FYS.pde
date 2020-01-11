@@ -653,15 +653,13 @@ void debugInput()
 	// Test spawns
 	if(key == 'E' || key == 'e')
 	{
-		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
-		load(new EnemyDigger(new PVector(1000,500)));
-
+		load(new EnemyMimic(new PVector(1000,400)));
 	}
 
-	// if(key == 'R' || key == 'r')
-	// {
-	// 	databaseManager.updateVariable("poop", 500);
-	// }
+	if(key == 'R' || key == 'r')
+	{
+		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+	}
 
 	// if (key == 'T' || key == 't')
 	// {

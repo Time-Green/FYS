@@ -28,6 +28,7 @@ public class AnimatedImage
 		}
 
 		this.objectWidth = objectWidth;
+		this.objectHeight = objectHeight;
 		this.frameDelay = frameDelay;
 		this.drawPosition = drawPosition;
 		this.flipSpriteHorizontal = flipSpriteHorizontal;
@@ -62,26 +63,6 @@ public class AnimatedImage
 		int imageToDrawIndex = frameCounter / round(frameDelay) % frames.length;
 		PImage imageToDraw = frames[imageToDrawIndex];
 
-		// if (flipSpriteHorizontal)
-		// {
-		// 	scale(-1, 1);
-		// 	image(imageToDraw, -objectWidth, 0);
-		// }
-		// else
-		// {
-		// 	image(imageToDraw, 0, 0);
-		// }
-
-		// if (flipSpriteVertical)
-		// {
-		// 	scale(1, -1);
-		// 	image(imageToDraw, -objectHeight, 0);
-		// }
-		// else
-		// {
-		// 	image(imageToDraw, 0, 0);
-		// }
-
 		if (!flipSpriteHorizontal && !flipSpriteVertical)
 		{
 			scale(1, 1);
@@ -96,13 +77,11 @@ public class AnimatedImage
 		{
 			scale(1, -1);
 			image(imageToDraw, 0, -objectHeight);
-			println("flipSpriteVertical: "+flipSpriteVertical);
 		}
 		else if (flipSpriteHorizontal && flipSpriteVertical)
 		{
 			scale(-1, -1);
 			image(imageToDraw, -objectWidth, -objectHeight);
-			println("flipSpriteVertical: "+flipSpriteVertical);
 		}
 
 		
