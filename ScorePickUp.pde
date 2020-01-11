@@ -18,22 +18,58 @@ public class ScorePickup extends Pickup
 		this.image = image;
 	}
 
-	//This Pickup is collected by the player
+	// This Pickup is collected by the player
 	void pickedUp(Mob mob)
 	{
-		//Score
+		// Score
 		player.addScore(score);
-		//Draw the Pickup text
-		load(new PickupText(score, position));
 		ui.drawExtraPoints(score);
 
-		//TODO: find and add sound effect, do not remove comment yet
-		//RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
-		//AudioManager.playSoundEffect("Treasure", position);
+		PickupText nearbyPickupText = findNearbyPickupText();
+
+		if(nearbyPickupText != null)
+		{
+			nearbyPickupText.addScore(score, position);
+		}
+		else
+		{
+			//Create new Pickup text
+			load(new PickupText(score, position));
+		}
+		
+		// TODO: find and add sound effect, do not remove comment yet
+		// RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
+		// AudioManager.playSoundEffect("Treasure", position);
 		// Insert particle code here
 
-		//Delete this object
+		// Delete this object
 		super.pickedUp(mob);
+	}
+
+	private PickupText findNearbyPickupText()
+	{
+		for (BaseObject object : updateList)
+		{
+			if(object instanceof PickupText && dist(position.x, position.y, object.position.x, object.position.y) < TILE_SIZE * 2.5f)
+			{
+				PickupText pickupText = (PickupText) object;
+
+				return pickupText;
+			}
+		}
+
+		// if nothing was found, check the load list, it may have spawned on the same frame
+		for (BaseObject object : loadList)
+		{
+			if(object instanceof PickupText && dist(position.x, position.y, object.position.x, object.position.y) < TILE_SIZE * 2.5f)
+			{
+				PickupText pickupText = (PickupText) object;
+
+				return pickupText;
+			}
+		}
+
+		return null;
 	}
 
 	// void update()

@@ -26,10 +26,7 @@ public class LoginScreen
 
     private void setupChars()
     {
-        String lowerCaseAlphabet = alphabet.toLowerCase();
-
         allChars += alphabet;
-        allChars += lowerCaseAlphabet;
         allChars += numbers;
     }
     
@@ -66,12 +63,6 @@ public class LoginScreen
             return;
         }
 
-        // if(selectedCharIndex > activeChars - 3 && activeChars < MAX_LOGIN_NAME_SIZE)
-        // {
-        //     loginLetters[activeChars].isEnabled = true;
-        //     activeChars++;
-        // }
-
         loginLetters[selectedCharIndex].deselect();
         selectedCharIndex++;
         loginLetters[selectedCharIndex].select();
@@ -83,20 +74,6 @@ public class LoginScreen
         {
             return;
         }
-
-        // for (int i = activeChars - 1; i > MIN_CHARS_TO_DISPLAY; i--)
-        // {
-        //     if(loginLetters[i].isEnabled && loginLetters[i].getChar() != ' ')
-        //     {
-        //         break;
-        //     }
-
-        //     loginLetters[i].isEnabled = false;
-        //     loginLetters[i].deselect();
-        //     activeChars--;
-
-        //     selectedCharIndex = activeChars - 1;
-        // }
 
         loginLetters[selectedCharIndex].deselect();
         selectedCharIndex--;
@@ -113,7 +90,7 @@ public class LoginScreen
             }
         }
 
-        return 0;
+        return -1;
     }
 
     public String getName()
@@ -125,7 +102,7 @@ public class LoginScreen
             fullName += loginLetter.getChar();
         }
 
-        return fullName.trim();
+        return fullName.trim().toUpperCase();
     }
 
     public void draw()

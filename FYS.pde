@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.Character;
 
 // List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
@@ -9,6 +10,7 @@ ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>(); // Otherwise we 
 //Drawing
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
 final int DRAWING_LAYERS = 10; // Increase if you add more layers
+color backgroundColor = color(0);
 
 // These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -44,6 +46,7 @@ final boolean SHOW_LOADING_RESOURCES = false;
 final color TITLE_COLOR = #ffa259;
 final float TITLE_FONT_SIZE = 120;
 PFont titleFont;
+PImage gameTitle;
 
 //Database variables
 ArrayList<DatabaseVariable> databaseVariable;
@@ -88,7 +91,15 @@ void setup()
 	ResourceManager.setup(this);
 	ResourceManager.loadAll(true);
 
+	noStroke();
+	preLoading();
+}
+
+void preLoading()
+{
 	titleFont = createFont("Fonts/Block Stock.ttf", 32);
+	gameTitle = loadImage("Sprites/GameTitle.png");
+	textFont(titleFont);
 }
 
 void checkUser()
@@ -238,6 +249,9 @@ void draw()
 		afterResouceLoadingSetup();
 	}
 
+	// based on dayNight image
+	background(backgroundColor);
+
 	//push and pop are needed so the hud can be correctly drawn
 	pushMatrix();
 
@@ -265,6 +279,48 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
+
+	checkRestartGame();
+}
+
+int currentRestartTimer = 0;
+final int MAX_RESTART_TIMER = 90; // 1.5 seconds
+
+void checkRestartGame()
+{
+	if(InputHelper.isKeyDown('r'))
+	{
+		currentRestartTimer++;
+
+		fill(255, 0, 0);
+		textSize(60);
+		textAlign(CENTER);
+		text("RESTARTING GAME IN", width / 2, height / 2);
+		text(nf(((float(MAX_RESTART_TIMER) - float(currentRestartTimer)) / 60f), 0, 2) + " sec", width / 2, height / 2 + 80);
+	}
+	else
+	{
+		currentRestartTimer = 0;
+	}
+
+	if(currentRestartTimer > MAX_RESTART_TIMER)
+	{
+		restartGame();
+	}
+}
+
+// restart the game to allow another player to login
+// best used with SAVE_USERNAME_AT_LOGIN set to false and with no name in dbUser.txt
+void restartGame()
+{
+	currentRestartTimer = 0;
+
+	loadedPlayerInventory = false;
+	loadedAllAchievements = false;
+	loadedPlayerAchievements = false;
+	loadedLeaderboard = false;
+
+	checkUser();
 }
 
 void userFilledInName()
@@ -537,17 +593,15 @@ void handleLoadingScreen()
 		}
 	}
 
-	drawTitle();
+	drawTitleImage();
 }
 
-// because we don't have a UiManager instance when loading, the title needs to happand separately here
-private void drawTitle()
+// because we don't have a UiManager instance when loading, the title rendering needs to happan separately here
+void drawTitleImage()
 {
-	fill(TITLE_COLOR);
-	textSize(TITLE_FONT_SIZE);
-	textAlign(CENTER);
-
-	text("Rocky Rain", width / 2, float(height) / 4f);
+	imageMode(CENTER);
+	image(gameTitle, width / 2, height / 4.5f, width * 0.8f, height * 0.3f);
+	imageMode(CORNER);
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
@@ -633,6 +687,7 @@ float timeInSeconds(float seconds)
 	return seconds *= 60;
 }
 
+// processing key pressed event
 void keyPressed()
 {
 	InputHelper.onKeyPressed(keyCode);
@@ -642,6 +697,7 @@ void keyPressed()
 	debugInput();
 }
 
+// processing key released event
 void keyReleased()
 {
 	InputHelper.onKeyReleased(keyCode);
@@ -657,11 +713,6 @@ void debugInput()
 		load(new EnemyDigger(new PVector(1000,500)));
 
 	}
-
-	// if(key == 'R' || key == 'r')
-	// {
-	// 	databaseManager.updateVariable("poop", 500);
-	// }
 
 	// if (key == 'T' || key == 't')
 	// {

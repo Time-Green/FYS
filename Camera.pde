@@ -4,7 +4,7 @@ public class Camera
 	private Movable target;
 	private float lerpAmount;
 
-	private final float SPAWN_Y_POS = 190;
+	private final float SPAWN_Y_POS = 220;
 
 	private PVector currentShakeOffset = new PVector();
 
@@ -54,7 +54,7 @@ public class Camera
 			position.y = SPAWN_Y_POS;
 		}
 		
-		lerpAmount = 0.002f;
+		lerpAmount = 0.001f;
 	}
 
 	public void setTarget(Movable targetObject)
