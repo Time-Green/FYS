@@ -58,6 +58,36 @@ public class DatabaseManager
 		return user;
 	}
 
+	// get a user by id
+	public DbUser getUser(int id)
+	{
+		JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE id = " + id);
+
+		if (result.size() == 1)
+		{
+			return buildUser(result.getJSONObject(0));
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	// get a user by username
+	public DbUser getUser(String userName)
+	{
+		JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE username = '" + userName + "'");
+
+		if (result.size() > 1)
+		{
+			return buildUser(result.getJSONObject(0));
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	// create a new user in the database and return it
 	public DbUser createUser(String userName, boolean checkForUserExists)
 	{
@@ -379,36 +409,6 @@ public class DatabaseManager
 		}
 
 		return returnList;
-	}
-
-	// get a user by id
-	public DbUser getUser(int id)
-	{
-		JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE id = " + id);
-
-		if (result.size() == 1)
-		{
-			return buildUser(result.getJSONObject(0));
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	// get a user by username
-	public DbUser getUser(String userName)
-	{
-		JSONArray result = doDatabaseRequest("SELECT * FROM User WHERE username = '" + userName + "'");
-
-		if (result.size() == 1)
-		{
-			return buildUser(result.getJSONObject(0));
-		}
-		else
-		{
-			return null;
-		}
 	}
 
 	public boolean updatePlayerRelicInventory()

@@ -41,7 +41,7 @@ public class World
 		spawnOverworldStructures();
 		spawnBirds();
 		spawnNpcs();
-		spawnJukebox();
+		//spawnJukebox();
 	}
 
 	public void update()

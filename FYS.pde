@@ -69,7 +69,7 @@ Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
-Jukebox jukebox;
+//Jukebox jukebox;
 
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
@@ -512,7 +512,7 @@ void startAsteroidRain()
 	AudioManager.playSoundEffect("Siren");
 
 	ui.drawWarningOverlay = true;
-	jukebox.stopMusicOverTime(1500);
+	//jukebox.stopMusicOverTime(1500);
 }
 
 //is called when the played died

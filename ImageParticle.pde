@@ -4,8 +4,7 @@ public class ImageParticle extends BaseParticle
 	{
         super(parentParticleSystem, spawnLocation, spawnAcc);
 
-		image = ResourceManager.getImage("Note" + floor(random(4)));
-		gravityForce = 0;
+		//image = ResourceManager.getImage("Note" + floor(random(4)));
         maxLifeTime = 120;
 		minSize = 15;
         maxSize = 20;
@@ -27,15 +26,15 @@ public class ImageParticle extends BaseParticle
 
 	void draw()
 	{
-		if (!inCameraView())
-		{
-			return;
-		}
+		// if (!inCameraView())
+		// {
+		// 	return;
+		// }
 
-		tint(lightningAmount);
+		// tint(lightningAmount);
 
-		image(image, position.x, position.y, size, size);
+		// image(image, position.x, position.y, size, size);
 
-		tint(255);
+		// tint(255);
 	}
 }
