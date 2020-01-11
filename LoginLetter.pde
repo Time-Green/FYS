@@ -62,9 +62,9 @@ public class LoginLetter
 		if (displayCounter >= 0)
 		{
             textAlign(CENTER);
-            textSize(70);
+            textSize(50);
 
-			text(getChar(), drawPosition.x, drawPosition.y);
+			text(getChar(), drawPosition.x + 2, drawPosition.y);
 
 			if(displayCounter > 40)
 			{
@@ -149,9 +149,19 @@ public class LoginLetter
             }
             else
             {
-                charIndex = loginScreen.getIndexByChar(key);
-                displayCounter = 0;
-                loginScreen.selectNextLetter();
+                String tempChar = "";
+
+                tempChar += key;
+                tempChar = tempChar.toUpperCase();
+
+                int index = loginScreen.getIndexByChar(tempChar.charAt(0));
+
+                if(index >= 0)
+                {
+                    charIndex = index;
+                    displayCounter = 0;
+                    loginScreen.selectNextLetter();
+                }
             }
         }
     }

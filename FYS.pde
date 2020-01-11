@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.Character;
 
 // List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
@@ -91,10 +92,14 @@ void setup()
 	ResourceManager.loadAll(true);
 
 	noStroke();
+	preLoading();
+}
 
-	// pre-loading
+void preLoading()
+{
 	titleFont = createFont("Fonts/Block Stock.ttf", 32);
 	gameTitle = loadImage("Sprites/GameTitle.png");
+	textFont(titleFont);
 }
 
 void checkUser()
@@ -274,6 +279,48 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
+
+	checkRestartGame();
+}
+
+int currentRestartTimer = 0;
+final int MAX_RESTART_TIMER = 90; // 1.5 seconds
+
+void checkRestartGame()
+{
+	if(InputHelper.isKeyDown('r'))
+	{
+		currentRestartTimer++;
+
+		fill(255, 0, 0);
+		textSize(60);
+		textAlign(CENTER);
+		text("RESTARTING GAME IN", width / 2, height / 2);
+		text(nf(((float(MAX_RESTART_TIMER) - float(currentRestartTimer)) / 60f), 0, 2) + " sec", width / 2, height / 2 + 80);
+	}
+	else
+	{
+		currentRestartTimer = 0;
+	}
+
+	if(currentRestartTimer > MAX_RESTART_TIMER)
+	{
+		restartGame();
+	}
+}
+
+// restart the game to allow another player to login
+// best used with SAVE_USERNAME_AT_LOGIN set to false and with no name in dbUser.txt
+void restartGame()
+{
+	currentRestartTimer = 0;
+
+	loadedPlayerInventory = false;
+	loadedAllAchievements = false;
+	loadedPlayerAchievements = false;
+	loadedLeaderboard = false;
+
+	checkUser();
 }
 
 void userFilledInName()
@@ -640,6 +687,7 @@ float timeInSeconds(float seconds)
 	return seconds *= 60;
 }
 
+// processing key pressed event
 void keyPressed()
 {
 	InputHelper.onKeyPressed(keyCode);
@@ -649,6 +697,7 @@ void keyPressed()
 	debugInput();
 }
 
+// processing key released event
 void keyReleased()
 {
 	InputHelper.onKeyReleased(keyCode);
@@ -664,11 +713,6 @@ void debugInput()
 		load(new EnemyDigger(new PVector(1000,500)));
 
 	}
-
-	// if(key == 'R' || key == 'r')
-	// {
-	// 	databaseManager.updateVariable("poop", 500);
-	// }
 
 	// if (key == 'T' || key == 't')
 	// {
