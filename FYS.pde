@@ -82,8 +82,6 @@ void setup()
 
 	size(1280, 720, P3D);
 
-	frameRate(1000);
-
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
 
