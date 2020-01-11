@@ -33,7 +33,7 @@ class Movable extends BaseObject
 	//Enemies
 	protected boolean walkLeft;
 	protected int timesCollided;
-	protected final int MAXCOLLISIONS = 5;
+	protected final int MAX_COLLISIONS = 20;
 
 	Movable()
 	{

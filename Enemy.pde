@@ -80,7 +80,7 @@ class Enemy extends Mob
 			walkLeft = true;
 		}
 
-		if (timesCollided >= MAXCOLLISIONS) 
+		if (timesCollided >= MAX_COLLISIONS) 
 		{
 			timeLeftToDig = digTimer;
 			if (timeLeftToDig > 0) 

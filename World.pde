@@ -561,7 +561,15 @@ public class World
 				load(new EnemyBomb(spawnWorldPos));
 			break;
 
+			case "MimicIdle0" :
+				load(new EnemyMimic(spawnWorldPos));
+			break;
+
 			case "Chest" :
+				load(new Chest(), spawnWorldPos);
+			break;
+
+			case "TreasureChest" :
 				load(new Chest(), spawnWorldPos);
 			break;
 
