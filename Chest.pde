@@ -1,6 +1,6 @@
 class Chest extends Obstacle
 {
-	private final int MAX_RANDOM_LOOT_AMOUNT = 10;
+	private final int MIN_RANDOM_LOOT_AMOUNT = 2;
 
 	private boolean opened = false;
 	private int forcedKey = -1; //set to something zero or above if you want a specific set of contents
@@ -53,11 +53,11 @@ class Chest extends Obstacle
 			load(relicShard, position);
 
 			newContents.add(relicShard);
-			addRandomLoot(newContents, MAX_RANDOM_LOOT_AMOUNT);
+			addRandomLoot(newContents);
 		}
 		else if(randomKey == 1)
 		{
-			addRandomLoot(newContents, MAX_RANDOM_LOOT_AMOUNT);
+			addRandomLoot(newContents);
 		}
 
 		// I dont want to force every new content thingy to Movable seperately, so do it here
@@ -72,11 +72,21 @@ class Chest extends Obstacle
 		}
 	}
 
-	private void addRandomLoot(ArrayList<Movable> newContents, int maxAmount)
+	private void addRandomLoot(ArrayList<Movable> newContents)
 	{
-		int randomLootAmount = floor(random(maxAmount / 2, maxAmount));
+		int lootAmount;
 
-		for(int i = 0; i < randomLootAmount; i++)
+		// in rare occasions (mostly when respawning) the player could be null
+		if(player != null)
+		{
+			lootAmount = MIN_RANDOM_LOOT_AMOUNT + floor(player.getDepth() / 250) + floor(random(2));
+		}
+		else
+		{
+			lootAmount = MIN_RANDOM_LOOT_AMOUNT + floor(random(4));
+		}
+
+		for(int i = 0; i < lootAmount; i++)
 		{
 			int lootType = floor(random(3));
 			ScorePickup scorePickup = null;
