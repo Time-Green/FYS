@@ -110,6 +110,15 @@ class Tile extends BaseObject
 
 		super.draw();
 
+		// if this tile does not get any lightning, just draw a black rect
+		if(lightningAmount <= 0)
+		{
+			fill(0);
+			rect(position.x, position.y, TILE_SIZE, TILE_SIZE);
+
+			return;
+		}
+
 		if (!destroyed) 
 		{
 			//if we dont have an image, we cant draw anything
