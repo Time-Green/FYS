@@ -28,7 +28,7 @@ public class World
 
 		//Specially queued biomes, for cinematic effect
 		nextBiome = new OverworldBiome();
-		biomeQueue.add(new NormalBiome());
+		biomeQueue.add(new GoldenBiome());
 
 		fillBiomeQueue(0);
 		switchBiome(0);
