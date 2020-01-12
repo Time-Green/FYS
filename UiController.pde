@@ -406,6 +406,11 @@ public class UIController
 		drawPowerUp(shieldImage, hudTextDistanceFromLeft, powerupYPos, player.shieldTimer);
 		drawPowerUp(magnetImage, hudTextDistanceFromLeft + 60, powerupYPos, player.magnetTimer);
 		
+		if(scoreDisplay > 100000 && !achievementHelper.hasUnlockedAchievement(COMBO_MASTER_ACHIEVEMENT))
+		{
+			achievementHelper.unlock(GREED_IS_GOOD_ACHIEVEMENT);
+		}
+
 		//Collected points display
 		//Draw the collected score if the player has some
 		if (collectedPoints > 0)
