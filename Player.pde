@@ -9,6 +9,10 @@ class Player extends Mob
 	private AnimatedImage animatedImageFall;
 	private AnimatedImage animatedImageFire;
 
+	//For achievement purposes
+	private boolean undamaged = true; 
+	private int explosionsCaused = 0; 
+
 	//Camera
 	private float viewAmount = 400;
 	private float viewTarget = viewAmount;
@@ -57,6 +61,10 @@ class Player extends Mob
 		{
 			achievementHelper.unlock(LONE_DIGGER_ACHIEVEMENT); 
 		}
+		else if(getDepth() - OVERWORLD_HEIGHT > 1000 && !achievementHelper.hasUnlockedAchievement(PERSISTENCE_ACHIEVEMENT))
+		{
+			achievementHelper.unlock(PERSISTENCE_ACHIEVEMENT);
+		}
 
 		setVisibilityBasedOnCurrentBiome();
 
@@ -65,6 +73,14 @@ class Player extends Mob
 		statusEffects();
 
 		digBonuses();
+
+		if(getDepth() - OVERWORLD_HEIGHT > 500 && undamaged)
+		{
+			if(!achievementHelper.hasUnlockedAchievement(HARD_AS_A_ROCK_ACHIEVEMENT))
+			{
+				achievementHelper.unlock(HARD_AS_A_ROCK_ACHIEVEMENT); 
+			}
+		}
 
 		if (stunTimer <= 0)
 		{
@@ -338,6 +354,8 @@ class Player extends Mob
 			return;
 		}
 
+		undamaged = false; 
+
 		if (isHurt == false)
 		{
 			// if the player has taken damage, add camera shake based on damage
@@ -413,6 +431,16 @@ class Player extends Mob
 
 	protected void afterMine(BaseObject object)
 	{
+		if(object instanceof ExplosionTile)
+		{
+			explosionsCaused += 1; 
+
+			if(explosionsCaused > 20 && !achievementHelper.hasUnlockedAchievement(MICHAEL_BAY_APPROVES_ACHIEVEMENT))
+			{
+				achievementHelper.unlock(MICHAEL_BAY_APPROVES_ACHIEVEMENT);
+			}
+		}
+
 		runData.playerBlocksMined++;
 	}
 }

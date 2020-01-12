@@ -43,7 +43,9 @@ public class AchievementImageFrame
 
             if(achievementHelper.hasUnlockedAchievement(achievementId))
             {
+                textSize(ui.ACHIEVEMENT_FONT_SIZE/1.2);
                 text(achievementHelper.getAchievementData(achievementId).description, width / 2, height - 100);
+                textSize(ui.ACHIEVEMENT_FONT_SIZE);
             }
             else
             {

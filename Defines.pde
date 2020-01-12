@@ -56,6 +56,10 @@ final float LIGHT_BOOST = 10;
 //Achievements
 final int LONE_DIGGER_ACHIEVEMENT = 0;
 final int COMBO_MASTER_ACHIEVEMENT = 1;
+final int PERSISTENCE_ACHIEVEMENT = 2; 
+final int GREED_IS_GOOD_ACHIEVEMENT = 3; 
+final int HARD_AS_A_ROCK_ACHIEVEMENT = 4;
+final int MICHAEL_BAY_APPROVES_ACHIEVEMENT = 5; 
 
 //world
 final int OVERWORLD_HEIGHT = 10; // in grid tiles
@@ -90,7 +94,7 @@ final float PARALLAX_NOISE_POSSIBILITY = 0.46f;
 
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;
-final boolean SAVE_USERNAME_AT_LOGIN = true;
+final boolean SAVE_USERNAME_AT_LOGIN = false;
 
 //Movement
 final float SPEED_LIMIT = TILE_SIZE; //otherwise we can phase through tiles like the flash, because we only check the closest tiles and not the ones BEHIND them
