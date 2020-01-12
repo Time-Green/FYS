@@ -76,6 +76,10 @@ boolean startGame = false; // start the game on next frame. needed to avoid conc
 
 boolean parallaxEnabled = true;
 
+// restart variables
+float currentRestartTimer = 0;
+final float MAX_RESTART_TIMER = 60; // 1.5 seconds
+
 void setup()
 {
 	disposeHandler = new DisposeHandler(this);
@@ -287,20 +291,17 @@ void draw()
 	TimeManager.update();
 }
 
-int currentRestartTimer = 0;
-final int MAX_RESTART_TIMER = 90; // 1.5 seconds
-
 void checkRestartGame()
 {
 	if(InputHelper.isKeyDown('r'))
 	{
-		currentRestartTimer++;
+		currentRestartTimer += TimeManager.deltaFix;
 
 		fill(255, 0, 0);
 		textSize(60);
 		textAlign(CENTER);
 		text("RESTARTING GAME IN", width / 2, height / 2);
-		text(nf(((float(MAX_RESTART_TIMER) - float(currentRestartTimer)) / 60f), 0, 2) + " sec", width / 2, height / 2 + 80);
+		text(nf(((MAX_RESTART_TIMER - currentRestartTimer) / 60f), 0, 2) + " sec", width / 2, height / 2 + 80);
 	}
 	else
 	{
@@ -711,7 +712,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	debugInput();
+	//debugInput();
 }
 
 // processing key released event

@@ -49,6 +49,9 @@ public class UIController
 	private float slotSize = 60;
 	private float slotOffsetX = slotSize * 1.5f;
 
+	private boolean playerHurt;
+	// private float 
+
 	//Healthbar white flashy thing
 	private color flashColor = color(255, 0, 0);
 
@@ -71,7 +74,7 @@ public class UIController
 	private float currentOverlayFill = 0;
 	private boolean isIncreasing = true;
 
-	private final boolean DRAWSTATS = true;
+	private final boolean DRAWSTATS = false;
 
 	private final float MAX_DOT_TIMER = 20f; // half second
 	private float nextDotTimer = MAX_DOT_TIMER;
@@ -134,7 +137,14 @@ public class UIController
 		//reset rectMode
 		rectMode(CORNER);
 		textAlign(LEFT);
-		drawWarningOverlay();
+		drawWarningOverlay(0.5f, MAX_OVERLAY_FILL);
+
+		if (playerHurt)
+		{
+			drawWarningOverlay(1.5,30);
+			playerHurt = false;
+		}
+		
 
 		if (DRAWSTATS)
 		{
@@ -151,21 +161,21 @@ public class UIController
 		titleYPos = float(height) / 4f;
 	}
 
-	void drawWarningOverlay()
+	public void drawWarningOverlay(float fillAmount, float maxOverlay)
 	{
 		if (drawWarningOverlay && isIncreasing)
 		{
-			currentOverlayFill += 0.5f * TimeManager.deltaFix;
+			currentOverlayFill += fillAmount * TimeManager.deltaFix;
 
-			if (currentOverlayFill > MAX_OVERLAY_FILL)
+			if (currentOverlayFill > maxOverlay)
 			{
-				currentOverlayFill = MAX_OVERLAY_FILL;
+				currentOverlayFill = maxOverlay;
 				isIncreasing = false;
 			}
 		}
 		else
 		{
-			currentOverlayFill -= 0.5f * TimeManager.deltaFix;
+			currentOverlayFill -= fillAmount * TimeManager.deltaFix;
 
 			if (currentOverlayFill < 0)
 			{
@@ -566,6 +576,7 @@ public class UIController
 	public void prepareHealthFlash()
 	{
 		barOffset = maxBarOffset;
+		playerHurt = true;
 	}
 
 	void drawStats()
