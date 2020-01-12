@@ -296,13 +296,16 @@ public class Npc extends Mob
 
 	private void drawAchievementHint()
 	{
-		fill(255, 0, 0); 
-		ellipseMode(CENTER);
-		ellipse(this.position.x + 20, this.position.y - 40, 40, 40);
-		fill(255); 
-		textAlign(CENTER); 
-		textSize(ui.ACHIEVEMENT_FONT_SIZE/1.5);
-		text("A", this.position.x + 20, this.position.y - 32);
+		if(isPanicking == false)
+		{
+			fill(255, 0, 0); 
+			ellipseMode(CENTER);
+			ellipse(this.position.x + 20, this.position.y - 40, 40, 40);
+			fill(255); 
+			textAlign(CENTER); 
+			textSize(ui.ACHIEVEMENT_FONT_SIZE/1.5);
+			text("A", this.position.x + 20, this.position.y - 32);
+		}
 	}
 
 	private void drawTalking()

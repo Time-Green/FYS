@@ -49,9 +49,6 @@ public class UIController
 	private float slotSize = 60;
 	private float slotOffsetX = slotSize * 1.5f;
 
-	private boolean playerHurt;
-	// private float 
-
 	//Healthbar white flashy thing
 	private color flashColor = color(255, 0, 0);
 
@@ -137,14 +134,16 @@ public class UIController
 		//reset rectMode
 		rectMode(CORNER);
 		textAlign(LEFT);
-		drawWarningOverlay(0.5f, MAX_OVERLAY_FILL);
 
-		if (playerHurt)
-		{
-			drawWarningOverlay(1.5,30);
-			playerHurt = false;
+		if (wallOfDeath.isInBeginfase == true)
+		{ // Overlay for the intro
+			drawWarningOverlay(0.5f, MAX_OVERLAY_FILL);
 		}
-		
+
+		if (player.hurtFlash == true)
+		{ // Overlay for when the player is hurt
+			drawWarningOverlay(3, MAX_OVERLAY_FILL);
+		}
 
 		if (DRAWSTATS)
 		{
@@ -576,7 +575,7 @@ public class UIController
 	public void prepareHealthFlash()
 	{
 		barOffset = maxBarOffset;
-		playerHurt = true;
+		drawWarningOverlay = true;
 	}
 
 	void drawStats()
