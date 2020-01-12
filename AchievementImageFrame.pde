@@ -74,7 +74,7 @@ public class AchievementImageFrame
         }   
         else
         {
-            deflate();
+            deflate();                                                                              
         }       
     } 
        
