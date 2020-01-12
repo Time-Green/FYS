@@ -1,15 +1,15 @@
-// class Penguin extends Mob
-// {
+class Penguin extends Enemy
+{
 
-// 	Penguin(PVector spawnPos)
-// 	{
-// 		super(spawnPos);
+	Penguin(PVector spawnPos)
+	{
+		super(spawnPos);
+        playerDamage = 2f;
 
-// 		//Image setup
-// 		image = ResourceManager.getImage("Penguin");
-// 		animationSetup();
+		//Image setup
+		image = ResourceManager.getImage("Penguin");
 
-// 		float speedIncreaseValue = 0.5f;
-// 		speed = (defaultSpeed += increasePower(speedIncreaseValue));
-// 	}
-// }
+		float speedIncreaseValue = 0.3f;
+		speed = (defaultSpeed += increasePower(speedIncreaseValue));
+	}
+}

@@ -45,10 +45,10 @@ class IceBiome extends Biome
 		return new IceTile(x, depth);
 	}
 
-	// void spawnEnemy(PVector position)
-	// {
-	// 	load(new Penguin(position));
-	// }
+	void spawnEnemy(PVector position)
+	{
+		load(new Penguin(position));
+	}
 
 	String getParallaxedRock()
 	{

@@ -74,7 +74,7 @@ public class UIController
 	private float currentOverlayFill = 0;
 	private boolean isIncreasing = true;
 
-	private final boolean DRAWSTATS = true;
+	private final boolean DRAWSTATS = false;
 
 	private final float MAX_DOT_TIMER = 20f; // half second
 	private float nextDotTimer = MAX_DOT_TIMER;
