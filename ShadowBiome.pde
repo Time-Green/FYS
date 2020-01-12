@@ -18,23 +18,23 @@ class ShadowBiome extends Biome
 	{
 		if(spawnResourceTileAllowed(x, depth))
 		{
-			float oreChange = random(100);
+			float oreChance = random(100);
 
 			if (depth - startedAt < length)
 			{
-				if (oreChange <= 4)
+				if (oreChance <= 4)
 				{
 					return new GoldTile(x, depth, 1);
 				}
-				else if (oreChange > 4 && oreChange <= 8)
+				else if (oreChance > 4 && oreChance <= 8)
 				{
 					return new DiamondTile(x, depth, 1);
 				}
-				else if (oreChange > 8 && oreChange <= 16)
+				else if (oreChance > 8 && oreChance <= 16)
 				{
 					return new ShadowSandTile(x, depth);
 				}
-				else if (oreChange > 16 && oreChange <= 18)
+				else if (oreChance > 16 && oreChance <= 18)
 				{
 					return new ObsedianTile(x, depth);
 				}
@@ -62,10 +62,22 @@ class ShadowBiome extends Biome
 	// 	load(new DemonClaw(position));
 	// }
 
-
-
 	String getParallaxedRock()
 	{
-		return "ShadowSandBlock";
+		
+		float oreChance = random(1);
+		
+		if (oreChance > 0.08 && oreChance <= 0.16)
+		{
+			return "ObsedianBlock";
+		}
+		else if (oreChance > 0.16 && oreChance <= 0.18)
+		{
+			return "ShadowSandBlock";
+		}
+		else 
+		{
+			return "ShadowBlock";
+		}
 	}
 }

@@ -403,9 +403,11 @@ public class UIController
 		float powerupYPos = hudTextStartY + HUD_FONT_SIZE + 30;
 		PImage shieldImage = ResourceManager.getImage("Shield");
 		PImage magnetImage = ResourceManager.getImage("Magnet");
-		drawPowerUp(shieldImage, hudTextDistanceFromLeft, powerupYPos, player.shieldTimer);
-		drawPowerUp(magnetImage, hudTextDistanceFromLeft + 60, powerupYPos, player.magnetTimer);
-		
+		PImage regenImage = ResourceManager.getImage("Regen");
+		drawPowerUp(shieldImage, hudTextDistanceFromLeft, 0, powerupYPos, player.shieldTimer);
+		drawPowerUp(magnetImage, hudTextDistanceFromLeft, 1, powerupYPos, player.magnetTimer);
+		drawPowerUp(regenImage, hudTextDistanceFromLeft, 2, powerupYPos, player.extraRegenTimer);
+
 		//Collected points display
 		//Draw the collected score if the player has some
 		if (collectedPoints > 0)
@@ -468,23 +470,26 @@ public class UIController
 		}
 	}
 
-	private void drawPowerUp(PImage powerupImage, float xPos, float yPos, float powerUpTimer)
+	private void drawPowerUp(PImage powerupImage, float xPos, int powerupNumber, float yPos, float powerUpTimer)
 	{	
 		float minTintValue = 56;
 		float maxTintValue = 255;
+		float xDistanceBetweenPowerUps = 60;
 
 		if (powerUpTimer > 0)
 		{
-			//Draw the image transparent to indicate it's not active
+			//Tint the image transparent to indicate it's not active
 			tint(WHITE, maxTintValue);
 		}
 		else
 		{
-			//Draw the image fully colored to indicate that it is active
+			//Tint the image fully colored to indicate that it is active
 			tint(WHITE, minTintValue);
 		}
 
-		image(powerupImage, xPos, yPos);
+		//Draw the image
+		//xDistanceBetweenPowerUps * powerupNumber is used to automatically calculate the exposition of the image
+		image(powerupImage, xPos + (xDistanceBetweenPowerUps * powerupNumber), yPos);
 		
 		tint(255);
 	}
