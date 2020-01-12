@@ -31,6 +31,8 @@ class Mob extends Movable
 	public boolean isOnFire = false;
 	private float fireTimer;
 	private float regenTimer;
+	public boolean isDark = false;
+	private float darkTimer;
 
 	Mob()
 	{
@@ -43,6 +45,8 @@ class Mob extends Movable
 		super.update();
 
 		handleOnFire();
+
+		handleDark();
 
 		regenaration();
 
@@ -160,6 +164,19 @@ class Mob extends Movable
 		}
 	}
 
+	public void handleDark()
+	{
+		if(isDark)
+		{
+			if(darkTimer > 480)
+			{
+				isDark = false;
+			}
+		}
+			
+		darkTimer += TimeManager.deltaFix;
+	}
+
 	void regenaration()
 	{
 		if(regenTimer > 120)
@@ -182,6 +199,12 @@ class Mob extends Movable
 	{
 		isOnFire = true;
 		fireTimer = 0;
+	}
+
+	void removeLight()
+	{
+		isDark = true;
+		darkTimer = 0;
 	}
 
 	void setMaxHp(float hpToSet)

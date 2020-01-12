@@ -82,7 +82,10 @@ class Tile extends BaseObject
 		else
 		{
 			world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
-			world.currentBiome.maybeSpawnMoss(this, world);
+			if(gridPosition.y > OVERWORLD_HEIGHT * 3)
+			{
+				world.currentBiome.maybeSpawnMoss(this, world);
+			}
 		}
 	}
 
@@ -269,14 +272,8 @@ class Tile extends BaseObject
 		}
 	}
 
-	void addAesthetics()
+	void addAesthetics(World world)
 	{
-		//get all our cardinals 
-		if(world == null) //we could pass world as a param, or we could just wait it out with the assumptions the air doesnt need decals
-		{
-			return;
-		}
-
 		if(!density && (!parallaxDecals || parallaxDecalType == null) || decalType == null)
 		{
 			return; //again we dont need airdecals or decals for those who dont want it
@@ -368,14 +365,14 @@ class Tile extends BaseObject
 				continue;
 			}
 
-			tile.addAesthetics();
+			tile.addAesthetics(world);
 		}
 	}
 
 	void resetDecals()
 	{
 		decals = new boolean[DIRECTIONS];
-		addAesthetics();
+		addAesthetics(world);
 	}
 
 	void drawDecals()

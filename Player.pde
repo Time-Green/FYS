@@ -85,6 +85,18 @@ class Player extends Mob
 		}
 	}
 
+	void checkLight()
+	{
+		if(isDark == true)
+		{
+			viewAmount = 20;
+		}
+		else
+		{
+			viewAmount = 400;
+		}
+	}
+
 	void applyRelicBoost()
 	{
 		for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards)

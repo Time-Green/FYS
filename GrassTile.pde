@@ -8,6 +8,8 @@ public class GrassTile extends Tile
 
 		canParallax = false;
 
+		decalType = "DecalGrass";
+
 		image = ResourceManager.getImage("GrassBlock");
 		breakSound = "DirtBreak";
 
