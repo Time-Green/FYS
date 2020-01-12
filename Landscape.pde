@@ -19,7 +19,7 @@ public class LeafTile extends Tile
 			return;
 		}
 
-		if(random(1) < leafChance)
+		if(random(1) < leafChance * TimeManager.deltaFix)
 		{
 			load(new SingleParticle(null, position, new PVector(random(-2, 0), 1), particleImage));
 		}

@@ -42,7 +42,9 @@ public class BaseParticle extends BaseObject
 
 		super.update();
 
-		position.add(velocity);
+		PVector deltaFixVelocity = PVector.mult(velocity, TimeManager.deltaFix);
+
+		position.add(deltaFixVelocity);
 
 		//if the particle is to old..
 		if (currentLifeTime > maxLifeTime)
@@ -50,7 +52,7 @@ public class BaseParticle extends BaseObject
 			cleanup();
 		}
 
-		currentLifeTime++;
+		currentLifeTime += TimeManager.deltaFix;
 	}
 
 	void draw()

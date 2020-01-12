@@ -26,7 +26,7 @@ class Explosion extends BaseObject
 		objectFinderThread = startObjectFinderThread(position, maxRadius);
 
 		//create particle system
-		ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, int(radius / 5), radius / 15);
+		ExplosionParticleSystem particleSystem = new ExplosionParticleSystem(position, int(radius / 3), radius / 15);
 		load(particleSystem);
 
 		//play sound
@@ -84,7 +84,7 @@ class Explosion extends BaseObject
 		camera.induceStress(0.04f);
 
 		// increase next explosion size
-		currentRadius += radiusIncrease;
+		currentRadius += radiusIncrease * TimeManager.deltaFix;
 
 		if (currentRadius > maxRadius)
 		{

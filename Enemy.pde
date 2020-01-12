@@ -19,7 +19,6 @@ class Enemy extends Mob
 
 		this.position.set(spawnPos);
 		this.velocity.set(-speed, 0);
-
 	}
 
 	void specialAdd()
@@ -52,7 +51,8 @@ class Enemy extends Mob
 		}	
 	}
 
-	protected void movement() {
+	protected void movement()
+	{
 		//Can you guys please stop removing this bool from this script please?
 		if (this.walkLeft == true)
 		{
@@ -83,9 +83,10 @@ class Enemy extends Mob
 		if (timesCollided >= MAX_COLLISIONS) 
 		{
 			timeLeftToDig = digTimer;
+
 			if (timeLeftToDig > 0) 
 			{
-				timeLeftToDig--;
+				timeLeftToDig -= TimeManager.deltaFix;
 				isMiningDown = true;
 				isMiningUp = true;
 				isMiningLeft = true;

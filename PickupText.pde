@@ -60,6 +60,8 @@ public class PickupText extends BaseObject
 			return;
 		}
 		
+		aliveTime -= TimeManager.deltaFix;
+
 		//Decrease the alive counter and remove the text when it is 0
 		if (aliveTime <= 0)
 		{

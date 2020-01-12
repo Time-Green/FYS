@@ -28,9 +28,10 @@ public class TileBreakParticle extends BaseParticle
 
 	private void updateSize()
 	{
-		size -= sizeDegrade;
+		size -= sizeDegrade * TimeManager.deltaFix;
 
-		if (size <= 0) {
+		if (size <= 0)
+		{
 			cleanup();
 		}
 	}

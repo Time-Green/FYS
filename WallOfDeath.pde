@@ -44,7 +44,7 @@ class WallOfDeath extends Movable
 
 		if (gameStartSpawnMult < 1)
 		{
-			gameStartSpawnMult += 1f / 600f; // 10 second begin phase
+			gameStartSpawnMult += (1f / 600f) * TimeManager.deltaFix; // 10 second begin phase
 
 			if (gameStartSpawnMult >= 1)
 			{
@@ -60,7 +60,7 @@ class WallOfDeath extends Movable
 		//println(bufferZone); 
 
 		//wod movement per frame
-		position.y += bufferZone / 225;
+		position.y += (bufferZone / 225) * TimeManager.deltaFix;
 
 		if (bufferZone < minDistanceFromPlayer)
 		{
@@ -71,7 +71,10 @@ class WallOfDeath extends Movable
 			position.y = player.position.y - maxDistanceFromPlayer;
 		}
 
-		float maxAsteroidSpawnChange = 1 + ((bufferZone + player.position.y * 0.085f) * 0.000125f) * gameStartSpawnMult;
+		float maxAsteroidSpawnChange = ((bufferZone + player.position.y * 0.085f) * 0.000125f) * gameStartSpawnMult;
+
+		maxAsteroidSpawnChange *= TimeManager.deltaFix;
+		maxAsteroidSpawnChange += 1;
 
 		if (random(maxAsteroidSpawnChange) > 1)
 		{     

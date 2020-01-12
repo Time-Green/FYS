@@ -81,6 +81,9 @@ void setup()
 	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P3D);
+	//fullScreen(P3D);
+
+	TimeManager.setup(this, 1000f, 60f, false, false);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
@@ -123,7 +126,7 @@ void afterResouceLoadingSetup()
 {
 	setVolumes();
 	
-	prepareDRAWING_LAYERS();
+	prepareDrawingLayers();
 	generateFlippedImages();
 
 	//setup game and show title screen
@@ -184,7 +187,7 @@ void setupGame()
 	mobList.clear();
 	lightSources.clear();
 
-	cleanDRAWING_LAYERS();
+	cleanDrawingLayers();
 
 	runData = new RunData();
 	ui = new UIController();
@@ -201,7 +204,7 @@ void setupGame()
 	ui.currentLoadingScreenTransitionFill = 255;
 }
 
-void prepareDRAWING_LAYERS()
+void prepareDrawingLayers()
 {
 	drawList = new ArrayList<ArrayList>();
 
@@ -211,7 +214,7 @@ void prepareDRAWING_LAYERS()
 	}
 }
 
-void cleanDRAWING_LAYERS()
+void cleanDrawingLayers()
 {
 	for (ArrayList<BaseObject> drawLayer : drawList)
 	{
@@ -281,6 +284,8 @@ void draw()
 	ui.draw();
 
 	checkRestartGame();
+
+	TimeManager.update();
 }
 
 int currentRestartTimer = 0;

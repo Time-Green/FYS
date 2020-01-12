@@ -33,7 +33,7 @@ public class MeteorTrailParticle extends BaseParticle
 
 	private void updateSize()
 	{
-		size -= sizeDegrade;
+		size -= sizeDegrade * TimeManager.deltaFix;
 
 		if (size <= 0)
 		{
