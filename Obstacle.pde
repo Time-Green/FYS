@@ -5,4 +5,11 @@ class Obstacle extends Movable
 		movableCollision = true;
 		anchored = false;
 	}
+
+	void takeDamage(float damageTaken)
+	{
+		super.takeDamage(damageTaken);
+
+		delete(this);
+	}
 }

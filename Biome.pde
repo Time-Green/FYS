@@ -96,15 +96,28 @@ class Biome
 	// a function so we can give some different probabilities
 	String getStructureName()
 	{
-		float mimicChance = 20;
-		float spawnchange = random(100);
-		if (spawnchange < mimicChance)
+		final int dungeonAmount = 3;
+
+		float spawnChange = random(1);
+
+		// 50% change to spawn a dungeon
+		if(spawnChange < 0.5f)
 		{
-			return "TreasureChamberMimic";
+			return "Dungeon" + floor(random(dungeonAmount));
 		}
-		else
+		else // 50% change to spawn a treasure chamber
 		{
-			return "TreasureChamber";
+			float mimicChance = random(1);
+
+			// 20% change to spawn a mimic treasure chamber
+			if (mimicChance < 0.2f)
+			{
+				return "TreasureChamberMimic";
+			}
+			else
+			{
+				return "TreasureChamber";
+			}
 		}
 	}
 
