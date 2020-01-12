@@ -18,6 +18,27 @@ public class DoorTopTile extends Tile
 	}
 }
 
+
+public class WoodPlankStairRTile extends Tile
+{
+	public WoodPlankStairRTile(int x, int y)
+	{
+		super(x, y);
+
+		image = ResourceManager.getImage("WoodPlankStairR");
+	}
+}
+
+public class WoodPlankStairLTile extends Tile
+{
+	public WoodPlankStairLTile(int x, int y)
+	{
+		super(x, y);
+
+		image = ResourceManager.getImage("WoodPlankStairL");
+	}
+}
+
 public class GlassTile extends Tile
 {
 	public GlassTile(int x, int y)
