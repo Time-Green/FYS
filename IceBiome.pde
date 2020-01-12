@@ -62,6 +62,13 @@ class IceBiome extends Biome
 
 	String getStructureName()
 	{
+		float spawnChance = random(1f);
+
+		if(spawnChance < 0.2f)
+		{
+			return super.getStructureName();
+		}
+
         return "Snow" + int(random(5));
 	}
 }

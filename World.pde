@@ -44,11 +44,6 @@ public class World
 		//spawnJukebox();
 	}
 
-	public void update()
-	{
-
-	}
-
 	public void draw()
 	{
 		// only draw the background when the player can see it

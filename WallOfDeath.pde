@@ -3,7 +3,7 @@ class WallOfDeath extends Movable
 	private float minDistanceFromPlayer = 650f;
 	private float maxDistanceFromPlayer = 1250f;
 	private int currentDepthCheck = 0; 
-	boolean isInBeginfase = true;
+	public boolean isInBeginfase = true;
 	private final int MAX_DEPTH_CHECK = 25; 
 
 	private float lastPurge; //last y coord when we killed a bunch of stuff
