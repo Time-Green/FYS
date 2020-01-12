@@ -38,11 +38,11 @@ class ShadowBiome extends Biome
 				{
 					return new ObsedianTile(x, depth);
 				}
-				else if (oreChange > 18 && oreChange <= 20)
+				else if (oreChance > 18 && oreChance <= 20)
 				{
 					return new ExplosionTile(x, depth);
 				}
-				// else if (oreChange > 20 && oreChange <= 28)
+				// else if (oreChance > 20 && oreChance <= 28)
 				// {
 				// 	return new DemonClaw(x, depth);
 				// }
