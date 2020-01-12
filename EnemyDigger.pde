@@ -20,6 +20,7 @@ class EnemyDigger extends Enemy
 		//Setup chase vars
 		float chaseSpeedIncreaseValue = 0.25f;
 		chaseSpeed += increasePower(chaseSpeedIncreaseValue);
+		//Determine how many tiles we want the Digger to chase the player
 		float tileChaseDistance = 20f;
 		chaseDistance = OBJECT_SIZE * tileChaseDistance;
 		this.speed = IDLE_SPEED;

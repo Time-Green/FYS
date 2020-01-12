@@ -3,11 +3,12 @@ public class Pickup extends Movable
 	boolean canTake = true; //in-case we need an override to stop people picking stuff up, like thrown dynamite
 
 	Pickup()
-	{ 
-		size.set(30, 30);
+	{
+		int objectSize = 30;
+		size.set(objectSize, objectSize);
 	}
 
-	void pickedUp(Mob mob)
+	protected void pickedUp(Mob mob)
 	{
 		delete(this);
 	}

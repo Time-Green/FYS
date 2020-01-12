@@ -88,7 +88,7 @@ public class World
 
 		for (int i = 1; i < MAX_XSPAWNPOS; i++)
 		{
-			if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE && (i < 8 || i > 21))
+			if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE && (i < 5 || i > 21))
 			{
 				lastSpawnX = i;
 				spawnTree(new PVector(i, 10));

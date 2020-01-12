@@ -81,9 +81,8 @@ void setup()
 	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P3D);
-	//fullScreen(P3D);
 
-	TimeManager.setup(this, 1000f, 60f, false, false);
+	TimeManager.setup(this, 1000f, 60f, true, true);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
@@ -423,12 +422,6 @@ void handleGameFlow()
 			enterOverWorld(false);
 		}
 
-		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
-		{
-			gameState = GameState.AchievementScreen; 
-			ui.drawAchievementScreen();  
-		}
-
 		break;
 
 	case InGame:
@@ -439,7 +432,18 @@ void handleGameFlow()
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
-		break;
+		break; 
+
+	case Overworld:
+		gamePaused = false; 
+
+		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
+		{
+			gameState = GameState.AchievementScreen; 
+			ui.drawAchievementScreen();  
+		}
+
+		break; 
 
 	case GameOver:
 		gamePaused = true;
@@ -454,11 +458,11 @@ void handleGameFlow()
 		break;
 
 	case AchievementScreen:
+		gamePaused = true; 
 
-		// In the achievement screen press ENTER to exit temp(!)
 		if(InputHelper.isKeyDown(START_KEY))
 		{
-			gameState = GameState.MainMenu; 
+			gameState = GameState.Overworld; 
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
@@ -725,15 +729,15 @@ void debugInput()
 		load(new EnemyMimic(new PVector(1000,400)));
 	}
 
-	if(key == 'R' || key == 'r')
+	if(key == 'Q' || key == 'q')
 	{
-		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+		load(new ScorePickup(1000,ResourceManager.getImage("CoalPickup")));
 	}
 
-	// if (key == 'T' || key == 't')
-	// {
-	// 	databaseManager.insertVariable("poop", 500);
-	// }
+	if (key == 'T' || key == 't')
+	{
+		load(new ShieldPickup());
+	}
 
 	// if (key == 'Y' || key == 'y')
 	// {

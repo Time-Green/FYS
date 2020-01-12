@@ -71,7 +71,7 @@ class WallOfDeath extends Movable
 			position.y = player.position.y - maxDistanceFromPlayer;
 		}
 
-		float maxAsteroidSpawnChange = ((bufferZone + player.position.y * 0.085f) * 0.000125f) * gameStartSpawnMult;
+		float maxAsteroidSpawnChange = ((bufferZone + player.position.y * 0.085f) * 0.00012f) * gameStartSpawnMult;
 
 		maxAsteroidSpawnChange *= TimeManager.deltaFix;
 		maxAsteroidSpawnChange += 1;
@@ -81,7 +81,7 @@ class WallOfDeath extends Movable
 			spawnAstroid();
 		}
 
-		if(lastPurge + TILE_SIZE * 5 < position.y) //so we only cleanup every tile we pass
+		if(lastPurge + TILE_SIZE * 5 < position.y) //so we only cleanup every object we pass
 		{
 			cleanUpObjects();
 		}
@@ -118,6 +118,7 @@ class WallOfDeath extends Movable
 		}
 		else
 		{
+			// 20% change to spawn a meteor above the player
 			if (random(1f) < 0.2f)
 			{
 				spawnMeteorAbovePlayer();
@@ -191,6 +192,7 @@ class WallOfDeath extends Movable
 	private void cleanUpObjects()
 	{
 		lastPurge = position.y;
+
 		for (BaseObject object : updateList)
 		{
 			//is the object above the wall of death..

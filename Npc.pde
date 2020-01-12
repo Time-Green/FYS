@@ -281,6 +281,13 @@ public class Npc extends Mob
 		text(name, position.x + size.x / 2, position.y - 5);
 	}
 
+	private void drawAchievementHint()
+	{
+		fill(255); 
+		ellipse(this.position.x, this.position.y, 50, 50);
+		text("A", this.position.x, this.position.y);
+	}
+
 	private void drawTalking()
 	{
 		fill(0);
