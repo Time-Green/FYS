@@ -263,7 +263,6 @@ void draw()
 
 	camera.update();
 
-	world.update();
 	world.draw();
 
 	drawParallaxLayers();
