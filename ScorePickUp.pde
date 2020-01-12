@@ -100,12 +100,14 @@ public class ScorePickup extends Pickup
 
 		if (player.magnetTimer > 0)
 		{
+			float defaultGravity = gravityForce;
 			float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
 
 			if (distanceToPlayer <= chaseDistance)
-			{
+			{// Go torwards the player
 				float moveSpeed = 15;
 				this.collisionEnabled = false;
+				this.gravityForce = 0;
 				
 				float playerX = player.position.x;
 				float playerY = player.position.y;
@@ -122,12 +124,17 @@ public class ScorePickup extends Pickup
 				
 				if (this.position.y < playerY)
 				{//Go down
-					this.gravityForce = moveSpeed;
+					this.velocity.y = moveSpeed;
 				}
 				else
 				{//Go up
-					this.gravityForce = -moveSpeed;
+					this.velocity.y = -moveSpeed;
 				}
+			}
+			else
+			{// Return back to normal
+				this.collisionEnabled = true;
+				this.gravityForce = defaultGravity;
 			}
 		}
 	}

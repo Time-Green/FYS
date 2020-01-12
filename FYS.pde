@@ -731,12 +731,12 @@ void debugInput()
 
 	if(key == 'Q' || key == 'q')
 	{
-		load(new ScorePickup(1000,ResourceManager.getImage("CoalPickup")));
+		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
 	}
 
 	if (key == 'T' || key == 't')
 	{
-		load(new ShieldPickup());
+		load(new MagnetPickup());
 	}
 
 	// if (key == 'Y' || key == 'y')
