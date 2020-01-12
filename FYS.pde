@@ -751,10 +751,5 @@ void debugInput()
 	{
 		parallaxEnabled = !parallaxEnabled;
 	}
-
-	if(key == 'm')
-	{
-		world.currentBiome.maybeSpawnMoss(world.getTile(player.position.x, player.position.y + TILE_SIZE), world);
-	}
 }
 

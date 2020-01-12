@@ -63,9 +63,10 @@ public class World
 	void drawBackgoundImage()
 	{
 		final float X_PARALLEX_STRENGTH = 0.1f;
+		final float PARALLAX_Y_OFFSET = -7.5 * TILE_SIZE;
 
 		float xPos = camera.position.x * X_PARALLEX_STRENGTH;
-		float yPos = -camera.position.y * 0.5 - 200;
+		float yPos = -camera.position.y * 0.5 + PARALLAX_Y_OFFSET;
 
 		float worldWidth = TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE;
 
