@@ -41,6 +41,8 @@ public class Npc extends Mob
 
 	public Npc(World world, String name, String[] genericTexts, String[] panicTexts, String[] personalTexts)
 	{
+		drawLayer = PRIORITY_LAYER;
+
 		this.name = name;
 		this.genericTexts = genericTexts;
 		this.panicTexts = panicTexts;
@@ -273,6 +275,11 @@ public class Npc extends Mob
 		}
 
 		textAlign(LEFT);
+
+		if(player.position.x > position.x - TILE_SIZE && player.position.x < position.x + TILE_SIZE)
+		{
+			drawAchievementHint(); 
+		} 
 	}
 
 	private void drawName()
@@ -283,9 +290,13 @@ public class Npc extends Mob
 
 	private void drawAchievementHint()
 	{
+		fill(255, 0, 0); 
+		ellipseMode(CENTER);
+		ellipse(this.position.x + 20, this.position.y - 40, 40, 40);
 		fill(255); 
-		ellipse(this.position.x, this.position.y, 50, 50);
-		text("A", this.position.x, this.position.y);
+		textAlign(CENTER); 
+		textSize(ui.ACHIEVEMENT_FONT_SIZE/1.5);
+		text("A", this.position.x + 20, this.position.y - 32);
 	}
 
 	private void drawTalking()
