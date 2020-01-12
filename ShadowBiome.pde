@@ -38,14 +38,14 @@ class ShadowBiome extends Biome
 				{
 					return new ObsedianTile(x, depth);
 				}
-				else if (oreChance > 20 && oreChance <= 28)
-				{
-					return new DemonClaw(x, depth);
-				}
 				else if (oreChance > 18 && oreChance <= 20)
 				{
 					return new ExplosionTile(x, depth);
 				}
+				// else if (oreChance > 20 && oreChance <= 28)
+				// {
+				// 	return new DemonClaw(x, depth);
+				// }
 			} 
 		}
 
@@ -61,8 +61,6 @@ class ShadowBiome extends Biome
 	// {
 	// 	load(new DemonClaw(position));
 	// }
-
-
 
 	String getParallaxedRock()
 	{
