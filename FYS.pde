@@ -725,15 +725,15 @@ void debugInput()
 		load(new EnemyMimic(new PVector(1000,400)));
 	}
 
-	if(key == 'R' || key == 'r')
+	if(key == 'Q' || key == 'q')
 	{
-		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+		load(new ScorePickup(1000,ResourceManager.getImage("CoalPickup")));
 	}
 
-	// if (key == 'T' || key == 't')
-	// {
-	// 	databaseManager.insertVariable("poop", 500);
-	// }
+	if (key == 'T' || key == 't')
+	{
+		load(new ShieldPickup());
+	}
 
 	// if (key == 'Y' || key == 'y')
 	// {

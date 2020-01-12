@@ -361,13 +361,17 @@ class Player extends Mob
 		{
 			shieldTimer -= TimeManager.deltaFix;
 			isImmortal = true;
-			// if (myShield.drawShield != true) 
 			myShield.drawShield = true;
 		}
 		else
 		{
 			isImmortal = false;
 			myShield.drawShield = false;
+		}
+
+		if (magnetTimer > 0f)
+		{
+			magnetTimer -= TimeManager.deltaFix;
 		}
 	}
 
