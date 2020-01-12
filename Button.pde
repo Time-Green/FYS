@@ -7,12 +7,19 @@ class Button extends Obstacle
 	{
 		size.set(50, 10);
 		image = ResourceManager.getImage("Button");
+
+		drawLayer = PRIORITY_LAYER;
 	}
 
 	void update()
 	{
 		super.update();
 
+	}
+
+	void draw()
+	{
+		super.draw();
 		if(canBePressed)
 		{
 			drawText();

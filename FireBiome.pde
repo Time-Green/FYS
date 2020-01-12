@@ -2,9 +2,9 @@ class FireBiome extends Biome
 {
 	FireBiome()
 	{
-		structureChance = 0.1;
+		structureChance = 0.05f;
 		caveSpawningPossibilityScale = 0.51f;
-		enemyChance = 0.01;
+		enemyChance = 0.01f;
 
 		destroyedImage = ResourceManager.getImage("DestroyedVulcanic");
 
@@ -39,6 +39,11 @@ class FireBiome extends Biome
 
 	String getParallaxedRock()
 	{
+		if(random(1) < .01)
+		{
+			return "MeteoriteTile";
+		}
+
 		return "VulcanicTile";
 	}
 }

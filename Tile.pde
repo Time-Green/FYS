@@ -129,6 +129,7 @@ class Tile extends BaseObject
 			{
 				return;
 			}
+			
 			if(moss != null)
 			{
 				moss.applyTileTint();
@@ -152,7 +153,6 @@ class Tile extends BaseObject
 					image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
 					drawDecals();
 				}
-
 				else
 				{
 					tint(lightningAmount, 255 - lightningAmount); //second param is transparency. make the invisible tile less transparent and light, otherwise it doesnt work at all
@@ -160,14 +160,8 @@ class Tile extends BaseObject
 				}
 			}
 
-
 			tint(255);
 		}
-	}
-
-	void update()
-	{
-		super.update();
 	}
 
 	void takeDamage(float damageTaken, boolean playBreakSound) 

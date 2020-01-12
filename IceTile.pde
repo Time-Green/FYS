@@ -12,5 +12,6 @@ public class IceTile extends Tile
 
 		image = ResourceManager.getImage("IceTile", true);
 		breakSound = "GlassBreak" + floor(random(1, 4));
+		destroyedImage = ResourceManager.getImage("DestroyedIce");
 	}
 }

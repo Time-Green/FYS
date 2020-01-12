@@ -22,6 +22,8 @@ class Player extends Mob
 	public float stunTimer;
 	public float shieldTimer;
 	public float magnetTimer;
+	public float extraRegenTimer;
+	private float bonusRegen = regen * 2.5f;
 
 	private boolean gotbonus1;
 	private Shield myShield;
@@ -44,7 +46,6 @@ class Player extends Mob
 
 		applyRelicBoost();
 
-		myShield = new Shield();
 	}
 
 	void update()
@@ -244,13 +245,7 @@ class Player extends Mob
 				animatedImageIdle.draw();
 			}
 		}
-	
-		//Draw the shield
-		//This has to go on the bottom of this function, otherwise it will draw behind the player
-		if (shieldTimer > 0f)
-		{
-			myShield.draw();
-		}
+
 	}
 
 	private void handleParticles()
@@ -391,18 +386,30 @@ class Player extends Mob
 		{
 			shieldTimer -= TimeManager.deltaFix;
 			isImmortal = true;
-			myShield.drawShield = true;
 		}
 		else
 		{
 			isImmortal = false;
-			myShield.drawShield = false;
 		}
 
 		if (magnetTimer > 0f)
 		{
 			magnetTimer -= TimeManager.deltaFix;
 		}
+
+		// Get the default regen value so that we can use it later
+		float defaultRegen = regen;
+
+		if (extraRegenTimer > 0f)
+		{
+			extraRegenTimer -= TimeManager.deltaFix;
+			regen = bonusRegen;
+		}
+		else
+		{
+			regen = defaultRegen;
+		}
+
 	}
 
 	public void die()

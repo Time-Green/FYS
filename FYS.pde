@@ -74,7 +74,7 @@ UIController ui;
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
 
-boolean parallaxEnabled = false;
+boolean parallaxEnabled = true;
 
 void setup()
 {
@@ -82,7 +82,7 @@ void setup()
 
 	size(1280, 720, P3D);
 
-	TimeManager.setup(this, 1000f, 60f, true, true);
+	TimeManager.setup(this, 1000f, 60f, false, false);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
@@ -731,12 +731,12 @@ void debugInput()
 
 	if(key == 'Q' || key == 'q')
 	{
-		load(new ScorePickup(1000,ResourceManager.getImage("CoalPickup")));
+		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
 	}
 
 	if (key == 'T' || key == 't')
 	{
-		load(new ShieldPickup());
+		load(new MagnetPickup());
 	}
 
 	// if (key == 'Y' || key == 'y')

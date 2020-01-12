@@ -29,4 +29,9 @@ class GoldenBiome extends Biome
 
         return new TintedTile(x, depth);
     }    
+
+	String getParallaxedRock()
+	{
+		return "TintedBlock";
+	}
 }
