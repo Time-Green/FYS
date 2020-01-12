@@ -40,7 +40,8 @@ class Chest extends Obstacle
 	{
 		ArrayList<Movable> newContents = new ArrayList<Movable>();
 
-		int randomKey = floor(random(2));
+		// Randomly decied what the content for the chest will be
+		int randomKey = floor(random(5));
 
 		if (forcedKey >= 0)
 		{
@@ -48,7 +49,7 @@ class Chest extends Obstacle
 		}
 
 		if(randomKey == 0)
-		{
+		{// Relicshard
 			RelicShard relicShard = new RelicShard();
 			load(relicShard, position);
 
@@ -56,7 +57,31 @@ class Chest extends Obstacle
 			addRandomLoot(newContents);
 		}
 		else if(randomKey == 1)
-		{
+		{// Random ores
+			addRandomLoot(newContents);
+		}
+		else if(randomKey == 2)
+		{// Shield pickup
+			ShieldPickup shieldPickup = new ShieldPickup();
+			load(shieldPickup, position);
+
+			newContents.add(shieldPickup);
+			addRandomLoot(newContents);
+		}
+		else if(randomKey == 3)
+		{// Magnet pickup
+			MagnetPickup magnetPickup = new MagnetPickup();
+			load(magnetPickup, position);
+
+			newContents.add(magnetPickup);
+			addRandomLoot(newContents);
+		}
+		else if(randomKey == 4)
+		{// Regen pickup
+			RegenPickup regenPickup = new RegenPickup();
+			load(regenPickup, position);
+
+			newContents.add(regenPickup);
 			addRandomLoot(newContents);
 		}
 
