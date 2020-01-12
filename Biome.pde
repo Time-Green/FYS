@@ -172,6 +172,17 @@ class Biome
 
 	String getParallaxedRock()
 	{
+		float chance = random(1);
+		
+		if(chance > 0.00 && chance < 0.10)
+		{
+			return "CoalBlock";
+		}
+		else if(chance > 0.10 && chance < 0.18)
+		{
+			return "IronBlock";
+		}
+
 		return "StoneBlock";
 	}
 
