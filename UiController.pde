@@ -24,7 +24,7 @@ public class UIController
 
 	//Game HUD
 	private float hudTextDistanceFromLeft = 10; //The distance from the left side of the screen 
-	private float hudTextStartY = 90; //The height from with the hub start
+	private float hudTextStartY = 90; //The height from with the hud start
 
 	//Extra score to add
 	private float extraBonusX;
@@ -389,7 +389,8 @@ public class UIController
 		}
 	}
 
-	void drawGameHUD()
+	//Draw functions
+	private void drawGameHUD()
 	{
 		drawHealthBar();
 
@@ -397,10 +398,18 @@ public class UIController
 		textAlign(LEFT);
 		textSize(HUD_FONT_SIZE);
 		text("Score: " + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
-		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + 10);
+		float extraDistance = 10;
+		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + extraDistance);
 
+		//Draw powerups
+		float powerupYPos = hudTextStartY + HUD_FONT_SIZE + 30;
+		PImage shieldImage = ResourceManager.getImage("Shield");
+		PImage magnetImage = ResourceManager.getImage("Magnet");
+		drawPowerUp(shieldImage, hudTextDistanceFromLeft, powerupYPos, player.shieldTimer);
+		drawPowerUp(magnetImage, hudTextDistanceFromLeft + 60, powerupYPos, player.magnetTimer);
+		
 		//Collected points display
-		//Draw the collected score if we have some
+		//Draw the collected score if the player has some
 		if (collectedPoints > 0)
 		{
 			String comboChainText = "";
@@ -461,7 +470,21 @@ public class UIController
 		}
 	}
 
-	//Draw functions
+	private void drawPowerUp(PImage powerupImage, float xPos, float yPos, float powerUpTimer)
+	{	
+		float minTintValue = 56;
+		float maxTintValue = 255;
+		if (powerUpTimer > 0)
+		{//Draw the image transparent to indicate it's not active
+			tint(WHITE, maxTintValue);
+		} else
+		{//Draw the image fully colored to indicate that it is active
+			tint(WHITE, minTintValue);
+		}
+
+		image(powerupImage, xPos, yPos);
+		
+	}
 
 	private void drawTitle(String menuText)
 	{

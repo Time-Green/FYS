@@ -1,8 +1,7 @@
 public class ScorePickup extends Pickup
 {
 	private int score;
-	private final float MAGNETDISTANCE = 50f;
-	private float followSpeed = 10;
+	private float chaseDistance;
 
 	// drop based on tile
 	public ScorePickup(ResourceTile tile)
@@ -10,7 +9,7 @@ public class ScorePickup extends Pickup
 		score = tile.value / tile.pickupDropAmountValue;
 		image = tile.pickupImage;
 
-		multiplyScoreBasedOnDepth();
+		setup();
 	}
 
 	// independant drop
@@ -19,17 +18,24 @@ public class ScorePickup extends Pickup
 		score = scoreToGiveOnPickup;
 		this.image = image;
 
-		multiplyScoreBasedOnDepth();
+		setup();
 	}
 
-	private void multiplyScoreBasedOnDepth()
+	private void setup()
 	{
 		if(player == null) //depth is basically 0 anyway
 		{
 			return;
 		}
 
-		// every 100 depth we add 10% to the score
+		//Determine how many tiles we want the score pickup to chase the player
+		float tileChaseDistance = 50f;
+		chaseDistance = OBJECT_SIZE * tileChaseDistance;
+
+		drawLayer = PRIORITY_LAYER;
+
+		// Multiply score based on depth
+		// Every 100 depth we add 10% to the score
 		float multiplier = float(player.getDepth()) / 1000f;
 
 		score *= 1 + multiplier;
@@ -57,7 +63,6 @@ public class ScorePickup extends Pickup
 		// TODO: find and add sound effect, do not remove comment yet
 		// RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
 		// AudioManager.playSoundEffect("Treasure", position);
-		// Insert particle code here
 
 		// Delete this object
 		super.pickedUp(mob);
@@ -89,27 +94,42 @@ public class ScorePickup extends Pickup
 		return null;
 	}
 
-	// void update()
-	// {
-	// 	super.update();
-	// 	this.velocity.x = 20;
+	void update()
+	{
+		super.update();
 
-	// 	float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
+		if (player.magnetTimer > 0)
+		{
+			float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
 
-	// 	if (distanceToPlayer <= MAGNETDISTANCE)
-	// 	{
-	// 		float playerX = player.position.x;
-	// 		float playerY = player.position.y;
-			
-	// 		if (this.position.y < playerY)
-	// 		{
-	// 			// this.gravityForce = chaseSpeed/2;//Go down
-	// 		}
-	// 		else
-	// 		{
-	// 			this.gravityForce = -followSpeed;//Go up
-	// 		}
-	// 	}
-	// }
+			if (distanceToPlayer <= chaseDistance)
+			{
+				float moveSpeed = 15;
+				this.collisionEnabled = false;
+				
+				float playerX = player.position.x;
+				float playerY = player.position.y;
+
+				if (this.position.x > playerX)
+				{// Go left
+					this.velocity.x = -moveSpeed;
+				}
+				else
+				{// Go right
+					this.velocity.x = moveSpeed;
+				}
+				
+				
+				if (this.position.y < playerY)
+				{//Go down
+					this.gravityForce = moveSpeed;
+				}
+				else
+				{//Go up
+					this.gravityForce = -moveSpeed;
+				}
+			}
+		}
+	}
 
 }
