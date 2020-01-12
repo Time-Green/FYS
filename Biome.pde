@@ -32,7 +32,7 @@ class Biome
   	{
     	if(spawnResourceTileAllowed(x, depth))
     	{
-      		float oreChange = random(100);
+      		float oreChance = random(100);
 
 			//spawn air at surface
 			if (depth <= OVERWORLD_HEIGHT)
@@ -53,15 +53,15 @@ class Biome
 			}
 			else if (depth > 15)
 			{
-				if (oreChange > 0 && oreChange <= 10)
+				if (oreChance > 0 && oreChance <= 10)
 				{
 					return new CoalTile(x, depth);
 				}
-				else if (oreChange > 10 && oreChange <= 18)
+				else if (oreChance > 10 && oreChance <= 18)
 				{
 					return new IronTile(x, depth);
 				}
-				else if (oreChange > 18 && oreChange <= 20)
+				else if (oreChance > 18 && oreChance <= 20)
 				{
 					return new ExplosionTile(x, depth);
 				}
@@ -100,16 +100,16 @@ class Biome
 
 		float spawnChance = random(1);
 
-		// 50% change to spawn a dungeon
+		// 50% chance to spawn a dungeon
 		if(spawnChance < 0.5f)
 		{
 			return "Dungeon" + floor(random(dungeonAmount));
 		}
-		else // 50% change to spawn a treasure chamber
+		else // 50% chance to spawn a treasure chamber
 		{
 			float mimicChance = random(1);
 
-			// 20% change to spawn a mimic treasure chamber
+			// 20% chance to spawn a mimic treasure chamber
 			if (mimicChance < 0.2f)
 			{
 				return "TreasureChamberMimic";

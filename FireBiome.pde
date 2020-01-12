@@ -17,13 +17,13 @@ class FireBiome extends Biome
 	{
 		if(spawnResourceTileAllowed(x, depth))
 		{
-			float oreChange = random(100);
+			float oreChance = random(100);
 
-			if (oreChange <= 1)
+			if (oreChance <= 1)
 			{
 				return new MeteoriteTile(x, depth);
 			}
-			else if (oreChange > 1 && oreChange <= 3)
+			else if (oreChance > 1 && oreChance <= 3)
 			{
 				return new ExplosionTile(x, depth);
 			}
