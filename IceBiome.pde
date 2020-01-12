@@ -15,23 +15,23 @@ class IceBiome extends Biome
 		
 		if(spawnResourceTileAllowed(x, depth))
 		{
-			float oreChange = random(100);
+			float oreChance = random(100);
 
 			if (depth - startedAt < 50)
 			{
-				if (oreChange <= 4)
+				if (oreChance <= 4)
 				{
 					return new GreenIceTile(x, depth);
 				}
-				else if (oreChange > 4 && oreChange <= 8)
+				else if (oreChance > 4 && oreChance <= 8)
 				{
 					return new RedIceTile(x, depth);
 				}
-				else if (oreChange > 8 && oreChange <= 12)
+				else if (oreChance > 8 && oreChance <= 12)
 				{
 					return new BlueIceTile(x, depth);
 				}
-				else if (oreChange > 12 && oreChange <= 14)
+				else if (oreChance > 12 && oreChance <= 14)
 				{
 					return new ExplosionTile(x, depth);
 				}
@@ -40,6 +40,11 @@ class IceBiome extends Biome
 		
 		return new IceTile(x, depth);
 	}
+
+	// void spawnEnemy(PVector position)
+	// {
+	// 	load(new Penguin(position));
+	// }
 
 	String getParallaxedRock()
 	{
