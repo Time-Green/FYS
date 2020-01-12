@@ -129,6 +129,7 @@ class Tile extends BaseObject
 			{
 				return;
 			}
+			
 			if(moss != null)
 			{
 				moss.applyTileTint();
@@ -152,14 +153,12 @@ class Tile extends BaseObject
 					image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
 					drawDecals();
 				}
-
 				else
 				{
 					tint(lightningAmount, 255 - lightningAmount); //second param is transparency. make the invisible tile less transparent and light, otherwise it doesnt work at all
 					image(ResourceManager.getImage("Black"), position.x, position.y, TILE_SIZE, TILE_SIZE); //black so we can properly detransparant it. empty image doesnt work
 				}
 			}
-
 
 			tint(255);
 		}
