@@ -712,7 +712,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	debugInput();
+	//debugInput();
 }
 
 // processing key released event

@@ -10,7 +10,7 @@ public class Npc extends Mob
 	private String currentlySaying;
 	private boolean isTalking, isAboutToTalk;
 	private float currentTextIndex = 0;
-	private int currentTalkingWaitTime = 0;
+	private float currentTalkingWaitTime = 0;
 	private final int MAX_TALKING_WAIT_FRAMES = 2; // max frames untill showing next character when talking
 	private float maxTalkingShowTime;
 	private int timeStartedTalking;
@@ -107,7 +107,7 @@ public class Npc extends Mob
 
 		if (doJump && isGrounded())
 		{
-			addForce(new PVector(0, -jumpForce * TimeManager.deltaFix));
+			addForce(new PVector(0, -jumpForce));
 		}
 	}
 
@@ -135,7 +135,7 @@ public class Npc extends Mob
 
 			if(currentTalkingWaitTime < MAX_TALKING_WAIT_FRAMES)
 			{
-				currentTalkingWaitTime++;
+				currentTalkingWaitTime += TimeManager.deltaFix;
 
 				return;
 			}
@@ -147,7 +147,13 @@ public class Npc extends Mob
 			if(floor(currentTextIndex) < currentlySayingFullText.length())
 			{
 				currentTextIndex += TimeManager.deltaFix;
-				currentlySaying = currentlySayingFullText.substring(0, floor(currentTextIndex));
+
+				int letterIndex = floor(currentTextIndex);
+
+				if(letterIndex < currentlySayingFullText.length())
+				{
+					currentlySaying = currentlySayingFullText.substring(0, letterIndex);
+				}
 			}
 		}
 		else if(!isPanicking)
