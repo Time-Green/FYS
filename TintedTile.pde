@@ -13,6 +13,11 @@ public class TintedTile extends Tile
 
     void update()
     {
+        if(gamePaused)
+        {
+            return;
+        }
+        
         super.update();
 
         if(random(1) < sparkleChance)

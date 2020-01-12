@@ -52,6 +52,11 @@ class IceBiome extends Biome
 
 	String getParallaxedRock()
 	{
+		if(random(1) < 0.1)
+		{
+			return "SnowBlock";
+		}
+
 		return "IceTile";
 	}
 

@@ -51,7 +51,11 @@ public class World
 
 	public void draw()
 	{
-		drawBackgoundImage();
+		// only draw the background when the player can see it
+		if(player.getDepth() < 25)
+		{
+			drawBackgoundImage();
+		}
 	}
 
 	public void spawnJukebox()
@@ -190,7 +194,7 @@ public class World
 			{
 				Tile tile;
 
-				if(random(currentBiome.transitWidth) > switchDepth - y)
+				if(random(currentBiome.transitWidth) > switchDepth - y) //make the biome transition effect
 				{
 					tile = nextBiome.getTileToGenerate(x, y);
 					tile.destroyedImage = nextBiome.destroyedImage;
@@ -213,7 +217,7 @@ public class World
 			{
 				for(int i = 1; i <= PARALLAX_LAYERS; i++)
 				{
-					generateParallax(y, i);
+					generateParallax(y, i); //start drawing parallax tiles on this row
 				}
 			}
 
@@ -647,8 +651,19 @@ public class World
 		for(int x = 0; x < PARALLAX_WIDTH[parallaxLayer - 1]; x++)
 		{
 			PImage parallaxImage;
+			Biome biome;
 
-			if(!currentBiome.canParallax)
+			if(random(currentBiome.transitWidth) > switchDepth - y) //make the biome transition for parallax aswell
+			{
+				biome = nextBiome;
+			}
+
+			else 
+			{
+				biome = currentBiome;
+			}
+
+			if(!biome.canParallax)
 			{
 				parallaxImage = null;
 			}
@@ -661,12 +676,12 @@ public class World
 				
 				else
 				{
-					parallaxImage = currentBiome.destroyedImage;
+					parallaxImage = biome.destroyedImage;
 				}	
 			}
 			else
 			{
-				parallaxImage = ResourceManager.getImage(currentBiome.getParallaxedRock());
+				parallaxImage = ResourceManager.getImage(biome.getParallaxedRock());
 			}
 
 			ParallaxTile tile = (ParallaxTile) load(new ParallaxTile(x * TILE_SIZE, y * TILE_SIZE, parallaxLayer, parallaxImage));

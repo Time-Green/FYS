@@ -17,7 +17,7 @@ public class ExplosionTile extends Tile
 
 	boolean isDoingDynamiteExposion;
 	boolean isDoingDirectionalExplosion;
-
+	
 	private final int MAX_EXPLOSIONS = 5;
 	private final int MAX_EXPLOSION_DELAY = 3;
 	private int currentExplosion = 0;
