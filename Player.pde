@@ -279,7 +279,7 @@ class Player extends Mob
 		{
 			if (!isSwimming)
 			{
-				addForce(new PVector(0, -jumpForce));
+				setForce(new PVector(0, -jumpForce));
 				runData.playerJumps++;
 			}
 			else
