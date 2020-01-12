@@ -96,12 +96,12 @@ class Biome
 	// a function so we can give some different probabilities
 	String getStructureName()
 	{
-		final int dungeonAmount = 3;
+		final int dungeonAmount = 4;
 
-		float spawnChange = random(1);
+		float spawnChance = random(1);
 
 		// 50% change to spawn a dungeon
-		if(spawnChange < 0.5f)
+		if(spawnChance < 0.5f)
 		{
 			return "Dungeon" + floor(random(dungeonAmount));
 		}
