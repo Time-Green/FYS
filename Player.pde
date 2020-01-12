@@ -78,10 +78,22 @@ class Player extends Mob
 		{
 			ui.drawWarningOverlay = true;
 
-			if (frameCount % 60 == 0)
+			if (TimeManager.flooredDeltaFixFrameCount % 60 == 0)
 			{
 				AudioManager.playSoundEffect("LowHealth");
 			}
+		}
+	}
+
+	void checkLight()
+	{
+		if(isDark == true)
+		{
+			viewAmount = 20;
+		}
+		else
+		{
+			viewAmount = 400;
 		}
 	}
 
@@ -126,7 +138,7 @@ class Player extends Mob
 		}
 
 		float dy = viewTarget - lightEmitAmount;
-		lightEmitAmount += dy * easing;
+		lightEmitAmount += (dy * easing) * TimeManager.deltaFix;
 	}
 
 	void draw()
@@ -219,7 +231,7 @@ class Player extends Mob
 	
 		//Draw the shield
 		//This has to go on the bottom of this function, otherwise it will draw behind the player
-		if (this.shieldTimer > 0f)
+		if (shieldTimer > 0f)
 		{
 			myShield.draw();
 		}
@@ -228,16 +240,16 @@ class Player extends Mob
 	private void handleParticles()
 	{
 		// Walking
-		if (abs(velocity.x) > 2 && isGrounded())
+		if (abs(velocity.x) > 2 && isGrounded() && TimeManager.flooredDeltaFixFrameCount % 3 == 0)
 		{
-			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 3.5f), 1, 3, standingOn.particleColor);
+			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 2.5f), 1, 3, standingOn.particleColor);
 			load(particleSystem);
 		}
 
 		// Jumping
 		if(isGrounded && (InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2)))
 		{
-			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 3.5f), 12, 4, standingOn.particleColor);
+			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 2.5f), 12, 4, standingOn.particleColor);
 			load(particleSystem);
 		}		
 	}
@@ -351,7 +363,7 @@ class Player extends Mob
 		//Decrease stun timer
 		if (stunTimer > 0f)
 		{
-			stunTimer--;
+			stunTimer -= TimeManager.deltaFix;
 			isMiningDown = false;
 			isMiningLeft = false;
 			isMiningRight = false;
@@ -359,15 +371,19 @@ class Player extends Mob
 
 		if (shieldTimer > 0f)
 		{
-			shieldTimer--;
-			this.isImmortal = true;
-			// if (myShield.drawShield != true) 
+			shieldTimer -= TimeManager.deltaFix;
+			isImmortal = true;
 			myShield.drawShield = true;
 		}
 		else
 		{
-			this.isImmortal = false;
+			isImmortal = false;
 			myShield.drawShield = false;
+		}
+
+		if (magnetTimer > 0f)
+		{
+			magnetTimer -= TimeManager.deltaFix;
 		}
 	}
 

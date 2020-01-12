@@ -82,6 +82,8 @@ void setup()
 
 	size(1280, 720, P3D);
 
+	TimeManager.setup(this, 1000f, 60f, true, true);
+
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
 
@@ -123,7 +125,7 @@ void afterResouceLoadingSetup()
 {
 	setVolumes();
 	
-	prepareDRAWING_LAYERS();
+	prepareDrawingLayers();
 	generateFlippedImages();
 
 	//setup game and show title screen
@@ -184,7 +186,7 @@ void setupGame()
 	mobList.clear();
 	lightSources.clear();
 
-	cleanDRAWING_LAYERS();
+	cleanDrawingLayers();
 
 	runData = new RunData();
 	ui = new UIController();
@@ -201,7 +203,7 @@ void setupGame()
 	ui.currentLoadingScreenTransitionFill = 255;
 }
 
-void prepareDRAWING_LAYERS()
+void prepareDrawingLayers()
 {
 	drawList = new ArrayList<ArrayList>();
 
@@ -211,7 +213,7 @@ void prepareDRAWING_LAYERS()
 	}
 }
 
-void cleanDRAWING_LAYERS()
+void cleanDrawingLayers()
 {
 	for (ArrayList<BaseObject> drawLayer : drawList)
 	{
@@ -281,6 +283,8 @@ void draw()
 	ui.draw();
 
 	checkRestartGame();
+
+	TimeManager.update();
 }
 
 int currentRestartTimer = 0;
@@ -722,15 +726,18 @@ void debugInput()
 	// Test spawns
 	if(key == 'E' || key == 'e')
 	{
-		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
-		load(new EnemyDigger(new PVector(1000,500)));
-
+		load(new EnemyMimic(new PVector(1000,400)));
 	}
 
-	// if (key == 'T' || key == 't')
-	// {
-	// 	databaseManager.insertVariable("poop", 500);
-	// }
+	if(key == 'Q' || key == 'q')
+	{
+		load(new ScorePickup(1000,ResourceManager.getImage("CoalPickup")));
+	}
+
+	if (key == 'T' || key == 't')
+	{
+		load(new ShieldPickup());
+	}
 
 	// if (key == 'Y' || key == 'y')
 	// {
@@ -747,11 +754,6 @@ void debugInput()
 	if(key == 'p')
 	{
 		parallaxEnabled = !parallaxEnabled;
-	}
-
-	if(key == 'm')
-	{
-		world.currentBiome.maybeSpawnMoss(world.getTile(player.position.x, player.position.y + TILE_SIZE), world);
 	}
 }
 

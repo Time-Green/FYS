@@ -9,7 +9,7 @@ public class UIController
 	private final float ACHIEVEMENT_FONT_SIZE = 25; 
 	private final float HUD_FONT_SIZE = 30;
 
-	private int subTextCounter = -60;
+	private float subTextCounter = -60;
 
 	//Title position
 	private float titleXPos;
@@ -24,7 +24,7 @@ public class UIController
 
 	//Game HUD
 	private float hudTextDistanceFromLeft = 10; //The distance from the left side of the screen 
-	private float hudTextStartY = 90; //The height from with the hub start
+	private float hudTextStartY = 90; //The height from with the hud start
 
 	//Extra score to add
 	private float extraBonusX;
@@ -59,6 +59,7 @@ public class UIController
 	private float killFactor = 0.01; //we stop the tweening at 0.01 of maxBarOffet
 
 	//arrows
+	private float arrowMoveTimer = -30;
 	private float arrowYTarget = 0;
 	private float arrowYOffset = 0;
 	private float easing = 0.05f;
@@ -72,6 +73,8 @@ public class UIController
 
 	private final boolean DRAWSTATS = true;
 
+	private final float MAX_DOT_TIMER = 20f; // half second
+	private float nextDotTimer = MAX_DOT_TIMER;
 	private String dots = "";
 
 	private PImage healthBarImage;
@@ -152,7 +155,7 @@ public class UIController
 	{
 		if (drawWarningOverlay && isIncreasing)
 		{
-			currentOverlayFill += 0.5f;
+			currentOverlayFill += 0.5f * TimeManager.deltaFix;
 
 			if (currentOverlayFill > MAX_OVERLAY_FILL)
 			{
@@ -162,7 +165,7 @@ public class UIController
 		}
 		else
 		{
-			currentOverlayFill -= 0.5f;
+			currentOverlayFill -= 0.5f * TimeManager.deltaFix;
 
 			if (currentOverlayFill < 0)
 			{
@@ -187,20 +190,24 @@ public class UIController
 
 	void drawArrows()
 	{
-		if (frameCount % 30 == 0)
+		if (arrowMoveTimer < 0)
 		{
-			if (arrowYTarget == 0)
+			arrowYTarget = TILE_SIZE;
+		}
+		else
+		{
+			arrowYTarget = 0;
+
+			if(arrowMoveTimer > 30)
 			{
-				arrowYTarget = TILE_SIZE;
-			}
-			else
-			{
-				arrowYTarget = 0;
+				arrowMoveTimer = -30;
 			}
 		}
 
+		arrowMoveTimer += TimeManager.deltaFix;
+
 		float dy = arrowYTarget - arrowYOffset;
-		arrowYOffset += dy * easing;
+		arrowYOffset += (dy * easing) * TimeManager.deltaFix;
 
 		tint(255, 127);
 		fill(TITLE_COLOR);
@@ -250,15 +257,18 @@ public class UIController
 
 	private void handleDots()
 	{
-		if(frameCount % 10 == 0)
+		if(nextDotTimer < 0f)
 		{
 			dots += ".";
+			nextDotTimer = MAX_DOT_TIMER;
 		}
 
 		if(dots.length() > 3)
 		{
 			dots = "";
 		}
+
+		nextDotTimer -= TimeManager.deltaFix;
 	}
 
 	void drawStartMenu()
@@ -266,8 +276,8 @@ public class UIController
 		fill(TITLE_COLOR);
 		
 		//sub text
-		subTextCounter++;
-		
+		subTextCounter += TimeManager.deltaFix;
+
 		textFont(instructionFont);
 
 		if (subTextCounter >= 0)
@@ -290,7 +300,7 @@ public class UIController
 	{
 		if(currentLoadingScreenTransitionFill > 0)
 		{
-			currentLoadingScreenTransitionFill -= 4.5f;
+			currentLoadingScreenTransitionFill -= 4.5f * TimeManager.deltaFix;
 
 			if(currentLoadingScreenTransitionFill < 0)
 			{
@@ -377,7 +387,8 @@ public class UIController
 		}
 	}
 
-	void drawGameHUD()
+	//Draw functions
+	private void drawGameHUD()
 	{
 		drawHealthBar();
 
@@ -385,10 +396,18 @@ public class UIController
 		textAlign(LEFT);
 		textSize(HUD_FONT_SIZE);
 		text("Score: " + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
-		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + 10);
+		float extraDistance = 10;
+		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + extraDistance);
 
+		//Draw powerups
+		float powerupYPos = hudTextStartY + HUD_FONT_SIZE + 30;
+		PImage shieldImage = ResourceManager.getImage("Shield");
+		PImage magnetImage = ResourceManager.getImage("Magnet");
+		drawPowerUp(shieldImage, hudTextDistanceFromLeft, powerupYPos, player.shieldTimer);
+		drawPowerUp(magnetImage, hudTextDistanceFromLeft + 60, powerupYPos, player.magnetTimer);
+		
 		//Collected points display
-		//Draw the collected score if we have some
+		//Draw the collected score if the player has some
 		if (collectedPoints > 0)
 		{
 			String comboChainText = "";
@@ -427,7 +446,7 @@ public class UIController
 
 		if (extraScoreLiveTimer > 0)
 		{
-			extraScoreLiveTimer--;
+			extraScoreLiveTimer -= TimeManager.deltaFix;
 		}
 		else
 		{
@@ -445,11 +464,30 @@ public class UIController
 		if(achievementDisplayTimer > 0)
 		{
 			displayAchievement(); 
-			achievementDisplayTimer--; 
+			achievementDisplayTimer -= TimeManager.deltaFix; 
 		}
 	}
 
-	//Draw functions
+	private void drawPowerUp(PImage powerupImage, float xPos, float yPos, float powerUpTimer)
+	{	
+		float minTintValue = 56;
+		float maxTintValue = 255;
+
+		if (powerUpTimer > 0)
+		{
+			//Draw the image transparent to indicate it's not active
+			tint(WHITE, maxTintValue);
+		}
+		else
+		{
+			//Draw the image fully colored to indicate that it is active
+			tint(WHITE, minTintValue);
+		}
+
+		image(powerupImage, xPos, yPos);
+		
+		tint(255);
+	}
 
 	private void drawTitle(String menuText)
 	{

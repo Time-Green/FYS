@@ -9,7 +9,7 @@ public class Npc extends Mob
 	private String currentlySayingFullText;
 	private String currentlySaying;
 	private boolean isTalking, isAboutToTalk;
-	private int currentTextIndex = 0;
+	private float currentTextIndex = 0;
 	private int currentTalkingWaitTime = 0;
 	private final int MAX_TALKING_WAIT_FRAMES = 2; // max frames untill showing next character when talking
 	private float maxTalkingShowTime;
@@ -101,11 +101,11 @@ public class Npc extends Mob
 		changeWalkingDirection(changeWalkingDirectionChance);
 		
 		//chance to jump walking direction
-		boolean doJump = random(1f) <= doJumpChance;
+		boolean doJump = random(1f) <= doJumpChance * TimeManager.deltaFix;
 
 		if (doJump && isGrounded())
 		{
-			addForce(new PVector(0, -jumpForce));
+			addForce(new PVector(0, -jumpForce * TimeManager.deltaFix));
 		}
 	}
 
@@ -142,16 +142,16 @@ public class Npc extends Mob
 				currentTalkingWaitTime = 0;
 			}
 
-			if(currentTextIndex < currentlySayingFullText.length())
+			if(floor(currentTextIndex) < currentlySayingFullText.length())
 			{
-				currentTextIndex++;
-				currentlySaying = currentlySayingFullText.substring(0, currentTextIndex);
+				currentTextIndex += TimeManager.deltaFix;
+				currentlySaying = currentlySayingFullText.substring(0, floor(currentTextIndex));
 			}
 		}
 		else if(!isPanicking)
 		{
 			//chance to start talking when not panicking
-			boolean doTalk = random(1f) <= doTalkChance;
+			boolean doTalk = random(1f) <= doTalkChance * TimeManager.deltaFix;
 
 			if (doTalk)
 			{
@@ -229,7 +229,7 @@ public class Npc extends Mob
 		}
 
 		//chance to change walking direction
-		boolean doChangeIsWalking = random(1f) <= chance;
+		boolean doChangeIsWalking = random(1f) <= chance * TimeManager.deltaFix;
 
 		if(doChangeIsWalking)
 		{
@@ -241,7 +241,7 @@ public class Npc extends Mob
 	private void changeWalkingDirection(float chance)
 	{
 		//chance to change walking direction
-		boolean doChangeWalkingDirection = random(1f) <= chance;
+		boolean doChangeWalkingDirection = random(1f) <= chance * TimeManager.deltaFix;
 
 		if(doChangeWalkingDirection)
 		{

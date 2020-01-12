@@ -90,14 +90,23 @@ class Biome
 
   	void placeStructure(World world, int depth)
 	{
-    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
+    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth), false); //times 0.8 because stuff at the complete right usually cant spawn
   	}
 
 	// a function so we can give some different probabilities
-  	String getStructureName()
+	String getStructureName()
 	{
-    	return "SuperBasicDungeon";
-  	}
+		float mimicChance = 20;
+		float spawnchange = random(100);
+		if (spawnchange < mimicChance)
+		{
+			return "TreasureChamberMimic";
+		}
+		else
+		{
+			return "TreasureChamber";
+		}
+	}
 
 	void spawnEnemy(PVector position)
 	{
@@ -114,10 +123,6 @@ class Biome
 		else if (spawner < .8)
 		{
 			load(new EnemyDigger(position));
-		}
-		else if (spawner < .85)
-		{
-			load(new EnemyMimic(position));
 		}
 		else
 		{

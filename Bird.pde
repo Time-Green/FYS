@@ -9,7 +9,7 @@ public class Bird extends Mob
 	public Bird(World world)
 	{
 		//some birds will fly right
-		if (random(0, 2) < 1)
+		if (random(0, 1) < 0.5f)
 		{
 			flyingLeft = false;
 		}
@@ -33,6 +33,12 @@ public class Bird extends Mob
 
 		//allow bird to fly of the screen
 		worldBorderCheck = false;
+
+		//some birds will fly in front of the trees, some don't
+		if (random(0, 1) < 0.5f)
+		{
+			drawLayer = PRIORITY_LAYER;
+		}
 
 		//animation speed based on x velocity
 		animatedImage = new AnimatedImage("BirdFlying", 4, 20 - abs(velocity.x), position, size.x, flipSpriteHorizontal);

@@ -8,7 +8,7 @@ class Chest extends Obstacle
 	private float jumpiness = -35; //how far our contents jump out
 	private float sideWobble = 5; //vertical velocity of item ranging between -sideWobble and sideWobble
 
-	private PImage openState = ResourceManager.getImage("ChestOpen");
+	private PImage openState = ResourceManager.getImage("TreasureChestOpen");
 
 	private ArrayList<Movable> contents = new ArrayList<Movable>();
 
@@ -32,7 +32,7 @@ class Chest extends Obstacle
 		populateContents();
 		anchored = false;
 
-		image = ResourceManager.getImage("Chest");
+		image = ResourceManager.getImage("TreasureChest");
 	}
 
 	// only load childtypes of Movable
@@ -135,7 +135,7 @@ class Chest extends Obstacle
 
 	private void openChest()
 	{
-		AudioManager.playSoundEffect("ChestOpen");
+		AudioManager.playSoundEffect("TreasureChestOpen");
 
 		for (Movable movable : contents)
 		{

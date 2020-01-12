@@ -5,8 +5,10 @@ class StructureSpawner extends Movable
 	PVector structureSize = new PVector(0, 0);
 	PVector spawnAt = new PVector();
 
+	boolean lowerLeft = false; //if true, we assume the spawnAt to be the lower left instead of upper left
 
-	StructureSpawner(World world, String name, PVector target)
+
+	StructureSpawner(World world, String name, PVector target, boolean lowerLeft)
 	{
 		anchored = true;
 		image = ResourceManager.getImage("Invisible");
@@ -15,6 +17,8 @@ class StructureSpawner extends Movable
 
 		structureName = name;
 		world.queuedStructures.add(this);
+
+		this.lowerLeft = lowerLeft;
 
 		JSONArray layers = loadJSONArray(dataPath("Structures\\" + structureName + ".json"));
 
@@ -59,7 +63,17 @@ class StructureSpawner extends Movable
 			}
 		}
 
-		world.spawnStructure(structureName, new PVector(spawnAt.x, spawnAt.y));
+		if(lowerLeft)
+		{
+			world.spawnStructure(structureName, new PVector(spawnAt.x, spawnAt.y - structureSize.y)); //spawn however tall we are, but up instead of down. useful for trees
+		}
+
+		else 
+		{
+			world.spawnStructure(structureName, new PVector(spawnAt.x, spawnAt.y));
+		}
+
+		
 		delete(this);
 	}
 

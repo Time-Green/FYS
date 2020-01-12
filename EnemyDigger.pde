@@ -3,7 +3,7 @@ class EnemyDigger extends Enemy
 	// Chase vars
 	private float chaseDistance;
 	private final float IDLE_SPEED = 0f;
-	private float chaseSpeed = 2f;
+	private float chaseSpeed = 3f;
 	private boolean isChasing;
 
 	// Animation
@@ -13,25 +13,40 @@ class EnemyDigger extends Enemy
 	{
 		super(spawnPos);
 
-		chaseSpeed += 0.25f *getDepth()/100;
-		setUpAnimation();
+		//Images
+		image = ResourceManager.getImage("DiggerIdle");
+		animationSetup();
 
-		image = ResourceManager.getImage("DiggerEnemyIdle");
+		//Setup chase vars
+		float chaseSpeedIncreaseValue = 0.25f;
+		chaseSpeed += increasePower(chaseSpeedIncreaseValue);
+		//Determine how many tiles we want the Digger to chase the player
+		float tileChaseDistance = 20f;
+		chaseDistance = OBJECT_SIZE * tileChaseDistance;
 		this.speed = IDLE_SPEED;
 
-		float tileDistance = 10f;
-		chaseDistance = OBJECTSIZE * tileDistance;
-		// this.flipSpriteVertical = true;
+		//Allow this enemy to mine
+		this.isMiningLeft = true;
+		this.isMiningRight = true;
+		this.isMiningDown = true;
+		this.isMiningUp = true;
+		this.gravityForce = 0;
 	}
 
 	void draw()
 	{
-		if (!isChasing) //Normal animation
+		//Do nothing while paused
+		if (gamePaused)
 		{
+			return;
+		}
+		
+		if (!isChasing)
+		{//Normal animation
 			super.draw();
 		}
-		else //Chase animation
-		{
+		else
+		{//Chase animation
 			digSequence.draw();
 			digSequence.flipSpriteVertical = flipSpriteVertical;
 		}
@@ -54,50 +69,38 @@ class EnemyDigger extends Enemy
 			this.isChasing = true;
 
 			if (this.position.x > playerX)
-			{
-				this.walkLeft = true;//GO left
+			{//GO left
+				this.walkLeft = true;
 			}
 			else
-			{
-				this.walkLeft = false;//Go right
+			{//Go right
+				this.walkLeft = false;
 			}
 
 			if (this.position.y < playerY)
-			{
-				this.gravityForce = chaseSpeed/2;//Go down
+			{//Go down
+				this.velocity.y = chaseSpeed;
 				this.flipSpriteVertical = true;
 			}
 			else
-			{
-				this.gravityForce = -chaseSpeed;//Go up
+			{//Go up
+				this.velocity.y = -chaseSpeed;
 				this.flipSpriteVertical = false;
 			}
-			
-			//Allow us to mine
-			this.isMiningLeft = true;
-			this.isMiningRight = true;
-			this.isMiningDown = true;
-			this.isMiningUp = true;
 
 		}
 		else
-		{
-			//Don't chase the player
-			this.speed = IDLE_SPEED;
-			this.isMiningLeft = false;
-			this.isMiningRight = false;
-			this.isMiningUp = false;
-			this.isMiningDown = false;
-			this.gravityForce = 0;
+		{//Don't chase the player
+			this.speed = IDLE_SPEED;	
 			this.isChasing = false;
 		}
 
 	}
 
-	private void setUpAnimation()
+	private void animationSetup()
 	{
 		int digFrames = 3;
 		int digAnimSpeed = 8;
-		digSequence = new AnimatedImage("DiggerEnemyDigging", digFrames, digAnimSpeed, position, size.x, size.y, flipSpriteHorizontal, flipSpriteVertical);
+		digSequence = new AnimatedImage("DiggerDigging", digFrames, digAnimSpeed, position, size.x, size.y, flipSpriteHorizontal, flipSpriteVertical);
 	}
 }

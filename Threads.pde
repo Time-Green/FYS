@@ -111,6 +111,7 @@ void loadDatabaseVariables()
     }
 }
 
+//smeh
 // start a thread to load 1 resource with given name and path
 void startLoaderThread(String currentResourceName, String currentResourceFileName)
 {
