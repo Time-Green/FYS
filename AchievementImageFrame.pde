@@ -5,6 +5,7 @@ public class AchievementImageFrame
     public float growSpeed = 3f;  
     public float selectedSizeOffset; 
     public String lockedAchievementText = "???"; 
+    public String returnText = "Press start to go back"; 
     public boolean isSelected; 
     public float margin = 40f; 
     private PVector position = new PVector();
@@ -59,7 +60,9 @@ public class AchievementImageFrame
         imageMode(CENTER);
 
         rect(position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset);
-        image(achievementImage, position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset);
+        image(achievementImage, position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset); 
+        textSize(ui.ACHIEVEMENT_FONT_SIZE/1.5);       
+        text(returnText, 200, height - 25); 
 
         rectMode(CORNER);
         imageMode(CORNER);

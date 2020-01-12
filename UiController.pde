@@ -267,10 +267,8 @@ public class UIController
 		
 		//sub text
 		subTextCounter++;
-
+		
 		textFont(instructionFont);
-		textSize(ACHIEVEMENT_FONT_SIZE);
-		text("Press space for achievements", width / 2, (height / 2.5) + (TITLE_FONT_SIZE/2));
 
 		if (subTextCounter >= 0)
 		{
@@ -323,8 +321,8 @@ public class UIController
 	void drawAchievementScreen()
 	{
 		fill(0, 175); 
-		rect(0, 0, width * 2, height * 2); 
-
+		rect(0, 0, width * 2, height * 2);
+		
 		for(AchievementImageFrame frame : achievementFrames)
 		{
 			frame.draw();  

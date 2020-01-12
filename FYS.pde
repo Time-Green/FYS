@@ -418,12 +418,6 @@ void handleGameFlow()
 			enterOverWorld(false);
 		}
 
-		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
-		{
-			gameState = GameState.AchievementScreen; 
-			ui.drawAchievementScreen();  
-		}
-
 		break;
 
 	case InGame:
@@ -434,7 +428,18 @@ void handleGameFlow()
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
-		break;
+		break; 
+
+	case Overworld:
+		gamePaused = false; 
+
+		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
+		{
+			gameState = GameState.AchievementScreen; 
+			ui.drawAchievementScreen();  
+		}
+
+		break; 
 
 	case GameOver:
 		gamePaused = true;
@@ -449,11 +454,11 @@ void handleGameFlow()
 		break;
 
 	case AchievementScreen:
+		gamePaused = true; 
 
-		// In the achievement screen press ENTER to exit temp(!)
 		if(InputHelper.isKeyDown(START_KEY))
 		{
-			gameState = GameState.MainMenu; 
+			gameState = GameState.Overworld; 
 			InputHelper.onKeyReleased(START_KEY);
 		}
 

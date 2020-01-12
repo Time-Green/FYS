@@ -13,7 +13,7 @@ final int INVENTORY_KEY_B = ALT;
 //Menus
 final int START_KEY = ENTER;
 final int BACK_KEY = BACKSPACE;
-final int ACHIEVEMENT_SCREEN_KEY = 32; 
+final int ACHIEVEMENT_SCREEN_KEY = ALT; 
 
 //Jukecox
 final int JUKEBOX_SONG_AMOUNT = 3;
