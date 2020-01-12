@@ -74,7 +74,7 @@ UIController ui;
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
 
-boolean parallaxEnabled = false;
+boolean parallaxEnabled = true;
 
 void setup()
 {
