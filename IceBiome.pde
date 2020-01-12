@@ -35,6 +35,10 @@ class IceBiome extends Biome
 				{
 					return new ExplosionTile(x, depth);
 				}
+				else if (oreChance > 14 && oreChance <= 20)
+				{
+					return new SnowTile(x, depth); 
+				}
 			}
 		}
 		
@@ -49,5 +53,10 @@ class IceBiome extends Biome
 	String getParallaxedRock()
 	{
 		return "IceTile";
+	}
+
+	String getStructureName()
+	{
+        return "Snow" + int(random(5));
 	}
 }

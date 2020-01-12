@@ -541,6 +541,12 @@ public class World
 
 			case "Fencepost" :
 				return new Fencepost(int(spawnPos.x), int(spawnPos.y));
+
+			case "IceTile" :
+				return new IceTile(int(spawnPos.x), int(spawnPos.y));
+
+			case "SnowBlock" :
+				return new SnowTile(int(spawnPos.x), int(spawnPos.y));
 		}
 
 		println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");
