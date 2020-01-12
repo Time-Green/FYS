@@ -69,11 +69,7 @@ class ShadowBiome extends Biome
 		
 		float oreChance = random(1);
 		
-		if (oreChance > 0.08 && oreChance <= 0.16)
-		{
-			return "ObsedianBlock";
-		}
-		else if (oreChance > 0.16 && oreChance <= 0.18)
+		if (oreChance > 0.16 && oreChance <= 0.18)
 		{
 			return "ShadowSandBlock";
 		}
