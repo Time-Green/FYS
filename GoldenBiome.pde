@@ -4,7 +4,7 @@ class GoldenBiome extends Biome
 	{
 		destroyedImage = ResourceManager.getImage("DestroyedGolden");
 
-		minimumDepth = 700;
+		minimumDepth = 1000;
 
 		mossChance = 0;
 
