@@ -24,6 +24,7 @@ class Player extends Mob
 	public float magnetTimer;
 	public float extraRegenTimer;
 	private float bonusRegen = regen * 2.5f;
+	public boolean hurtFlash;
 
 	private boolean gotbonus1;
 	private Shield myShield;
@@ -56,6 +57,9 @@ class Player extends Mob
 		}
 
 		super.update();
+
+		// This is used to tell the ui when to play the damage feedback
+		hurtFlash = isHurt;
 
 		if(getDepth() - OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(LONE_DIGGER_ACHIEVEMENT))
 		{
@@ -279,7 +283,7 @@ class Player extends Mob
 		{
 			if (!isSwimming)
 			{
-				addForce(new PVector(0, -jumpForce));
+				setForce(new PVector(0, -jumpForce));
 				runData.playerJumps++;
 			}
 			else

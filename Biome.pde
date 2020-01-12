@@ -82,7 +82,7 @@ class Biome
 
 		return true;
   	}
-
+	//return how long this biome is (not always super accurate, but it's fine)
   	int getLength()
   	{
     	return length;
@@ -154,13 +154,14 @@ class Biome
 
     	if(above.density)
 		{
-      		spawnCeilingObstacle(target);
+      		BaseObject object = spawnCeilingObstacle(target);
+			target.rootedIn.add(object);
     	}
   	}
 
-  	void spawnCeilingObstacle(Tile tile)
+  	BaseObject spawnCeilingObstacle(Tile tile)
 	{
-		load(new Icicle(), tile.position);
+		return load(new Icicle(), tile.position);
   	}
 	
 	void prepareGroundObstacle(Tile target, World world)
