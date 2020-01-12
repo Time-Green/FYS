@@ -82,15 +82,15 @@ public class World
 		spawnStructure("Leaderboard", new PVector(12, 5));
 
 		int lastSpawnX = -4;
-		final int MIN_DISTANCE_INBETWEEN_TREE = 4;
-		final int MAX_XSPAWNPOS = TILES_HORIZONTAL - 13;
+		final int MIN_DISTANCE_INBETWEEN_TREE = 5;
+		final int MAX_XSPAWNPOS = TILES_HORIZONTAL - 15;
 
 		for (int i = 1; i < MAX_XSPAWNPOS; i++)
 		{
 			if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE && (i < 8 || i > 21))
 			{
 				lastSpawnX = i;
-				spawnTree(new PVector(i, 6));
+				spawnTree(new PVector(i, 10));
 			}
 		}
 
@@ -99,7 +99,7 @@ public class World
 
 	void spawnTree(PVector location)
 	{
-		spawnStructure("Tree", location); 
+		safeSpawnStructure("Tree" + int(random(5)), location, true); 
 	}
 
 	void spawnBirds()
@@ -215,17 +215,19 @@ public class World
 					generateParallax(y, i);
 				}
 			}
+
+			if(y <= 1) //nothing above us
+			{
+				continue;
+			}
+			postGenerate(y - 2); //tell the row of tiles above us we're finished, so they can add 'aesthetics'
+			//also minus -2 because we do -1 to get the the zero based index, and then minus -1 more to get the row above it
 		}
 
 		for (StructureSpawner spawner : queuedStructures)
 		{
 			spawner.trySpawn(this);
 		}
-
-
-
-		postGenerate(map.size() - 2); //tell the row of tiles above us we're finished, so they can add 'aesthetics'
-		//also minus -2 because we do -1 to get the the zero based index, and then minus -1 more to get the row above it
 	}
 
 	void postGenerate(int tilesIndex) //tell the row above is we're donzo, so they can add stuff like aesthetics
@@ -233,7 +235,7 @@ public class World
 		ArrayList<Tile> tiles = map.get(tilesIndex);
 		for(Tile tile : tiles)
 		{
-			tile.addAesthetics();
+			tile.addAesthetics(this);
 		}
 	}
 
@@ -404,9 +406,9 @@ public class World
 		}
 	}
 
-	void safeSpawnStructure(String structureName, PVector gridSpawnPos)
+	void safeSpawnStructure(String structureName, PVector gridSpawnPos, boolean lowerLeft)
 	{
-		load(new StructureSpawner(this, structureName, gridSpawnPos), gridSpawnPos.mult(TILE_SIZE));
+		load(new StructureSpawner(this, structureName, gridSpawnPos, lowerLeft), gridSpawnPos.mult(TILE_SIZE));
 	}
 
 	void spawnStructure(String structureName, PVector gridSpawnPos)
@@ -457,6 +459,7 @@ public class World
 		Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos, structureName, structureTilePosition);
 
 		tileToReplace.replace(this, newTile);
+		newTile.addAesthetics(world);
 	}
 
 	private void spawnObject(PVector spawnAtGridPos, String newObjectName)
