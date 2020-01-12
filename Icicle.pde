@@ -19,6 +19,13 @@ class Icicle extends Obstacle
 		// we're beneath
 		if(object.position.y > position.y)
 		{
+			if(object instanceof Player)
+			{
+				if(!achievementHelper.hasUnlockedAchievement(HUMAN_SKEWER_ACHIEVEMENT))
+				{
+					achievementHelper.unlock(HUMAN_SKEWER_ACHIEVEMENT);
+				}
+			}											
 			object.takeDamage(damage);
 			shatter();
 		}
