@@ -51,7 +51,11 @@ public class World
 
 	public void draw()
 	{
-		drawBackgoundImage();
+		// only draw the background when the player can see it
+		if(player.getDepth() < 25)
+		{
+			drawBackgoundImage();
+		}
 	}
 
 	public void spawnJukebox()
