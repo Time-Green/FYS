@@ -65,7 +65,7 @@ public class AchievementImageFrame
             else
             {
                 text(lockedAchievementText, width/2, height-100); 
-                tint(0, 128); 
+                tint(0, 160); 
                 imageMode(CENTER); 
                 image(achievementLockedOverlay, position.x, position.y, minFrameSize + selectedSizeOffset - 25, minFrameSize + selectedSizeOffset - 25); 
                 imageMode(CORNER); 

@@ -296,7 +296,7 @@ public class Npc extends Mob
 
 	private void drawAchievementHint()
 	{
-		if(isPanicking == false)
+		if(isPanicking == false && gameState != GameState.MainMenu) 
 		{
 			fill(255, 0, 0); 
 			ellipseMode(CENTER);
