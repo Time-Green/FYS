@@ -80,10 +80,10 @@ void setup()
 {
 	disposeHandler = new DisposeHandler(this);
 
-	size(1280, 720, P3D);
-	//fullScreen(P3D);
+	//size(1280, 720, P3D);
+	fullScreen(P3D);
 
-	TimeManager.setup(this, 1000f, 60f, false, false);
+	TimeManager.setup(this, 1000f, 60f, true, true);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");

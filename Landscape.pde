@@ -9,7 +9,6 @@ public class LeafTile extends Tile
 	public LeafTile(int x, int y)
 	{
 		super(x, y);
-		drawLayer = BACKWALL_LAYER;
 
 		decalType = "DecalLeaf";
 
