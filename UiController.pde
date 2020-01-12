@@ -474,16 +474,21 @@ public class UIController
 	{	
 		float minTintValue = 56;
 		float maxTintValue = 255;
+
 		if (powerUpTimer > 0)
-		{//Draw the image transparent to indicate it's not active
+		{
+			//Draw the image transparent to indicate it's not active
 			tint(WHITE, maxTintValue);
-		} else
-		{//Draw the image fully colored to indicate that it is active
+		}
+		else
+		{
+			//Draw the image fully colored to indicate that it is active
 			tint(WHITE, minTintValue);
 		}
 
 		image(powerupImage, xPos, yPos);
 		
+		tint(255);
 	}
 
 	private void drawTitle(String menuText)
