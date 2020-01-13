@@ -34,7 +34,7 @@
                 <axisbutton index="1">
                     <slots>
                         <slot>
-                            <code>0x20</code>
+                            <code>0x1000013</code>
                             <mode>keyboard</mode>
                         </slot>
                     </slots>
@@ -49,6 +49,7 @@
                 </axisbutton>
             </axis>
             <button index="1">
+                <toggle>true</toggle>
                 <slots>
                     <slot>
                         <code>0x1000021</code>

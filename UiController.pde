@@ -251,11 +251,11 @@ public class UIController
 		if(isUploadingRunResults)
 		{
 			handleDots();
-			text("Uploading run stats" + dots, width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 4);
+			text("Uploading run stats" + dots, width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 6);
 		}
 		else
 		{
-			text("Enter: restart", width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 4);
+			text("Enter: restart", width / 2, height / 2 + INSTRUCTION_FONT_SIZE * 6);
 		}
 	}
 

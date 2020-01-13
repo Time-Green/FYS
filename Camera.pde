@@ -47,7 +47,7 @@ public class Camera
 
 		if(gameState == GameState.GameOver)
 		{
-			position.y = -SPAWN_Y_POS * 5;
+			position.y = -SPAWN_Y_POS * 3;
 		}
 		else
 		{
