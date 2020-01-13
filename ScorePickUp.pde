@@ -3,7 +3,7 @@ public class ScorePickup extends Pickup
 	private int score;
 	private float chaseDistance;
 
-	// drop based on tile
+	//Drop based on tile
 	public ScorePickup(ResourceTile tile)
 	{
 		score = tile.value / tile.pickupDropAmountValue;
@@ -12,7 +12,7 @@ public class ScorePickup extends Pickup
 		setup();
 	}
 
-	// independant drop
+	//Independant drop
 	public ScorePickup(int scoreToGiveOnPickup, PImage image)
 	{
 		score = scoreToGiveOnPickup;
@@ -51,7 +51,7 @@ public class ScorePickup extends Pickup
 		PickupText nearbyPickupText = findNearbyPickupText();
 
 		if(nearbyPickupText != null)
-		{
+		{//Add this score to the nearest pickup text
 			nearbyPickupText.addScore(score, position);
 		}
 		else
@@ -61,7 +61,6 @@ public class ScorePickup extends Pickup
 		}
 		
 		// TODO: find and add sound effect, do not remove comment yet
-		// RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
 		// AudioManager.playSoundEffect("Treasure", position);
 
 		// Delete this object
@@ -105,12 +104,12 @@ public class ScorePickup extends Pickup
 		super.update();
 
 		if (player.magnetTimer > 0)
-		{
+		{//The magnet power up is active
 			float defaultGravity = gravityForce;
 			float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
 
 			if (distanceToPlayer <= chaseDistance)
-			{// Go torwards the player
+			{// Go torwards the player if he is in range
 				float moveSpeed = 15;
 				this.collisionEnabled = false;
 				this.gravityForce = 0;
