@@ -80,12 +80,13 @@ boolean parallaxEnabled = true;
 float currentRestartTimer = 0;
 final float MAX_RESTART_TIMER = 60; // 1.5 seconds
 
+// setup the game
 void setup()
 {
 	disposeHandler = new DisposeHandler(this);
 
-	size(1280, 720, P3D);
-	//fullScreen(P3D);
+	//size(1280, 720, P3D);
+	fullScreen(P3D);
 
 	TimeManager.setup(this, 1000f, 60f, false, false);
 
@@ -102,6 +103,7 @@ void setup()
 	preLoading();
 }
 
+// load resources that are needed in the loading screen
 void preLoading()
 {
 	titleFont = createFont("Fonts/Block Stock.ttf", 32);
@@ -109,6 +111,7 @@ void preLoading()
 	textFont(titleFont);
 }
 
+// check if there is a local username we can use to log in
 void checkUser()
 {
 	String[] userName = loadStrings("DbUser.txt");
@@ -137,6 +140,7 @@ void afterResouceLoadingSetup()
 	setupGame();
 }
 
+// set the audio volumes
 void setVolumes()
 {
 	// sound effects
@@ -172,6 +176,7 @@ void setVolumes()
 	}
 }
 
+// pre generate flipped images for most common tiles
 void generateFlippedImages()
 {
 	ResourceManager.generateFlippedImages("CoalBlock");
@@ -180,6 +185,7 @@ void generateFlippedImages()
 	ResourceManager.generateFlippedImages("StoneBlock");
 }
 
+// reset the game
 void setupGame()
 {
 	player = null; //fixed world generation bug on restart
@@ -208,6 +214,7 @@ void setupGame()
 	ui.currentLoadingScreenTransitionFill = 255;
 }
 
+// setup all drawing layers
 void prepareDrawingLayers()
 {
 	drawList = new ArrayList<ArrayList>();
@@ -218,6 +225,7 @@ void prepareDrawingLayers()
 	}
 }
 
+// cleanup draw layers
 void cleanDrawingLayers()
 {
 	for (ArrayList<BaseObject> drawLayer : drawList)
@@ -226,6 +234,7 @@ void cleanDrawingLayers()
 	}
 }
 
+// draw the game
 void draw()
 {
 	TimeManager.update();
@@ -292,6 +301,7 @@ void draw()
 	checkRestartGame();
 }
 
+// when r is hold, restart the game
 void checkRestartGame()
 {
 	if(InputHelper.isKeyDown('r'))
@@ -329,9 +339,12 @@ void restartGame()
 	gamePaused = true;
 	gameState = GameState.MainMenu;
 
+	AudioManager.stopMusic("BackgroundMusic");
+
 	checkUser();
 }
 
+// called then the player filled in there name in the login screen
 void userFilledInName()
 {
 	// tell the game we dont need to show the login screen anymore
