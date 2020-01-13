@@ -20,6 +20,7 @@ public class AchievementImageFrame
     {
         Achievement achievement = achievementHelper.getAchievementData(id); 
 
+        //Get the appropriate image for the achievement based on its rarity
         achievementImage = ResourceManager.getImage("Achievement" + achievement.rarity); 
         achievementLockedOverlay = ResourceManager.getImage("lockedAchievement"); 
 
@@ -77,7 +78,8 @@ public class AchievementImageFrame
             deflate();                                                                              
         }       
     } 
-       
+
+    // Increase the size of the center image frame   
     void inflate()
     {
         if(selectedSizeOffset >= maxGrowSize)
@@ -88,6 +90,7 @@ public class AchievementImageFrame
         selectedSizeOffset += growSpeed; 
     }
 
+    // And decrease the size of the non-center frames
     void deflate()
     {
         if(selectedSizeOffset <= 0)
