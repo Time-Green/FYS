@@ -366,6 +366,7 @@ void userFilledInName()
 	loginScreen = null;
 }
 
+// update all game objects
 void updateObjects()
 {
 	for (BaseObject object : destroyList)
@@ -402,6 +403,7 @@ void updateObjects()
 	}
 }
 
+// draw all game objects
 void drawObjects()
 {
 	for(ArrayList<BaseObject> drawUs : drawList)
@@ -413,6 +415,7 @@ void drawObjects()
 	}
 }
 
+// draw the parallax layers
 void drawParallaxLayers()
 {
 	for(int i = world.parallaxMap.size() - 1; i >= 0; i--)
@@ -429,6 +432,7 @@ void drawParallaxLayers()
 	}
 }
 
+// handle the flow of the game
 void handleGameFlow()
 {
   switch (gameState)
@@ -521,6 +525,7 @@ void enterOverWorld(boolean reloadGame)
 	camera.lerpAmount = 0.075f;
 }
 
+// start the game the next frame
 void startGameSoon()
 {
   	startGame = true;
@@ -554,6 +559,7 @@ void endRun()
 	thread("startRegisterEndThread");
 }
 
+// show the loading screen
 void handleLoadingScreen()
 {
 	background(0);
@@ -639,6 +645,7 @@ BaseObject load(BaseObject newObject)
 	return newObject;
 }
 
+// load a new object and set its position
 BaseObject load(BaseObject newObject, PVector setPosition)
 {
 	loadList.add(newObject);
@@ -675,6 +682,7 @@ void reload(BaseObject reloadingObject)
 	reloadList.add(reloadingObject); //queue for reloading
 }
 
+// add a new light source
 void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
 {
 	object.lightEmitAmount = lightEmitAmount;
@@ -682,6 +690,7 @@ void setupLightSource(BaseObject object, float lightEmitAmount, float dimFactor)
 	lightSources.add(object);
 }
 
+// get all objects inside a radius
 ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
 {
 	ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
@@ -739,6 +748,7 @@ void keyReleased()
 	InputHelper.onKeyReleased(key);
 }
 
+// used to get input for debugging
 void debugInput()
 {
 	// Test spawns
