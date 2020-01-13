@@ -20,7 +20,7 @@ class Biome
 	// the amount the player can see in the biome
 	float playerVisibilityScale = 1;
 
-	boolean canParallax = true;
+	boolean canParallax = true; //wheter we can even use parallax. for stuff like the overworld, its a no
 
 	boolean spawnMoss = true;
 	color mossTint = color(23, 99, 0);
@@ -142,7 +142,7 @@ class Biome
 			load(new EnemyShocker(position));
 		}
 	}
-
+	//ceiling obstacles like icicles are prepared here
   	void prepareCeilingObstacle(Tile target, World world)
 	{
     	Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE);
@@ -158,12 +158,12 @@ class Biome
 			target.rootedIn.add(object);
     	}
   	}
-
+	//return an obstacle to stick to the roof
   	BaseObject spawnCeilingObstacle(Tile tile)
 	{
 		return load(new Icicle(), tile.position);
   	}
-	
+	//prepare stuff like flowers
 	void prepareGroundObstacle(Tile target, World world)
 	{
 		Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE); //get the tile above us
@@ -178,12 +178,12 @@ class Biome
 			}
 		}
 	}
-
+	//return object that you want to stick into the ground
 	BaseObject spawnGroundObstacle(Tile target)
 	{
 		return null;
 	}
-
+	//return the type of rock we should draw on the parallax
 	String getParallaxedRock()
 	{
 		float chance = random(1);
@@ -199,7 +199,7 @@ class Biome
 
 		return "StoneBlock";
 	}
-
+	//spawn moss, maybe, we check for probability too.
 	void maybeSpawnMoss(Tile tile, World world)
 	{
 		if(random(1) > mossChance)
