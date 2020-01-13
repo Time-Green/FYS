@@ -9,7 +9,7 @@ public class LoginLetter
     private PVector drawPosition;
     private String allChars;
     private int charIndex = 0;
-    private int displayCounter = 0;
+    private float displayCounter = 0;
 
     public LoginLetter(LoginScreen loginScreen, int index, String allChars)
     {
@@ -53,7 +53,7 @@ public class LoginLetter
         if(isSelected)
         {
             rect(drawPosition.x - 25, drawPosition.y + 15, 50, 10);
-            displayCounter++;
+            displayCounter += TimeManager.deltaFix;
 
             drawArrows();
             drawNearbyChars();
@@ -62,9 +62,9 @@ public class LoginLetter
 		if (displayCounter >= 0)
 		{
             textAlign(CENTER);
-            textSize(70);
+            textSize(50);
 
-			text(getChar(), drawPosition.x, drawPosition.y);
+			text(getChar(), drawPosition.x + 2, drawPosition.y);
 
 			if(displayCounter > 40)
 			{
@@ -149,9 +149,19 @@ public class LoginLetter
             }
             else
             {
-                charIndex = loginScreen.getIndexByChar(key);
-                displayCounter = 0;
-                loginScreen.selectNextLetter();
+                String tempChar = "";
+
+                tempChar += key;
+                tempChar = tempChar.toUpperCase();
+
+                int index = loginScreen.getIndexByChar(tempChar.charAt(0));
+
+                if(index >= 0)
+                {
+                    charIndex = index;
+                    displayCounter = 0;
+                    loginScreen.selectNextLetter();
+                }
             }
         }
     }

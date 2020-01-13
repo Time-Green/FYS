@@ -13,7 +13,7 @@ final int INVENTORY_KEY_B = ALT;
 //Menus
 final int START_KEY = ENTER;
 final int BACK_KEY = BACKSPACE;
-final int ACHIEVEMENT_SCREEN_KEY = 32; 
+final int ACHIEVEMENT_SCREEN_KEY = ALT; 
 
 //Jukecox
 final int JUKEBOX_SONG_AMOUNT = 3;
@@ -39,12 +39,12 @@ final int BLUE_ICE_VALUE = 350;
 final int REDSTONE_VALUE = 400;
 final int GOLD_VALUE = 500;
 final int LAPIS_VALUE = 750;
-final int DIAMOND_VALUE = 1000;
-final int AMETHYST_VALUE = 2000;
+final int AMETHYST_VALUE = 800;
+final int DIAMOND_VALUE = 2000;
 final int METEORITE_VALUE = 5000;
 
 //Dig bonuses
-final int BONUSDEPTH = 50;
+final int BONUS_DEPTH = 50;
 
 //relicboost
 final int HEALTH_BOOST = 10;
@@ -56,6 +56,11 @@ final float LIGHT_BOOST = 10;
 //Achievements
 final int LONE_DIGGER_ACHIEVEMENT = 0;
 final int COMBO_MASTER_ACHIEVEMENT = 1;
+final int PERSISTENCE_ACHIEVEMENT = 2; 
+final int GREED_IS_GOOD_ACHIEVEMENT = 3; 
+final int HARD_AS_A_ROCK_ACHIEVEMENT = 4;
+final int MICHAEL_BAY_APPROVES_ACHIEVEMENT = 5; 
+final int HUMAN_SKEWER_ACHIEVEMENT = 6; 
 
 //world
 final int OVERWORLD_HEIGHT = 10; // in grid tiles
@@ -80,7 +85,8 @@ final int OBJECT_LAYER = 2;
 final int MOB_LAYER = 3;
 final int PLAYER_LAYER = 4;
 final int TILE_LAYER = 5;
-final int PRIORITY_LAYER = 6;
+final int ABOVE_TILE_LAYER = 6;
+final int PRIORITY_LAYER = 7;
 
 //Smoothing
 final float PARALLAX_INTENSITY = 0.05;
@@ -89,7 +95,7 @@ final float PARALLAX_NOISE_POSSIBILITY = 0.46f;
 
 //login
 final int MAX_LOGIN_NAME_SIZE = 20;
-final boolean SAVE_USERNAME_AT_LOGIN = true;
+final boolean SAVE_USERNAME_AT_LOGIN = false;
 
 //Movement
 final float SPEED_LIMIT = TILE_SIZE; //otherwise we can phase through tiles like the flash, because we only check the closest tiles and not the ones BEHIND them

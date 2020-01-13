@@ -11,7 +11,7 @@ public class DiamondTile extends ResourceTile
 		if(type == 0)
 		{
 			image = ResourceManager.getImage("DiamondBlock", true);
-			decalType = "DecalStone";
+			decalType = "DecalGolden";
 		}
 		else if(type == 1)
 		{

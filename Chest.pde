@@ -1,6 +1,6 @@
 class Chest extends Obstacle
 {
-	private final int MAX_RANDOM_LOOT_AMOUNT = 10;
+	private final int MIN_RANDOM_LOOT_AMOUNT = 2;
 
 	private boolean opened = false;
 	private int forcedKey = -1; //set to something zero or above if you want a specific set of contents
@@ -8,7 +8,7 @@ class Chest extends Obstacle
 	private float jumpiness = -35; //how far our contents jump out
 	private float sideWobble = 5; //vertical velocity of item ranging between -sideWobble and sideWobble
 
-	private PImage openState = ResourceManager.getImage("ChestOpen");
+	private PImage openState = ResourceManager.getImage("TreasureChestOpen");
 
 	private ArrayList<Movable> contents = new ArrayList<Movable>();
 
@@ -32,7 +32,7 @@ class Chest extends Obstacle
 		populateContents();
 		anchored = false;
 
-		image = ResourceManager.getImage("Chest");
+		image = ResourceManager.getImage("TreasureChest");
 	}
 
 	// only load childtypes of Movable
@@ -40,7 +40,8 @@ class Chest extends Obstacle
 	{
 		ArrayList<Movable> newContents = new ArrayList<Movable>();
 
-		int randomKey = floor(random(2));
+		// Randomly decied what the content for the chest will be
+		int randomKey = floor(random(5));
 
 		if (forcedKey >= 0)
 		{
@@ -48,16 +49,40 @@ class Chest extends Obstacle
 		}
 
 		if(randomKey == 0)
-		{
+		{// Relicshard
 			RelicShard relicShard = new RelicShard();
 			load(relicShard, position);
 
 			newContents.add(relicShard);
-			addRandomLoot(newContents, MAX_RANDOM_LOOT_AMOUNT);
+			addRandomLoot(newContents);
 		}
 		else if(randomKey == 1)
-		{
-			addRandomLoot(newContents, MAX_RANDOM_LOOT_AMOUNT);
+		{// Random ores
+			addRandomLoot(newContents);
+		}
+		else if(randomKey == 2)
+		{// Shield pickup
+			ShieldPickup shieldPickup = new ShieldPickup();
+			load(shieldPickup, position);
+
+			newContents.add(shieldPickup);
+			addRandomLoot(newContents);
+		}
+		else if(randomKey == 3)
+		{// Magnet pickup
+			MagnetPickup magnetPickup = new MagnetPickup();
+			load(magnetPickup, position);
+
+			newContents.add(magnetPickup);
+			addRandomLoot(newContents);
+		}
+		else if(randomKey == 4)
+		{// Regen pickup
+			RegenPickup regenPickup = new RegenPickup();
+			load(regenPickup, position);
+
+			newContents.add(regenPickup);
+			addRandomLoot(newContents);
 		}
 
 		// I dont want to force every new content thingy to Movable seperately, so do it here
@@ -72,11 +97,21 @@ class Chest extends Obstacle
 		}
 	}
 
-	private void addRandomLoot(ArrayList<Movable> newContents, int maxAmount)
+	private void addRandomLoot(ArrayList<Movable> newContents)
 	{
-		int randomLootAmount = floor(random(maxAmount / 2, maxAmount));
+		int lootAmount;
 
-		for(int i = 0; i < randomLootAmount; i++)
+		// in rare occasions (mostly when respawning) the player could be null
+		if(player != null)
+		{
+			lootAmount = MIN_RANDOM_LOOT_AMOUNT + floor(player.getDepth() / 250) + floor(random(2));
+		}
+		else
+		{
+			lootAmount = MIN_RANDOM_LOOT_AMOUNT + floor(random(4));
+		}
+
+		for(int i = 0; i < lootAmount; i++)
 		{
 			int lootType = floor(random(3));
 			ScorePickup scorePickup = null;

@@ -1,36 +1,34 @@
-public class BaseParticle extends Movable
+// expends BaseObject instead of Movable for perforamce
+public class BaseParticle extends BaseObject
 {
-	BaseParticleSystem particleSystem;
-	PVector spawnAcceleration;
-	float size, spawnTime;
+	// own position
+	protected PVector velocity = new PVector();
 
-	int maxLifeTime = 120; //max 120 frames life time
-	int currentLifeTime = 0;
+	private BaseParticleSystem particleSystem;
+	protected float size;
+	private float spawnTime;
 
-	float minSize = 15;
-	float maxSize = 30;
+	protected float maxLifeTime = 120; //max 120 frames life time. it's a float so we can easily do certain divisions, like for opacity
+	protected float currentLifeTime = 0;
 
-	color particleColor = color(255);
+	protected float minSize = 15;
+	protected float maxSize = 30;
 
-	public BaseParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc)
+	protected color particleColor = color(255);
+
+	public BaseParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnVelocity)
 	{
 		super();
 
-		gravityForce = 0.0f;
-		collisionEnabled = false;
-		worldBorderCheck = false;
-		groundedDragFactor = 1.0f;
-		aerialDragFactor = 1.0f;
 		drawLayer = PRIORITY_LAYER;
 
 		// many performance, such wow
 		enableLightning = false;
 
-		spawnAcceleration = spawnAcc;
 		particleSystem = parentParticleSystem;
 
 		position.set(spawnLocation);
-		acceleration.set(spawnAcceleration);
+		velocity.set(spawnVelocity);
 		size = random(minSize, maxSize);
 		spawnTime = millis();
 	}
@@ -44,13 +42,17 @@ public class BaseParticle extends Movable
 
 		super.update();
 
+		PVector deltaFixVelocity = PVector.mult(velocity, TimeManager.deltaFix);
+
+		position.add(deltaFixVelocity);
+
 		//if the particle is to old..
 		if (currentLifeTime > maxLifeTime)
 		{
 			cleanup();
 		}
 
-		currentLifeTime++;
+		currentLifeTime += TimeManager.deltaFix;
 	}
 
 	void draw()
@@ -63,7 +65,12 @@ public class BaseParticle extends Movable
 		fill(particleColor);
 		tint(lightningAmount);
 
-		rect(position.x - size / 2, position.y - size / 2, size, size);
+		pushMatrix();
+
+		translate(position.x, position.y);
+		rect(0, 0, size, size);
+		
+		popMatrix();
 
 		fill(255);
 		tint(255);

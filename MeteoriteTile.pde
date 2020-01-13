@@ -8,6 +8,8 @@ public class MeteoriteTile extends ResourceTile
 
 		value = 5000;
 
+		decalType = "DecalVulcanic";
+
 		image = ResourceManager.getImage("MeteoriteTile", true);
 		pickupImage = ResourceManager.getImage("MeteoritePickup");
 	}

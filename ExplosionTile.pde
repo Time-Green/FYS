@@ -17,11 +17,11 @@ public class ExplosionTile extends Tile
 
 	boolean isDoingDynamiteExposion;
 	boolean isDoingDirectionalExplosion;
-
+	
 	private final int MAX_EXPLOSIONS = 5;
 	private final int MAX_EXPLOSION_DELAY = 3;
 	private int currentExplosion = 0;
-	private int currentExplosionDelay = MAX_EXPLOSION_DELAY;
+	private float currentExplosionDelay = MAX_EXPLOSION_DELAY;
 
 	public ExplosionTile(int x, int y)
 	{
@@ -44,7 +44,7 @@ public class ExplosionTile extends Tile
 		else if(type == 3)
 		{
 			randomStartRotation = int(random(100));
-			currentRotation = (randomStartRotation + frameCount) / 30 % 4;
+			currentRotation = (randomStartRotation + TimeManager.flooredDeltaFixFrameCount) / 30 % 4;
 
 			directionalExplosions = new PImage[4];
 
@@ -97,7 +97,7 @@ public class ExplosionTile extends Tile
 				}
 			}
 		
-			currentExplosionDelay++;
+			currentExplosionDelay += TimeManager.deltaFix;
 		}
 
 		if (hasExploded)
@@ -107,7 +107,7 @@ public class ExplosionTile extends Tile
 		
 		if(type == 3)
 		{
-			currentRotation = (randomStartRotation + frameCount) / 30 % 4;
+			currentRotation = (randomStartRotation + TimeManager.flooredDeltaFixFrameCount) / 30 % 4;
 
 			image = directionalExplosions[currentRotation];
 		}

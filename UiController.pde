@@ -9,11 +9,16 @@ public class UIController
 	private final float ACHIEVEMENT_FONT_SIZE = 25; 
 	private final float HUD_FONT_SIZE = 30;
 
-	private int subTextCounter = -60;
+	private float subTextCounter = -60;
 
 	//Title position
 	private float titleXPos;
 	private float titleYPos;
+
+	// powerups
+	PImage shieldImage = ResourceManager.getImage("Shield");
+	PImage magnetImage = ResourceManager.getImage("Magnet");
+	PImage regenImage = ResourceManager.getImage("Regen");
 
 	//Colors
 	private final color TITLE_COLOR = #ffa259;
@@ -24,14 +29,14 @@ public class UIController
 
 	//Game HUD
 	private float hudTextDistanceFromLeft = 10; //The distance from the left side of the screen 
-	private float hudTextStartY = 90; //The height from with the hub start
+	private float hudTextStartY = 90; //The height from with the hud start
 
 	//Extra score to add
 	private float extraBonusX;
-	private final String SCORE_TEXT = "Score: ";
 	private float extraScoreLiveTimer;
 	private int collectedPoints;
 	private int scoreDisplay = 0;
+	private boolean addedComboScore = false;
 
 	//Achievement icon
 	public ArrayList<AchievementImageFrame> achievementFrames = new ArrayList<AchievementImageFrame>();
@@ -59,6 +64,7 @@ public class UIController
 	private float killFactor = 0.01; //we stop the tweening at 0.01 of maxBarOffet
 
 	//arrows
+	private float arrowMoveTimer = -30;
 	private float arrowYTarget = 0;
 	private float arrowYOffset = 0;
 	private float easing = 0.05f;
@@ -70,8 +76,10 @@ public class UIController
 	private float currentOverlayFill = 0;
 	private boolean isIncreasing = true;
 
-	private final boolean DRAWSTATS = true;
+	private final boolean DRAWSTATS = false;
 
+	private final float MAX_DOT_TIMER = 20f; // half second
+	private float nextDotTimer = MAX_DOT_TIMER;
 	private String dots = "";
 
 	private PImage healthBarImage;
@@ -131,7 +139,16 @@ public class UIController
 		//reset rectMode
 		rectMode(CORNER);
 		textAlign(LEFT);
-		drawWarningOverlay();
+
+		if (wallOfDeath.isInBeginfase == true)
+		{ // Overlay for the intro
+			drawWarningOverlay(0.5f, MAX_OVERLAY_FILL);
+		}
+
+		if (player.hurtFlash == true)
+		{ // Overlay for when the player is hurt
+			drawWarningOverlay(3, MAX_OVERLAY_FILL);
+		}
 
 		if (DRAWSTATS)
 		{
@@ -148,21 +165,21 @@ public class UIController
 		titleYPos = float(height) / 4f;
 	}
 
-	void drawWarningOverlay()
+	public void drawWarningOverlay(float fillAmount, float maxOverlay)
 	{
 		if (drawWarningOverlay && isIncreasing)
 		{
-			currentOverlayFill += 0.5f;
+			currentOverlayFill += fillAmount * TimeManager.deltaFix;
 
-			if (currentOverlayFill > MAX_OVERLAY_FILL)
+			if (currentOverlayFill > maxOverlay)
 			{
-				currentOverlayFill = MAX_OVERLAY_FILL;
+				currentOverlayFill = maxOverlay;
 				isIncreasing = false;
 			}
 		}
 		else
 		{
-			currentOverlayFill -= 0.5f;
+			currentOverlayFill -= fillAmount * TimeManager.deltaFix;
 
 			if (currentOverlayFill < 0)
 			{
@@ -187,20 +204,24 @@ public class UIController
 
 	void drawArrows()
 	{
-		if (frameCount % 30 == 0)
+		if (arrowMoveTimer < 0)
 		{
-			if (arrowYTarget == 0)
+			arrowYTarget = TILE_SIZE;
+		}
+		else
+		{
+			arrowYTarget = 0;
+
+			if(arrowMoveTimer > 30)
 			{
-				arrowYTarget = TILE_SIZE;
-			}
-			else
-			{
-				arrowYTarget = 0;
+				arrowMoveTimer = -30;
 			}
 		}
 
+		arrowMoveTimer += TimeManager.deltaFix;
+
 		float dy = arrowYTarget - arrowYOffset;
-		arrowYOffset += dy * easing;
+		arrowYOffset += (dy * easing) * TimeManager.deltaFix;
 
 		tint(255, 127);
 		fill(TITLE_COLOR);
@@ -218,6 +239,8 @@ public class UIController
 
 	void drawGameOver()
 	{
+		checkComboAdded();
+
 		drawTitle("GAME OVER");
 
 		//sub text
@@ -236,27 +259,40 @@ public class UIController
 		}
 	}
 
+	// because when the player dies, the current combo is never added, what this function fixed
+	private void checkComboAdded()
+	{
+		if(!addedComboScore)
+		{
+			addedComboScore = true;
+			scoreDisplay += collectedPoints;
+		}
+	}
+
 	private void handleDots()
 	{
-		if(frameCount % 10 == 0)
+		if(nextDotTimer < 0f)
 		{
 			dots += ".";
+			nextDotTimer = MAX_DOT_TIMER;
 		}
 
 		if(dots.length() > 3)
 		{
 			dots = "";
 		}
+
+		nextDotTimer -= TimeManager.deltaFix;
 	}
 
 	void drawStartMenu()
 	{
+		fill(TITLE_COLOR);
+		
 		//sub text
-		subTextCounter++;
+		subTextCounter += TimeManager.deltaFix;
 
 		textFont(instructionFont);
-		textSize(ACHIEVEMENT_FONT_SIZE);
-		text("Press space for achievements", width / 2, (height / 2.5) + (TITLE_FONT_SIZE/2));
 
 		if (subTextCounter >= 0)
 		{
@@ -271,14 +307,14 @@ public class UIController
 
 		handleLoadingScreenTransition();
 
-		drawTitle("ROCKY RAIN");
+		drawTitleImage();
 	}
 
 	private void handleLoadingScreenTransition()
 	{
 		if(currentLoadingScreenTransitionFill > 0)
 		{
-			currentLoadingScreenTransitionFill -= 4.5f;
+			currentLoadingScreenTransitionFill -= 4.5f * TimeManager.deltaFix;
 
 			if(currentLoadingScreenTransitionFill < 0)
 			{
@@ -309,8 +345,8 @@ public class UIController
 	void drawAchievementScreen()
 	{
 		fill(0, 175); 
-		rect(0, 0, width * 2, height * 2); 
-
+		rect(0, 0, width * 2, height * 2);
+		
 		for(AchievementImageFrame frame : achievementFrames)
 		{
 			frame.draw();  
@@ -365,18 +401,34 @@ public class UIController
 		}
 	}
 
-	void drawGameHUD()
+	//Draw functions
+	private void drawGameHUD()
 	{
 		drawHealthBar();
 
 		//Draw the score and depth display
 		textAlign(LEFT);
 		textSize(HUD_FONT_SIZE);
-		text(SCORE_TEXT + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
-		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + 10);
+		text("Score: " + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
+
+		final float EXTRA_DISTANCE = 10;
+
+		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + EXTRA_DISTANCE);
+
+		//Draw powerups
+		final float POWERUP_Y_POS = hudTextStartY + HUD_FONT_SIZE + 30;
+
+		drawPowerUp(shieldImage, hudTextDistanceFromLeft, 0, POWERUP_Y_POS, player.shieldTimer);
+		drawPowerUp(magnetImage, hudTextDistanceFromLeft, 1, POWERUP_Y_POS, player.magnetTimer);
+		drawPowerUp(regenImage, hudTextDistanceFromLeft, 2, POWERUP_Y_POS, player.extraRegenTimer);
+
+		if(scoreDisplay > 100000 && !achievementHelper.hasUnlockedAchievement(GREED_IS_GOOD_ACHIEVEMENT))
+		{
+			achievementHelper.unlock(GREED_IS_GOOD_ACHIEVEMENT);
+		}
 
 		//Collected points display
-		//Draw the collected score if we have some
+		//Draw the collected score if the player has some
 		if (collectedPoints > 0)
 		{
 			String comboChainText = "";
@@ -415,13 +467,14 @@ public class UIController
 
 		if (extraScoreLiveTimer > 0)
 		{
-			extraScoreLiveTimer--;
+			extraScoreLiveTimer -= TimeManager.deltaFix;
 		}
 		else
 		{
-			float pointMoveSpeed = 15f;
+			final float POINT_MOVE_SPEED = 15f;
+
 			//Move the entire collected score display to the left
-			extraBonusX -= pointMoveSpeed;
+			extraBonusX -= POINT_MOVE_SPEED;
 			//Add the score when it is beyond the display
 			if (extraBonusX <= hudTextDistanceFromLeft)
 			{
@@ -433,11 +486,33 @@ public class UIController
 		if(achievementDisplayTimer > 0)
 		{
 			displayAchievement(); 
-			achievementDisplayTimer--; 
+			achievementDisplayTimer -= TimeManager.deltaFix; 
 		}
 	}
 
-	//Draw functions
+	private void drawPowerUp(PImage powerupImage, float xPos, int powerupNumber, float yPos, float powerUpTimer)
+	{	
+		final float MIN_TINT = 56;
+		final float MAX_TINT = 255;
+		final float X_DISTANCE_BETWEEN_POWERUPS = 60;
+
+		if (powerUpTimer > 0)
+		{
+			//Tint the image transparent to indicate it's not active
+			tint(WHITE, MAX_TINT);
+		}
+		else
+		{
+			//Tint the image fully colored to indicate that it is active
+			tint(WHITE, MIN_TINT);
+		}
+
+		//Draw the image
+		//xDistanceBetweenPowerUps * powerupNumber is used to automatically calculate the exposition of the image
+		image(powerupImage, xPos + (X_DISTANCE_BETWEEN_POWERUPS * powerupNumber), yPos);
+		
+		tint(255);
+	}
 
 	private void drawTitle(String menuText)
 	{
@@ -456,7 +531,7 @@ public class UIController
 		//then draw the extra score based on the distance
 		String scoreDigits = str(scoreDisplay);
 		int numberOfScoreDigits = scoreDigits.length();
-		float bonusX = hudTextDistanceFromLeft + (HUD_FONT_SIZE * (SCORE_TEXT.length() + numberOfScoreDigits));
+		float bonusX = hudTextDistanceFromLeft + (HUD_FONT_SIZE * (7 + numberOfScoreDigits));
 
 		return bonusX;
 	}
@@ -484,7 +559,6 @@ public class UIController
 			rect(barX - barOffset, barY - barOffset, healthBarWidth + barOffset * 2, healthBarHeight + barOffset * 2); 
 
 			barOffset *= tweenFactor; //bootleg tweening
-			noStroke();
 		}
 
 		fill(WHITE);
@@ -494,8 +568,6 @@ public class UIController
 
 		fill(healthBarColor);
 		rect(barX, barY, map(player.currentHealth, 0, player.maxHealth, 0, healthBarWidth), healthBarHeight);    
-
-		stroke(0); //we may've changed the stroke in the flashy thing olf the healthbar
 
 		textFont(hudFont);
 
@@ -509,6 +581,7 @@ public class UIController
 	public void prepareHealthFlash()
 	{
 		barOffset = maxBarOffset;
+		drawWarningOverlay = true;
 	}
 
 	void drawStats()

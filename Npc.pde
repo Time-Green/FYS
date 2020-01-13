@@ -9,8 +9,8 @@ public class Npc extends Mob
 	private String currentlySayingFullText;
 	private String currentlySaying;
 	private boolean isTalking, isAboutToTalk;
-	private int currentTextIndex = 0;
-	private int currentTalkingWaitTime = 0;
+	private float currentTextIndex = 0;
+	private float currentTalkingWaitTime = 0;
 	private final int MAX_TALKING_WAIT_FRAMES = 2; // max frames untill showing next character when talking
 	private float maxTalkingShowTime;
 	private int timeStartedTalking;
@@ -41,6 +41,8 @@ public class Npc extends Mob
 
 	public Npc(World world, String name, String[] genericTexts, String[] panicTexts, String[] personalTexts)
 	{
+		drawLayer = PRIORITY_LAYER;
+
 		this.name = name;
 		this.genericTexts = genericTexts;
 		this.panicTexts = panicTexts;
@@ -101,7 +103,7 @@ public class Npc extends Mob
 		changeWalkingDirection(changeWalkingDirectionChance);
 		
 		//chance to jump walking direction
-		boolean doJump = random(1f) <= doJumpChance;
+		boolean doJump = random(1f) <= doJumpChance * TimeManager.deltaFix;
 
 		if (doJump && isGrounded())
 		{
@@ -133,7 +135,7 @@ public class Npc extends Mob
 
 			if(currentTalkingWaitTime < MAX_TALKING_WAIT_FRAMES)
 			{
-				currentTalkingWaitTime++;
+				currentTalkingWaitTime += TimeManager.deltaFix;
 
 				return;
 			}
@@ -142,16 +144,22 @@ public class Npc extends Mob
 				currentTalkingWaitTime = 0;
 			}
 
-			if(currentTextIndex < currentlySayingFullText.length())
+			if(floor(currentTextIndex) < currentlySayingFullText.length())
 			{
-				currentTextIndex++;
-				currentlySaying = currentlySayingFullText.substring(0, currentTextIndex);
+				currentTextIndex += TimeManager.deltaFix;
+
+				int letterIndex = floor(currentTextIndex);
+
+				if(letterIndex <= currentlySayingFullText.length())
+				{
+					currentlySaying = currentlySayingFullText.substring(0, letterIndex);
+				}
 			}
 		}
 		else if(!isPanicking)
 		{
 			//chance to start talking when not panicking
-			boolean doTalk = random(1f) <= doTalkChance;
+			boolean doTalk = random(1f) <= doTalkChance * TimeManager.deltaFix;
 
 			if (doTalk)
 			{
@@ -229,7 +237,7 @@ public class Npc extends Mob
 		}
 
 		//chance to change walking direction
-		boolean doChangeIsWalking = random(1f) <= chance;
+		boolean doChangeIsWalking = random(1f) <= chance * TimeManager.deltaFix;
 
 		if(doChangeIsWalking)
 		{
@@ -241,7 +249,7 @@ public class Npc extends Mob
 	private void changeWalkingDirection(float chance)
 	{
 		//chance to change walking direction
-		boolean doChangeWalkingDirection = random(1f) <= chance;
+		boolean doChangeWalkingDirection = random(1f) <= chance * TimeManager.deltaFix;
 
 		if(doChangeWalkingDirection)
 		{
@@ -273,12 +281,31 @@ public class Npc extends Mob
 		}
 
 		textAlign(LEFT);
+
+		if(player.position.x > position.x - TILE_SIZE && player.position.x < position.x + TILE_SIZE)
+		{
+			drawAchievementHint(); 
+		} 
 	}
 
 	private void drawName()
 	{
 		fill(nameColor);
 		text(name, position.x + size.x / 2, position.y - 5);
+	}
+
+	private void drawAchievementHint()
+	{
+		if(isPanicking == false && gameState != GameState.MainMenu) 
+		{
+			fill(255, 0, 0); 
+			ellipseMode(CENTER);
+			ellipse(this.position.x + 20, this.position.y - 40, 40, 40);
+			fill(255); 
+			textAlign(CENTER); 
+			textSize(ui.ACHIEVEMENT_FONT_SIZE/1.5);
+			text("A", this.position.x + 20, this.position.y - 32);
+		}
 	}
 
 	private void drawTalking()

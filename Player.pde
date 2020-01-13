@@ -9,6 +9,10 @@ class Player extends Mob
 	private AnimatedImage animatedImageFall;
 	private AnimatedImage animatedImageFire;
 
+	//For achievement purposes
+	private boolean undamaged = true; 
+	private int explosionsCaused = 0; 
+
 	//Camera
 	private float viewAmount = 400;
 	private float viewTarget = viewAmount;
@@ -18,8 +22,11 @@ class Player extends Mob
 	public float stunTimer;
 	public float shieldTimer;
 	public float magnetTimer;
+	public float extraRegenTimer;
+	private float bonusRegen = regen * 2.5f;
+	public boolean hurtFlash;
 
-	boolean gotbonus1;
+	private boolean gotbonus1;
 	private Shield myShield;
 
 	private PVector spawnPosition = new PVector(1300, 509);
@@ -34,13 +41,11 @@ class Player extends Mob
 		jumpForce = 21f;
 		drawLayer = PLAYER_LAYER;
 
-		setUpAnimation();
+		setupAnimation();
 
 		setupLightSource(this, viewAmount, 1f);
 
 		applyRelicBoost();
-
-		myShield = new Shield();
 	}
 
 	void update()
@@ -52,9 +57,16 @@ class Player extends Mob
 
 		super.update();
 
-		if(player.getDepth() - OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(LONE_DIGGER_ACHIEVEMENT))
+		// This is used to tell the ui when to play the damage feedback
+		hurtFlash = isHurt;
+
+		if(getDepth() - OVERWORLD_HEIGHT > 100 && !achievementHelper.hasUnlockedAchievement(LONE_DIGGER_ACHIEVEMENT))
 		{
 			achievementHelper.unlock(LONE_DIGGER_ACHIEVEMENT); 
+		}
+		else if(getDepth() - OVERWORLD_HEIGHT > 1000 && !achievementHelper.hasUnlockedAchievement(PERSISTENCE_ACHIEVEMENT))
+		{
+			achievementHelper.unlock(PERSISTENCE_ACHIEVEMENT);
 		}
 
 		setVisibilityBasedOnCurrentBiome();
@@ -64,6 +76,14 @@ class Player extends Mob
 		statusEffects();
 
 		digBonuses();
+
+		if(getDepth() - OVERWORLD_HEIGHT > 500 && undamaged)
+		{
+			if(!achievementHelper.hasUnlockedAchievement(HARD_AS_A_ROCK_ACHIEVEMENT))
+			{
+				achievementHelper.unlock(HARD_AS_A_ROCK_ACHIEVEMENT); 
+			}
+		}
 
 		if (stunTimer <= 0)
 		{
@@ -78,10 +98,22 @@ class Player extends Mob
 		{
 			ui.drawWarningOverlay = true;
 
-			if (frameCount % 60 == 0)
+			if (TimeManager.flooredDeltaFixFrameCount % 60 == 0)
 			{
 				AudioManager.playSoundEffect("LowHealth");
 			}
+		}
+	}
+
+	void checkLight()
+	{
+		if(isDark == true)
+		{
+			viewAmount = 20;
+		}
+		else
+		{
+			viewAmount = 400;
 		}
 	}
 
@@ -115,7 +147,7 @@ class Player extends Mob
 
 	float getRelicStrength(float relicAmount)
 	{
-		return floor(relicAmount/5);
+		return floor(relicAmount / 5);
 	}
 
 	void setVisibilityBasedOnCurrentBiome()
@@ -126,7 +158,7 @@ class Player extends Mob
 		}
 
 		float dy = viewTarget - lightEmitAmount;
-		lightEmitAmount += dy * easing;
+		lightEmitAmount += (dy * easing) * TimeManager.deltaFix;
 	}
 
 	void draw()
@@ -149,26 +181,26 @@ class Player extends Mob
 		handleParticles();
 	}
 
-	private void setUpAnimation()
+	private void setupAnimation()
 	{
 		//Movement animation
-		int walkFrames = 4, idleFrames = 3, mineFrames = 3;
-		int walkAnimSpeed = 8, idleAnimSpeed = 1, mineAnimSpeed = 5;
-		walkCycle = new AnimatedImage("PlayerWalk", walkFrames, walkAnimSpeed, position, size.x, flipSpriteHorizontal);
-		animatedImageIdle = new AnimatedImage("PlayerIdle", idleFrames, idleAnimSpeed, position, size.x, flipSpriteHorizontal);
-		animatedImageMine = new AnimatedImage("PlayerMine", mineFrames, mineAnimSpeed, position, size.x, flipSpriteHorizontal);
+		final int WALK_FRAMES = 4, IDLE_FRAMES = 3, MINE_FRAMES = 3;
+		final int WALK_ANIMATION_SPEED = 8, IDLE_ANIMATION_SPEED = 1, MINE_ANIMATION_SPEED = 5;
+		walkCycle = new AnimatedImage("PlayerWalk", WALK_FRAMES, WALK_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+		animatedImageIdle = new AnimatedImage("PlayerIdle", IDLE_FRAMES, IDLE_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+		animatedImageMine = new AnimatedImage("PlayerMine", MINE_FRAMES, MINE_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 		
 		//Jumping animation
-		int airFrames = 3, fallFrames = 4;
-		int airAnimSpeed = 10, fallAnimSpeed = 20;
-		animatedImageAir = new AnimatedImage("PlayerAir", airFrames, airAnimSpeed, position, size.x, flipSpriteHorizontal);
-    	animatedImageFall = new AnimatedImage("PlayerFall", fallFrames, fallAnimSpeed, position, size.x, flipSpriteHorizontal);
+		final int AIR_FRAMES = 3, FALL_FRAMES = 4;
+		final int AIR_ANIMATION_SPEED = 10, FALL_ANIMATION_SPEED = 20;
+		animatedImageAir = new AnimatedImage("PlayerAir", AIR_FRAMES, AIR_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+    	animatedImageFall = new AnimatedImage("PlayerFall", FALL_FRAMES, FALL_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 
 		//Status effects
-		int shockFrames = 2, fireFrames = 4;
-		int statusEffectAnimSpeed = 10;
-		animatedImageShocked = new AnimatedImage("PlayerShock", shockFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
-		animatedImageFire = new AnimatedImage("FireP", fireFrames, statusEffectAnimSpeed, position, size.x, flipSpriteHorizontal);
+		final int SHOCK_FRAMES = 2, FIRE_FRAMES = 4;
+		final int STATUS_EFFECT_ANIMATION_SPEED = 10;
+		animatedImageShocked = new AnimatedImage("PlayerShock", SHOCK_FRAMES, STATUS_EFFECT_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
+		animatedImageFire = new AnimatedImage("FireP", FIRE_FRAMES, STATUS_EFFECT_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 	}
 
 	private void handleAnimation()
@@ -182,7 +214,7 @@ class Player extends Mob
 			AudioManager.playSoundEffect("FireSound");
 		}
 
-		// Am I stunned?
+		// Is the player stunned
 		if (stunTimer > 0f)
 		{
 			animatedImageShocked.flipSpriteHorizontal = flipSpriteHorizontal;
@@ -200,7 +232,7 @@ class Player extends Mob
 				animatedImageAir.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageAir.draw();
 			}
-			else if (InputHelper.isKeyDown(DIG_KEY) && isGrounded && gameState == GameState.InGame) //Digging
+			else if ((InputHelper.isKeyDown(DIG_KEY) || InputHelper.isKeyDown(LEFT_KEY) || InputHelper.isKeyDown(RIGHT_KEY)) && velocity.y < 7.5 && gameState == GameState.InGame) //Digging
 			{
 				animatedImageMine.flipSpriteHorizontal = flipSpriteHorizontal;
 				animatedImageMine.draw();
@@ -216,28 +248,22 @@ class Player extends Mob
 				animatedImageIdle.draw();
 			}
 		}
-	
-		//Draw the shield
-		//This has to go on the bottom of this function, otherwise it will draw behind the player
-		if (this.shieldTimer > 0f)
-		{
-			myShield.draw();
-		}
+
 	}
 
 	private void handleParticles()
 	{
 		// Walking
-		if (abs(velocity.x) > 2 && isGrounded())
+		if (abs(velocity.x) > 2 && isGrounded() && TimeManager.flooredDeltaFixFrameCount % 3 == 0)
 		{
-			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 3.5f), 1, 3, standingOn.particleColor);
+			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 2.5f), 1, 3, standingOn.particleColor);
 			load(particleSystem);
 		}
 
 		// Jumping
 		if(isGrounded && (InputHelper.isKeyDown(JUMP_KEY_1) || InputHelper.isKeyDown(JUMP_KEY_2)))
 		{
-			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 3.5f), 12, 4, standingOn.particleColor);
+			PlayerWalkingParticleSystem particleSystem = new PlayerWalkingParticleSystem(new PVector(position.x, position.y + 2.5f), 12, 4, standingOn.particleColor);
 			load(particleSystem);
 		}		
 	}
@@ -256,7 +282,7 @@ class Player extends Mob
 		{
 			if (!isSwimming)
 			{
-				addForce(new PVector(0, -jumpForce));
+				setForce(new PVector(0, -jumpForce));
 				runData.playerJumps++;
 			}
 			else
@@ -317,7 +343,7 @@ class Player extends Mob
 	{
 		float extraShieldTime = timeInSeconds(10f);
 
-		if (getDepth() > BONUSDEPTH && gotbonus1 == false)
+		if (getDepth() > BONUS_DEPTH && gotbonus1 == false)
 		{
 			shieldTimer += extraShieldTime;
 			gotbonus1 = true;
@@ -330,6 +356,8 @@ class Player extends Mob
 		{
 			return;
 		}
+
+		undamaged = false; 
 
 		if (isHurt == false)
 		{
@@ -351,7 +379,7 @@ class Player extends Mob
 		//Decrease stun timer
 		if (stunTimer > 0f)
 		{
-			stunTimer--;
+			stunTimer -= TimeManager.deltaFix;
 			isMiningDown = false;
 			isMiningLeft = false;
 			isMiningRight = false;
@@ -359,16 +387,32 @@ class Player extends Mob
 
 		if (shieldTimer > 0f)
 		{
-			shieldTimer--;
-			this.isImmortal = true;
-			// if (myShield.drawShield != true) 
-			myShield.drawShield = true;
+			shieldTimer -= TimeManager.deltaFix;
+			isImmortal = true;
 		}
 		else
 		{
-			this.isImmortal = false;
-			myShield.drawShield = false;
+			isImmortal = false;
 		}
+
+		if (magnetTimer > 0f)
+		{
+			magnetTimer -= TimeManager.deltaFix;
+		}
+
+		// Get the default regen value so that we can use it later
+		float defaultRegen = regen;
+
+		if (extraRegenTimer > 0f)
+		{
+			extraRegenTimer -= TimeManager.deltaFix;
+			regen = bonusRegen;
+		}
+		else
+		{
+			regen = defaultRegen;
+		}
+
 	}
 
 	public void die()
@@ -390,6 +434,16 @@ class Player extends Mob
 
 	protected void afterMine(BaseObject object)
 	{
+		if(object instanceof ExplosionTile)
+		{
+			explosionsCaused += 1; 
+
+			if(explosionsCaused > 20 && !achievementHelper.hasUnlockedAchievement(MICHAEL_BAY_APPROVES_ACHIEVEMENT))
+			{
+				achievementHelper.unlock(MICHAEL_BAY_APPROVES_ACHIEVEMENT);
+			}
+		}
+
 		runData.playerBlocksMined++;
 	}
 }

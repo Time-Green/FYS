@@ -5,6 +5,8 @@ public class AmethystTile extends ResourceTile {
 
     value = AMETHYST_VALUE;
 
+    decalType = "DecalGolden";
+
     image = ResourceManager.getImage("AmethystBlock", true);
     pickupImage = ResourceManager.getImage("AmethystPickup");
   }

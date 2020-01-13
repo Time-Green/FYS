@@ -2,7 +2,7 @@ class Biome
 {
 	int length = 50; //after how many tiles do we tell world to get another biome?
 
-	float structureChance = 0.02; //chance of a structure spawning between 0 and 1 for every row of tiles
+	float structureChance = 0.05; //chance of a structure spawning between 0 and 1 for every row of tiles
 	float enemyChance = 0.01; //chance of enemy spawning on an open tile
 	float ceilingObstacleChance = 0.0; //chance that a tile can have something hanging from it
 	float groundObstacleChance = 0.1; //ditto but then ground
@@ -20,7 +20,11 @@ class Biome
 	// the amount the player can see in the biome
 	float playerVisibilityScale = 1;
 
-	boolean canParallax = true;
+	boolean canParallax = true; //wheter we can even use parallax. for stuff like the overworld, its a no
+
+	boolean spawnMoss = true;
+	color mossTint = color(23, 99, 0);
+	float mossChance = 0.0003;
 
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
@@ -28,7 +32,7 @@ class Biome
   	{
     	if(spawnResourceTileAllowed(x, depth))
     	{
-      		float orechance = random(100);
+      		float oreChance = random(100);
 
 			//spawn air at surface
 			if (depth <= OVERWORLD_HEIGHT)
@@ -47,44 +51,21 @@ class Biome
 			{
 				return new DirtStoneTransitionTile(x, depth);
 			}
-			else if (depth > 15 && depth <= 500)
+			else if (depth > 15)
 			{
-				if (orechance > 80 && orechance <= 90)
+				if (oreChance > 0 && oreChance <= 10)
 				{
 					return new CoalTile(x, depth);
 				}
-				else if (orechance > 90 && orechance <= 98)
+				else if (oreChance > 10 && oreChance <= 18)
 				{
 					return new IronTile(x, depth);
 				}
-				else if (orechance > 98 && orechance <= 100)
+				else if (oreChance > 18 && oreChance <= 20)
 				{
 					return new ExplosionTile(x, depth);
 				}
 			}
-			else if (depth > 500)
-			{
-				if (orechance > 80 && orechance <= 88)
-				{
-					return new GoldTile(x, depth, 0);
-				}
-				else if (orechance > 88 && orechance <= 93)
-				{
-					return new RedstoneTile(x, depth, 0);
-				}
-				else if (orechance > 93 && orechance <= 96)
-				{
-					return new DiamondTile(x, depth, 0);
-				}
-				else if (orechance > 96 && orechance <= 98)
-				{
-					return new AmethystTile(x, depth, 0);
-				}
-				else if (orechance > 98 && orechance <= 100)
-				{
-					return new ObsedianTile(x, depth);
-				}
-      		}
     	}
 
     	//if no special tile was selected, spawn stone
@@ -101,7 +82,7 @@ class Biome
 
 		return true;
   	}
-
+	//return how long this biome is (not always super accurate, but it's fine)
   	int getLength()
   	{
     	return length;
@@ -109,14 +90,36 @@ class Biome
 
   	void placeStructure(World world, int depth)
 	{
-    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth)); //times 0.8 because stuff at the complete right usually cant spawn
+    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth), false); //times 0.8 because stuff at the complete right usually cant spawn
   	}
 
 	// a function so we can give some different probabilities
-  	String getStructureName()
+	String getStructureName()
 	{
-    	return "SuperBasicDungeon";
-  	}
+		final int dungeonAmount = 3;
+
+		float spawnChance = random(1);
+
+		// 50% chance to spawn a dungeon
+		if(spawnChance < 0.5f)
+		{
+			return "Dungeon" + floor(random(dungeonAmount));
+		}
+		else // 50% chance to spawn a treasure chamber
+		{
+			float mimicChance = random(1);
+
+			// 20% chance to spawn a mimic treasure chamber
+			if (mimicChance < 0.2f)
+			{
+				return "TreasureChamberMimic";
+			}
+			else
+			{
+				return "TreasureChamber";
+			}
+		}
+	}
 
 	void spawnEnemy(PVector position)
 	{
@@ -134,16 +137,12 @@ class Biome
 		{
 			load(new EnemyDigger(position));
 		}
-		else if (spawner < .85)
-		{
-			load(new EnemyMimic(position));
-		}
 		else
 		{
 			load(new EnemyShocker(position));
 		}
 	}
-
+	//ceiling obstacles like icicles are prepared here
   	void prepareCeilingObstacle(Tile target, World world)
 	{
     	Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE);
@@ -155,15 +154,16 @@ class Biome
 
     	if(above.density)
 		{
-      		spawnCeilingObstacle(target);
+      		BaseObject object = spawnCeilingObstacle(target);
+			target.rootedIn.add(object);
     	}
   	}
-
-  	void spawnCeilingObstacle(Tile tile)
+	//return an obstacle to stick to the roof
+  	BaseObject spawnCeilingObstacle(Tile tile)
 	{
-		load(new Icicle(), tile.position);
+		return load(new Icicle(), tile.position);
   	}
-	
+	//prepare stuff like flowers
 	void prepareGroundObstacle(Tile target, World world)
 	{
 		Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE); //get the tile above us
@@ -178,14 +178,35 @@ class Biome
 			}
 		}
 	}
-
+	//return object that you want to stick into the ground
 	BaseObject spawnGroundObstacle(Tile target)
 	{
 		return null;
 	}
-
+	//return the type of rock we should draw on the parallax
 	String getParallaxedRock()
 	{
+		float chance = random(1);
+		
+		if(chance > 0.00 && chance < 0.10)
+		{
+			return "CoalBlock";
+		}
+		else if(chance > 0.10 && chance < 0.18)
+		{
+			return "IronBlock";
+		}
+
 		return "StoneBlock";
+	}
+	//spawn moss, maybe, we check for probability too.
+	void maybeSpawnMoss(Tile tile, World world)
+	{
+		if(random(1) > mossChance)
+		{
+			return;
+		}
+
+		load(new Moss(tile, mossTint));
 	}
 }

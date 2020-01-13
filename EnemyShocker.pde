@@ -1,27 +1,45 @@
 class EnemyShocker extends Enemy
 {
-	//Normal time times 60 seconds
+	//Shocker values
 	private float stunTime = timeInSeconds(1f);
+
+	//Animation
+	private AnimatedImage walkSequence;
 
 	EnemyShocker(PVector spawnPos)
 	{
 		super(spawnPos);
 
-		image = ResourceManager.getImage("ShockEnemy");
+		// Values setup
+		float stunIncreaseValue = 0.1f;
+		stunTime += increasePower(stunIncreaseValue);
 
-		setupLightSource(this, 175f, 1f);
+		// Image setup
+		image = ResourceManager.getImage("ShockerWalk0");
+		animationSetup();
 	}
 
-	//Completely over the handleCollision function
-	protected void handleCollision()
+	void draw()
 	{
-		if (CollisionHelper.rectRect(position, size, player.position, player.size))
-		{
-			player.takeDamage(playerDamage);
-			//Stun the player
-			player.stunTimer = stunTime;
-			//Delete this enemy so that the player won't get stick in a endless loop
-			delete(this);
-		}
+		walkSequence.draw();
+		walkSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 	}
+
+	protected void attackingPlayer(Player player)
+	{
+		player.takeDamage(playerDamage);
+		//Stun the player
+		player.stunTimer = stunTime;
+		//Delete this enemy so that the player won't get stuck in a endless loop
+		delete(this);
+	}
+
+	private void animationSetup()
+	{
+		int walkFrames = 2;
+		int walkSpeed = 6;
+		walkSequence = new AnimatedImage("ShockerWalk", walkFrames, walkSpeed, position, size.x, flipSpriteHorizontal);
+	}
+
+
 }

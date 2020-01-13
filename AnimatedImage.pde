@@ -1,11 +1,11 @@
 public class AnimatedImage
 {
-	PImage[] frames;
-	float frameDelay, objectWidth, objectHeight;
-	PVector drawPosition;
-	boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
+	public PVector drawPosition;
+	private PImage[] frames;
+	private float frameDelay, objectWidth, objectHeight;
+	private boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
 
-	int frameCounter = 0;
+	private float frameCounter = 0;
 
 	public AnimatedImage(PImage[] frames, float frameDelay, PVector drawPosition, float objectWidth, boolean flipSpriteHorizontal)
 	{
@@ -28,6 +28,7 @@ public class AnimatedImage
 		}
 
 		this.objectWidth = objectWidth;
+		this.objectHeight = objectHeight;
 		this.frameDelay = frameDelay;
 		this.drawPosition = drawPosition;
 		this.flipSpriteHorizontal = flipSpriteHorizontal;
@@ -50,7 +51,6 @@ public class AnimatedImage
 		this.drawPosition = drawPosition;
 		this.flipSpriteHorizontal = flipSpriteHorizontal;
 		this.flipSpriteVertical = flipSpriteVertical;
-		
 	}
 
 	public void draw()
@@ -59,28 +59,8 @@ public class AnimatedImage
 
 		translate(drawPosition.x, drawPosition.y);
 
-		int imageToDrawIndex = frameCounter / round(frameDelay) % frames.length;
+		int imageToDrawIndex = floor(frameCounter / round(frameDelay) % frames.length);
 		PImage imageToDraw = frames[imageToDrawIndex];
-
-		// if (flipSpriteHorizontal)
-		// {
-		// 	scale(-1, 1);
-		// 	image(imageToDraw, -objectWidth, 0);
-		// }
-		// else
-		// {
-		// 	image(imageToDraw, 0, 0);
-		// }
-
-		// if (flipSpriteVertical)
-		// {
-		// 	scale(1, -1);
-		// 	image(imageToDraw, -objectHeight, 0);
-		// }
-		// else
-		// {
-		// 	image(imageToDraw, 0, 0);
-		// }
 
 		if (!flipSpriteHorizontal && !flipSpriteVertical)
 		{
@@ -96,20 +76,16 @@ public class AnimatedImage
 		{
 			scale(1, -1);
 			image(imageToDraw, 0, -objectHeight);
-			println("flipSpriteVertical: "+flipSpriteVertical);
 		}
 		else if (flipSpriteHorizontal && flipSpriteVertical)
 		{
 			scale(-1, -1);
 			image(imageToDraw, -objectWidth, -objectHeight);
-			println("flipSpriteVertical: "+flipSpriteVertical);
 		}
-
-		
 
 		popMatrix();
 
-		frameCounter++;
+		frameCounter += TimeManager.deltaFix;
 	}
 
 	public void resetCounter()

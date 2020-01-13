@@ -4,8 +4,13 @@ class ShadowBiome extends Biome
 	ShadowBiome()
 	{
 		enemyChance = 0.15;
+		
+		mossTint = color(80);
+		mossChance = 0.0001;
+
 		minimumDepth = 200;
 		playerVisibilityScale = 0.65f;
+
 		destroyedImage = ResourceManager.getImage("DestroyedShadow");
 	}
 
@@ -13,26 +18,34 @@ class ShadowBiome extends Biome
 	{
 		if(spawnResourceTileAllowed(x, depth))
 		{
-			float orechance = random(100);
+			float oreChance = random(100);
 
 			if (depth - startedAt < length)
 			{
-				if (orechance <= 4)
+				if (oreChance <= 4)
 				{
 					return new GoldTile(x, depth, 1);
 				}
-				else if (orechance <= 8)
+				else if (oreChance > 4 && oreChance <= 8)
 				{
 					return new DiamondTile(x, depth, 1);
 				}
-				else if (orechance <= 16)
+				else if (oreChance > 8 && oreChance <= 16)
 				{
 					return new ShadowSandTile(x, depth);
 				}
-				else if (orechance <= 18)
+				else if (oreChance > 16 && oreChance <= 18)
 				{
 					return new ObsedianTile(x, depth);
 				}
+				else if (oreChance > 18 && oreChance <= 20)
+				{
+					return new ExplosionTile(x, depth);
+				}
+				// else if (oreChance > 20 && oreChance <= 28)
+				// {
+				// 	return new DemonClaw(x, depth);
+				// }
 			} 
 		}
 
@@ -44,8 +57,23 @@ class ShadowBiome extends Biome
 		load(new EnemyGhost(position));
 	}
 
+	// void spawnDemonClaw(PVector position)
+	// {
+	// 	load(new DemonClaw(position));
+	// }
+
 	String getParallaxedRock()
 	{
-		return "ShadowSandBlock";
+		
+		float oreChance = random(1);
+		
+		if (oreChance > 0.16 && oreChance <= 0.18)
+		{
+			return "ShadowSandBlock";
+		}
+		else 
+		{
+			return "ShadowBlock";
+		}
 	}
 }

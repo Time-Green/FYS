@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.Character;
 
 // List of everything we need to update
 ArrayList<BaseObject> updateList = new ArrayList<BaseObject>(); 
@@ -9,6 +10,7 @@ ArrayList<BaseObject> reloadList = new ArrayList<BaseObject>(); // Otherwise we 
 //Drawing
 ArrayList<ArrayList> drawList = new ArrayList<ArrayList>(); 
 final int DRAWING_LAYERS = 10; // Increase if you add more layers
+color backgroundColor = color(0);
 
 // These only exists as helpers. All updating is handled from updateList
 ArrayList<Tile> tileList = new ArrayList<Tile>();
@@ -44,6 +46,7 @@ final boolean SHOW_LOADING_RESOURCES = false;
 final color TITLE_COLOR = #ffa259;
 final float TITLE_FONT_SIZE = 120;
 PFont titleFont;
+PImage gameTitle;
 
 //Database variables
 ArrayList<DatabaseVariable> databaseVariable;
@@ -66,18 +69,25 @@ Player player;
 WallOfDeath wallOfDeath;
 Camera camera;
 UIController ui;
-Jukebox jukebox;
+//Jukebox jukebox;
 
 boolean hasCalledAfterResourceLoadSetup = false; // used to only call 'afterResouceLoadingSetup' function only once
 boolean startGame = false; // start the game on next frame. needed to avoid concurrentmodificationexceptions
 
-boolean parallaxEnabled = false;
+boolean parallaxEnabled = true;
+
+// restart variables
+float currentRestartTimer = 0;
+final float MAX_RESTART_TIMER = 60; // 1.5 seconds
 
 void setup()
 {
 	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P3D);
+	//fullScreen(P3D);
+
+	TimeManager.setup(this, 1000f, 60f, false, false);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
@@ -88,7 +98,15 @@ void setup()
 	ResourceManager.setup(this);
 	ResourceManager.loadAll(true);
 
+	noStroke();
+	preLoading();
+}
+
+void preLoading()
+{
 	titleFont = createFont("Fonts/Block Stock.ttf", 32);
+	gameTitle = loadImage("Sprites/GameTitle.png");
+	textFont(titleFont);
 }
 
 void checkUser()
@@ -112,7 +130,7 @@ void afterResouceLoadingSetup()
 {
 	setVolumes();
 	
-	prepareDRAWING_LAYERS();
+	prepareDrawingLayers();
 	generateFlippedImages();
 
 	//setup game and show title screen
@@ -145,8 +163,8 @@ void setVolumes()
 	}
 
 	// music
-	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
-	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.73f);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.85f);
+	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.74f);
 
 	for (int i = 1; i < JUKEBOX_SONG_AMOUNT; i++)
 	{
@@ -173,7 +191,7 @@ void setupGame()
 	mobList.clear();
 	lightSources.clear();
 
-	cleanDRAWING_LAYERS();
+	cleanDrawingLayers();
 
 	runData = new RunData();
 	ui = new UIController();
@@ -190,7 +208,7 @@ void setupGame()
 	ui.currentLoadingScreenTransitionFill = 255;
 }
 
-void prepareDRAWING_LAYERS()
+void prepareDrawingLayers()
 {
 	drawList = new ArrayList<ArrayList>();
 
@@ -200,7 +218,7 @@ void prepareDRAWING_LAYERS()
 	}
 }
 
-void cleanDRAWING_LAYERS()
+void cleanDrawingLayers()
 {
 	for (ArrayList<BaseObject> drawLayer : drawList)
 	{
@@ -210,6 +228,8 @@ void cleanDRAWING_LAYERS()
 
 void draw()
 {
+	TimeManager.update();
+
 	if(userInLoginScreen)
 	{
 		loginScreen.update();
@@ -238,13 +258,16 @@ void draw()
 		afterResouceLoadingSetup();
 	}
 
+	// based on dayNight image
+	background(backgroundColor);
+
 	//push and pop are needed so the hud can be correctly drawn
 	pushMatrix();
 
 	camera.update();
 
-	world.update();
 	world.draw();
+	world.update();
 
 	drawParallaxLayers();
 
@@ -265,6 +288,48 @@ void draw()
 	handleGameFlow();
 
 	ui.draw();
+
+	checkRestartGame();
+}
+
+void checkRestartGame()
+{
+	if(InputHelper.isKeyDown('r'))
+	{
+		currentRestartTimer += TimeManager.deltaFix;
+
+		fill(255, 0, 0);
+		textSize(60);
+		textAlign(CENTER);
+		text("RESTARTING GAME IN", width / 2, height / 2);
+		text(nf(((MAX_RESTART_TIMER - currentRestartTimer) / 60f), 0, 2) + " sec", width / 2, height / 2 + 80);
+	}
+	else
+	{
+		currentRestartTimer = 0;
+	}
+
+	if(currentRestartTimer > MAX_RESTART_TIMER)
+	{
+		restartGame();
+	}
+}
+
+// restart the game to allow another player to login
+// best used with SAVE_USERNAME_AT_LOGIN set to false and with no name in dbUser.txt
+void restartGame()
+{
+	currentRestartTimer = 0;
+
+	loadedPlayerInventory = false;
+	loadedAllAchievements = false;
+	loadedPlayerAchievements = false;
+	loadedLeaderboard = false;
+	hasCalledAfterResourceLoadSetup = false;
+	gamePaused = true;
+	gameState = GameState.MainMenu;
+
+	checkUser();
 }
 
 void userFilledInName()
@@ -362,12 +427,6 @@ void handleGameFlow()
 			enterOverWorld(false);
 		}
 
-		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
-		{
-			gameState = GameState.AchievementScreen; 
-			ui.drawAchievementScreen();  
-		}
-
 		break;
 
 	case InGame:
@@ -378,7 +437,18 @@ void handleGameFlow()
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
-		break;
+		break; 
+
+	case Overworld:
+		gamePaused = false; 
+
+		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
+		{
+			gameState = GameState.AchievementScreen; 
+			ui.drawAchievementScreen();  
+		}
+
+		break; 
 
 	case GameOver:
 		gamePaused = true;
@@ -393,11 +463,11 @@ void handleGameFlow()
 		break;
 
 	case AchievementScreen:
+		gamePaused = true; 
 
-		// In the achievement screen press ENTER to exit temp(!)
 		if(InputHelper.isKeyDown(START_KEY))
 		{
-			gameState = GameState.MainMenu; 
+			gameState = GameState.Overworld; 
 			InputHelper.onKeyReleased(START_KEY);
 		}
 
@@ -456,7 +526,7 @@ void startAsteroidRain()
 	AudioManager.playSoundEffect("Siren");
 
 	ui.drawWarningOverlay = true;
-	jukebox.stopMusicOverTime(1500);
+	//jukebox.stopMusicOverTime(1500);
 }
 
 //is called when the played died
@@ -537,17 +607,15 @@ void handleLoadingScreen()
 		}
 	}
 
-	drawTitle();
+	drawTitleImage();
 }
 
-// because we don't have a UiManager instance when loading, the title needs to happand separately here
-private void drawTitle()
+// because we don't have a UiManager instance when loading, the title rendering needs to happan separately here
+void drawTitleImage()
 {
-	fill(TITLE_COLOR);
-	textSize(TITLE_FONT_SIZE);
-	textAlign(CENTER);
-
-	text("Rocky Rain", width / 2, float(height) / 4f);
+	imageMode(CENTER);
+	image(gameTitle, width / 2, height / 4.5f, width * 0.8f, height * 0.3f);
+	imageMode(CORNER);
 }
 
 // handles all the basic stuff to add it to the processing stuff, so we can easily change it without copypasting a bunch
@@ -605,17 +673,25 @@ ArrayList<BaseObject> getObjectsInRadius(PVector pos, float radius)
 {
 	ArrayList<BaseObject> objectsInRadius = new ArrayList<BaseObject>();
 
-	for (BaseObject object : updateList)
+	try
 	{
-		if (object.suspended)
+		for (BaseObject object : updateList)
 		{
-			continue;
-		}
+			if (object.suspended)
+			{
+				continue;
+			}
 
-		if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius)
-		{
-			objectsInRadius.add(object);
+			if (dist(pos.x, pos.y, object.position.x, object.position.y) < radius)
+			{
+				objectsInRadius.add(object);
+			}
 		}
+	}
+	catch (Exception e)
+	{
+		// sometimes we get concurrent modification exception, in that case we just try again
+		return getObjectsInRadius(pos, radius);
 	}
 
 	return objectsInRadius;
@@ -633,15 +709,17 @@ float timeInSeconds(float seconds)
 	return seconds *= 60;
 }
 
+// processing key pressed event
 void keyPressed()
 {
 	InputHelper.onKeyPressed(keyCode);
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	debugInput();
+	//debugInput();
 }
 
+// processing key released event
 void keyReleased()
 {
 	InputHelper.onKeyReleased(keyCode);
@@ -653,20 +731,18 @@ void debugInput()
 	// Test spawns
 	if(key == 'E' || key == 'e')
 	{
-		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
-		load(new EnemyDigger(new PVector(1000,500)));
-
+		load(new EnemyMimic(new PVector(1000,400)));
 	}
 
-	// if(key == 'R' || key == 'r')
-	// {
-	// 	databaseManager.updateVariable("poop", 500);
-	// }
+	if(key == 'Q' || key == 'q')
+	{
+		load(new ScorePickup(50,ResourceManager.getImage("CoalPickup")));
+	}
 
-	// if (key == 'T' || key == 't')
-	// {
-	// 	databaseManager.insertVariable("poop", 500);
-	// }
+	if (key == 'T' || key == 't')
+	{
+		load(new MagnetPickup());
+	}
 
 	// if (key == 'Y' || key == 'y')
 	// {

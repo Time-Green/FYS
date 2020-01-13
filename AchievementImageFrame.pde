@@ -5,6 +5,7 @@ public class AchievementImageFrame
     public float growSpeed = 3f;  
     public float selectedSizeOffset; 
     public String lockedAchievementText = "???"; 
+    public String returnText = "Press start to go back"; 
     public boolean isSelected; 
     public float margin = 40f; 
     private PVector position = new PVector();
@@ -13,12 +14,15 @@ public class AchievementImageFrame
     public int achievementId; 
     private int posX; 
     private PImage achievementImage; 
+    private PImage achievementLockedOverlay; 
 
     AchievementImageFrame(int posX, int id)
     {
         Achievement achievement = achievementHelper.getAchievementData(id); 
 
         achievementImage = ResourceManager.getImage("Achievement" + achievement.rarity); 
+        achievementLockedOverlay = ResourceManager.getImage("lockedAchievement"); 
+
         this.posX = posX; 
         position.x = width / 2 + ((minFrameSize + margin) * posX); 
         achievementId = id; 
@@ -28,6 +32,18 @@ public class AchievementImageFrame
     {
         position.y = height / 2.75f; 
         position.x = width / 2 + ((minFrameSize + margin) * posX) + xOffset;
+
+        fill(255);
+        rectMode(CENTER);
+        imageMode(CENTER);
+
+        rect(position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset);
+        image(achievementImage, position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset); 
+        textSize(ui.ACHIEVEMENT_FONT_SIZE/1.5);       
+        text(returnText, 200, height - 25); 
+
+        rectMode(CORNER);
+        imageMode(CORNER);
         
         // If the frame is the center one
         if(isSelected)
@@ -42,28 +58,24 @@ public class AchievementImageFrame
 
             if(achievementHelper.hasUnlockedAchievement(achievementId))
             {
+                textSize(ui.ACHIEVEMENT_FONT_SIZE/1.2);
                 text(achievementHelper.getAchievementData(achievementId).description, width / 2, height - 100);
+                textSize(ui.ACHIEVEMENT_FONT_SIZE);
             }
             else
             {
                 text(lockedAchievementText, width/2, height-100); 
+                tint(0, 160); 
+                imageMode(CENTER); 
+                image(achievementLockedOverlay, position.x, position.y, minFrameSize + selectedSizeOffset - 25, minFrameSize + selectedSizeOffset - 25); 
+                imageMode(CORNER); 
+                noTint();
             }          
         }   
         else
         {
-            deflate();
-        }
-
-        fill(255);
-        rectMode(CENTER);
-        imageMode(CENTER);
-        noStroke();
-
-        rect(position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset);
-        image(achievementImage, position.x, position.y, minFrameSize + selectedSizeOffset, minFrameSize + selectedSizeOffset);
-
-        rectMode(CORNER);
-        imageMode(CORNER);
+            deflate();                                                                              
+        }       
     } 
        
     void inflate()

@@ -1,11 +1,16 @@
-public class LeafTile extends Tile
+public class LeafTile extends SlowFallTile
 {
 	public LeafTile(int x, int y)
 	{
 		super(x, y);
-		drawLayer = BACKWALL_LAYER;
+
+		decalType = "DecalLeaf";
+
+		density = true; //we are dense so we can distinguish ourselves from other blocks and draw the decals
+		drawLayer = ABOVE_TILE_LAYER; //so we stick out over wood
 
 		image = ResourceManager.getImage("Leaf");
+		particleImage = ResourceManager.getImage("LeafParticle");
 	}
 }
 

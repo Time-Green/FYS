@@ -29,8 +29,10 @@ class Mob extends Movable
 	private final float fireDamage = 8;
 	public boolean canRegen = false;
 	public boolean isOnFire = false;
-	private int fireTimer;
-	private int regenTimer;
+	private float fireTimer;
+	private float regenTimer;
+	public boolean isDark = false;
+	private float darkTimer;
 
 	Mob()
 	{
@@ -43,6 +45,8 @@ class Mob extends Movable
 		super.update();
 
 		handleOnFire();
+
+		handleDark();
 
 		regenaration();
 
@@ -61,7 +65,7 @@ class Mob extends Movable
 		if (isHurt == true)
 		{
 			//Count up until we can be hurt again
-			timeSinceLastHurt++;
+			timeSinceLastHurt += TimeManager.deltaFix;
 
 			if (timeSinceLastHurt >= HURTCOOLDOWN)
 			{
@@ -130,7 +134,7 @@ class Mob extends Movable
 		}
 	}
 
-	public void die()
+	protected void die()
 	{
 
 	}
@@ -146,7 +150,7 @@ class Mob extends Movable
 	{
 		if(isOnFire)
 		{
-			if(fireTimer % 20 == 0)
+			if(floor(fireTimer) % 20 == 0)
 			{
 				takeDamage(fireDamage);
 
@@ -156,8 +160,21 @@ class Mob extends Movable
 				}
 			}
 			
-			fireTimer++;
+			fireTimer += TimeManager.deltaFix;
 		}
+	}
+
+	public void handleDark()
+	{
+		if(isDark)
+		{
+			if(darkTimer > 480)
+			{
+				isDark = false;
+			}
+		}
+			
+		darkTimer += TimeManager.deltaFix;
 	}
 
 	void regenaration()
@@ -166,7 +183,7 @@ class Mob extends Movable
 		{
 			if(currentHealth < maxHealth)
 			{
-				currentHealth += regen;
+				currentHealth += regen * TimeManager.deltaFix;
 
 				if(this == player && currentHealth >= maxHealth / 5f)
 				{
@@ -175,13 +192,19 @@ class Mob extends Movable
 			}
 		}
 
-		regenTimer++;
+		regenTimer += TimeManager.deltaFix;
 	}
 
 	void setOnFire()
 	{
 		isOnFire = true;
 		fireTimer = 0;
+	}
+
+	void removeLight()
+	{
+		isDark = true;
+		darkTimer = 0;
 	}
 
 	void setMaxHp(float hpToSet)

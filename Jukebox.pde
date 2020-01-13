@@ -19,7 +19,7 @@ class Jukebox extends Movable
         playRandomMusic();
 
         // instance in FYS
-        jukebox = this;
+        //jukebox = this;
     }
 
     void update()

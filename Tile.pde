@@ -29,6 +29,7 @@ class Tile extends BaseObject
 	int destroyedLayer = BACKGROUND_LAYER;
 
 	ArrayList<BaseObject> rootedIn = new ArrayList<BaseObject>();
+	Moss moss; //in-case we have moss, so we can easily grab it's color and make us nice
 
 	Tile(int x, int y) 
 	{
@@ -45,7 +46,7 @@ class Tile extends BaseObject
 		gridPosition.y = y;
 
 		//the hp of the tile gows up the lower you go
-		setMaxHp((2 + y / 250) * healthMultiplier);
+		setMaxHp((2 + y / 300) * healthMultiplier);
 
 		breakSound = "StoneBreak" + floor(random(1, 5));
 
@@ -81,6 +82,10 @@ class Tile extends BaseObject
 		else
 		{
 			world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
+			if(gridPosition.y > OVERWORLD_HEIGHT * 3)
+			{
+				world.currentBiome.maybeSpawnMoss(this, world);
+			}
 		}
 	}
 
@@ -108,6 +113,15 @@ class Tile extends BaseObject
 
 		super.draw();
 
+		// if this tile does not get any lightning, just draw a black rect
+		if(lightningAmount <= 0)
+		{
+			fill(0);
+			rect(position.x, position.y, TILE_SIZE, TILE_SIZE);
+
+			return;
+		}
+
 		if (!destroyed) 
 		{
 			//if we dont have an image, we cant draw anything
@@ -115,8 +129,16 @@ class Tile extends BaseObject
 			{
 				return;
 			}
-
-			tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
+			
+			if(moss != null)
+			{
+				moss.applyTileTint();
+			}
+			else 
+			{
+				tint(lightningAmount - damageDiscolor * (1 - (hp / maxHp)));
+			}
+			
 			image(image, position.x, position.y, TILE_SIZE, TILE_SIZE);
 			drawDecals();
 			tint(255);
@@ -131,7 +153,6 @@ class Tile extends BaseObject
 					image(destroyedImage, position.x, position.y, TILE_SIZE, TILE_SIZE);
 					drawDecals();
 				}
-
 				else
 				{
 					tint(lightningAmount, 255 - lightningAmount); //second param is transparency. make the invisible tile less transparent and light, otherwise it doesnt work at all
@@ -139,14 +160,8 @@ class Tile extends BaseObject
 				}
 			}
 
-
 			tint(255);
 		}
-	}
-
-	void update()
-	{
-		super.update();
 	}
 
 	void takeDamage(float damageTaken, boolean playBreakSound) 
@@ -251,14 +266,8 @@ class Tile extends BaseObject
 		}
 	}
 
-	void addAesthetics()
+	void addAesthetics(World world)
 	{
-		//get all our cardinals 
-		if(world == null) //we could pass world as a param, or we could just wait it out with the assumptions the air doesnt need decals
-		{
-			return;
-		}
-
 		if(!density && (!parallaxDecals || parallaxDecalType == null) || decalType == null)
 		{
 			return; //again we dont need airdecals or decals for those who dont want it
@@ -350,14 +359,14 @@ class Tile extends BaseObject
 				continue;
 			}
 
-			tile.addAesthetics();
+			tile.addAesthetics(world);
 		}
 	}
 
 	void resetDecals()
 	{
 		decals = new boolean[DIRECTIONS];
-		addAesthetics();
+		addAesthetics(world);
 	}
 
 	void drawDecals()

@@ -111,12 +111,21 @@ void loadDatabaseVariables()
     }
 }
 
+//smeh
 // start a thread to load 1 resource with given name and path
 void startLoaderThread(String currentResourceName, String currentResourceFileName)
 {
 	LoaderThread loaderThread = new LoaderThread(currentResourceName, currentResourceFileName);
 	ResourceManager.loaderThreads.add(loaderThread);
 	loaderThread.start();
+}
+
+ObjectFinderThread startObjectFinderThread(PVector position, float radius)
+{
+	ObjectFinderThread objectFinderThread = new ObjectFinderThread(position, radius);
+	objectFinderThread.start();
+
+    return objectFinderThread;
 }
 
 // start a thread that registers a run start

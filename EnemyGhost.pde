@@ -1,34 +1,48 @@
 class EnemyGhost extends Enemy
 {
+	// Animation
+	private AnimatedImage floatSequence;
+
 	EnemyGhost(PVector spawnPos)
 	{
 		super(spawnPos);
-
-		image = ResourceManager.getImage("GhostEnemy2");
-		setupLightSource(this, 125f, 1f);
 		setMaxHp(1000);
-		drawLayer = PRIORITY_LAYER;
 
-		speed = random(2.5f, 7.5f);
-
-		//Choose a random move direction
-		int direction = int(random(2));
+		//Visual setup
+		image = ResourceManager.getImage("GhostEnemy0");
 		
+		drawLayer = PRIORITY_LAYER;
+		animationSetup();
+
+		//Movement setup
+		collisionEnabled = false;
+		gravityForce = 0;
+
+		//Speed setup
+		float minSpeed = 1f;
+		float maxSpeed = 5f;
+		float speedIncreaseValue = 0.5f;
+		speed = random(minSpeed += increasePower(speedIncreaseValue), maxSpeed += increasePower(speedIncreaseValue));
+
+		//Choose randomly if we go left or right
+		int direction = int(random(2));
+
 		if (direction == 1)
 		{
 			walkLeft = true;
 		}
-
-		//Disable gravity and collsion so that this enemy acts like a ghost
-		collisionEnabled = false;
-		gravityForce = 0;
-		canSwim = false;
 	}
 
-	void update()
+	void draw()
 	{
-		super.update();
+		floatSequence.draw();
+		floatSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
+	}
 
-		flipSpriteHorizontal = velocity.x > 0;
+	private void animationSetup()
+	{
+		int animationFrames = 4;
+		int animationSpeed = 8;
+		floatSequence = new AnimatedImage("GhostEnemy", animationFrames, animationSpeed, position, size.x, flipSpriteHorizontal);
 	}
 }

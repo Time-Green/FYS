@@ -33,7 +33,7 @@ class Movable extends BaseObject
 	//Enemies
 	protected boolean walkLeft;
 	protected int timesCollided;
-	protected final int MAXCOLLISIONS = 5;
+	protected final int MAX_COLLISIONS = 10;
 
 	Movable()
 	{
@@ -235,7 +235,7 @@ class Movable extends BaseObject
 		//gravity
 		if(velocity.y < GRAVITY_LIMIT) //we have a special speed limit for gravity
 		{
-			acceleration.add(new PVector(0, gravityForce));
+			acceleration.add(new PVector(0, gravityForce * TimeManager.deltaFix));
 		}
 
 		velocity.add(acceleration);
@@ -257,15 +257,17 @@ class Movable extends BaseObject
 
 	private void handleMovement(World world)
 	{
+		PVector deltaFixVelocity = PVector.mult(velocity, TimeManager.deltaFix);
+
 		if (!anchored)
 		{
 			if (!anchoredHorizontaly)
 			{
-				position.add(velocity);
+				position.add(deltaFixVelocity);
 			}
 			else
 			{
-				position.add(new PVector(0, velocity.y));
+				position.add(new PVector(0, deltaFixVelocity.y));
 			}
 		}
 

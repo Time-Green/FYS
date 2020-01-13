@@ -1,62 +1,148 @@
 public class ScorePickup extends Pickup
 {
 	private int score;
-	private final float MAGNETDISTANCE = 50f;
-	private float followSpeed = 10;
+	private float chaseDistance;
 
 	// drop based on tile
 	public ScorePickup(ResourceTile tile)
 	{
-		this.score = tile.value / tile.pickupDropAmountValue;
-		this.image = tile.pickupImage;
+		score = tile.value / tile.pickupDropAmountValue;
+		image = tile.pickupImage;
+
+		setup();
 	}
 
 	// independant drop
 	public ScorePickup(int scoreToGiveOnPickup, PImage image)
 	{
-		this.score = scoreToGiveOnPickup;
+		score = scoreToGiveOnPickup;
 		this.image = image;
+
+		setup();
 	}
 
-	//This Pickup is collected by the player
+	private void setup()
+	{
+		if(player == null) //depth is basically 0 anyway
+		{
+			return;
+		}
+
+		//Determine how many tiles we want the score pickup to chase the player
+		float tileChaseDistance = 50f;
+		chaseDistance = OBJECT_SIZE * tileChaseDistance;
+
+		drawLayer = PRIORITY_LAYER;
+
+		// Multiply score based on depth
+		// Every 100 depth we add 10% to the score
+		float multiplier = float(player.getDepth()) / 1000f;
+
+		score *= 1 + multiplier;
+	}
+
+	// This Pickup is collected by the player
 	void pickedUp(Mob mob)
 	{
-		//Score
+		// Score
 		player.addScore(score);
-		//Draw the Pickup text
-		load(new PickupText(score, position));
 		ui.drawExtraPoints(score);
 
-		//TODO: find and add sound effect, do not remove comment yet
-		//RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
-		//AudioManager.playSoundEffect("Treasure", position);
-		// Insert particle code here
+		PickupText nearbyPickupText = findNearbyPickupText();
 
-		//Delete this object
+		if(nearbyPickupText != null)
+		{
+			nearbyPickupText.addScore(score, position);
+		}
+		else
+		{
+			//Create new Pickup text
+			load(new PickupText(score, position));
+		}
+		
+		// TODO: find and add sound effect, do not remove comment yet
+		// RE: fuck you mr comment you broke the game by passing non-existant soundfiles. commented the playsound, uncomment when its fixed
+		// AudioManager.playSoundEffect("Treasure", position);
+
+		// Delete this object
 		super.pickedUp(mob);
 	}
 
-	// void update()
-	// {
-	// 	super.update();
-	// 	this.velocity.x = 20;
+	private PickupText findNearbyPickupText()
+	{
+		for (BaseObject object : updateList)
+		{
+			if(object instanceof PickupText && dist(position.x, position.y, object.position.x, object.position.y) < TILE_SIZE * 2.5f)
+			{
+				PickupText pickupText = (PickupText) object;
 
-	// 	float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
+				if(!pickupText.isPowerupText)
+				{
+					return pickupText;
+				}
+			}
+		}
 
-	// 	if (distanceToPlayer <= MAGNETDISTANCE)
-	// 	{
-	// 		float playerX = player.position.x;
-	// 		float playerY = player.position.y;
-			
-	// 		if (this.position.y < playerY)
-	// 		{
-	// 			// this.gravityForce = chaseSpeed/2;//Go down
-	// 		}
-	// 		else
-	// 		{
-	// 			this.gravityForce = -followSpeed;//Go up
-	// 		}
-	// 	}
-	// }
+		// if nothing was found, check the load list, it may have spawned on the same frame
+		for (BaseObject object : loadList)
+		{
+			if(object instanceof PickupText && dist(position.x, position.y, object.position.x, object.position.y) < TILE_SIZE * 2.5f)
+			{
+				PickupText pickupText = (PickupText) object;
+
+				if(!pickupText.isPowerupText)
+				{
+					return pickupText;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	void update()
+	{
+		super.update();
+
+		if (player.magnetTimer > 0)
+		{
+			float defaultGravity = gravityForce;
+			float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
+
+			if (distanceToPlayer <= chaseDistance)
+			{// Go torwards the player
+				float moveSpeed = 15;
+				this.collisionEnabled = false;
+				this.gravityForce = 0;
+				
+				float playerX = player.position.x;
+				float playerY = player.position.y;
+
+				if (this.position.x > playerX)
+				{// Go left
+					this.velocity.x = -moveSpeed;
+				}
+				else
+				{// Go right
+					this.velocity.x = moveSpeed;
+				}
+				
+				
+				if (this.position.y < playerY)
+				{//Go down
+					this.velocity.y = moveSpeed;
+				}
+				else
+				{//Go up
+					this.velocity.y = -moveSpeed;
+				}
+			}
+			else
+			{// Return back to normal
+				this.collisionEnabled = true;
+				this.gravityForce = defaultGravity;
+			}
+		}
+	}
 
 }

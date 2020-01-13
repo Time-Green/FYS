@@ -4,7 +4,7 @@ public class Camera
 	private Movable target;
 	private float lerpAmount;
 
-	private final float SPAWN_Y_POS = 190;
+	private final float SPAWN_Y_POS = 220;
 
 	private PVector currentShakeOffset = new PVector();
 
@@ -54,7 +54,7 @@ public class Camera
 			position.y = SPAWN_Y_POS;
 		}
 		
-		lerpAmount = 0.002f;
+		lerpAmount = 0.001f;
 	}
 
 	public void setTarget(Movable targetObject)
@@ -77,18 +77,9 @@ public class Camera
 
 		PVector targetPosition = new PVector(targetX, targetY);
 
-		//targetPosition.x += -target.velocity.x * 15;
-
-		// println(-target.velocity.y);
-
-		// if(target.velocity.y >= 17.5f)
-		// {
-		// 	targetPosition.y -= target.velocity.y * 50;
-		// }
-
 		targetPosition.add(currentShakeOffset);
 
-		position.lerp(targetPosition, lerpAmount);
+		position.lerp(targetPosition, lerpAmount * TimeManager.deltaFix);
 
 		//limit x position so the camera doesent go to far to the left or right
 		float minXposotion = -(TILES_HORIZONTAL * TILE_SIZE + TILE_SIZE - width);
