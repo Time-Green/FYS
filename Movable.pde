@@ -78,6 +78,9 @@ class Movable extends BaseObject
 
 		colliders = checkCollision(world, 0, min(velocity.y, 0));
 
+		//The way collision works is: We check all directions and see if we can move there. That way we can distinguish between
+		//hitting your head and walking
+		
 		// up
 		if (colliders.size() != 0)
 		{
