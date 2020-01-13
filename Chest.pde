@@ -160,7 +160,7 @@ class Chest extends Obstacle
 
 	private void openChest()
 	{
-		AudioManager.playSoundEffect("TreasureChestOpen");
+		AudioManager.playSoundEffect("ChestOpen");
 
 		for (Movable movable : contents)
 		{

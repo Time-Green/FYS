@@ -7,8 +7,13 @@ class RegenPickup extends Pickup
 
     void pickedUp(Mob mob)
 	{
-        float extraRegenTime = timeInSeconds(5f);
-		player.extraRegenTimer += extraRegenTime;
         super.pickedUp(mob);
+
+        float extraRegenTime = timeInSeconds(5f);
+
+		player.extraRegenTimer += extraRegenTime;
+
+        PickupText pickupText = new PickupText("+Regen", position);
+        load(pickupText);
 	}
 }

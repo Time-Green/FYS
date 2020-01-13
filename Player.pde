@@ -46,7 +46,6 @@ class Player extends Mob
 		setupLightSource(this, viewAmount, 1f);
 
 		applyRelicBoost();
-
 	}
 
 	void update()
@@ -344,7 +343,7 @@ class Player extends Mob
 	{
 		float extraShieldTime = timeInSeconds(10f);
 
-		if (getDepth() > BONUSDEPTH && gotbonus1 == false)
+		if (getDepth() > BONUS_DEPTH && gotbonus1 == false)
 		{
 			shieldTimer += extraShieldTime;
 			gotbonus1 = true;

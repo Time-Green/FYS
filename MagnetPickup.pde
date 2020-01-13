@@ -7,8 +7,13 @@ class MagnetPickup extends Pickup
 
     void pickedUp(Mob mob)
 	{
-        float extraMagnetTime = timeInSeconds(10f);
-		player.magnetTimer += extraMagnetTime;
         super.pickedUp(mob);
+
+        float extraMagnetTime = timeInSeconds(10f);
+
+		player.magnetTimer += extraMagnetTime;
+        
+        PickupText pickupText = new PickupText("+Magnet", position);
+        load(pickupText);
 	}
 }

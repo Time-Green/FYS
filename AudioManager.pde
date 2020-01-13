@@ -2,7 +2,7 @@ import ddf.minim.*;
 
 public static class AudioManager
 {
-	private static final boolean AUDIO_ENABLED = false;
+	private static final boolean AUDIO_ENABLED = true;
 
 	private final static int SEQUENTIAL_AUDIO_AMOUNT = 10;
 	private final static float AUDIO_DISTSANCE_FALLOFF = 2500;

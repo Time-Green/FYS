@@ -76,7 +76,10 @@ public class ScorePickup extends Pickup
 			{
 				PickupText pickupText = (PickupText) object;
 
-				return pickupText;
+				if(!pickupText.isPowerupText)
+				{
+					return pickupText;
+				}
 			}
 		}
 
@@ -87,7 +90,10 @@ public class ScorePickup extends Pickup
 			{
 				PickupText pickupText = (PickupText) object;
 
-				return pickupText;
+				if(!pickupText.isPowerupText)
+				{
+					return pickupText;
+				}
 			}
 		}
 

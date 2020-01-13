@@ -503,6 +503,13 @@ public class World
 	{
 		Tile tileToReplace = getTile(relaceAtGridPos.x * TILE_SIZE, relaceAtGridPos.y * TILE_SIZE);
 
+		if(tileToReplace == null)
+		{
+			println("WARNING: Trying to replace a tile that is null");
+			
+			return;
+		}
+
 		String stripedObjectName = stripName(newObjectName);
 		Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos, structureName, structureTilePosition);
 

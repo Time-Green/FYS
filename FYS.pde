@@ -163,7 +163,7 @@ void setVolumes()
 
 	// music
 	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
-	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.73f);
+	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.74f);
 
 	for (int i = 1; i < JUKEBOX_SONG_AMOUNT; i++)
 	{

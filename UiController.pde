@@ -15,6 +15,11 @@ public class UIController
 	private float titleXPos;
 	private float titleYPos;
 
+	// powerups
+	PImage shieldImage = ResourceManager.getImage("Shield");
+	PImage magnetImage = ResourceManager.getImage("Magnet");
+	PImage regenImage = ResourceManager.getImage("Regen");
+
 	//Colors
 	private final color TITLE_COLOR = #ffa259;
 	private final color WHITE = #FFFFFF;
@@ -405,17 +410,17 @@ public class UIController
 		textAlign(LEFT);
 		textSize(HUD_FONT_SIZE);
 		text("Score: " + scoreDisplay, hudTextDistanceFromLeft, hudTextStartY);
-		float extraDistance = 10;
-		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + extraDistance);
+
+		final float EXTRA_DISTANCE = 10;
+
+		text("Depth: " + player.getDepth() + "m", hudTextDistanceFromLeft, hudTextStartY + HUD_FONT_SIZE + EXTRA_DISTANCE);
 
 		//Draw powerups
-		float powerupYPos = hudTextStartY + HUD_FONT_SIZE + 30;
-		PImage shieldImage = ResourceManager.getImage("Shield");
-		PImage magnetImage = ResourceManager.getImage("Magnet");
-		PImage regenImage = ResourceManager.getImage("Regen");
-		drawPowerUp(shieldImage, hudTextDistanceFromLeft, 0, powerupYPos, player.shieldTimer);
-		drawPowerUp(magnetImage, hudTextDistanceFromLeft, 1, powerupYPos, player.magnetTimer);
-		drawPowerUp(regenImage, hudTextDistanceFromLeft, 2, powerupYPos, player.extraRegenTimer);
+		final float POWERUP_Y_POS = hudTextStartY + HUD_FONT_SIZE + 30;
+
+		drawPowerUp(shieldImage, hudTextDistanceFromLeft, 0, POWERUP_Y_POS, player.shieldTimer);
+		drawPowerUp(magnetImage, hudTextDistanceFromLeft, 1, POWERUP_Y_POS, player.magnetTimer);
+		drawPowerUp(regenImage, hudTextDistanceFromLeft, 2, POWERUP_Y_POS, player.extraRegenTimer);
 
 		if(scoreDisplay > 100000 && !achievementHelper.hasUnlockedAchievement(GREED_IS_GOOD_ACHIEVEMENT))
 		{
@@ -466,9 +471,10 @@ public class UIController
 		}
 		else
 		{
-			float pointMoveSpeed = 15f;
+			final float POINT_MOVE_SPEED = 15f;
+
 			//Move the entire collected score display to the left
-			extraBonusX -= pointMoveSpeed;
+			extraBonusX -= POINT_MOVE_SPEED;
 			//Add the score when it is beyond the display
 			if (extraBonusX <= hudTextDistanceFromLeft)
 			{
@@ -486,24 +492,24 @@ public class UIController
 
 	private void drawPowerUp(PImage powerupImage, float xPos, int powerupNumber, float yPos, float powerUpTimer)
 	{	
-		float minTintValue = 56;
-		float maxTintValue = 255;
-		float xDistanceBetweenPowerUps = 60;
+		final float MIN_TINT = 56;
+		final float MAX_TINT = 255;
+		final float X_DISTANCE_BETWEEN_POWERUPS = 60;
 
 		if (powerUpTimer > 0)
 		{
 			//Tint the image transparent to indicate it's not active
-			tint(WHITE, maxTintValue);
+			tint(WHITE, MAX_TINT);
 		}
 		else
 		{
 			//Tint the image fully colored to indicate that it is active
-			tint(WHITE, minTintValue);
+			tint(WHITE, MIN_TINT);
 		}
 
 		//Draw the image
 		//xDistanceBetweenPowerUps * powerupNumber is used to automatically calculate the exposition of the image
-		image(powerupImage, xPos + (xDistanceBetweenPowerUps * powerupNumber), yPos);
+		image(powerupImage, xPos + (X_DISTANCE_BETWEEN_POWERUPS * powerupNumber), yPos);
 		
 		tint(255);
 	}
