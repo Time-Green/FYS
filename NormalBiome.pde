@@ -3,7 +3,7 @@ class NormalBiome extends Biome
 {
 	NormalBiome()
 	{
-		structureChance = 0.002;
+		structureChance = 0.004;
 		maximumDepth = 400;
 	}
 

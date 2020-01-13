@@ -150,7 +150,7 @@ public class Npc extends Mob
 
 				int letterIndex = floor(currentTextIndex);
 
-				if(letterIndex < currentlySayingFullText.length())
+				if(letterIndex <= currentlySayingFullText.length())
 				{
 					currentlySaying = currentlySayingFullText.substring(0, letterIndex);
 				}
