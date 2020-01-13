@@ -100,6 +100,7 @@ class Player extends Mob
 		}
 	}
 
+	//make it dark if you hit demonclaws
 	void checkLight()
 	{
 		if(isDark == true)
@@ -112,6 +113,7 @@ class Player extends Mob
 		}
 	}
 
+	//get 5 relics to get an attribute boost
 	void applyRelicBoost()
 	{
 		for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards)
@@ -198,6 +200,7 @@ class Player extends Mob
 		animatedImageFire = new AnimatedImage("FireP", FIRE_FRAMES, STATUS_EFFECT_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 	}
 
+	//only draw animation
 	private void handleAnimation()
 	{
 		if(isOnFire == true)
