@@ -27,7 +27,6 @@ class Player extends Mob
 	public boolean hurtFlash;
 
 	private boolean gotbonus1;
-	private Shield myShield;
 
 	private PVector spawnPosition = new PVector(1300, 509);
 	public int score = 0;
@@ -74,8 +73,6 @@ class Player extends Mob
 		checkHealthLow();
 
 		statusEffects();
-
-		digBonuses();
 
 		if(getDepth() - OVERWORLD_HEIGHT > 500 && undamaged)
 		{
@@ -337,17 +334,6 @@ class Player extends Mob
 	void addScore(int scoreToAdd)
 	{
 		score += scoreToAdd;
-	}
-
-	private void digBonuses()
-	{
-		float extraShieldTime = timeInSeconds(10f);
-
-		if (getDepth() > BONUS_DEPTH && gotbonus1 == false)
-		{
-			shieldTimer += extraShieldTime;
-			gotbonus1 = true;
-		}
 	}
 
 	public void takeDamage(float damageTaken)
