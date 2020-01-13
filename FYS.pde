@@ -462,7 +462,8 @@ void handleGameFlow()
 		if(InputHelper.isKeyDown(ACHIEVEMENT_SCREEN_KEY))
 		{
 			gameState = GameState.AchievementScreen; 
-			ui.drawAchievementScreen();  
+			ui.drawAchievementScreen();
+			InputHelper.onKeyReleased(ACHIEVEMENT_SCREEN_KEY);
 		}
 
 		break; 
