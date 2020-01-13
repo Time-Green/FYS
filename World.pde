@@ -553,6 +553,12 @@ public class World
 			case "DoorBot" :
 				return new DoorBotTile(int(spawnPos.x), int(spawnPos.y));
 
+			case "WoodPlankStairR" :
+				return new WoodPlankStairRTile(int(spawnPos.x), int(spawnPos.y));
+
+			case "WoodPlankStairL" :
+				return new WoodPlankStairLTile(int(spawnPos.x), int(spawnPos.y));
+
 			case "Glass" :
 				return new GlassTile(int(spawnPos.x), int(spawnPos.y));
 
