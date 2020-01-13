@@ -85,6 +85,7 @@ void setup()
 	disposeHandler = new DisposeHandler(this);
 
 	size(1280, 720, P3D);
+	//fullScreen(P3D);
 
 	TimeManager.setup(this, 1000f, 60f, false, false);
 
@@ -162,7 +163,7 @@ void setVolumes()
 	}
 
 	// music
-	AudioManager.setMaxVolume("BackgroundMusic", 0.7f);
+	AudioManager.setMaxVolume("BackgroundMusic", 0.85f);
 	AudioManager.setMaxVolume("ForestAmbianceMusic", 0.74f);
 
 	for (int i = 1; i < JUKEBOX_SONG_AMOUNT; i++)
@@ -227,6 +228,8 @@ void cleanDrawingLayers()
 
 void draw()
 {
+	TimeManager.update();
+
 	if(userInLoginScreen)
 	{
 		loginScreen.update();
@@ -287,8 +290,6 @@ void draw()
 	ui.draw();
 
 	checkRestartGame();
-
-	TimeManager.update();
 }
 
 void checkRestartGame()
@@ -324,6 +325,9 @@ void restartGame()
 	loadedAllAchievements = false;
 	loadedPlayerAchievements = false;
 	loadedLeaderboard = false;
+	hasCalledAfterResourceLoadSetup = false;
+	gamePaused = true;
+	gameState = GameState.MainMenu;
 
 	checkUser();
 }

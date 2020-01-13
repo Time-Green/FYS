@@ -96,7 +96,7 @@ class Biome
 	// a function so we can give some different probabilities
 	String getStructureName()
 	{
-		final int dungeonAmount = 4;
+		final int dungeonAmount = 3;
 
 		float spawnChance = random(1);
 

@@ -65,7 +65,7 @@ public class PickupText extends BaseObject
 		textAlign(CENTER);
 		fill(textColor);
 		textSize(BASE_FONT_SIZE * 2);
-		text(textToDisplay, position.x, position.y);
+		text(textToDisplay, position.x, position.y - 50);
 
 		drawStars();
 	}
