@@ -46,7 +46,7 @@ class Tile extends BaseObject
 		gridPosition.y = y;
 
 		//the hp of the tile gows up the lower you go
-		setMaxHp((2 + y / 250) * healthMultiplier);
+		setMaxHp((2 + y / 300) * healthMultiplier);
 
 		breakSound = "StoneBreak" + floor(random(1, 5));
 

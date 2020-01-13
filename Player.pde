@@ -26,9 +26,6 @@ class Player extends Mob
 	private float bonusRegen = regen * 2.5f;
 	public boolean hurtFlash;
 
-	private boolean gotbonus1;
-	private Shield myShield;
-
 	private PVector spawnPosition = new PVector(1300, 509);
 	public int score = 0;
 
@@ -46,7 +43,6 @@ class Player extends Mob
 		setupLightSource(this, viewAmount, 1f);
 
 		applyRelicBoost();
-
 	}
 
 	void update()
@@ -76,8 +72,6 @@ class Player extends Mob
 
 		statusEffects();
 
-		digBonuses();
-
 		if(getDepth() - OVERWORLD_HEIGHT > 500 && undamaged)
 		{
 			if(!achievementHelper.hasUnlockedAchievement(HARD_AS_A_ROCK_ACHIEVEMENT))
@@ -87,7 +81,7 @@ class Player extends Mob
 		}
 
 		if (stunTimer <= 0)
-		{
+		{// Only move when we are not stunned
 			doPlayerMovement();
 		}
 	}
@@ -106,6 +100,7 @@ class Player extends Mob
 		}
 	}
 
+	//make it dark if you hit demonclaws
 	void checkLight()
 	{
 		if(isDark == true)
@@ -118,6 +113,7 @@ class Player extends Mob
 		}
 	}
 
+	//get 5 relics to get an attribute boost
 	void applyRelicBoost()
 	{
 		for(PlayerRelicInventory collectedRelicShardInventory : totalCollectedRelicShards)
@@ -204,6 +200,7 @@ class Player extends Mob
 		animatedImageFire = new AnimatedImage("FireP", FIRE_FRAMES, STATUS_EFFECT_ANIMATION_SPEED, position, size.x, flipSpriteHorizontal);
 	}
 
+	//only draw animation
 	private void handleAnimation()
 	{
 		if(isOnFire == true)
@@ -340,17 +337,6 @@ class Player extends Mob
 		score += scoreToAdd;
 	}
 
-	private void digBonuses()
-	{
-		float extraShieldTime = timeInSeconds(10f);
-
-		if (getDepth() > BONUSDEPTH && gotbonus1 == false)
-		{
-			shieldTimer += extraShieldTime;
-			gotbonus1 = true;
-		}
-	}
-
 	public void takeDamage(float damageTaken)
 	{
 		if (isImmortal || damageTaken <= 0)
@@ -377,15 +363,15 @@ class Player extends Mob
 
 	private void statusEffects()
 	{
-		//Decrease stun timer
 		if (stunTimer > 0f)
-		{
+		{//Decrease stun timer
 			stunTimer -= TimeManager.deltaFix;
 			isMiningDown = false;
 			isMiningLeft = false;
 			isMiningRight = false;
 		}
 
+		// Shield
 		if (shieldTimer > 0f)
 		{
 			shieldTimer -= TimeManager.deltaFix;
@@ -396,6 +382,7 @@ class Player extends Mob
 			isImmortal = false;
 		}
 
+		//Magnet
 		if (magnetTimer > 0f)
 		{
 			magnetTimer -= TimeManager.deltaFix;
@@ -404,6 +391,7 @@ class Player extends Mob
 		// Get the default regen value so that we can use it later
 		float defaultRegen = regen;
 
+		// Extra regen powerup
 		if (extraRegenTimer > 0f)
 		{
 			extraRegenTimer -= TimeManager.deltaFix;

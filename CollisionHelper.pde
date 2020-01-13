@@ -52,6 +52,12 @@ public static class CollisionHelper
 		return false;
 	}
 
+	// POINT/RECTANGLE PVector overload
+	static boolean pointRect(PVector point, PVector rectPos, PVector rectSize)
+	{
+		return pointRect(point.x, point.y, rectPos.x, rectPos.y, rectSize.x, rectSize.y);
+	}
+
 	// POINT/RECTANGLE
 	static boolean pointRect(float px, float py, float rx, float ry, float rw, float rh)
 	{

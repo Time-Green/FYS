@@ -18,7 +18,7 @@ class EnemyDigger extends Enemy
 		animationSetup();
 
 		//Setup chase vars
-		float chaseSpeedIncreaseValue = 0.25f;
+		float chaseSpeedIncreaseValue = 0.10f;
 		chaseSpeed += increasePower(chaseSpeedIncreaseValue);
 		//Determine how many tiles we want the Digger to chase the player
 		float tileChaseDistance = 20f;

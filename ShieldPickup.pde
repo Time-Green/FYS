@@ -7,8 +7,13 @@ class ShieldPickup extends Pickup
 
     void pickedUp(Mob mob)
 	{
-        float extraShieldTime = timeInSeconds(10f);
-		player.shieldTimer += extraShieldTime;
         super.pickedUp(mob);
+
+        float extraShieldTime = timeInSeconds(10f);
+
+		player.shieldTimer += extraShieldTime;
+
+        PickupText pickupText = new PickupText("+Shield", position);
+        load(pickupText);
 	}
 }

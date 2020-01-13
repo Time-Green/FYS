@@ -23,6 +23,8 @@ public class World
 	private ArrayList<Biome> biomeQueue = new ArrayList<Biome>(); //queue the biomes here
 	private int switchDepth; //the depth at wich we switch to the next biome in the qeueu
 
+	private ArrayList<StructureLocation> spawnedStructureLocations = new ArrayList<StructureLocation>();
+
 	World()
 	{
 		dayNightImage = ResourceManager.getImage("DayNightCycle" + floor(random(0, BACKGROUND_IMAGES_COUNT)));
@@ -51,6 +53,11 @@ public class World
 		{
 			drawBackgoundImage();
 		}
+	}
+
+	public void update()
+	{
+		cleanupStructureLocations();
 	}
 
 	public void spawnJukebox()
@@ -220,6 +227,7 @@ public class World
 			{
 				continue;
 			}
+
 			postGenerate(y - 2); //tell the row of tiles above us we're finished, so they can add 'aesthetics'
 			//also minus -2 because we do -1 to get the the zero based index, and then minus -1 more to get the row above it
 		}
@@ -230,9 +238,49 @@ public class World
 		}
 	}
 
-	void postGenerate(int tilesIndex) //tell the row above is we're donzo, so they can add stuff like aesthetics
+	public void addStructureLocation(PVector spawnAt, PVector structureSize)
+	{
+		StructureLocation newStructureLocation = new StructureLocation(spawnAt, structureSize);
+
+		spawnedStructureLocations.add(newStructureLocation);
+	}
+
+	private void cleanupStructureLocations()
+	{
+		ArrayList<StructureLocation> structureLocationsToRemove = new ArrayList<StructureLocation>();
+
+		for (StructureLocation structureLocation : spawnedStructureLocations)
+		{
+			if(structureLocation.getMaxYPosition() < wallOfDeath.position.y)
+			{
+				structureLocationsToRemove.add(structureLocation);
+			}
+		}
+
+		for (StructureLocation structureLocation : structureLocationsToRemove)
+		{
+			spawnedStructureLocations.remove(structureLocation);
+		}
+	}
+
+	public boolean isPositionInsideStructure(PVector gridPosition)
+	{
+		for (StructureLocation structureLocation : spawnedStructureLocations)
+		{
+			if(structureLocation.isInsideStructure(gridPosition))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	//tell the row above is we're donzo, so they can add stuff like aesthetics
+	void postGenerate(int tilesIndex)
 	{
 		ArrayList<Tile> tiles = map.get(tilesIndex);
+		
 		for(Tile tile : tiles)
 		{
 			tile.addAesthetics(this);
@@ -455,6 +503,13 @@ public class World
 	{
 		Tile tileToReplace = getTile(relaceAtGridPos.x * TILE_SIZE, relaceAtGridPos.y * TILE_SIZE);
 
+		if(tileToReplace == null)
+		{
+			println("WARNING: Trying to replace a tile that is null");
+			
+			return;
+		}
+
 		String stripedObjectName = stripName(newObjectName);
 		Tile newTile = convertNameToTile(stripedObjectName, relaceAtGridPos, structureName, structureTilePosition);
 
@@ -580,11 +635,8 @@ public class World
 				load(new EnemyMimic(spawnWorldPos));
 			break;
 
-			case "Chest" :
-				load(new Chest(), spawnWorldPos);
-			break;
-
 			case "TreasureChest" :
+			case "Chest" :
 				load(new Chest(), spawnWorldPos);
 			break;
 
@@ -674,7 +726,6 @@ public class World
 				{
 					parallaxImage = null;
 				}
-				
 				else
 				{
 					parallaxImage = biome.destroyedImage;

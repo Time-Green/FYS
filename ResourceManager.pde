@@ -16,6 +16,7 @@ public static class ResourceManager
 		ResourceManager.game = game;
 	}
 
+	// find all resources
 	public static void prepareResourceLoading()
 	{
 		String dataPath = game.sketchPath("data");
@@ -24,6 +25,7 @@ public static class ResourceManager
 		searchInFolder(dataFolder);
 	}
 
+	// get resources in a folder
 	private static void searchInFolder(File folder)
 	{
 		for (File file : folder.listFiles())
@@ -39,6 +41,7 @@ public static class ResourceManager
 		}
 	}
 
+	// get the name of a file
 	private static String getFileName(File file)
 	{
 		String name = file.getName();
@@ -52,12 +55,14 @@ public static class ResourceManager
 		return name;
 	}
 
+	// prepare a file to be loaded
 	public static void prepareLoad(String name, String fileName)
 	{
 		resourcesToLoadNames.add(name);
 		resourcesToLoadFileNames.add(fileName);
 	}
 
+	// load all prepared resources
 	public static void loadAll(boolean doPrepareResourceLoading)
 	{
 		if(doPrepareResourceLoading)
@@ -74,6 +79,7 @@ public static class ResourceManager
 		}
 	}
 
+	// check if all resources are loaded
 	public static boolean isAllLoaded()
 	{
 		if(isAllLoaded)
@@ -94,6 +100,7 @@ public static class ResourceManager
 		return true;
 	}
 
+	// get the progress of resource loading
 	public static float getLoadingAllProgress()
 	{
 		float totalThreadsCompleted = 0;
@@ -109,6 +116,7 @@ public static class ResourceManager
 		return 1 - (totalThreadsCompleted / float(loaderThreads.size()));
 	}
 
+	// get a list of all active loader threads
 	public static ArrayList<String> getLoadingResources()
 	{
 		ArrayList<String> currentlyLoadingResources = new ArrayList<String>();
@@ -126,8 +134,10 @@ public static class ResourceManager
 		return currentlyLoadingResources;
 	}
 
+	// load a resource
 	public static void load(String name, String fileName)
 	{
+		// do something else based on file extention
 		if (fileName.endsWith(".png") || fileName.endsWith(".jpg"))
 		{
 			loadImage(name, fileName);
@@ -142,6 +152,7 @@ public static class ResourceManager
 		}
 	}
 
+	// load a image file
 	private static void loadImage(String name, String fileName)
 	{
 		PImage image = game.loadImage(fileName);
@@ -156,6 +167,7 @@ public static class ResourceManager
 		imageMap.put(name, image);
 	}
 
+	// load a sound file
 	private static void loadSoundFile(String name, String fileName)
 	{
 		if (fileName.contains("Music"))
@@ -168,6 +180,7 @@ public static class ResourceManager
 		}
 	}
 
+	// load a font file
 	private static void loadFont(String name, String fileName)
 	{
 		PFont font = game.createFont(fileName, 32);
@@ -182,6 +195,7 @@ public static class ResourceManager
 		fontMap.put(name, font);
 	}
 
+	// get a loaded image
 	public static PImage getImage(String name)
 	{
 		PImage image = imageMap.get(name);
@@ -207,6 +221,7 @@ public static class ResourceManager
 		return image;
 	}
 
+	// get a loaded image and flip it
 	public static PImage getImage(String name, boolean randomFlipped)
 	{
 		if(randomFlipped)
@@ -219,6 +234,7 @@ public static class ResourceManager
 		}
 	}
 
+	// get a flipped image
 	public static PImage getRandomFlippedImage(String name)
 	{
 		int randomFlipIndex = game.floor(game.random(3));
@@ -239,6 +255,7 @@ public static class ResourceManager
 		return image;
 	}
 
+	// flips an existing image to add more variation
 	public static void generateFlippedImages(String name)
 	{
 		PImage baseImage = getImage(name);
@@ -252,6 +269,7 @@ public static class ResourceManager
 		imageMap.put(name + "_Flip2", horizontallyAndVerticallyFlippedImage);
 	}
 
+	// flip image horizontally
 	private static PImage generateHorizontallyFlippedImage(PImage baseImage)
 	{
 		PImage newImage = new PImage(baseImage.width, baseImage.height, ARGB);
@@ -274,6 +292,7 @@ public static class ResourceManager
 		return newImage;
 	}
 
+	// flip image vertically
 	private static PImage generateVerticallyFlippedImage(PImage baseImage)
 	{
 		PImage newImage = new PImage(baseImage.width, baseImage.height, ARGB);
@@ -296,6 +315,7 @@ public static class ResourceManager
 		return newImage;
 	}
 
+	// flip image horizontally and vertically
 	private static PImage generateHorizontallyAndVerticallyFlippedImage(PImage baseImage)
 	{
 		PImage newImage = new PImage(baseImage.width, baseImage.height, ARGB);
@@ -306,6 +326,7 @@ public static class ResourceManager
 		return horizontallyAndVerticallyFlippedImage;
 	}
 
+	// get a loaded font
 	public static PFont getFont(String name)
 	{
 		PFont font = fontMap.get(name);

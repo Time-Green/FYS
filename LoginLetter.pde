@@ -9,7 +9,7 @@ public class LoginLetter
     private PVector drawPosition;
     private String allChars;
     private int charIndex = 0;
-    private int displayCounter = 0;
+    private float displayCounter = 0;
 
     public LoginLetter(LoginScreen loginScreen, int index, String allChars)
     {
@@ -53,7 +53,7 @@ public class LoginLetter
         if(isSelected)
         {
             rect(drawPosition.x - 25, drawPosition.y + 15, 50, 10);
-            displayCounter++;
+            displayCounter += TimeManager.deltaFix;
 
             drawArrows();
             drawNearbyChars();

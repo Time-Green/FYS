@@ -2,7 +2,7 @@ class Biome
 {
 	int length = 50; //after how many tiles do we tell world to get another biome?
 
-	float structureChance = 0.03; //chance of a structure spawning between 0 and 1 for every row of tiles
+	float structureChance = 0.05; //chance of a structure spawning between 0 and 1 for every row of tiles
 	float enemyChance = 0.01; //chance of enemy spawning on an open tile
 	float ceilingObstacleChance = 0.0; //chance that a tile can have something hanging from it
 	float groundObstacleChance = 0.1; //ditto but then ground
@@ -20,7 +20,7 @@ class Biome
 	// the amount the player can see in the biome
 	float playerVisibilityScale = 1;
 
-	boolean canParallax = true;
+	boolean canParallax = true; //wheter we can even use parallax. for stuff like the overworld, its a no
 
 	boolean spawnMoss = true;
 	color mossTint = color(23, 99, 0);
@@ -96,7 +96,7 @@ class Biome
 	// a function so we can give some different probabilities
 	String getStructureName()
 	{
-		final int dungeonAmount = 4;
+		final int dungeonAmount = 3;
 
 		float spawnChance = random(1);
 
@@ -142,7 +142,7 @@ class Biome
 			load(new EnemyShocker(position));
 		}
 	}
-
+	//ceiling obstacles like icicles are prepared here
   	void prepareCeilingObstacle(Tile target, World world)
 	{
     	Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE);
@@ -158,12 +158,12 @@ class Biome
 			target.rootedIn.add(object);
     	}
   	}
-
+	//return an obstacle to stick to the roof
   	BaseObject spawnCeilingObstacle(Tile tile)
 	{
 		return load(new Icicle(), tile.position);
   	}
-	
+	//prepare stuff like flowers
 	void prepareGroundObstacle(Tile target, World world)
 	{
 		Tile above = world.getTile(target.position.x, target.position.y - TILE_SIZE); //get the tile above us
@@ -178,12 +178,12 @@ class Biome
 			}
 		}
 	}
-
+	//return object that you want to stick into the ground
 	BaseObject spawnGroundObstacle(Tile target)
 	{
 		return null;
 	}
-
+	//return the type of rock we should draw on the parallax
 	String getParallaxedRock()
 	{
 		float chance = random(1);
@@ -199,7 +199,7 @@ class Biome
 
 		return "StoneBlock";
 	}
-
+	//spawn moss, maybe, we check for probability too.
 	void maybeSpawnMoss(Tile tile, World world)
 	{
 		if(random(1) > mossChance)
