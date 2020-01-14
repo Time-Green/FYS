@@ -48,6 +48,8 @@ class Mob extends Movable
 	{
 		super.update();
 
+		removeStatusEffect()
+
 		handleOnFire();
 
 		handleDark();
@@ -168,7 +170,7 @@ class Mob extends Movable
 		}
 	}
 
-		public void setChilled()
+	public void setChilled()
 	{
 		if(isChilled)
 		{
@@ -185,6 +187,19 @@ class Mob extends Movable
 			}
 			
 			chilledTimer += TimeManager.deltaFix;
+		}
+	}
+
+	//we don't want the player to be damaged by multiple sources so we remove one
+	public void removeStatusEffect()
+	{
+		if(isChilled)
+		{
+			isOnFire = false;
+		}
+		if(isOnFire)
+		{
+			isChilled = false;
 		}
 	}
 
