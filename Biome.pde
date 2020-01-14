@@ -90,7 +90,7 @@ class Biome
 
   	void placeStructure(World world, int depth)
 	{
-    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth), false); //times 0.8 because stuff at the complete right usually cant spawn
+    	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth), false, true); //times 0.8 because stuff at the complete right usually cant spawn
   	}
 
 	// a function so we can give some different probabilities

@@ -9,12 +9,12 @@ public class StructureLocation
         sizeInGrid.set(size);
     }
 
-    public boolean isInsideStructure (PVector gridPosition)
+    public boolean isInsideStructure (PVector position, PVector size)
     {
-        return CollisionHelper.pointRect(gridPosition, spawnAtGrid, sizeInGrid);
+        return CollisionHelper.rectRect(position, size, spawnAtGrid, sizeInGrid);
     }
 
-    public int getMaxYPosition ()
+    public int getTopYPosition ()
     {
         return floor((spawnAtGrid.y + sizeInGrid.y) * TILE_SIZE);
     }
