@@ -1,3 +1,5 @@
+private int amount = 10;
+
 class DungeonBlock0 extends Tile
 {
 	DungeonBlock0(int x, int y)
@@ -6,7 +8,7 @@ class DungeonBlock0 extends Tile
 
 		image = ResourceManager.getImage("DungeonBlock0");
 		density = true;
-		healthMultiplier = 2;
+		healthMultiplier = amount;
 	}
 }
 
@@ -18,7 +20,7 @@ class DungeonBlock1 extends Tile
 
 		image = ResourceManager.getImage("DungeonBlock1");
 		density = true;
-		healthMultiplier = 2;
+		healthMultiplier = amount;
 
 		//make it a lightsource if it is the button altar, "sun"
 		if(y == OVERWORLD_HEIGHT)
@@ -36,7 +38,7 @@ class DungeonBlock2 extends Tile
 
 		image = ResourceManager.getImage("DungeonBlock2");
 		density = false;
-		healthMultiplier = 2;
+		healthMultiplier = amount;
 		drawLayer = BACKWALL_LAYER;
 	}
 }
@@ -48,7 +50,7 @@ class DungeonStairL extends Tile
 		super(x, y);
 
 		image = ResourceManager.getImage("DungeonStairL");
-		healthMultiplier = 2;
+		healthMultiplier = amount;
 	}
 }
 
@@ -59,7 +61,7 @@ class DungeonStairR extends Tile
 		super(x, y);
 
 		image = ResourceManager.getImage("DungeonStairR");
-		healthMultiplier = 2;
+		healthMultiplier = amount;
 	}
 }
 
