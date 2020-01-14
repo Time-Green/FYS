@@ -91,7 +91,7 @@ class Mob extends Movable
 		}
 		else
 		{
-			//ask the tile if they wanna be mined first
+			//ask the tile if they want be mined first
 			if (!object.canMine())
 			{
 				return;

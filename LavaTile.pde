@@ -22,6 +22,7 @@ class LavaTile extends Tile
         load(particleSystem);
 	}
 
+	//give the player a fire effect
 	void collidedWith(BaseObject object)
 	{
 		object.takeDamage(damage);

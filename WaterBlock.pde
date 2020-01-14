@@ -12,6 +12,7 @@ public class WaterBlock extends SlowFallTile
 		image = ResourceManager.getImage("WaterBlock");
 	}
     
+    //we want to give the player a chilled effect
 	void collidedWith(BaseObject object)
 	{
 		object.takeDamage(damage);
