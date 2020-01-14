@@ -6,7 +6,7 @@ void loginThread()
 	loginStatus = "Logging in as " + databaseManager.userNameToLogin;
 	databaseManager.loginUser();
 
-	loginStatus = "Loading data";
+	loginStatus = "Loading player account";
 	thread("loadPlayerInventoryThread");
 	thread("loadAllAchievementsThread");
 	thread("loadPlayerAchievementsThread");

@@ -1,6 +1,6 @@
 public class AnimatedImage
 {
-	public PVector drawPosition;
+	private PVector drawPosition;
 	private PImage[] frames;
 	private float frameDelay, objectWidth, objectHeight;
 	private boolean flipSpriteHorizontal, flipSpriteVertical, isPaused;
