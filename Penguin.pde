@@ -12,6 +12,17 @@ class Penguin extends Enemy
 		speed = (defaultSpeed += increasePower(speedIncreaseValue));
 	}
 
+	// void wiggleSound()
+	// {
+	// 	if(isMiningLeft == true || isMiningRight == true)
+	// 	{
+	// 		for (int i = 1; i < 5; i++)
+	// 		{
+	// 			AudioManager.playSoundEffect("PenguinFootStep" + i);
+	// 		}
+	// 	}
+	// }
+
 	void dig()
 	{
 		if (timesCollided >= MAX_COLLISIONS) 

@@ -151,6 +151,11 @@ void setVolumes()
 
 	for (int i = 1; i < 5; i++)
 	{
+		AudioManager.setMaxVolume("PenguinFootStep" + i, 0.7f);
+	}
+
+	for (int i = 1; i < 5; i++)
+	{
 		AudioManager.setMaxVolume("Explosion" + i, 0.728f);
 	}
 	
