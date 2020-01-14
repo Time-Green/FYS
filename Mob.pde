@@ -48,7 +48,7 @@ class Mob extends Movable
 	{
 		super.update();
 
-		removeStatusEffect()
+		removeStatusEffect();
 
 		handleOnFire();
 
