@@ -87,6 +87,7 @@ void setup()
 
 	//size(1280, 720, P3D);
 	fullScreen(P3D);
+	smooth(2);
 
 	TimeManager.setup(this, 1000f, 60f, true, true);
 
@@ -145,8 +146,13 @@ void setVolumes()
 {
 	// sound effects
 	AudioManager.setMaxVolume("Siren", 0.66f);
-	AudioManager.setMaxVolume("HurtSound", 0.75f);
+	AudioManager.setMaxVolume("HurtSound", 0.9f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
+
+	for (int i = 1; i < 5; i++)
+	{
+		AudioManager.setMaxVolume("PenguinFootStep" + i, 0.7f);
+	}
 
 	for (int i = 1; i < 5; i++)
 	{
