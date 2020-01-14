@@ -87,6 +87,7 @@ void setup()
 
 	//size(1280, 720, P3D);
 	fullScreen(P3D);
+	smooth(2);
 
 	TimeManager.setup(this, 1000f, 60f, false, false);
 
