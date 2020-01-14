@@ -146,7 +146,7 @@ void setVolumes()
 {
 	// sound effects
 	AudioManager.setMaxVolume("Siren", 0.66f);
-	AudioManager.setMaxVolume("HurtSound", 0.75f);
+	AudioManager.setMaxVolume("HurtSound", 0.9f);
 	AudioManager.setMaxVolume("LowHealth", 0.7f);
 
 	for (int i = 1; i < 5; i++)
