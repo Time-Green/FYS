@@ -212,6 +212,11 @@ class Player extends Mob
 			AudioManager.playSoundEffect("FireSound");
 		}
 
+		if(isChilled == true)
+		{
+			tint(162,210,223);
+		}
+
 		// Is the player stunned
 		if (stunTimer > 0f)
 		{

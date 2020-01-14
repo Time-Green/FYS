@@ -27,11 +27,15 @@ class Mob extends Movable
 	//regen and fire
 	public float regen = 0.05f;
 	private final float fireDamage = 8;
+	private final float iceDamage = 4;
+
 	public boolean canRegen = false;
 	public boolean isOnFire = false;
+	public boolean isChilled = false;
+	public boolean isDark = false;
 	private float fireTimer;
 	private float regenTimer;
-	public boolean isDark = false;
+	private float chilledTimer;
 	private float darkTimer;
 
 	Mob()
@@ -161,6 +165,26 @@ class Mob extends Movable
 			}
 			
 			fireTimer += TimeManager.deltaFix;
+		}
+	}
+
+		public void setChilled()
+	{
+		if(isChilled)
+		{
+			if(floor(chilledTimer) % 90 == 0)
+			{
+				takeDamage(iceDamage);
+				player.baseDamage = baseDamage * 0.5f;
+				player.speed = speed * 0.5f;
+
+				if(chilledTimer > 480)
+				{
+					isChilled = false;
+				}
+			}
+			
+			chilledTimer += TimeManager.deltaFix;
 		}
 	}
 
