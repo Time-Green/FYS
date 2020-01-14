@@ -1,7 +1,7 @@
 public class Camera
 {
 	private PVector position; // current position
-	private PVector targetPosition // where we need to go
+	private PVector targetPosition; // where we need to go
 	private Movable target;
 	private float lerpAmount;
 
@@ -39,6 +39,7 @@ public class Camera
 	public Camera(Movable targetObject)
 	{
 		position = new PVector();
+		targetPosition = new PVector();
 
 		setTarget(targetObject);
 		
