@@ -94,7 +94,7 @@ public class World
 
 		for (int i = 1; i < MAX_XSPAWNPOS; i++)
 		{
-			if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE && (i < 5 || i > 21))
+			if (random(1) < 0.35f && i > lastSpawnX + MIN_DISTANCE_INBETWEEN_TREE && (i < 4 || i > 21))
 			{
 				lastSpawnX = i;
 				spawnTree(new PVector(i, 10));
@@ -106,7 +106,7 @@ public class World
 
 	void spawnTree(PVector location)
 	{
-		safeSpawnStructure("Tree" + int(random(5)), location, true); 
+		safeSpawnStructure("Tree" + int(random(5)), location, true, false); 
 	}
 
 	void spawnBirds()
@@ -251,7 +251,7 @@ public class World
 
 		for (StructureLocation structureLocation : spawnedStructureLocations)
 		{
-			if(structureLocation.getMaxYPosition() < wallOfDeath.position.y)
+			if(structureLocation.getTopYPosition() < wallOfDeath.position.y)
 			{
 				structureLocationsToRemove.add(structureLocation);
 			}
@@ -263,11 +263,11 @@ public class World
 		}
 	}
 
-	public boolean isPositionInsideStructure(PVector gridPosition)
+	public boolean isStructureInsideOtherStructure(PVector gridPosition, PVector size)
 	{
 		for (StructureLocation structureLocation : spawnedStructureLocations)
 		{
-			if(structureLocation.isInsideStructure(gridPosition))
+			if(structureLocation.isInsideStructure(gridPosition, size))
 			{
 				return true;
 			}
@@ -454,9 +454,9 @@ public class World
 		}
 	}
 
-	void safeSpawnStructure(String structureName, PVector gridSpawnPos, boolean lowerLeft)
+	void safeSpawnStructure(String structureName, PVector gridSpawnPos, boolean lowerLeft, boolean canRetry)
 	{
-		load(new StructureSpawner(this, structureName, gridSpawnPos, lowerLeft), gridSpawnPos.mult(TILE_SIZE));
+		load(new StructureSpawner(this, structureName, gridSpawnPos, lowerLeft, canRetry), gridSpawnPos.mult(TILE_SIZE));
 	}
 
 	void spawnStructure(String structureName, PVector gridSpawnPos)

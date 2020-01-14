@@ -88,7 +88,7 @@ void setup()
 	//size(1280, 720, P3D);
 	fullScreen(P3D);
 
-	TimeManager.setup(this, 1000f, 60f, false, false);
+	TimeManager.setup(this, 1000f, 60f, true, true);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
@@ -237,8 +237,6 @@ void cleanDrawingLayers()
 // draw the game
 void draw()
 {
-	TimeManager.update();
-
 	if(userInLoginScreen)
 	{
 		loginScreen.update();
@@ -299,6 +297,8 @@ void draw()
 	ui.draw();
 
 	checkRestartGame();
+
+	TimeManager.update();
 }
 
 // when r is hold, restart the game

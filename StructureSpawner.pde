@@ -1,15 +1,20 @@
 class StructureSpawner extends Movable
 {
-	String structureName;
+	private String structureName;
 
-	PVector structureSize = new PVector(0, 0);
-	PVector spawnAt = new PVector();
+	private PVector spawnAt = new PVector();
+	private PVector structureSize = new PVector();
+	
+	private boolean lowerLeft = false; //if true, we assume the spawnAt to be the lower left instead of upper left
+	private boolean canRetry;
 
-	boolean lowerLeft = false; //if true, we assume the spawnAt to be the lower left instead of upper left
+	private int currentSpawnAttempt;
+	private final int MAX_SPAWN_ATTEMPTS = 5;
 
-	StructureSpawner(World world, String name, PVector target, boolean lowerLeft)
+	StructureSpawner(World world, String name, PVector target, boolean lowerLeft, boolean canRetry)
 	{
 		anchored = true;
+		this.canRetry = canRetry;
 		image = ResourceManager.getImage("Invisible");
 
 		spawnAt.set(target);
@@ -48,6 +53,18 @@ class StructureSpawner extends Movable
 
 	void trySpawn(World world)
 	{
+		if(world.isStructureInsideOtherStructure(spawnAt, structureSize))
+		{
+			if(canRetry && currentSpawnAttempt < MAX_SPAWN_ATTEMPTS)
+			{
+				retrySpawn(world);
+			}
+			else
+			{
+				return;
+			}
+		}
+
 		for (int x = 0; x <= structureSize.x; x++)
 		{
 			for (int y = 0; y <= structureSize.y; y++)
@@ -56,12 +73,14 @@ class StructureSpawner extends Movable
 
 				if (tile == null)
 				{
-					return;
-				}
-				
-				if(world.isPositionInsideStructure(new PVector(spawnAt.x + x, spawnAt.y + y)))
-				{
-					return;
+					if(canRetry && currentSpawnAttempt < MAX_SPAWN_ATTEMPTS)
+					{
+						retrySpawn(world);
+					}
+					else
+					{
+						return;
+					}
 				}
 			}
 		}
@@ -78,6 +97,14 @@ class StructureSpawner extends Movable
 		world.addStructureLocation(spawnAt, structureSize);
 		
 		delete(this);
+	}
+
+	private void retrySpawn(World world)
+	{
+		spawnAt.x = int(random(TILES_HORIZONTAL * 0.8));
+		currentSpawnAttempt++;
+
+		trySpawn(world);
 	}
 
 	void destroyed()
