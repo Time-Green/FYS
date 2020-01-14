@@ -51,13 +51,26 @@ public class Bird extends Mob
 
 	void update()
 	{
+		// don't update the object if we are paused
 		if (gamePaused && gameState == GameState.InGame)
 		{
 			return;
 		}
 		
 		super.update();
+		
+		borderCheck();
 
+		// if the bird landed on the ground, delete it
+		if (isGrounded)
+		{
+			delete(this);
+		}
+	}
+
+	// when it leaves the screen, respawn at the other side
+	private void borderCheck()
+	{
 		if (flyingLeft && position.x < -32)
 		{
 			position.x = world.getWidth() + 100;
@@ -66,16 +79,13 @@ public class Bird extends Mob
 		{
 			position.x = -32;
 		}
-
-		if (isGrounded)
-		{
-			delete(this);
-		}
 	}
 
+	// when we take dammage, fall out of the sky
 	void takeDamage(float damageTaken)
 	{
 		super.takeDamage(damageTaken);
+
 		gravityForce = 0.5f;
 	}
 }

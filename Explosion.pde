@@ -1,14 +1,14 @@
 class Explosion extends BaseObject
 {
-	float maxRadius;
-	float maxDamage = 100;
-	float currentRadius = 0;
-	float radiusIncrease = 35;
+	private float maxRadius;
+	private float maxDamage = 100;
+	private float currentRadius = 0;
+	private final float RADIUS_INCREASE = 35;
 
-	boolean dealDamageToPlayer;
+	private boolean dealDamageToPlayer;
 
-	ArrayList<BaseObject> objectsInMaxRadius;
-	ObjectFinderThread objectFinderThread;
+	private ArrayList<BaseObject> objectsInMaxRadius;
+	private ObjectFinderThread objectFinderThread;
 
 	Explosion(PVector spawnPos, float radius, float maxDamage, boolean dealDamageToPlayer)
 	{
@@ -21,8 +21,6 @@ class Explosion extends BaseObject
 		setupLightSource(this, radius, 1f);
 
 		//get objects inside max range
-		//objectsInMaxRadius = getObjectsInRadius(position, maxRadius);
-
 		objectFinderThread = startObjectFinderThread(position, maxRadius);
 
 		//create particle system
@@ -34,11 +32,12 @@ class Explosion extends BaseObject
 		AudioManager.playSoundEffect(explosionSound, position);
 	}
 
+	// find objects in range and deal dammage
 	void explode()
 	{
 		if(objectFinderThread.isAlive())
 		{
-			// if we are still getting the objects in max radius
+			// we are still getting the objects in max radius
 			return;
 		}
 		else
@@ -49,6 +48,7 @@ class Explosion extends BaseObject
 			}
 		}
 
+		// find objects nearby
 		ArrayList<BaseObject> objectsInCurrentExplosionRadius = new ArrayList<BaseObject>();
 
 		for (BaseObject object : objectsInMaxRadius)
@@ -59,6 +59,7 @@ class Explosion extends BaseObject
 			}
 		}
 
+		// deal dammage to nearby objects
 		for (BaseObject object : objectsInCurrentExplosionRadius)
 		{
 			if (!dealDamageToPlayer && object == player)
@@ -81,10 +82,10 @@ class Explosion extends BaseObject
 			}
 		}
 
-		camera.induceStress(0.04f);
+		camera.induceStress(0.04f * TimeManager.deltaFix);
 
 		// increase next explosion size
-		currentRadius += radiusIncrease * TimeManager.deltaFix;
+		currentRadius += RADIUS_INCREASE * TimeManager.deltaFix;
 
 		if (currentRadius > maxRadius)
 		{
@@ -95,7 +96,8 @@ class Explosion extends BaseObject
 	void update()
 	{
 		super.update();
-
+		
+		// only explode when we are smaller than the max radius
 		if (currentRadius < maxRadius)
 		{
 			explode();
@@ -104,15 +106,5 @@ class Explosion extends BaseObject
 		{
 			delete(this);
 		}
-	}
-
-	void draw()
-	{
-
-	}
-
-	void fade()
-	{
-
 	}
 }

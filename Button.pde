@@ -1,12 +1,14 @@
 class Button extends Obstacle
 { 
-	PImage pressedImage = ResourceManager.getImage("ButtonPressed");
-	boolean canBePressed = true;
+	private PImage pressedImage;
+	private boolean canBePressed = true;
 
 	Button()
 	{
 		size.set(50, 10);
+
 		image = ResourceManager.getImage("Button");
+		pressedImage = ResourceManager.getImage("ButtonPressed");
 
 		drawLayer = PRIORITY_LAYER;
 	}
@@ -14,18 +16,19 @@ class Button extends Obstacle
 	void update()
 	{
 		super.update();
-
 	}
 
 	void draw()
 	{
 		super.draw();
+
 		if(canBePressed)
 		{
 			drawText();
 		}
 	}
 
+	// draw the caution text above the button
 	void drawText()
 	{
 		textAlign(CENTER);
@@ -37,6 +40,7 @@ class Button extends Obstacle
 		textAlign(LEFT);
 	}
 
+	// check of a movible objects (aka the player) has pressed the button
 	void collidedWith(BaseObject object)
 	{
 		if(!(object instanceof Movable))
@@ -54,15 +58,18 @@ class Button extends Obstacle
 		{ 
 			image = pressedImage;
 			canBePressed = false;
-			buttonPressed(presser);
+
+			buttonPressed();
 		}
 	}
 
-	void buttonPressed(Movable presser)
+	// when the button is pressed, start the meteor rain next frame
+	void buttonPressed()
 	{
 		startGameSoon();
 	}
 
+	// makes sure this objects gets deleted when it takes dammage
 	void takeDamage(float damageTaken)
 	{
 		super.takeDamage(damageTaken);
