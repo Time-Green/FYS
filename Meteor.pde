@@ -7,7 +7,7 @@ class Meteor extends Movable
 
 	private float sizeModifier;
 
-	MeteorTrailParticleSystem particleSystem;
+	private MeteorTrailParticleSystem particleSystem;
 
 	Meteor()
 	{
@@ -42,7 +42,7 @@ class Meteor extends Movable
 
 		if (isGrounded)
 		{
-			load(new Explosion(position, 100 * sizeModifier, 50, true));
+			load(new Explosion(new PVector(position.x + size.x / 2, position.y + size.y / 2), 100 * sizeModifier, 50, true));
 			delete(particleSystem);
 			delete(this);
 		}

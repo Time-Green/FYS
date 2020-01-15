@@ -1,7 +1,7 @@
 public class MeteorTrailParticleSystem extends EmittingParticleSystem
 {
 	private PVector meteorSize = new PVector();
-	float particleAmountCoefficient = 0.025;
+	private float particleAmountCoefficient = 0.05;
 
 	public MeteorTrailParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles, PVector size)
 	{

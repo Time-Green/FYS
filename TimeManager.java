@@ -20,7 +20,7 @@ public class TimeManager
     private static float bulletTimeComebackSeconds;
 
     //used for framerate graph
-    private static int[] frameRateHistory;
+    private static float[] frameRateHistory;
     private static int currentGraphLine = 0;
 
     //set PApplet, framerate and gameSpeed, has to be called in the main setup function!
@@ -36,7 +36,7 @@ public class TimeManager
         
         if(drawFpsGraph)
         {
-            frameRateHistory = new int[game.width];
+            frameRateHistory = new float[game.width];
         }
         
         currentGameSpeed = gameSpeed;
@@ -114,12 +114,12 @@ public class TimeManager
         }
 
         //insert data into graph
-        frameRateHistory[currentGraphLine] = game.round(game.frameRate);
+        frameRateHistory[currentGraphLine] = game.frameRate;
 
         //draw
         for(int i = 0; i < frameRateHistory.length; i++)
         {
-            int currentGraphFrameRate = frameRateHistory[i];
+            float currentGraphFrameRate = frameRateHistory[i];
 
             if(currentGraphFrameRate >= 60)
             {
@@ -156,6 +156,16 @@ public class TimeManager
         {
             targetGameSpeed = speed;
         }
+
+        if(currentGameSpeed < 0)
+        {
+            currentGameSpeed = 0;
+        }
+
+        if(targetGameSpeed < 0)
+        {
+            targetGameSpeed = 0;
+        }
     }
 
     //adds/removes a specific amount to the game speed
@@ -163,6 +173,16 @@ public class TimeManager
     {
         targetGameSpeed += amount;
         currentGameSpeed += amount;
+
+        if(targetGameSpeed < 0)
+        {
+            targetGameSpeed = 0;
+        }
+
+        if(currentGameSpeed < 0)
+        {
+            currentGameSpeed = 0;
+        }
     }
 
     public static void startBulletTime(float slowToSpeed, float comebackSeconds)

@@ -78,7 +78,7 @@ boolean parallaxEnabled = true;
 
 // restart variables
 float currentRestartTimer = 0;
-final float MAX_RESTART_TIMER = 60; // 1.5 seconds
+final float MAX_RESTART_TIMER = 60; // 1 seconds
 
 // setup the game
 void setup()
@@ -87,7 +87,6 @@ void setup()
 
 	//size(1280, 720, P3D);
 	fullScreen(P3D);
-	smooth(2);
 
 	TimeManager.setup(this, 1000f, 60f, true, true);
 
@@ -745,7 +744,7 @@ void keyPressed()
 	InputHelper.onKeyPressed(key);
 
 	//Debug code
-	//debugInput();
+	debugInput();
 }
 
 // processing key released event
@@ -789,6 +788,26 @@ void debugInput()
 	if(key == 'p')
 	{
 		parallaxEnabled = !parallaxEnabled;
+	}
+
+	if(key == '+')
+	{
+		TimeManager.addGameSpeed(1);
+	}
+
+	if(key == '-')
+	{
+		TimeManager.addGameSpeed(-1);
+	}
+
+	if(key == ']')
+	{
+		TimeManager.addGameSpeed(5);
+	}
+
+	if(key == '[')
+	{
+		TimeManager.addGameSpeed(-5);
 	}
 }
 

@@ -1,10 +1,10 @@
 // spawn particles over time
 public class EmittingParticleSystem extends BaseParticleSystem
 {
-    int spawnDelay;
-    float currentFrameCounter;
-    float maxForce;
-    boolean onlyUpwardsParticles;
+    private int spawnDelay;
+    private float currentFrameCounter;
+    protected float maxForce;
+    protected boolean onlyUpwardsParticles;
 
 	public EmittingParticleSystem(PVector spawnPos, float maxForce, int spawnDelay, boolean onlyUpwardsParticles)
 	{
