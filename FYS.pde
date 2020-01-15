@@ -88,7 +88,7 @@ void setup()
 	//size(1280, 720, P3D);
 	fullScreen(P3D);
 
-	TimeManager.setup(this, 1000f, 60f, true, true);
+	TimeManager.setup(this, 1000f, 60f, false, false);
 
 	surface.setResizable(true);
 	surface.setTitle("Rocky Rain");
