@@ -101,6 +101,7 @@ void setup()
 
 	noStroke();
 	preLoading();
+	noCursor();
 }
 
 // load resources that are needed in the loading screen
