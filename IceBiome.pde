@@ -49,7 +49,7 @@ class IceBiome extends Biome
 	{
 		load(new Penguin(position));
 	}
-
+	
 	String getParallaxedRock()
 	{
 		if(random(1) < 0.1)
@@ -70,5 +70,11 @@ class IceBiome extends Biome
 		}
 
         return "Snow" + int(random(5));
+
+		// if(spawnChance >= 0.2f && spawnChance < 0.4f)
+		// {
+		// 	return super.getStructureName();
+		// }
+		// return "WaterPond" + int(random(2));
 	}
 }

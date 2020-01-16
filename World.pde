@@ -532,6 +532,7 @@ public class World
 		return stripedObjectName;
 	}
 
+	//adds the tile to structure spawner otherwise it isn't able to do so
 	private Tile convertNameToTile(String stripedObjectName, PVector spawnPos, String structureName, PVector structureTilePosition)
 	{
 		switch(stripedObjectName)
@@ -607,6 +608,12 @@ public class World
 
 			case "SnowBlock" :
 				return new SnowTile(int(spawnPos.x), int(spawnPos.y));
+
+			case "IceSnowTile" :
+				return new IceSnowTile(int(spawnPos.x), int(spawnPos.y));
+
+			case "WaterBlock" :
+				return new WaterBlock(int(spawnPos.x), int(spawnPos.y));
 		}
 
 		println("ERROR: structure tile '" + stripedObjectName + "' not set up or not found!");
