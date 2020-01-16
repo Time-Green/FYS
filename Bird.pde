@@ -15,7 +15,7 @@ public class Bird extends Mob
 		}
 
 		//set spawn position and velocity
-		position.set(random(0, world.getWidth()), random(100, 350));
+		position.set(random(0, world.getWidth()), random(-50, 250));
 		velocity.set(random(MIN_SPEED, MAX_SPEED), 0);
 
 		if (flyingLeft)
