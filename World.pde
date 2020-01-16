@@ -101,7 +101,7 @@ public class World
 			}
 		}
 
-		spawnStructure("ButtonAltar", new PVector(40, 8));
+		spawnStructure("ButtonAltar", new PVector(44, 8));
 	}
 
 	void spawnTree(PVector location)

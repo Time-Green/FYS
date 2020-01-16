@@ -61,7 +61,7 @@ final int HUMAN_SKEWER_ACHIEVEMENT = 6;
 
 //world
 final int OVERWORLD_HEIGHT = 10; // in grid tiles
-final int TILES_HORIZONTAL = 75;
+final int TILES_HORIZONTAL = 55; //more performance and still have support for 4k 27inch
 final float TILE_SIZE = 50; // in pixels
 
 //Directions
