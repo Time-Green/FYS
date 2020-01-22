@@ -141,7 +141,7 @@ public class World
 		for(int i = 0; i < PARALLAX_LAYERS; i++)
 		{
 			parallaxMap.add(new ArrayList<ArrayList<ParallaxTile>>());
-			PARALLAX_WIDTH[i] = int(TILES_HORIZONTAL + TILES_HORIZONTAL * PARALLAX_INTENSITY * i * 3); //the three has no meaning, I just kept trying till it filled the screen
+			PARALLAX_WIDTH[i] = int(TILES_HORIZONTAL + TILES_HORIZONTAL * PARALLAX_INTENSITY * i * 3); //the three has no meaning, I just kept trying till the parallax layers fitted perfectly
 		}
 	}
 
@@ -701,17 +701,18 @@ public class World
 		}
 	}
 
-	void generateParallax(int y, int parallaxLayer)
+	//generate a row of parallax tiles on a specified parallax layer
+	void generateParallax(int y, int parallaxLayer) 
 	{
 		ArrayList<ArrayList<ParallaxTile>> parallaxList = parallaxMap.get(parallaxLayer - 1);
 
 		ArrayList<ParallaxTile> yList = new ArrayList<ParallaxTile>();
 		parallaxList.add(yList);
 
-		for(int x = 0; x < PARALLAX_WIDTH[parallaxLayer - 1]; x++)
+		for(int x = 0; x < PARALLAX_WIDTH[parallaxLayer - 1]; x++) //parallax width holds the length for each parallax layer, since they all move at different speeds they all have different lengths
 		{
 			PImage parallaxImage;
-			Biome biome;
+			Biome biome; //so we can just select the next biome if we need to, for the awesome transition
 
 			if(random(currentBiome.transitWidth) > switchDepth - y) //make the biome transition for parallax aswell
 			{
@@ -727,6 +728,7 @@ public class World
 			{
 				parallaxImage = null;
 			}
+
 			else if(noise(x * PARALLAX_NOISE_SCALE * parallaxLayer, y * PARALLAX_NOISE_SCALE * parallaxLayer) > PARALLAX_NOISE_POSSIBILITY)
 			{
 				if(parallaxLayer < PARALLAX_LAYERS) //there's another layer behind us, so don't draw a background infront of it
@@ -743,10 +745,10 @@ public class World
 				parallaxImage = ResourceManager.getImage(biome.getParallaxedRock());
 			}
 
-			ParallaxTile tile = (ParallaxTile) load(new ParallaxTile(x * TILE_SIZE, y * TILE_SIZE, parallaxLayer, parallaxImage));
+			ParallaxTile tile = (ParallaxTile) load(new ParallaxTile(x * TILE_SIZE, y * TILE_SIZE, parallaxLayer, parallaxImage)); //we can safely cast it since we just made it
 			tile.row = yList;
 
-			yList.add(tile); //we can safely cast it since we just made it
+			yList.add(tile); 
 		}
 	}
 }

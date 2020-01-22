@@ -82,9 +82,10 @@ class Tile extends BaseObject
 		else
 		{
 			world.currentBiome.prepareGroundObstacle(this, world); //spawn something above us, like a plant, maybe
-			if(gridPosition.y > OVERWORLD_HEIGHT * 3)
+
+			if(gridPosition.y > OVERWORLD_HEIGHT * 3 && random(1) < world.currentBiome.mossChance)
 			{
-				world.currentBiome.maybeSpawnMoss(this, world);
+				world.currentBiome.spawnMoss(this, world);
 			}
 		}
 	}

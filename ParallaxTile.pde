@@ -1,7 +1,7 @@
 class ParallaxTile extends BaseObject
 {
     PImage image;
-    int parallaxLayer;
+    int parallaxLayer; //the layer we're on. Higher means deeper
     float darknessFactor = 80; //how much darker we get for every layer
 
     ArrayList<ParallaxTile> row; //the row we've placed in. It's so much easier with deleting, I feel stupid for not thinking of it while doing the same for normal tiles
@@ -14,7 +14,7 @@ class ParallaxTile extends BaseObject
         this.parallaxLayer = parallaxLayer;
     }
 
-    void specialAdd()
+    void specialAdd() //we overwrite this so that we're not added to the normal drawing layers
     {
         updateList.add(this);
     }
@@ -30,12 +30,12 @@ class ParallaxTile extends BaseObject
         return;
     }
 
-    void draw()
+    void draw() //called from FYS.pde, where we got a special loop for just us
     {
         if(image != null)
         {
             tint(255 - darknessFactor * parallaxLayer);
-            image(image, position.x - player.position.x * PARALLAX_INTENSITY * parallaxLayer, position.y);
+            image(image, position.x - player.position.x * PARALLAX_INTENSITY * parallaxLayer, position.y); //displace it aswell, to get the parallax effect
             tint(0);
         }
     }

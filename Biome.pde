@@ -7,12 +7,12 @@ class Biome
 	float ceilingObstacleChance = 0.0; //chance that a tile can have something hanging from it
 	float groundObstacleChance = 0.1; //ditto but then ground
 
-	int minimumDepth = 0;
-	int maximumDepth = 999999;
+	int minimumDepth = 0; //minimum depth at wich we can appear
+	int maximumDepth = 999999; //maximum depth at wich we can appear. Might be off by 10-20 tiles, due to the semi random biome depth
 
 	float caveSpawningNoiseScale = 0.1f;
-	float caveSpawningPossibilityScale = 0.68f; //lower for more caves
-	int startedAt;
+	float caveSpawningPossibilityScale = 0.68f; //lower for more caves 
+	int startedAt; //world tells us at wich depth we started 
 
 	boolean smoothTransit = true; //wheter we do the fusing thing with the biome UNDER us
 	int transitWidth = 10; //how far we fuse with the biome UNDER us
@@ -22,9 +22,9 @@ class Biome
 
 	boolean canParallax = true; //wheter we can even use parallax. for stuff like the overworld, its a no
 
-	boolean spawnMoss = true;
-	color mossTint = color(23, 99, 0);
-	float mossChance = 0.0003;
+	boolean spawnMoss = true; //wheter this biome spawns moss
+	color mossTint = color(23, 99, 0); //the tint of the moss. so we can have cool shadow moss for the shadow biome
+	float mossChance = 0.0003; //chance a tile will spawn moss
 
 	PImage destroyedImage = ResourceManager.getImage("DestroyedBlock");
 
@@ -82,12 +82,14 @@ class Biome
 
 		return true;
   	}
+	  
 	//return how long this biome is (not always super accurate, but it's fine)
   	int getLength()
   	{
     	return length;
   	}
 
+	//place a structure at the given depth
   	void placeStructure(World world, int depth)
 	{
     	world.safeSpawnStructure(getStructureName(), new PVector(int(random(TILES_HORIZONTAL * 0.8)), depth), false, true); //times 0.8 because stuff at the complete right usually cant spawn
@@ -121,6 +123,7 @@ class Biome
 		}
 	}
 
+	//spawn an enemy at the given position (the position is an open tile)
 	void spawnEnemy(PVector position)
 	{
 		float spawner = random(1);
@@ -142,6 +145,7 @@ class Biome
 			load(new EnemyShocker(position));
 		}
 	}
+
 	//ceiling obstacles like icicles are prepared here
   	void prepareCeilingObstacle(Tile target, World world)
 	{
@@ -158,11 +162,13 @@ class Biome
 			target.rootedIn.add(object);
     	}
   	}
+
 	//return an obstacle to stick to the roof
   	BaseObject spawnCeilingObstacle(Tile tile)
 	{
 		return load(new Icicle(), tile.position);
   	}
+
 	//prepare stuff like flowers
 	void prepareGroundObstacle(Tile target, World world)
 	{
@@ -178,11 +184,13 @@ class Biome
 			}
 		}
 	}
+
 	//return object that you want to stick into the ground
 	BaseObject spawnGroundObstacle(Tile target)
 	{
 		return null;
 	}
+
 	//return the type of rock we should draw on the parallax
 	String getParallaxedRock()
 	{
@@ -199,14 +207,10 @@ class Biome
 
 		return "StoneBlock";
 	}
-	//spawn moss, maybe, we check for probability too.
-	void maybeSpawnMoss(Tile tile, World world)
-	{
-		if(random(1) > mossChance)
-		{
-			return;
-		}
 
+	//spawn moss
+	void spawnMoss(Tile tile, World world)
+	{
 		load(new Moss(tile, mossTint));
 	}
 }
