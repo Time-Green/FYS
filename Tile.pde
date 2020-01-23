@@ -211,6 +211,8 @@ class Tile extends BaseObject
 
 			//create particle system
 			TileBreakParticleSystem particleSystem = new TileBreakParticleSystem(position, 15, 6, particleColor);
+			
+			//Load particle system in object list
 			load(particleSystem);
 		}
 

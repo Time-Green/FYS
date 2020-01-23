@@ -4,6 +4,7 @@ public class TileBreakParticle extends BaseParticle
 
 	public TileBreakParticle(BaseParticleSystem parentParticleSystem, PVector spawnLocation, PVector spawnAcc, color tileColor)
 	{
+		//Draw the aprticle
 		super(parentParticleSystem, spawnLocation, spawnAcc);
 
 	    minSize = 10;
@@ -13,7 +14,8 @@ public class TileBreakParticle extends BaseParticle
 		particleColor = tileColor;
 		sizeDegrade = random(0.3, 0.5);
 	}
-
+	
+	//Update particles
 	void update()
 	{
 		if (gamePaused)
@@ -26,6 +28,7 @@ public class TileBreakParticle extends BaseParticle
 		updateSize();
 	}
 
+	//Update the size of the particle
 	private void updateSize()
 	{
 		size -= sizeDegrade * TimeManager.deltaFix;
