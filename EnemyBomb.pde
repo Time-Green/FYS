@@ -36,8 +36,8 @@ class EnemyBomb extends Enemy
 	{
 		super.update();
 
-		if (isExploding)
-		{
+		if (this.isExploding)
+		{//This enemy is in the exploding sequence
 			this.speed = 0;
 			//Decrease the explosion timer
 			this.explosionTimer -= TimeManager.deltaFix;
@@ -59,20 +59,20 @@ class EnemyBomb extends Enemy
 			return;
 		}
 
-		if (!isExploding & isGrounded)
+		if (!this.isExploding & this.isGrounded)
 		{//walk animation
-			walkSequence.draw();
-			walkSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
+			this.walkSequence.draw();
+			this.walkSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 		}
 		else if (!isExploding & !isGrounded)
 		{//Fall animation
-			airSequence.draw();
-			airSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
+			this.airSequence.draw();
+			this.airSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 		}
 		else
 		{//Explode animation
-			explosionSequence.draw();
-			explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
+			this.explosionSequence.draw();
+			this.explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 		}
 	}
 
@@ -83,13 +83,16 @@ class EnemyBomb extends Enemy
 		this.explosionSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 	}
 
+	//Set up the animation
 	private void animationSetup()
 	{
-		final int EXPLODE_SPRITES = 9, WALK_SPRITES = 2, AIR_SPRITES = 1;
-		final int WALK_SPEED = 6, AIR_SPEED = 1;
+		//Animation variables
+		final int explodeSprites = 9, walkSprites = 2, airSprites = 1;
+		final int walkSpeed = 6, airSpeed = 1;
 
-		explosionSequence = new AnimatedImage("BombExplosion", EXPLODE_SPRITES, explosionTimer / EXPLODE_SPRITES, position, size.x, flipSpriteHorizontal);
-		walkSequence = new AnimatedImage("BombWalk", WALK_SPRITES, WALK_SPEED, position, size.x, flipSpriteHorizontal);
-		airSequence = new AnimatedImage("BombAir", AIR_SPRITES, AIR_SPEED, position, size.x, flipSpriteHorizontal);
+		//Fill the animated images for this enemy
+		explosionSequence = new AnimatedImage("BombExplosion", explodeSprites, explosionTimer / explodeSprites, position, size.x, flipSpriteHorizontal);
+		walkSequence = new AnimatedImage("BombWalk", walkSprites, walkSpeed, position, size.x, flipSpriteHorizontal);
+		airSequence = new AnimatedImage("BombAir", airSprites, airSpeed, position, size.x, flipSpriteHorizontal);
 	}
 }

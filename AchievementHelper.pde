@@ -18,7 +18,7 @@ public class AchievementHelper
 
         if(achievementExists(id))
         {
-             println("Player " + dbUser.userName + " has unlocked: "+ getAchievementData(id).name);
+             println("Player " + dbUser.userName + " has unlocked: " + getAchievementData(id).name);
              runData.unlockedAchievementIds.add(id); 
              ui.startDisplayingAchievement(id); 
         }

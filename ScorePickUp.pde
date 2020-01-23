@@ -73,6 +73,7 @@ public class ScorePickup extends Pickup
 		{
 			if(object instanceof PickupText && dist(position.x, position.y, object.position.x, object.position.y) < TILE_SIZE * 2.5f)
 			{
+				//Cast to PickUptext
 				PickupText pickupText = (PickupText) object;
 
 				if(!pickupText.isPowerupText)
@@ -87,6 +88,7 @@ public class ScorePickup extends Pickup
 		{
 			if(object instanceof PickupText && dist(position.x, position.y, object.position.x, object.position.y) < TILE_SIZE * 2.5f)
 			{
+				//Cast to PickUptext
 				PickupText pickupText = (PickupText) object;
 
 				if(!pickupText.isPowerupText)

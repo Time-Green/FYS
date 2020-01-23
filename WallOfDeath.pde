@@ -62,6 +62,7 @@ class WallOfDeath extends Movable
 		//wod movement per frame
 		position.y += (bufferZone / 225) * TimeManager.deltaFix;
 
+		//insure the wod is never too far or close to the player
 		if (bufferZone < minDistanceFromPlayer)
 		{
 			position.y = player.position.y - minDistanceFromPlayer;
