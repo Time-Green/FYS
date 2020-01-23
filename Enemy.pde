@@ -44,6 +44,7 @@ class Enemy extends Mob
 
 	void update()
 	{
+		//Do nothing while paused
 		if (gamePaused)
 		{
 			return;
