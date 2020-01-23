@@ -53,7 +53,7 @@ class BaseObject
 	{
 		if(layer > DRAWING_LAYERS)
 		{
-			println("ERROR: Attempted to draw " + this + " on a layer that doesn't exist! Increse drawingLayer in main.pde");
+			println("ERROR: Attempted to draw " + this + " on a layer that doesn't exist! Increase DRAWING_LAYER in defines.pde");
 			return;
 		}
 
