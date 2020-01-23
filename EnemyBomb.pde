@@ -64,7 +64,7 @@ class EnemyBomb extends Enemy
 			this.walkSequence.draw();
 			this.walkSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
 		}
-		else if (!isExploding & !isGrounded)
+		else if (!this.isExploding & !this.isGrounded)
 		{//Fall animation
 			this.airSequence.draw();
 			this.airSequence.flipSpriteHorizontal = this.flipSpriteHorizontal;
