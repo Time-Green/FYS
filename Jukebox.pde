@@ -1,3 +1,4 @@
+//currently disabled because of the particles not working properly after new particle system with multithread
 class Jukebox extends Movable
 {
     private final float PARTICLE_VELOCITY = 1.0f;
@@ -7,6 +8,7 @@ class Jukebox extends Movable
     private int songId;
     private EmittingParticleSystem particleSystem;
 
+    //give the jukebox an position in the world to spawn where otherwise would it be?
     Jukebox(PVector spawnPos)
     {
         position.set(spawnPos);
@@ -33,6 +35,7 @@ class Jukebox extends Movable
         }
     }
 
+    //as it's name suggest a jukebox just randomly plays music in the overworld
     void playRandomMusic()
     {
         songId = floor(random(JUKEBOX_SONG_AMOUNT));

@@ -28,7 +28,7 @@ class Enemy extends Mob
 		this.velocity.set(-speed, 0);
 	}
 
-	//Add this enemt to the mob list
+	//Add this enemy to the mob list
 	void specialAdd()
 	{
 		super.specialAdd();
@@ -91,6 +91,7 @@ class Enemy extends Mob
 		dig();
 	}
 
+	//Can we collide with other objects?
 	boolean canCollideWith(BaseObject object) 
 	{
 		if(object.canPlayerInteract())
@@ -102,11 +103,13 @@ class Enemy extends Mob
 		return super.canCollideWith(object);
 	}
 
+	//Attack the player
 	protected void attackingPlayer(Player player)
 	{
 		player.takeDamage(playerDamage);
 	}
 
+	//Make the enemy stronger based on depth
 	protected float increasePower(float variable)
 	{
 		//Increase thet power of the varabile for each 100 the player had dug
@@ -114,6 +117,7 @@ class Enemy extends Mob
 		return variable;
 	}
 
+	//Start digging
 	protected void dig()
 	{
 		if (timesCollided >= MAX_COLLISIONS) 

@@ -248,12 +248,13 @@ class Player extends Mob
 			else
 			{
 				animatedImageIdle.flipSpriteHorizontal = flipSpriteHorizontal;
-				animatedImageIdle.draw();
+				animatedImageIdle.draw(); //Idle
 			}
 		}
 
 	}
 
+	//these particles leave a trail behind the player
 	private void handleParticles()
 	{
 		// Walking
@@ -273,7 +274,7 @@ class Player extends Mob
 
 	void doPlayerMovement()
 	{
-		//Allow endless jumps while swimming
+		//Allow endless jumps while swimming is currently not in use
 		if (isSwimming)
 		{
 			isGrounded = true;
@@ -295,7 +296,7 @@ class Player extends Mob
 		}
 		else if(!InputHelper.isKeyDown(JUMP_KEY_1) && !InputHelper.isKeyDown(JUMP_KEY_2) && !isGrounded())
 		{
-			//allow for short jumps
+			//allow for short jumps when the key is hold down longer you get a long jump
 			gravityForce = 1.8f;
 		}
 
@@ -314,6 +315,7 @@ class Player extends Mob
 			isMiningDown = false;
 		}
 
+		//enable mining when moving in a direction apart from jumping and idle
 		if (InputHelper.isKeyDown(LEFT_KEY))
 		{
 			addForce(new PVector(-speed, 0));
@@ -337,6 +339,7 @@ class Player extends Mob
 		}
 	}
 
+	//the player gets a score for picking up ores
 	void addScore(int scoreToAdd)
 	{
 		score += scoreToAdd;
@@ -421,11 +424,13 @@ class Player extends Mob
 		return true;
 	}
 
+	//interact with for example chest enemies and drops
 	public boolean canPlayerInteract()
 	{
 		return true;
 	}
 
+	//an easy to get achievement
 	protected void afterMine(BaseObject object)
 	{
 		if(object instanceof ExplosionTile)
