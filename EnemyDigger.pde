@@ -19,7 +19,7 @@ class EnemyDigger extends Enemy
 
 		//Setup chase vars
 		float chaseSpeedIncreaseValue = 0.10f;
-		chaseSpeed += increasePower(chaseSpeedIncreaseValue);
+		this.chaseSpeed += increasePower(chaseSpeedIncreaseValue);
 		//Determine how many tiles we want the Digger to chase the player
 		float tileChaseDistance = 20f;
 		chaseDistance = OBJECT_SIZE * tileChaseDistance;
@@ -41,7 +41,7 @@ class EnemyDigger extends Enemy
 			return;
 		}
 		
-		if (!isChasing)
+		if (!this.isChasing)
 		{//Normal animation
 			super.draw();
 		}
@@ -59,6 +59,7 @@ class EnemyDigger extends Enemy
 
 		float distanceToPlayer = dist(this.position.x, this.position.y, player.position.x, player.position.y);
 
+		//Is the player within the chase distance?
 		if (distanceToPlayer <= chaseDistance)
 		{
 			float playerX = player.position.x;
@@ -97,10 +98,14 @@ class EnemyDigger extends Enemy
 
 	}
 
+	//Set up the animation
 	private void animationSetup()
 	{
+		//Animation variables
 		int digFrames = 3;
 		int digAnimSpeed = 8;
+
+		//Fill the animated images for this enemy
 		digSequence = new AnimatedImage("DiggerDigging", digFrames, digAnimSpeed, position, size.x, size.y, flipSpriteHorizontal, flipSpriteVertical);
 	}
 }
