@@ -32,7 +32,8 @@ class BaseObject
 
 	}
 
-	void moveLayer(int newLayer)
+	//move us to another layer if we need to. Tiles use this to move to the background once destroyed
+	void moveLayer(int newLayer) 
 	{
 		removeFromDrawLayer();
 		insertIntoDrawLayer(newLayer);
@@ -40,17 +41,19 @@ class BaseObject
 		drawLayer = newLayer;
 	}
 
-	void removeFromDrawLayer()
+	//only called by moveLayer, to remove us from a drawing layer
+	void removeFromDrawLayer() 
 	{
 		ArrayList<BaseObject> removeFrom = drawList.get(drawLayer);
 		removeFrom.remove(this);
 	}
 
+	//insert us into the targeted drawLayer, if its there
 	void insertIntoDrawLayer(int layer)
 	{
 		if(layer > DRAWING_LAYERS)
 		{
-			println("ERROR: Attempted to draw " + this + " on a layer that doesn't exist! Increse drawingLayer in main.pde");
+			println("ERROR: Attempted to draw " + this + " on a layer that doesn't exist! Increase DRAWING_LAYER in defines.pde");
 			return;
 		}
 
