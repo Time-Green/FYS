@@ -104,7 +104,7 @@ public class DatabaseManager
 
 		if (result.size() == 1)
 		{
-			int newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+			int newId = result.getJSONObject(0).getInt("LastInsertId");
 
 			return getUser(newId);
 		}
@@ -171,7 +171,7 @@ public class DatabaseManager
 
 			if (result.size() == 1)
 			{
-				currentSessionId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+				currentSessionId = result.getJSONObject(0).getInt("LastInsertId");
 			}
 
 			return currentSessionId >= 0;
@@ -210,7 +210,7 @@ public class DatabaseManager
 
         if (result.size() == 1)
         {
-            currentRunId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+            currentRunId = result.getJSONObject(0).getInt("LastInsertId");
         }
 
         return currentRunId >= 0;
@@ -302,7 +302,7 @@ public class DatabaseManager
 
 		if (result.size() == 1)
 		{
-			newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+			newId = result.getJSONObject(0).getInt("LastInsertId");
 		} 
 
 		return newId > -1;
@@ -503,7 +503,7 @@ public class DatabaseManager
 
 		if (result.size() == 1)
 		{
-			newId = result.getJSONObject(0).getInt("LAST_INSERT_ID()");
+			newId = result.getJSONObject(0).getInt("LastInsertId");
 		} 
 
 		return newId > -1;
